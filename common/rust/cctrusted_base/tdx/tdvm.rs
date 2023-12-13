@@ -5,7 +5,7 @@ struct TdReport {
 
 pub struct tdx_vm {
     tdx_version: Version
-    device_node: TeeDeviceNode
+    device_node: DeviceNode
     cc_type: CcType
     rtmrs: Imrs
     default_algo_id: AlgoId
