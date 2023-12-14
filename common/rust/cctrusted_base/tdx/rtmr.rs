@@ -1,3 +1,5 @@
+mod rtmr
+
 pub struct TdxRTMR {
     index: u8,
     digests: HashMap<u8, &TcgDigest>

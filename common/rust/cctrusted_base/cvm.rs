@@ -1,3 +1,4 @@
+mod cvm
 
 struct DeviceNode {
     device_path: string

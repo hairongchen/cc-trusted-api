@@ -9,15 +9,6 @@ const TPM_ALG_SHA256: u8 = 0xB
 const TPM_ALG_SHA384: u8 = 0xC
 const TPM_ALG_SHA512: u8 = 0xD
 
-// enum TCG_ALGO {
-//     TPM_ALG_ERROR: u8 = 0x0
-//     TPM_ALG_RSA: u8 = 0x1
-//     TPM_ALG_TDES: u8 = 0x3
-//     TPM_ALG_SHA256: u8 = 0xB
-//     TPM_ALG_SHA384: u8 = 0xC
-//     TPM_ALG_SHA512: u8 = 0xD
-// }
-
 pub const AlgoNameMap: HashMap<&u8, &str> = [
     (TPM_ALG_ERROR, "TPM_ALG_RSA"),
     (TPM_ALG_TDES, "TPM_ALG_TDES"),
