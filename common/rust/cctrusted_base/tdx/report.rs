@@ -26,20 +26,6 @@ pub struct tdx_1_5_report_req {
     tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
-pub struct TdxInfo {
-    tdx_version: TdxVersion,
-    device_node: File,
-}
-
-impl TdxInfo {
-    fn new(_tdx_version: TdxVersion, _device_node: File) -> Self {
-        TdxInfo {
-            tdx_version: _tdx_version,
-            device_node: _device_node,
-        }
-    }
-}
-
 fn generate_tdx_report_data(
     nonce: String,
     data: Option<String>,
@@ -82,54 +68,33 @@ fn generate_tdx_report_data(
     Ok(base64::encode(hash_array))
 }
 
-pub fn get_td_report(report_data: String) -> Result<Vec<u8>, anyhow::Error> {
-    //detect TDX version
-    let tdx_info = match get_tdx_version() {
-        TdxVersion::TDX_1_0 => {
-            let device_node = match File::options()
-                .read(true)
-                .write(true)
-                .open("/dev/tdx-guest")
-            {
-                Err(e) => {
-                    return Err(anyhow!(
-                        "[get_td_report] Fail to open {}: {:?}",
-                        "/dev/tdx-guest",
-                        e
-                    ))
-                }
-                Ok(fd) => fd,
-            };
-            TdxInfo::new(TdxVersion::TDX_1_0, device_node)
-        }
-        TdxVersion::TDX_1_5 => {
-            let device_node = match File::options()
-                .read(true)
-                .write(true)
-                .open("/dev/tdx_guest")
-            {
-                Err(e) => {
-                    return Err(anyhow!(
-                        "[get_td_report] Fail to open {}: {:?}",
-                        "/dev/tdx_guest",
-                        e
-                    ))
-                }
-                Ok(fd) => fd,
-            };
-            TdxInfo::new(TdxVersion::TDX_1_5, device_node)
-        }
-    };
+impl TdxVM {
+    pub fn get_td_report(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
 
-    match tdx_info.tdx_version {
-        TdxVersion::TDX_1_0 => match get_tdx_1_0_report(tdx_info.device_node, report_data) {
-            Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-            Ok(report) => Ok(report),
-        },
-        TdxVersion::TDX_1_5 => match get_tdx_1_5_report(tdx_info.device_node, report_data) {
-            Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-            Ok(report) => Ok(report),
-        },
+        let device_node = match File::options()
+        .read(true)
+        .write(true)
+        .open(self.device_node.device_path){
+            Err(e) => {
+                return Err(anyhow!(
+                    "[get_td_report] Fail to open {}: {:?}",
+                    self.device_node.device_path,
+                    e
+                ))
+            }
+            Ok(fd) => fd,
+        };
+
+        match self.version {
+            TdxVersion::TDX_1_0 => match get_tdx_1_0_report(device_node, report_data) {
+                Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
+                Ok(report) => Ok(report),
+            },
+            TdxVersion::TDX_1_5 => match get_tdx_1_5_report(device_node, report_data) {
+                Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
+                Ok(report) => Ok(report),
+            },
+        }
     }
 }
 

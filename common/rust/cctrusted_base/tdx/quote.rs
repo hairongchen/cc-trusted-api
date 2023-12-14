@@ -75,142 +75,121 @@ fn generate_qgs_quote_msg(report: [u8; TDX_REPORT_LEN as usize]) -> qgs_msg_get_
     qgs_request
 }
 
-pub fn get_tdx_quote(report_data: String) -> Result<Vec<u8>, anyhow::Error> {
-    //retrieve TDX report
-    let report_data_vec = match get_td_report(report_data) {
-        Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX report: {:?}", e)),
-        Ok(report) => report,
-    };
-    let report_data_array: [u8; TDX_REPORT_LEN as usize] = match report_data_vec.try_into() {
-        Ok(r) => r,
-        Err(e) => return Err(anyhow!("[get_tdx_quote] Wrong TDX report format: {:?}", e)),
-    };
+impl TdxVM {
+    pub fn get_tdx_quote(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
+        //retrieve TDX report
+        let report_data_vec = match get_td_report(report_data) {
+            Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX report: {:?}", e)),
+            Ok(report) => report,
+        };
+        let report_data_array: [u8; TDX_REPORT_LEN as usize] = match report_data_vec.try_into() {
+            Ok(r) => r,
+            Err(e) => return Err(anyhow!("[get_tdx_quote] Wrong TDX report format: {:?}", e)),
+        };
 
-    //build QGS request message
-    let qgs_msg = generate_qgs_quote_msg(report_data_array);
+        //build QGS request message
+        let qgs_msg = generate_qgs_quote_msg(report_data_array);
 
-    let tdx_info = match get_tdx_version() {
-        TdxVersion::TDX_1_0 => {
-            let device_node = match File::options()
-                .read(true)
-                .write(true)
-                .open("/dev/tdx-guest")
-            {
-                Err(e) => {
-                    return Err(anyhow!(
-                        "[get_tdx_quote] Fail to open {}: {:?}",
-                        "/dev/tdx-guest",
-                        e
-                    ))
-                }
-                Ok(fd) => fd,
-            };
-            TdxInfo::new(TdxVersion::TDX_1_0, device_node)
+        let device_node = match File::options()
+        .read(true)
+        .write(true)
+        .open(self.device_node.device_path){
+            Err(e) => {
+                return Err(anyhow!(
+                    "[get_td_report] Fail to open {}: {:?}",
+                    self.device_node.device_path,
+                    e
+                ))
+            }
+            Ok(fd) => fd,
+        };
+
+        //build quote generation request header
+        let mut quote_header = tdx_quote_hdr {
+            version: 1,
+            status: 0,
+            in_len: (mem::size_of_val(&qgs_msg) + 4) as u32,
+            out_len: 0,
+            data_len_be_bytes: (1048 as u32).to_be_bytes(),
+            data: [0; TDX_QUOTE_LEN as usize],
+        };
+
+        let qgs_msg_bytes = unsafe {
+            let ptr = &qgs_msg as *const qgs_msg_get_quote_req as *const u8;
+            std::slice::from_raw_parts(ptr, mem::size_of::<qgs_msg_get_quote_req>())
+        };
+        quote_header.data[0..(16 + 8 + TDX_REPORT_LEN) as usize]
+            .copy_from_slice(&qgs_msg_bytes[0..((16 + 8 + TDX_REPORT_LEN) as usize)]);
+
+        let request = tdx_quote_req {
+            buf: ptr::addr_of!(quote_header) as u64,
+            len: TDX_QUOTE_LEN as u64,
+        };
+
+        //build the operator code and apply the ioctl command
+        match self.version {
+            TdxVersion::TDX_1_0 => {
+                ioctl_read!(
+                    get_quote_1_0_ioctl,
+                    b'T',
+                    TdxOperation::TDX_1_0_GET_QUOTE,
+                    u64
+                );
+                match unsafe {
+                    get_quote_1_0_ioctl(
+                        device_node.as_raw_fd(),
+                        ptr::addr_of!(request) as *mut u64,
+                    )
+                } {
+                    Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e)),
+                    Ok(_r) => _r,
+                };
+            }
+            TdxVersion::TDX_1_5 => {
+                ioctl_read!(
+                    get_quote_1_5_ioctl,
+                    b'T',
+                    TdxOperation::TDX_1_5_GET_QUOTE,
+                    tdx_quote_req
+                );
+                match unsafe {
+                    get_quote_1_5_ioctl(
+                        device_node.as_raw_fd(),
+                        ptr::addr_of!(request) as *mut tdx_quote_req,
+                    )
+                } {
+                    Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e)),
+                    Ok(_r) => _r,
+                };
+            }
+        };
+
+        //inspect the response and retrive quote data
+        let out_len = quote_header.out_len;
+        let qgs_msg_resp_size =
+            unsafe { std::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
+
+        let qgs_msg_resp = unsafe {
+            let raw_ptr = ptr::addr_of!(quote_header.data) as *mut qgs_msg_get_quote_resp;
+            raw_ptr.as_mut().unwrap() as &mut qgs_msg_get_quote_resp
+        };
+
+        if out_len - qgs_msg_resp_size != 4 {
+            return Err(anyhow!(
+                "[get_tdx_quote] Fail to get TDX quote: wrong TDX quote size!"
+            ));
         }
-        TdxVersion::TDX_1_5 => {
-            let device_node = match File::options()
-                .read(true)
-                .write(true)
-                .open("/dev/tdx_guest")
-            {
-                Err(e) => {
-                    return Err(anyhow!(
-                        "[get_tdx_quote] Fail to open {}: {:?}",
-                        "/dev/tdx_guest",
-                        e
-                    ))
-                }
-                Ok(fd) => fd,
-            };
-            TdxInfo::new(TdxVersion::TDX_1_5, device_node)
+
+        if qgs_msg_resp.header.major_version != 1
+            || qgs_msg_resp.header.minor_version != 0
+            || qgs_msg_resp.header.msg_type != 1
+            || qgs_msg_resp.header.error_code != 0
+        {
+            return Err(anyhow!(
+                "[get_tdx_quote] Fail to get TDX quote: QGS response error!"
+            ));
         }
-    };
 
-    //build quote generation request header
-    let mut quote_header = tdx_quote_hdr {
-        version: 1,
-        status: 0,
-        in_len: (mem::size_of_val(&qgs_msg) + 4) as u32,
-        out_len: 0,
-        data_len_be_bytes: (1048 as u32).to_be_bytes(),
-        data: [0; TDX_QUOTE_LEN as usize],
-    };
-
-    let qgs_msg_bytes = unsafe {
-        let ptr = &qgs_msg as *const qgs_msg_get_quote_req as *const u8;
-        std::slice::from_raw_parts(ptr, mem::size_of::<qgs_msg_get_quote_req>())
-    };
-    quote_header.data[0..(16 + 8 + TDX_REPORT_LEN) as usize]
-        .copy_from_slice(&qgs_msg_bytes[0..((16 + 8 + TDX_REPORT_LEN) as usize)]);
-
-    let request = tdx_quote_req {
-        buf: ptr::addr_of!(quote_header) as u64,
-        len: TDX_QUOTE_LEN as u64,
-    };
-
-    //build the operator code and apply the ioctl command
-    match tdx_info.tdx_version {
-        TdxVersion::TDX_1_0 => {
-            ioctl_read!(
-                get_quote_1_0_ioctl,
-                b'T',
-                TdxOperation::TDX_1_0_GET_QUOTE,
-                u64
-            );
-            match unsafe {
-                get_quote_1_0_ioctl(
-                    tdx_info.device_node.as_raw_fd(),
-                    ptr::addr_of!(request) as *mut u64,
-                )
-            } {
-                Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e)),
-                Ok(_r) => _r,
-            };
-        }
-        TdxVersion::TDX_1_5 => {
-            ioctl_read!(
-                get_quote_1_5_ioctl,
-                b'T',
-                TdxOperation::TDX_1_5_GET_QUOTE,
-                tdx_quote_req
-            );
-            match unsafe {
-                get_quote_1_5_ioctl(
-                    tdx_info.device_node.as_raw_fd(),
-                    ptr::addr_of!(request) as *mut tdx_quote_req,
-                )
-            } {
-                Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e)),
-                Ok(_r) => _r,
-            };
-        }
-    };
-
-    //inspect the response and retrive quote data
-    let out_len = quote_header.out_len;
-    let qgs_msg_resp_size =
-        unsafe { std::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
-
-    let qgs_msg_resp = unsafe {
-        let raw_ptr = ptr::addr_of!(quote_header.data) as *mut qgs_msg_get_quote_resp;
-        raw_ptr.as_mut().unwrap() as &mut qgs_msg_get_quote_resp
-    };
-
-    if out_len - qgs_msg_resp_size != 4 {
-        return Err(anyhow!(
-            "[get_tdx_quote] Fail to get TDX quote: wrong TDX quote size!"
-        ));
+        Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
-
-    if qgs_msg_resp.header.major_version != 1
-        || qgs_msg_resp.header.minor_version != 0
-        || qgs_msg_resp.header.msg_type != 1
-        || qgs_msg_resp.header.error_code != 0
-    {
-        return Err(anyhow!(
-            "[get_tdx_quote] Fail to get TDX quote: QGS response error!"
-        ));
-    }
-
-    Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
 }

@@ -43,9 +43,7 @@ impl TdxVM {
         }
 
         let version = get_tdx_version();
-
         let device_node = DeviceNode {device_path: TdxDeviceNodeMap.get(version)};
-
         let algo_id = tcg::TPM_ALG_SHA384;
 
         TdxVM {
@@ -71,7 +69,7 @@ impl CVM for TdxVM {
             }
         };
 
-        let self.cc_report_raw = match get_tdx_quote(report_data) {
+        let self.cc_report_raw = match get_tdx_quote(report_data, self.version, self.DeviceNode) {
             Ok(q) => q,
             Err(e) => return Err(anyhow!(
                 "[get_cc_report] error getting TDX quote: {:?}",
