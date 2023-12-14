@@ -1,5 +1,3 @@
-mod tcg
-
 use std::collections::HashMap;
 
 const TPM_ALG_ERROR: u8 = 0x0

@@ -1,5 +1,3 @@
-mod cctype
-
 #[derive(Debug, Clone)]
 pub enum TeeType {
     NONE = -1,

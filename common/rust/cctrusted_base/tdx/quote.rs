@@ -1,5 +1,3 @@
-mod quote
-
 #![allow(non_camel_case_types)]
 
 use anyhow::*;

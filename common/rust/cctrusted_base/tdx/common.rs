@@ -1,5 +1,3 @@
-mod common
-
 pub enum TdxVersion {
     TDX_1_0,
     TDX_1_5,
