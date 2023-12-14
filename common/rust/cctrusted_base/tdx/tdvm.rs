@@ -69,7 +69,7 @@ impl CVM for TdxVM {
             }
         };
 
-        let self.cc_report_raw = match get_tdx_quote(report_data, self.version, self.DeviceNode) {
+        let self.cc_report_raw = match get_tdx_quote(&self, report_data) {
             Ok(q) => q,
             Err(e) => return Err(anyhow!(
                 "[get_cc_report] error getting TDX quote: {:?}",
