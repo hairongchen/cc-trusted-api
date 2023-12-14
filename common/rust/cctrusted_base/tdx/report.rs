@@ -67,8 +67,6 @@ pub struct qgs_msg_get_quote_resp {
     id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
 }
 
-
-
 pub struct TdxInfo {
     tdx_version: TdxVersion,
     device_node: File,
@@ -82,8 +80,6 @@ impl TdxInfo {
         }
     }
 }
-
-
 
 pub fn get_td_report(report_data: String) -> Result<Vec<u8>, anyhow::Error> {
     //detect TDX version

@@ -6,17 +6,35 @@ struct TdReport {
     //TODO!
 }
 
+struct TdxQuote {
+    //TODO!
+}
+
+/* TdxVM is an abstraction of TDX running environment, it contains:
+    cc_type: should always be TDX
+    version: 1.0 or 1.5
+    device_node: /dev/tdx-guest or /dev/tdx_guest
+    algo_id: should be TPM_ALG_SHA384
+    cc_report_raw: the raw tdx quote in byte vector, filled by get_cc_report()
+    cc_report: the parsed tdx quote, filled by get_cc_report()
+    td_report_raw: the raw td report in byte vector, filled by get_cc_report()
+    td_report: the parsed tdreport, filled by get_cc_report()
+    rtrms: TDX rtmr algorithm and hash, filled by get_cc_measurement()
+*/
 pub struct TdxVM {
 use mod cctype
     cc_type: CcType
     version: TdxVersion
     device_node: DeviceNode
     algo_id: u8
-    // cc_report: CcReport
-    // tdx_report: TdReport
-    // tdx_rtrms: Vec!<TdxRTMR>
+    cc_report_raw: Option<Vec<u8>>
+    cc_report: Option<CcReport>
+    td_report_raw: Option<Vec<u8>>
+    td_report: Option<TdReport>
+    rtrms: Option<Vec!<TdxRTMR>>
 }
 
+// implement the structure create function
 impl TdxVM {
     pub fn new() -> Result<TdxVM, anyhow::Errort> {
         let cc_type = cctype::detect_cc_type();
@@ -41,8 +59,14 @@ impl TdxVM {
 
 // all TdxVM's interfaces should implement CVM trait
 impl CVM for TdxVM {
-    pub fn get_cc_report();
+    // retrieve TDX quote
+    pub fn get_cc_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>{
+
+    }
+
+    // retrieve TDX RTMR
     pub fn get_cc_measurement();
+    // retrieve TDX CCEL and IMA eventlog
     pub fn get_cc_eventlog();
 
 }

@@ -1,3 +1,5 @@
+mod common
+
 pub enum TdxVersion {
     TDX_1_0,
     TDX_1_5,
@@ -28,7 +30,7 @@ fn get_tdx_version() -> TdxVersion {
         TdxVersion::TDX_1_0
     } else if Path::new(TEE_TDX_1_5_PATH).exists() {
         TdxVersion::TDX_1_5
-    else {
+    } else {
         panic!("get_tdx_version: no TDX device found!");
     }
 }
