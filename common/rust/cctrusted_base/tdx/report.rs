@@ -67,20 +67,7 @@ pub struct qgs_msg_get_quote_resp {
     id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
 }
 
-pub enum TdxVersion {
-    TDX_1_0,
-    TDX_1_5,
-}
 
-pub enum TdxOperation {
-    TDX_GET_TD_REPORT = 1,
-    TDX_1_0_GET_QUOTE = 2,
-    TDX_1_5_GET_QUOTE = 4,
-}
-
-const REPORT_DATA_LEN: u32 = 64;
-const TDX_REPORT_LEN: u32 = 1024;
-const TDX_QUOTE_LEN: usize = 4 * 4096;
 
 pub struct TdxInfo {
     tdx_version: TdxVersion,
@@ -96,17 +83,7 @@ impl TdxInfo {
     }
 }
 
-fn get_tdx_version() -> TdxVersion {
-    if Path::new("/dev/tdx-guest").exists() {
-        TdxVersion::TDX_1_0
-    } else if Path::new("/dev/tdx_guest").exists() {
-        TdxVersion::TDX_1_5
-    } else if Path::new("/dev/tdx-attest").exists() {
-        panic!("get_tdx_version: Deprecated device node /dev/tdx-attest, please upgrade to use /dev/tdx-guest or /dev/tdx_guest");
-    } else {
-        panic!("get_tdx_version: no TDX device found!");
-    }
-}
+
 
 pub fn get_td_report(report_data: String) -> Result<Vec<u8>, anyhow::Error> {
     //detect TDX version
