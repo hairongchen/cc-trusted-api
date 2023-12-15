@@ -1,4 +1,3 @@
-#![warn(dead_code)]
 #![warn(non_upper_case_globals)]
 
 use std::collections::HashMap;
@@ -11,7 +10,7 @@ pub const TPM_ALG_SHA384: u8 = 0xC;
 pub const TPM_ALG_SHA512: u8 = 0xD;
 
 lazy_static! {
-    pub static  ref AlgoNameMap: HashMap<u8, String> = {
+    pub static  ref ALGO_NAME_MAP: HashMap<u8, String> = {
         let mut map:HashMap<u8, String> = HashMap::new();
         map.insert(TPM_ALG_ERROR, "TPM_ALG_RSA".to_string());
         map.insert(TPM_ALG_TDES, "TPM_ALG_TDES".to_string());
@@ -30,6 +29,7 @@ pub trait TcgAlgorithmRegistry {
 }
 
 // digest format: (algo id, hash value)
+#![warn(dead_code)]
 pub struct TcgDigest {
     algo_id: u8,
     hash: Vec<u8>

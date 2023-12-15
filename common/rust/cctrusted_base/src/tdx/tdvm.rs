@@ -37,10 +37,10 @@ pub struct TdxVM {
 // implement the structure create function
 impl TdxVM {
     pub fn new() -> TdxVM {
-        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TeeNameMap.get(&TeeType::TDX).unwrap().to_owned()};
+        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TEE_NAME_MAP.get(&TeeType::TDX).unwrap().to_owned()};
 
         let version = get_tdx_version();
-        let device_node = DeviceNode {device_path: TdxDeviceNodeMap.get(&version).unwrap().to_owned()};
+        let device_node = DeviceNode {device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned()};
         let algo_id = crate::tcg::TPM_ALG_SHA384;
 
         TdxVM {
@@ -93,7 +93,7 @@ impl CVM for TdxVM {
     fn dump(&self) {
         println!("======================================");
         println!("CVM type = {}", self.cc_type.tee_type_str);
-        println!("CVM version = {}", TdxVersionMap.get(&self.version).unwrap().to_owned());
+        println!("CVM version = {}", TDX_VERSION_MAP.get(&self.version).unwrap().to_owned());
         println!("======================================");
     }
 

@@ -11,7 +11,7 @@ pub enum TeeType {
 }
 
 lazy_static! {
-    pub static  ref TeeNameMap: HashMap<TeeType, String> = {
+    pub static  ref TEE_NAME_MAP: HashMap<TeeType, String> = {
         let mut map:HashMap<TeeType, String> = HashMap::new();
         map.insert(TeeType::PLAIN, "PLAIN".to_string());
         map.insert(TeeType::TDX, "TDX".to_string());
@@ -50,5 +50,5 @@ pub fn detect_cc_type() -> CcType {
         // TODO! add support for CCA
     }
 
-    return CcType { tee_type: tee_type.clone(), tee_type_str: TeeNameMap.get(&tee_type).unwrap().to_owned() }
+    return CcType { tee_type: tee_type.clone(), tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned() }
 }

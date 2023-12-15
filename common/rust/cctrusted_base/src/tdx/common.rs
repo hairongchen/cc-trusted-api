@@ -1,5 +1,4 @@
 #![allow(non_camel_case_types)]
-#![warn(non_upper_case_globals)]
 
 use std::collections::HashMap;
 use crate::cc_type::*;
@@ -12,7 +11,7 @@ pub enum TdxVersion {
 }
 
 lazy_static! {
-    pub static  ref TdxVersionMap: HashMap<TdxVersion, String> = {
+    pub static  ref TDX_VERSION_MAP: HashMap<TdxVersion, String> = {
         let mut map:HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, "1.0".to_string());
         map.insert(TdxVersion::TDX_1_5, "1.5".to_string());
@@ -21,7 +20,7 @@ lazy_static! {
 }
 
 lazy_static! {
-    pub static  ref TdxDeviceNodeMap: HashMap<TdxVersion, String> = {
+    pub static  ref TDX_DEVICE_NODE_MAP: HashMap<TdxVersion, String> = {
         let mut map:HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, TEE_TDX_1_0_PATH.to_string());
         map.insert(TdxVersion::TDX_1_5, TEE_TDX_1_5_PATH.to_string());
