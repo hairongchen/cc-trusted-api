@@ -5,10 +5,10 @@ use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
 use cctrusted_base::cvm::CVM;
 
-struct ExtraArgs {}
+pub struct ExtraArgs {}
 
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
-pub fn get_cc_report(nonce: String, data: String, _extraArgs: ExtraArgs) -> Result<Vec<u8>, anyhow::Error> {
+pub fn get_cc_report(nonce: String, data: String, _extra_args: ExtraArgs) -> Result<Vec<u8>, anyhow::Error> {
 
     // instance a cvm according to TEE detection result
     let mut cvm = match detect_cc_type().tee_type {
