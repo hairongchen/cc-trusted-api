@@ -1,5 +1,6 @@
 use crate::cc_type::*;
 use crate::cvm::*;
+use crate::tdx::rtmr::TdxRTMR;
 use crate::tdx::common::*;
 use crate::tdx::report::generate_tdx_report_data;
 
@@ -40,16 +41,16 @@ impl TdxVM {
 
         let version = get_tdx_version();
         let device_node = DeviceNode {device_path: TdxDeviceNodeMap.get(&version)};
-        let algo_id = tcg::TPM_ALG_SHA384;
+        let algo_id = crate::tcg::TPM_ALG_SHA384;
 
         TdxVM {
             cc_type,
             version,
             device_node,
             algo_id,
-            cc_report_raw: None,
-            td_report_raw: None,
-            rtrms: None
+            cc_report_raw: [u8; 0],
+            td_report_raw: [u8; 0],
+            rtrms: [u8; 0]
         }
     }
 }

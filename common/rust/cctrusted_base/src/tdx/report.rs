@@ -29,7 +29,7 @@ pub struct tdx_1_5_report_req {
 
 pub fn generate_tdx_report_data(
     nonce: String,
-    data: <String>,
+    data: String,
 ) -> Result<String, anyhow::Error> {
     let nonce_decoded = match base64::decode(nonce) {
         Ok(v) => v,
@@ -89,11 +89,11 @@ impl TdxVM {
         match self.version {
             TdxVersion::TDX_1_0 => match get_tdx_1_0_report(device_node, report_data) {
                 Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-                Ok(report) => Ok(Some(report)),
+                Ok(report) => Ok(report),
             },
             TdxVersion::TDX_1_5 => match get_tdx_1_5_report(device_node, report_data) {
                 Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-                Ok(report) => Ok(Some(report)),
+                Ok(report) => Ok(report),
             },
         }
     }
