@@ -71,7 +71,7 @@ impl CVM for TdxVM {
         };
 
         self.cc_report_raw = match get_tdx_quote(&self, report_data) {
-            Ok(q) => Some(q),
+            Ok(q) => q,
             Err(e) => return Err(anyhow!(
                 "[get_cc_report] error getting TDX quote: {:?}",
                 e
