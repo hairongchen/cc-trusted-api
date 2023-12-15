@@ -1,5 +1,6 @@
 use anyhow::*;
-use cctrusted_base::TdxVM::*;
+use cctrusted_base::tdx::tdvm::TdxVM;
+use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
 
@@ -9,7 +10,7 @@ struct ExtraArgs {}
 pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Result<Vec<u8>, anyhow::Error> {
 
     // instance a cvm according to TEE detection result
-    let cvm = match cctype::detect_cc_type(){
+    let cvm = match detect_cc_type(){
         TeeType::TDX => {
             TdxVM::new()
         },
@@ -21,7 +22,7 @@ pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Resul
 
     // call CVM trait defined methods
     cvm.dump();
-    cvm.process_cc_report(nonce: String, data: String)
+    cvm.process_cc_report(nonce, data)
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
