@@ -4,8 +4,8 @@ fn main() {
     let nonce = "MTIzNDU2Nzg=".to_string();
     let data = "YWJjZGVmZw==".to_string();
 
-    get_cc_report(nonce, data, ExtraArgs{});
+    let q = get_cc_report(nonce, data, ExtraArgs{});
 
-    println!("OK!");
+    println!("quote: {}", q);
 
 }
