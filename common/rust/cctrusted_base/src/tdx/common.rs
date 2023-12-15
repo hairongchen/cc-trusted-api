@@ -12,7 +12,7 @@ pub enum TdxVersion {
 }
 
 pub lazy_static! {
-    static  ref TdxVersionMap: Mutex<HashMap<TdxVersion, String>> = {
+    pub static  ref TdxVersionMap: Mutex<HashMap<TdxVersion, String>> = {
         let mut map:HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, "1.0".to_string());
         map.insert(TdxVersion::TDX_5_0, "1.5".to_string());
@@ -21,7 +21,7 @@ pub lazy_static! {
 }
 
 pub lazy_static! {
-    static  ref TdxDeviceNodeMap: Mutex<HashMap<TdxVersion, String>> = {
+    pub static  ref TdxDeviceNodeMap: Mutex<HashMap<TdxVersion, String>> = {
         let mut map:HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, TEE_TDX_1_0_PATH);
         map.insert(TdxVersion::TDX_5_0, TEE_TDX_1_5_PATH);
