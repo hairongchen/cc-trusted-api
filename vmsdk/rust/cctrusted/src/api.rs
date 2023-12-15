@@ -20,12 +20,12 @@ pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Resul
     };
 
     // call CVM trait defined methods
-    cvm::dump();
-    cvm::process_cc_report(nonce: String, data: String)
+    cvm.dump();
+    cvm.process_cc_report(nonce: String, data: String)
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
-pub fn get_cc_measurement(index: u8, algo_id: u8) -> Vec!<TcgDigest> {
+pub fn get_cc_measurement(index: u8, algo_id: u8) -> Vec<TcgDigest> {
     todo!()
 }
 
