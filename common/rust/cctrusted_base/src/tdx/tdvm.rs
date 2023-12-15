@@ -1,7 +1,6 @@
 use crate::cc_type::*;
 use crate::cvm::*;
 use crate::tdx::common::*;
-use super::rtmr::*;
 use crate::tdx::report::generate_tdx_report_data;
 
 use anyhow::*; 
@@ -29,7 +28,7 @@ pub struct TdxVM {
     pub algo_id: u8,
     pub cc_report_raw: Vec<u8>,
     //cc_report: Option<CcReport>,
-    pub td_report_raw: <Vec<u8>,
+    pub td_report_raw: Vec<u8>,
     //td_report: Option<TdReport>,
     pub rtrms: Vec<TdxRTMR>,
 }
@@ -58,7 +57,7 @@ impl TdxVM {
 // all TdxVM's interfaces should implement CVM trait
 impl CVM for TdxVM {
     // retrieve TDX quote
-    fn process_cc_report(&self, nonce: String, data: String) -> Result<Option<Vec<u8>>, anyhow::Error>{
+    fn process_cc_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>{
         let report_data = match generate_tdx_report_data(nonce, Some(data)) {
             Ok(r) => r,
             Err(e) => {

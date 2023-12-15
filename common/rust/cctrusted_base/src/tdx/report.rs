@@ -29,7 +29,7 @@ pub struct tdx_1_5_report_req {
 
 pub fn generate_tdx_report_data(
     nonce: String,
-    data: Option<String>,
+    data: <String>,
 ) -> Result<String, anyhow::Error> {
     let nonce_decoded = match base64::decode(nonce) {
         Ok(v) => v,
@@ -70,7 +70,7 @@ pub fn generate_tdx_report_data(
 }
 
 impl TdxVM {
-    pub fn get_td_report(&self, report_data: String) -> Result<Option<Vec<u8>>, anyhow::Error> {
+    pub fn get_td_report(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
 
         let device_node = match File::options()
         .read(true)
