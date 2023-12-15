@@ -9,3 +9,4 @@ path = "src/api.rs"
 
 [dependencies]
 cctrusred_base = "../rust/cctrusred_base"
+anyhow = "1.0"
