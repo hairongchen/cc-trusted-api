@@ -17,7 +17,7 @@ pub enum TeeType {
 
 lazy_static! {
     static  ref TeeNameMap: Mutex<HashMap<TeeType, String>> = {
-        let mut map:HashMap<TdxVersion, String> = HashMap::new();
+        let mut map:HashMap<TeeType, String> = HashMap::new();
         map.insert(TeeType::PLAIN, "PLAIN".to_string());
         map.insert(TeeType::TDX, "TDX".to_string());
         map.insert(TeeType::SEV, "SEV".to_string());
