@@ -6,10 +6,11 @@ use std::convert::TryInto;
 use std::fs::File;
 use std::mem;
 use std::os::unix::io::AsRawFd;
-use std::path::Path;
 use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
+use common::*;
+use tdvm::TdxVM;
 
 #[repr(C)]
 pub struct qgs_msg_header {
@@ -78,7 +79,7 @@ fn generate_qgs_quote_msg(report: [u8; TDX_REPORT_LEN as usize]) -> qgs_msg_get_
 impl TdxVM {
     pub fn get_tdx_quote(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
         //retrieve TDX report
-        let report_data_vec = match get_td_report(&self, report_data) {
+        let report_data_vec = match self.get_td_report(&self, report_data) {
             Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX report: {:?}", e)),
             Ok(report) => report,
         };

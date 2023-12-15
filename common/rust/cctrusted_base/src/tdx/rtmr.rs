@@ -1,22 +1,25 @@
+use std::collections::HashMap;
+use tcg::*;
+
 pub struct TdxRTMR {
     index: u8,
-    digests: HashMap<u8, &TcgDigest>
+    digests: HashMap<u8, TcgDigest>
 }
 
 impl TcgIMR for TdxRTMR {
-    pub fn max_index(&self) -> int{
+    fn max_index(&self) -> u8{
         return 3
     }
 
-    pub fn get_index(&self) -> int {
+    fn get_index(&self) -> u8 {
         todo!()
     }
 
-    pub fn get_hash(&self) -> Vec<&str> {
+    fn get_hash(&self) -> Vec<&str> {
         todo!()
     }
 
-    pub fn is_valid(&self) -> bool {
+    fn is_valid(&self) -> bool {
         todo!()
     }
 

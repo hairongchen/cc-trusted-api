@@ -1,31 +1,23 @@
-struct DeviceNode {
-    device_path: string
+pub struct DeviceNode {
+    device_path: String
 }
 
-// struct CcReport {
-//     //TODO!
-// }
-
-struct CcEventlogs {
-    todo!()
+pub struct CcEventlogs {
+    //TODO!
 }
-
-// struct CcIMRs {
-//     //TODO!
-// }
 
 // the interfaces a cvm should support
 pub trait CVM {
 
-    pub fn get_cc_report();
-    pub fn get_cc_measurement();
-    pub fn get_cc_eventlog();
+    fn get_cc_report();
+    fn get_cc_measurement();
+    fn get_cc_eventlog();
 
-    pub fn dump(&self) {
-        //Dump confidential VM information
-        println!("======================================")
-        println!("CVM type = {}", self.cc_type.cc_type_str)
-        println!("CVM version = {}", self.version)
-        println!("======================================")
+    //Dump confidential VM information
+    fn dump(&self) {
+        println!("======================================");
+        println!("CVM type = {}", self.cc_type.cc_type_str);
+        println!("CVM version = {}", self.version);
+        println!("======================================");
     }
 }

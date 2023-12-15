@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
-const TPM_ALG_ERROR: u8 = 0x0
-const TPM_ALG_RSA: u8 = 0x1
-const TPM_ALG_TDES: u8 = 0x3
-const TPM_ALG_SHA256: u8 = 0xB
-const TPM_ALG_SHA384: u8 = 0xC
-const TPM_ALG_SHA512: u8 = 0xD
+pub const TPM_ALG_ERROR: u8 = 0x0;
+pub const TPM_ALG_RSA: u8 = 0x1;
+pub const TPM_ALG_TDES: u8 = 0x3;
+pub const TPM_ALG_SHA256: u8 = 0xB;
+pub const TPM_ALG_SHA384: u8 = 0xC;
+pub const TPM_ALG_SHA512: u8 = 0xD;
 
 pub const AlgoNameMap: HashMap<&u8, &str> = [
     (TPM_ALG_ERROR, "TPM_ALG_RSA"),
@@ -17,7 +17,7 @@ pub const AlgoNameMap: HashMap<&u8, &str> = [
 
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
-    pub fn get_algorithm_string(alg_id: u8) -> Result<String>{
+    pub fn get_algorithm_string(alg_id: u8) -> String{
         todo!()
     }
 }
@@ -30,8 +30,8 @@ pub struct TcgDigest {
 
 // this trait retrieve IMR's max index of a TEE and hash value 
 pub trait TcgIMR {
-    pub fn max_index(&self);
-    pub fn get_index(&self);
-    pub fn get_hash(&self);
-    pub fn is_valid(&self);
+    fn max_index(&self);
+    fn get_index(&self);
+    fn get_hash(&self);
+    fn is_valid(&self);
 }

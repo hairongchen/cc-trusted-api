@@ -1,9 +1,9 @@
-use mod cc_type
-use mod tcg
-use mod common
-use mod cvm
-use mod quote
-use mod report
+use mod cc_type;
+use mod tcg;
+use mod common;
+use mod cvm;
+use mod quote;
+use mod report;
 
 struct TdReport {
     todo!()

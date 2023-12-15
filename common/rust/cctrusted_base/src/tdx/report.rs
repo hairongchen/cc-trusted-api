@@ -4,12 +4,12 @@ use anyhow::*;
 use nix::*;
 use std::convert::TryInto;
 use std::fs::File;
-use std::mem;
 use std::os::unix::io::AsRawFd;
-use std::path::Path;
 use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
+use common::*;
+use tdvm::TdxVM;
 
 #[repr(C)]
 pub struct tdx_1_0_report_req {
@@ -26,7 +26,7 @@ pub struct tdx_1_5_report_req {
     tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
-fn generate_tdx_report_data(
+pub fn generate_tdx_report_data(
     nonce: String,
     data: Option<String>,
 ) -> Result<String, anyhow::Error> {
