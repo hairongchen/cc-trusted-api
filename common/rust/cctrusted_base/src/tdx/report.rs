@@ -10,6 +10,7 @@ use std::result::Result::Ok;
 use super::common::*;
 use super::tdvm::TdxVM;
 use sha2::Sha512;
+use sha2::Digest;
 
 #[repr(C)]
 pub struct tdx_1_0_report_req {
@@ -88,11 +89,11 @@ impl TdxVM {
         match self.version {
             TdxVersion::TDX_1_0 => match get_tdx_1_0_report(device_node, report_data) {
                 Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-                Ok(report) => Ok(report),
+                Ok(report) => Ok(Some(report)),
             },
             TdxVersion::TDX_1_5 => match get_tdx_1_5_report(device_node, report_data) {
                 Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-                Ok(report) => Ok(report),
+                Ok(report) => Ok(Some(report)),
             },
         }
     }

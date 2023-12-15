@@ -3,6 +3,7 @@
 use std::collections::HashMap;
 use crate::cc_type::*;
 use std::path::Path;
+use crate::tdx::common::TdxVersion::*;
 
 #[derive(Eq, Hash, PartialEq)]
 pub enum TdxVersion {

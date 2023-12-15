@@ -1,8 +1,6 @@
 use crate::cc_type::*;
 use crate::cvm::*;
-use crate::tcg::*;
-use super::common::*;
-use super::quote::get_tdx_quote;
+use crate::tdx::common::*;
 use super::rtmr::*;
 
 use anyhow::*; 
@@ -38,10 +36,10 @@ pub struct TdxVM {
 // implement the structure create function
 impl TdxVM {
     pub fn new() -> TdxVM {
-        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TeeNameMap.get(TeeType::TDX)};
+        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TeeNameMap.get(&TeeType::TDX)};
 
         let version = get_tdx_version();
-        let device_node = DeviceNode {device_path: TdxDeviceNodeMap.get(version)};
+        let device_node = DeviceNode {device_path: TdxDeviceNodeMap.get(&version)};
         let algo_id = tcg::TPM_ALG_SHA384;
 
         TdxVM {
