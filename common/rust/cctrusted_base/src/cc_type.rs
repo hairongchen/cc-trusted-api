@@ -47,5 +47,5 @@ pub fn detect_cc_type() -> CcType {
         // TODO! add support for CCA
     }
 
-    return CcType { tee_type, tee_type_str: TeeNameMap[&tee_type];//.get(&tee_type).copied().unwrap_or(0) }
+    return CcType { tee_type, tee_type_str: TeeNameMap[&tee_type]};//.get(&tee_type).copied().unwrap_or(0) }
 }
