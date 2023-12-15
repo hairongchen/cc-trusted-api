@@ -93,7 +93,7 @@ impl CVM for TdxVM {
     fn dump(&self) {
         println!("======================================");
         println!("CVM type = {}", self.cc_type.tee_type_str);
-        println!("CVM version = {}", self.version);
+        println!("CVM version = {}", TdxVersionMap.get(self.version));
         println!("======================================");
     }
 
