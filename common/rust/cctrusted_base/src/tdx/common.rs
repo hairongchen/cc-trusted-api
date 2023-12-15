@@ -1,6 +1,4 @@
 #![allow(non_camel_case_types)]
-use std::sync::Mutex;
-
 use std::collections::HashMap;
 use crate::cc_type::*;
 use std::path::Path;
@@ -12,20 +10,20 @@ pub enum TdxVersion {
 }
 
 lazy_static! {
-    pub static  ref TdxVersionMap: Mutex<HashMap<TdxVersion, String>> = {
+    pub static  ref TdxVersionMap: HashMap<TdxVersion, String> = {
         let mut map:HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, "1.0".to_string());
         map.insert(TdxVersion::TDX_1_5, "1.5".to_string());
-        Mutex::new(map)
+        map
     };
 }
 
 lazy_static! {
-    pub static  ref TdxDeviceNodeMap: Mutex<HashMap<TdxVersion, String>> = {
+    pub static  ref TdxDeviceNodeMap: HashMap<TdxVersion, String> = {
         let mut map:HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, TEE_TDX_1_0_PATH.to_string());
         map.insert(TdxVersion::TDX_1_5, TEE_TDX_1_5_PATH.to_string());
-        Mutex::new(map)
+        map
     };
 }
 

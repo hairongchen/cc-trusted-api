@@ -1,5 +1,3 @@
-use std::sync::Mutex;
-
 use std::collections::HashMap;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
@@ -10,14 +8,14 @@ pub const TPM_ALG_SHA384: u8 = 0xC;
 pub const TPM_ALG_SHA512: u8 = 0xD;
 
 lazy_static! {
-    pub static  ref AlgoNameMap: Mutex<HashMap<u8, String>> = {
+    pub static  ref AlgoNameMap: HashMap<u8, String> = {
         let mut map:HashMap<u8, String> = HashMap::new();
         map.insert(TPM_ALG_ERROR, "TPM_ALG_RSA".to_string());
         map.insert(TPM_ALG_TDES, "TPM_ALG_TDES".to_string());
         map.insert(TPM_ALG_SHA256, "TPM_ALG_SHA256".to_string());
         map.insert(TPM_ALG_SHA384, "TPM_ALG_SHA384".to_string());
         map.insert(TPM_ALG_SHA512, "TPM_ALG_SHA512".to_string());
-        Mutex::new(map)
+        map
     };
 }
 

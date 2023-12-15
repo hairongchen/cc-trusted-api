@@ -1,5 +1,3 @@
-use std::sync::Mutex;
-
 use std::path::Path;
 use std::collections::HashMap;
 
@@ -13,14 +11,14 @@ pub enum TeeType {
 }
 
 lazy_static! {
-    pub static  ref TeeNameMap: Mutex<HashMap<TeeType, String>> = {
+    pub static  ref TeeNameMap: HashMap<TeeType, String> = {
         let mut map:HashMap<TeeType, String> = HashMap::new();
         map.insert(TeeType::PLAIN, "PLAIN".to_string());
         map.insert(TeeType::TDX, "TDX".to_string());
         map.insert(TeeType::SEV, "SEV".to_string());
         map.insert(TeeType::CCA, "CCA".to_string());
         map.insert(TeeType::TPM, "TPM".to_string());
-        Mutex::new(map)
+        map
     };
 }
 
