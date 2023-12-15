@@ -1,0 +1,11 @@
+[package]
+name = "cctrusred"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "cctrusred"
+path = "src/api.rs"
+
+[dependencies]
+cctrusred_base = "../rust/cctrusred_base"

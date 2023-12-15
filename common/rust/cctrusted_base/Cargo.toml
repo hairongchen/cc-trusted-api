@@ -1,0 +1,28 @@
+[package]
+name = "cctrusred_base"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tonic = "0.9"
+prost = "0.11"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+tokio-stream = "0.1.14"
+anyhow = "1.0"
+async-trait = "0.1.56"
+base64 = "0.13.0"
+log = "0.4.14"
+serde_json = "1.0"
+sha2 = "0.10"
+clap = { version = "4.0.29", features = ["derive"] }
+tonic-reflection = "0.9.2"
+tonic-health = "0.9.2"
+nix = "0.26.2"
+
+[dev-dependencies]
+tower = { version = "0.4", features = ["util"] }
+hyper = { version ="0.14.27" }
+serial_test = { version ="2.0.0" }
+
+[build-dependencies]
+tonic-build = "0.9"

@@ -1,12 +1,16 @@
-use mod cctype
+use mod cc_type
 use mod tcg
+use mod common
+use mod cvm
+use mod quote
+use mod report
 
 struct TdReport {
-    //TODO!
+    todo!()
 }
 
 struct TdxQuote {
-    //TODO!
+    todo!()
 }
 
 /*

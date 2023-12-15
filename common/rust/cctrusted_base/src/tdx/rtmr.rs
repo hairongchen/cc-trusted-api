@@ -9,15 +9,15 @@ impl TcgIMR for TdxRTMR {
     }
 
     pub fn get_index(&self) -> int {
-        //TODO!
+        todo!()
     }
 
     pub fn get_hash(&self) -> Vec<&str> {
-        //TODO!
+        todo!()
     }
 
     pub fn is_valid(&self) -> bool {
-         //TODO!       
+        todo!()
     }
 
 }

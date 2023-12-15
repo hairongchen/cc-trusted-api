@@ -2,14 +2,12 @@ struct DeviceNode {
     device_path: string
 }
 
-//struct ExtraArgs {}
-
 // struct CcReport {
 //     //TODO!
 // }
 
 struct CcEventlogs {
-    //TODO!
+    todo!()
 }
 
 // struct CcIMRs {
