@@ -27,11 +27,11 @@ pub struct TdxVM {
     pub version: TdxVersion,
     pub device_node: DeviceNode,
     pub algo_id: u8,
-    pub cc_report_raw: Option<Vec<u8>>,
+    pub cc_report_raw: Vec<u8>,
     //cc_report: Option<CcReport>,
-    pub td_report_raw: Option<Vec<u8>>,
+    pub td_report_raw: <Vec<u8>,
     //td_report: Option<TdReport>,
-    pub rtrms: Option<Vec<TdxRTMR>>,
+    pub rtrms: Vec<TdxRTMR>,
 }
 
 // implement the structure create function
@@ -70,14 +70,14 @@ impl CVM for TdxVM {
         };
 
         self.cc_report_raw = match get_tdx_quote(&self, report_data) {
-            Ok(q) => Some(q),,
+            Ok(q) => Some(q),
             Err(e) => return Err(anyhow!(
                 "[get_cc_report] error getting TDX quote: {:?}",
                 e
             )),
         };
 
-        return self.cc_report_raw
+        return Ok(self.cc_report_raw)
     }
 
     // retrieve TDX RTMR

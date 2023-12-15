@@ -1,9 +1,8 @@
 use std::path::Path;
 use std::collections::HashMap;
 use TeeType::*;
-use crate::tdx::common::TdxVersion::*;
 
-#[derive(Eq, Hash, PartialEq)]
+#[derive(Clone, Eq, Hash, PartialEq)]
 pub enum TeeType {
     PLAIN = -1,
     TDX = 0,
