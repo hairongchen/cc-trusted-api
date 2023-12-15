@@ -1,0 +1,12 @@
+[package]
+name = "cctrusred-sample"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "cc-sample"
+path = "src/cc-sample.rs"
+
+[dependencies]
+cctrusred = "../cctrusred"
+anyhow = "1.0"
