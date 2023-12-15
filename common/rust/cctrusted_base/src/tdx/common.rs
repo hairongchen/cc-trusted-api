@@ -23,8 +23,8 @@ lazy_static! {
 lazy_static! {
     pub static  ref TdxDeviceNodeMap: Mutex<HashMap<TdxVersion, String>> = {
         let mut map:HashMap<TdxVersion, String> = HashMap::new();
-        map.insert(TdxVersion::TDX_1_0, TEE_TDX_1_0_PATH);
-        map.insert(TdxVersion::TDX_1_5, TEE_TDX_1_5_PATH);
+        map.insert(TdxVersion::TDX_1_0, TEE_TDX_1_0_PATH.to_string());
+        map.insert(TdxVersion::TDX_1_5, TEE_TDX_1_5_PATH.to_string());
         Mutex::new(map)
     };
 }
