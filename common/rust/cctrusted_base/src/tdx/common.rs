@@ -1,4 +1,6 @@
 #![allow(non_camel_case_types)]
+#![warn(non_upper_case_globals)]
+
 use std::collections::HashMap;
 use crate::cc_type::*;
 use std::path::Path;

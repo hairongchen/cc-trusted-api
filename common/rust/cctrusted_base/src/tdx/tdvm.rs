@@ -7,9 +7,9 @@ use crate::tdx::report::generate_tdx_report_data;
 use anyhow::*; 
 use std::result::Result::Ok;
 
-struct TdReport {}
+//struct TdReport {}
 
-struct TdxQuote {}
+//struct TdxQuote {}
 /*
     TdxVM is an abstraction of TDX running environment, it contains:
         cc_type: should always be TDX
