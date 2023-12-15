@@ -8,10 +8,10 @@ use cctrusted_base::cvm::CVM;
 struct ExtraArgs {}
 
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
-pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Result<Vec<u8>, anyhow::Error> {
+pub fn get_cc_report(nonce: String, data: String, _extraArgs: ExtraArgs) -> Result<Vec<u8>, anyhow::Error> {
 
     // instance a cvm according to TEE detection result
-    let cvm = match detect_cc_type().tee_type {
+    let mut cvm = match detect_cc_type().tee_type {
         TeeType::TDX => {
             TdxVM::new()
         },
@@ -23,15 +23,15 @@ pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Resul
 
     // call CVM trait defined methods
     cvm.dump();
-    cvm.process_cc_report(nonce, data)
+    cvm.process_cc_report(nonce.clone(), data.clone())
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
-pub fn get_cc_measurement(index: u8, algo_id: u8) -> Vec<TcgDigest> {
+pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
     todo!()
 }
 
 // this CC API takes eventlog start and count as input and returns the eventlog data
-pub fn get_cc_eventlog(start: u16, count: u16) -> () {
+pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
     todo!()
 }
