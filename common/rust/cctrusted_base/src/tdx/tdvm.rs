@@ -40,10 +40,7 @@ pub struct TdxVM {
 // implement the structure create function
 impl TdxVM {
     pub fn new() -> Result<TdxVM, anyhow::Errort> {
-        let cc_type = cctype::detect_cc_type();
-        if cc_type.tee_type != TeeType::TDX {
-            panic!("Not in TDX enviroment")
-        }
+        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TeeNameMap.get(tee_type)}
 
         let version = get_tdx_version();
         let device_node = DeviceNode {device_path: TdxDeviceNodeMap.get(version)};
@@ -61,7 +58,7 @@ impl TdxVM {
 // all TdxVM's interfaces should implement CVM trait
 impl CVM for TdxVM {
     // retrieve TDX quote
-    pub fn get_cc_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>{
+    pub fn process_cc_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>{
         let report_data = match generate_tdx_report_data(nonce, data) {
             Ok(r) => r,
             Err(e) => {
@@ -82,8 +79,13 @@ impl CVM for TdxVM {
     }
 
     // retrieve TDX RTMR
-    pub fn get_cc_measurement();
+    pub fn process_cc_measurement() -> () {
+        todo!()
+    }
+
     // retrieve TDX CCEL and IMA eventlog
-    pub fn get_cc_eventlog();
+    pub fn process_cc_eventlog() -> () {
+        todo!()
+    }
 
 }
