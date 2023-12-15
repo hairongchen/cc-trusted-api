@@ -1,7 +1,7 @@
 use std::path::Path;
 use std::collections::HashMap;
 use TeeType::*;
-use super::common::TdxVersion::*;
+use crate::tdx::common::TdxVersion::*;
 
 #[derive(Eq, Hash, PartialEq)]
 pub enum TeeType {
@@ -13,7 +13,7 @@ pub enum TeeType {
 }
 
 pub const TeeNameMap: HashMap<TeeType, &str> = [
-    (PLIAN, "PLAIN"),
+    (PLAIN, "PLAIN"),
     (TDX, "TDX"),
     (SEV, "SEV"),
     (CCA, "CCA"),

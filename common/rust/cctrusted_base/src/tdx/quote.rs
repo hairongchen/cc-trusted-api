@@ -10,8 +10,7 @@ use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
 use super::common::*;
-use super::tdvm::TdxVM;
-use super::report::get_td_report;
+use super::tdvm::*;
 
 #[repr(C)]
 pub struct qgs_msg_header {
