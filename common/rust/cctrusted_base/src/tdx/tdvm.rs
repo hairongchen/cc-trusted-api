@@ -1,11 +1,12 @@
 use crate::cc_type::*;
 use crate::cvm::*;
+use crate::tcg::*;
 use super::common::*;
 use super::quote::get_tdx_quote;
-use super::report::get_td_report;
 use super::rtmr::*;
-use super::tcg::*
+
 use anyhow::*; 
+use std::result::Result::Ok;
 
 struct TdReport {}
 
@@ -36,7 +37,7 @@ pub struct TdxVM {
 
 // implement the structure create function
 impl TdxVM {
-    pub fn new() -> Result<TdxVM, anyhow::Error> {
+    pub fn new() -> TdxVM {
         let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TeeNameMap.get(TeeType::TDX)};
 
         let version = get_tdx_version();

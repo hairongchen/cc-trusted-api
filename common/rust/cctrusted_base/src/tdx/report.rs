@@ -2,7 +2,6 @@
 
 use anyhow::*;
 use nix::*;
-use std::convert::TryInto;
 use std::fs::File;
 use std::os::unix::io::AsRawFd;
 use std::ptr;
@@ -11,7 +10,6 @@ use std::result::Result::Ok;
 use super::common::*;
 use super::tdvm::TdxVM;
 use sha2::Sha512;
-use std::convert::TryInto;
 
 #[repr(C)]
 pub struct tdx_1_0_report_req {
@@ -71,7 +69,7 @@ pub fn generate_tdx_report_data(
 }
 
 impl TdxVM {
-    pub fn get_td_report(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
+    pub fn get_td_report(&self, report_data: String) -> Result<Option<Vec<u8>>, anyhow::Error> {
 
         let device_node = match File::options()
         .read(true)

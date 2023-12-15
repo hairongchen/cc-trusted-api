@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use TeeType::*;
 use super::common::TdxVersion::*;
 
-#[derive(Debug, Clone)]
+#[derive(Eq, Hash, PartialEq)]
 pub enum TeeType {
     PLAIN = -1,
     TDX = 0,

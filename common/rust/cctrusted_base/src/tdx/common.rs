@@ -4,6 +4,7 @@ use std::collections::HashMap;
 use crate::cc_type::*;
 use std::path::Path;
 
+#[derive(Eq, Hash, PartialEq)]
 pub enum TdxVersion {
     TDX_1_0,
     TDX_1_5,

@@ -13,10 +13,6 @@ pub trait CVM {
     fn process_cc_measurement();
     fn process_cc_eventlog();
 
-    fn get_cc_report();
-    fn get_cc_measurement();
-    fn get_cc_eventlog();
-
     //Dump confidential VM information
     fn dump(&self) {
         println!("======================================");
