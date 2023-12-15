@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate lazy_static;
+use std::sync::Mutex;
 
 use std::path::Path;
 use std::collections::HashMap;
@@ -14,13 +15,17 @@ pub enum TeeType {
     TPM = 3,
 }
 
-pub const TeeNameMap: HashMap<TeeType, &str> = [
-    (PLAIN, "PLAIN"),
-    (TDX, "TDX"),
-    (SEV, "SEV"),
-    (CCA, "CCA"),
-    (TPM, "TPM"),
-].iter().cloned().collect();
+lazy_static! {
+    static  ref TeeNameMap: Mutex<HashMap<TeeType, String>> = {
+        let mut map:HashMap<TdxVersion, String> = HashMap::new();
+        map.insert(TeeType::PLAIN, "PLAIN".to_string());
+        map.insert(TeeType::TDX, "TDX".to_string());
+        map.insert(TeeType::SEV, "SEV".to_string());
+        map.insert(TeeType::CCA, "CCA".to_string());
+        map.insert(TeeType::TPM, "TPM".to_string());
+        Mutex::new(map)
+    };
+}
 
 // public known device node path
 pub const TEE_TPM_PATH: &str = "/dev/tpm0";
@@ -31,8 +36,8 @@ pub const TEE_CCA_PATH: &str = "";
 
 // the TEE type
 pub struct CcType {
-    tee_type: TeeType,
-    tee_type_str: String
+    pub tee_type: TeeType,
+    pub tee_type_str: String
 }
 
 // detect the TEE running in

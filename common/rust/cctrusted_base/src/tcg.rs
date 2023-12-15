@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate lazy_static;
+use std::sync::Mutex;
 
 use std::collections::HashMap;
 
