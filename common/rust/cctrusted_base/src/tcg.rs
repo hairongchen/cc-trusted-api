@@ -9,7 +9,7 @@ pub const TPM_ALG_SHA256: u8 = 0xB;
 pub const TPM_ALG_SHA384: u8 = 0xC;
 pub const TPM_ALG_SHA512: u8 = 0xD;
 
-lazy_static! {
+pub lazy_static! {
     static  ref AlgoNameMap: Mutex<HashMap<u8, String>> = {
         let mut map:HashMap<u8, String> = HashMap::new();
         map.insert(TPM_ALG_ERROR, "TPM_ALG_RSA".to_string());
