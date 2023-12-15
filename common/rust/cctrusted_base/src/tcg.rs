@@ -17,7 +17,7 @@ pub const AlgoNameMap: HashMap<&u8, &str> = [
 
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
-    pub fn get_algorithm_string(alg_id: u8) -> String{
+    fn get_algorithm_string(alg_id: u8) -> String{
         todo!()
     }
 }

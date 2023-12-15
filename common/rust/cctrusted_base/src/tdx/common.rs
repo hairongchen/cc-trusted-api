@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 
 use std::collections::HashMap;
-use cc_type::*;
+use crate::cc_type::*;
 
 pub enum TdxVersion {
     TDX_1_0,

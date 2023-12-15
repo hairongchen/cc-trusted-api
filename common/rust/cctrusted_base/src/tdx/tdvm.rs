@@ -1,18 +1,13 @@
-use cc_type::*;
-use tcg::*;
-use common::*;
-use cvm::*;
-use quote::*;
-use report::*;
+use crate::cc_type::*;
+use crate::tcg::*;
+use crate::cvm::*;
+use super::common::*;
+use super::quote::*;
+use super::report::*;
 
-struct TdReport {
-    todo!()
-}
+struct TdReport {}
 
-struct TdxQuote {
-    todo!()
-}
-
+struct TdxQuote {}
 /*
     TdxVM is an abstraction of TDX running environment, it contains:
         cc_type: should always be TDX
@@ -26,21 +21,21 @@ struct TdxQuote {
         rtrms: TDX rtmr algorithm and hash, filled by get_cc_measurement()
 */
 pub struct TdxVM {
-    cc_type: CcType
-    version: TdxVersion
-    device_node: DeviceNode
-    algo_id: u8
-    cc_report_raw: Option<Vec<u8>>
-    cc_report: Option<CcReport>
-    td_report_raw: Option<Vec<u8>>
-    td_report: Option<TdReport>
-    rtrms: Option<Vec!<TdxRTMR>>
+    cc_type: CcType,
+    version: TdxVersion,
+    device_node: DeviceNode,
+    algo_id: u8,
+    cc_report_raw: Option<Vec<u8>>,
+    cc_report: Option<CcReport>,
+    td_report_raw: Option<Vec<u8>>,
+    td_report: Option<TdReport>,
+    rtrms: Option<Vec<TdxRTMR>>,
 }
 
 // implement the structure create function
 impl TdxVM {
     pub fn new() -> Result<TdxVM, anyhow::Errort> {
-        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TeeNameMap.get(tee_type)}
+        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TeeNameMap.get(tee_type)};
 
         let version = get_tdx_version();
         let device_node = DeviceNode {device_path: TdxDeviceNodeMap.get(version)};
@@ -58,7 +53,7 @@ impl TdxVM {
 // all TdxVM's interfaces should implement CVM trait
 impl CVM for TdxVM {
     // retrieve TDX quote
-    pub fn process_cc_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>{
+    fn process_cc_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>{
         let report_data = match generate_tdx_report_data(nonce, data) {
             Ok(r) => r,
             Err(e) => {
@@ -75,16 +70,18 @@ impl CVM for TdxVM {
                 "[get_cc_report] error getting TDX quote: {:?}",
                 e
             )),
-        }
+        };
+
+        return self.cc_report_raw
     }
 
     // retrieve TDX RTMR
-    pub fn process_cc_measurement() -> () {
+    fn process_cc_measurement() -> () {
         todo!()
     }
 
     // retrieve TDX CCEL and IMA eventlog
-    pub fn process_cc_eventlog() -> () {
+    fn process_cc_eventlog() -> () {
         todo!()
     }
 

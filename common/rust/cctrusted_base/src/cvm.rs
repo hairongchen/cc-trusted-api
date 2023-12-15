@@ -9,6 +9,10 @@ pub struct CcEventlogs {
 // the interfaces a cvm should support
 pub trait CVM {
 
+    fn process_cc_report();
+    fn process_cc_measurement();
+    fn process_cc_eventlog();
+
     fn get_cc_report();
     fn get_cc_measurement();
     fn get_cc_eventlog();

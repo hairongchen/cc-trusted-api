@@ -9,8 +9,8 @@ use std::os::unix::io::AsRawFd;
 use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
-use common::*;
-use tdvm::TdxVM;
+use super::common::*;
+use super::tdvm::TdxVM;
 
 #[repr(C)]
 pub struct qgs_msg_header {
