@@ -1,5 +1,3 @@
-#![warn(non_upper_case_globals)]
-
 use std::collections::HashMap;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
@@ -29,7 +27,7 @@ pub trait TcgAlgorithmRegistry {
 }
 
 // digest format: (algo id, hash value)
-#![warn(dead_code)]
+#[allow(dead_code)]
 pub struct TcgDigest {
     algo_id: u8,
     hash: Vec<u8>

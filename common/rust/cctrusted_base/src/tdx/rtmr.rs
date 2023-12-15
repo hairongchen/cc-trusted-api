@@ -1,9 +1,7 @@
-#![warn(dead_code)]
-
 use std::collections::HashMap;
 use crate::tcg::*;
 
-#![warn(non_upper_case_globals)]
+#[allow(dead_code)]
 pub struct TdxRTMR {
     index: u8,
     digests: HashMap<u8, TcgDigest>
