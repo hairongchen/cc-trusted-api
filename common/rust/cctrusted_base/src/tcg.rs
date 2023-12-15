@@ -21,7 +21,7 @@ lazy_static! {
 
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
-    fn get_algorithm_string(alg_id: u8) -> String{
+    fn get_algorithm_string(_algo_id: u8) -> String{
         todo!()
     }
 }

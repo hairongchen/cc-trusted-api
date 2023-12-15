@@ -37,7 +37,7 @@ pub struct CcType {
 
 // detect the TEE running in
 pub fn detect_cc_type() -> CcType {
-    let tee_type = TeeType::PLAIN;
+    let mut tee_type = TeeType::PLAIN;
     if Path::new(TEE_TPM_PATH).exists() {
         tee_type = TeeType::TPM;
     } else if Path::new(TEE_TDX_1_0_PATH).exists()
@@ -50,5 +50,5 @@ pub fn detect_cc_type() -> CcType {
         // TODO! add support for CCA
     }
 
-    return CcType { tee_type, tee_type_str: TeeNameMap.get(&tee_type).unwrap().to_owned() }
+    return CcType { tee_type.clone(), tee_type_str: TeeNameMap.get(&tee_type).unwrap().to_owned() }
 }

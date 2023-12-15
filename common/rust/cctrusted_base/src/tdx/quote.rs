@@ -94,7 +94,7 @@ impl TdxVM {
         let device_node = match File::options()
         .read(true)
         .write(true)
-        .open(self.device_node.device_path){
+        .open(self.device_node.device_path.clone()){
             Err(e) => {
                 return Err(anyhow!(
                     "[get_td_report] Fail to open {}: {:?}",
