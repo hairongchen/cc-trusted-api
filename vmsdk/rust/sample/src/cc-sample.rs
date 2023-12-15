@@ -1,4 +1,4 @@
-use mod cctrusted::{get_cc_report, ExtraArgs};
+use cctrusted::{get_cc_report, ExtraArgs};
 
 fn main() {
     let nonce = "MTIzNDU2Nzg=".to_string();
