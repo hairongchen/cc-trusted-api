@@ -1,6 +1,6 @@
 use anyhow::*;
-use cctrusred_base::TdxVM::*;
-use cctrusred_base::cc_type::{detect_cc_type, TeeType};
+use cctrusted_base::TdxVM::*;
+use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
 
 struct ExtraArgs {}

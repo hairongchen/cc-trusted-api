@@ -1,12 +1,12 @@
 [package]
-name = "cctrusred"
+name = "cctrusted"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "cctrusred"
+name = "cctrusted"
 path = "src/api.rs"
 
 [dependencies]
-cctrusred_base = { path = "../../rust/cctrusred_base" }
+cctrusted_base = { path = "../../rust/cctrusted_base" }
 anyhow = "1.0"

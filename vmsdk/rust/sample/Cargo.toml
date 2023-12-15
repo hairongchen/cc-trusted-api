@@ -1,5 +1,5 @@
 [package]
-name = "cctrusred-sample"
+name = "cctrusted-sample"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,5 +8,5 @@ name = "cc-sample"
 path = "src/cc-sample.rs"
 
 [dependencies]
-cctrusred = { path = "../cctrusred" }
+cctrusted = { path = "../cctrusted" }
 anyhow = "1.0"
