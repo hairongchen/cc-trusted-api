@@ -1,5 +1,5 @@
 use cctrusted::{get_cc_report, ExtraArgs};
-use anyhow::anyhow
+use anyhow::*; 
 
 fn main() {
     let nonce = "MTIzNDU2Nzg=".to_string();
