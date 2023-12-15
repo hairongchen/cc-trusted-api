@@ -91,4 +91,11 @@ impl CVM for TdxVM {
         todo!()
     }
 
+    fn dump(&self) {
+        println!("======================================");
+        println!("CVM type = {}", self.cc_type.cc_type_str);
+        println!("CVM version = {}", self.version);
+        println!("======================================");
+    }
+
 }
