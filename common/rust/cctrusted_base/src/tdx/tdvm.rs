@@ -48,9 +48,9 @@ impl TdxVM {
             version,
             device_node,
             algo_id,
-            cc_report_raw: [u8; 0],
-            td_report_raw: [u8; 0],
-            rtrms: [u8; 0]
+            cc_report_raw: Vec::new(),
+            td_report_raw: Vec::new(),
+            rtrms: Vec::new()
         }
     }
 }
