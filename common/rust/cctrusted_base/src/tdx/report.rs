@@ -29,7 +29,7 @@ pub struct tdx_1_5_report_req {
 
 pub fn generate_tdx_report_data(
     nonce: String,
-    data: String,
+    data: Option<String>,
 ) -> Result<String, anyhow::Error> {
     let nonce_decoded = match base64::decode(nonce) {
         Ok(v) => v,
