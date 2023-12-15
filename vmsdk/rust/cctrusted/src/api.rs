@@ -10,7 +10,7 @@ struct ExtraArgs {}
 pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Result<Vec<u8>, anyhow::Error> {
 
     // instance a cvm according to TEE detection result
-    let cvm = match detect_cc_type(){
+    let cvm = match detect_cc_type().tee_type {
         TeeType::TDX => {
             TdxVM::new()
         },
@@ -21,7 +21,7 @@ pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Resul
     };
 
     // call CVM trait defined methods
-    cvm.dump();
+    cvm.dump(&self);
     cvm.process_cc_report(nonce, data)
 }
 
