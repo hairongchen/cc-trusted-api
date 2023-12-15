@@ -2,7 +2,6 @@ use std::sync::Mutex;
 
 use std::path::Path;
 use std::collections::HashMap;
-use TeeType::*;
 
 #[derive(Clone, Eq, Hash, PartialEq)]
 pub enum TeeType {
