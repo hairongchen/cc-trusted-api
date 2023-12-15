@@ -22,7 +22,7 @@ pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Resul
     };
 
     // call CVM trait defined methods
-    cvm.dump(&self);
+    cvm.dump();
     cvm.process_cc_report(nonce, data)
 }
 
