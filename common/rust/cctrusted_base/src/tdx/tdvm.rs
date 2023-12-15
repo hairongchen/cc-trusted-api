@@ -77,7 +77,7 @@ impl CVM for TdxVM {
             )),
         };
 
-        return Ok(self.cc_report_raw)
+        Ok(self.cc_report_raw.clone())
     }
 
     // retrieve TDX RTMR
