@@ -1,4 +1,5 @@
 use std::path::Path;
+use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub enum TeeType {
