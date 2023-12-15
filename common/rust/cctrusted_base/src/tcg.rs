@@ -7,7 +7,7 @@ pub const TPM_ALG_SHA256: u8 = 0xB;
 pub const TPM_ALG_SHA384: u8 = 0xC;
 pub const TPM_ALG_SHA512: u8 = 0xD;
 
-pub const AlgoNameMap: HashMap<&u8, &str> = [
+pub const AlgoNameMap: HashMap<u8, &str> = [
     (TPM_ALG_ERROR, "TPM_ALG_RSA"),
     (TPM_ALG_TDES, "TPM_ALG_TDES"),
     (TPM_ALG_SHA256, "TPM_ALG_SHA256"),
@@ -30,8 +30,8 @@ pub struct TcgDigest {
 
 // this trait retrieve IMR's max index of a TEE and hash value 
 pub trait TcgIMR {
-    fn max_index(&self);
-    fn get_index(&self);
-    fn get_hash(&self);
-    fn is_valid(&self);
+    fn max_index(&self) -> u8;
+    fn get_index(&self) -> u8;
+    fn get_hash(&self) -> Vec<&str>;
+    fn is_valid(&self) -> bool;
 }

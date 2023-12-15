@@ -16,7 +16,7 @@ pub fn get_cc_report(nonce: String, data: String, extraArgs: ExtraArgs) -> Resul
         TeeType::SEV => todo!(),
         TeeType::CCA => todo!(),
         TeeType::TPM => todo!(),
-        TeeType::NONE => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
+        TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
     };
 
     // call CVM trait defined methods

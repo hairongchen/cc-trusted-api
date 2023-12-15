@@ -2,18 +2,19 @@
 
 use std::collections::HashMap;
 use crate::cc_type::*;
+use std::path::Path;
 
 pub enum TdxVersion {
     TDX_1_0,
     TDX_1_5,
 }
 
-pub const TdxVersionMap: HashMap<&TdxVersion, &str> = [
+pub const TdxVersionMap: HashMap<TdxVersion, &str> = [
     (TDX_1_0, "1.0"),
     (TDX_1_5, "1.5"),
 ].iter().cloned().collect();
 
-pub const TdxDeviceNodeMap: HashMap<&TdxVersion, &str> = [
+pub const TdxDeviceNodeMap: HashMap<TdxVersion, &str> = [
     (TDX_1_0, TEE_TDX_1_0_PATH),
     (TDX_1_5, TEE_TDX_1_5_PATH),
 ].iter().cloned().collect();

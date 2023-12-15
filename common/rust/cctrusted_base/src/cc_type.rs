@@ -1,9 +1,11 @@
 use std::path::Path;
 use std::collections::HashMap;
+use TeeType::*;
+use super::common::TdxVersion::*;
 
 #[derive(Debug, Clone)]
 pub enum TeeType {
-    NONE = -1,
+    PLAIN = -1,
     TDX = 0,
     SEV = 1,
     CCA = 2,
@@ -11,7 +13,7 @@ pub enum TeeType {
 }
 
 pub const TeeNameMap: HashMap<TeeType, &str> = [
-    (NONE, "NONE"),
+    (PLIAN, "PLAIN"),
     (TDX, "TDX"),
     (SEV, "SEV"),
     (CCA, "CCA"),
@@ -33,7 +35,7 @@ pub struct CcType {
 
 // detect the TEE running in
 pub fn detect_cc_type() -> CcType {
-    let tee_type = TeeType::NONE;
+    let tee_type = TeeType::PLAIN;
     if Path::new(TEE_TPM_PATH).exists() {
         tee_type = TeeType::TPM;
     } else if Path::new(TEE_TDX_1_0_PATH).exists()
@@ -42,7 +44,9 @@ pub fn detect_cc_type() -> CcType {
         tee_type = TeeType::TDX;
     } else if Path::new(TEE_SEV_PATH).exists() {
         tee_type = TeeType::SEV;
-    } // TODO! add support for CCA
+    } else {
+        // TODO! add support for CCA
+    }
 
     return CcType { tee_type, tee_type_str: TeeNameMap.get(tee_type) }
 }
