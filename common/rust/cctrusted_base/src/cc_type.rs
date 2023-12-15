@@ -1,6 +1,7 @@
 use std::path::Path;
 use std::collections::HashMap;
 
+// supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]
 pub enum TeeType {
     PLAIN = -1,
@@ -10,6 +11,7 @@ pub enum TeeType {
     TPM = 3,
 }
 
+// TEE type to type name string mapping
 lazy_static! {
     pub static  ref TEE_NAME_MAP: HashMap<TeeType, String> = {
         let mut map:HashMap<TeeType, String> = HashMap::new();
@@ -29,13 +31,13 @@ pub const TEE_TDX_1_5_PATH: &str = "/dev/tdx_guest";
 pub const TEE_SEV_PATH: &str = "/dev/sev-guest";
 pub const TEE_CCA_PATH: &str = "";
 
-// the TEE type
+// holds the TEE type info
 pub struct CcType {
     pub tee_type: TeeType,
     pub tee_type_str: String
 }
 
-// detect the TEE running in
+// detect the TEE type
 pub fn detect_cc_type() -> CcType {
     let mut tee_type = TeeType::PLAIN;
     if Path::new(TEE_TPM_PATH).exists() {
@@ -47,7 +49,7 @@ pub fn detect_cc_type() -> CcType {
     } else if Path::new(TEE_SEV_PATH).exists() {
         tee_type = TeeType::SEV;
     } else {
-        // TODO! add support for CCA
+        // TODO add support for CCA and etc.
     }
 
     return CcType { tee_type: tee_type.clone(), tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned() }

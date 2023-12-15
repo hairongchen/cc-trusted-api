@@ -5,12 +5,14 @@ use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
 use cctrusted_base::cvm::CVM;
 
+// this struct is useful in vTPM and other TEEs
+// e.g.: vTPM may need report based on selective PCRs
 pub struct ExtraArgs {}
 
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
 pub fn get_cc_report(nonce: String, data: String, _extra_args: ExtraArgs) -> Result<Vec<u8>, anyhow::Error> {
 
-    // instance a cvm according to TEE detection result
+    // instance a cvm according to detected TEE type
     let mut cvm = match detect_cc_type().tee_type {
         TeeType::TDX => {
             TdxVM::new()

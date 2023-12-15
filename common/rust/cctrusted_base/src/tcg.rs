@@ -7,6 +7,7 @@ pub const TPM_ALG_SHA256: u8 = 0xB;
 pub const TPM_ALG_SHA384: u8 = 0xC;
 pub const TPM_ALG_SHA512: u8 = 0xD;
 
+// hash algorithm ID to algorithm name string map
 lazy_static! {
     pub static  ref ALGO_NAME_MAP: HashMap<u8, String> = {
         let mut map:HashMap<u8, String> = HashMap::new();
