@@ -3,6 +3,7 @@ use cctrusted_base::tdx::tdvm::TdxVM;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
+use cctrusted_base::cvm::CVM;
 
 struct ExtraArgs {}
 
