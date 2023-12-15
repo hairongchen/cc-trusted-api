@@ -8,5 +8,5 @@ name = "cc-sample"
 path = "src/cc-sample.rs"
 
 [dependencies]
-cctrusred = "../cctrusred"
+cctrusred = { path = "../cctrusred" }
 anyhow = "1.0"
