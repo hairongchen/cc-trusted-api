@@ -90,6 +90,26 @@ impl CVM for TdxVM {
         todo!()
     }
 
+    fn parse_cc_report(&self){
+        todo!()
+    }
+    fn parse_cc_measurement(&self){
+        todo!()
+    }
+    fn parse_cc_eventlog(&self){
+        todo!()
+    }
+
+    fn dump_cc_report(&self){
+        todo!()
+    }
+    fn dump_cc_measurement(&self){
+        todo!()
+    }
+    fn dump_cc_eventlog(&self){
+        todo!()
+    }
+
     fn dump(&self) {
         println!("======================================");
         println!("CVM type = {}", self.cc_type.tee_type_str);
