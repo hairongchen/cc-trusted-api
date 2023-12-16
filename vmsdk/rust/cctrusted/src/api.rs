@@ -33,7 +33,7 @@ pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
     todo!()
 }
 
-// this CC API takes eventlog start and count as input and returns the eventlog data
+// this CC API takes eventlog start offset and count as input and returns the eventlog data
 pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
     todo!()
 }
