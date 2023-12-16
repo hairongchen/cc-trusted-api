@@ -93,7 +93,7 @@ impl CVM for TdxVM {
     }
 
     fn parse_cc_report(&self) {
-        println("quote length- {}", len(self.cc_report_raw));
+        println!("quote length- {}", self.cc_report_raw.len());
     }
 
     fn parse_cc_measurement(&self){
