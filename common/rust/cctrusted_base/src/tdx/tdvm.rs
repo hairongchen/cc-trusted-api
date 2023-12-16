@@ -77,6 +77,8 @@ impl CVM for TdxVM {
             )),
         };
 
+        self.parse_cc_report();
+
         Ok(self.cc_report_raw.clone())
     }
 
@@ -90,9 +92,10 @@ impl CVM for TdxVM {
         todo!()
     }
 
-    fn parse_cc_report(&self){
-        todo!()
+    fn parse_cc_report(&self) {
+        println("quote length- {}", len(self.cc_report_raw));
     }
+
     fn parse_cc_measurement(&self){
         todo!()
     }
