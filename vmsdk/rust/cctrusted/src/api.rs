@@ -58,6 +58,6 @@ pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
 
     Ok(Algo{
         algo_id: cvm.algo_id,
-        algo_id_str: cvm.algo_id_str
+        algo_id_str: cvm.get_algorithm_string()
     })
 }
