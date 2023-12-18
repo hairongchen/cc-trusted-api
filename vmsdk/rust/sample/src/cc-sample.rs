@@ -13,7 +13,10 @@ fn main() {
         }
     }
 
-    let default_algo =  get_default_algorithm();
-    println!("default algo is: {}", default_algo.algo_id_str);
-
+    match get_default_algorithm(){
+        Ok(algo) => println!("quote length: {}", algo.algo_id_str()),
+        Err(e) => {
+            println!("error getting TDX algo: {:?}",e);
+        }
+    }
 }
