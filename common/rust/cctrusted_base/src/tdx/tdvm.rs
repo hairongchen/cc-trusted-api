@@ -100,27 +100,29 @@ impl CVM for TdxVM {
         todo!()
     }
 
-    fn dump_cc_report(report Vec<u8>){
+    fn dump_cc_report(report: Vec<u8>){
         let mut index: u16 = 0;
         let mut linestr = "";
         let mut printstr = "";
 
-        let printable = Vec![
-            ' ','\t','\n','\r','\v','\f',
+        let printable = vec![
+            ' ','\t','\n','\r',r"\v",r"\f",
             'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
             'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
             '0','1','2','3','4','5','6','7','8','9',
             'a','b','c','d','e','f',
             'A','B','C','D','E','F',
             '#','$','%','&','\'','(',')','*','+',',','-','.','/',':',';','<','=','>','?','@','[','\\',']','^','_','`','{','|','}','~','"','!'
-        ]
+        ];
 
         while index < report.len() {
-            if index % 16 == 0 
+            if index % 16 == 0 {
                 if printstr.len() != 0 {
                     println!("{} {}", linestr, printstr);
                 }
                 linestr = format!("{:#08x}", ((index/16) as u16)*16);
+            }
+
             let v = report[index];
             linestr.push_str(format!("{:#02x}"), v);    
             match printable.iter().position(|&c| c == v) {

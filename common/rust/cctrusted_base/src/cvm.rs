@@ -23,7 +23,7 @@ pub trait CVM {
     fn parse_cc_measurement(&self);
     fn parse_cc_eventlog(&self);
 
-    fn dump_cc_report(&self);
+    fn dump_cc_report();
     fn dump_cc_measurement(&self);
     fn dump_cc_eventlog(&self);
 
