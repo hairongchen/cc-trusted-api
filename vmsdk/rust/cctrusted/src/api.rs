@@ -11,8 +11,8 @@ use cctrusted_base::cvm::CVM;
 // e.g.: vTPM may need report based on selective PCRs
 pub struct ExtraArgs {}
 pub struct Algo {
-    algo_id: u8,
-    algo_id_str: String
+    pub algo_id: u8,
+    pub algo_id_str: String
 }
 
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
