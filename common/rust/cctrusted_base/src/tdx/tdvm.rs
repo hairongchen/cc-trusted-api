@@ -121,3 +121,5 @@ impl CVM for TdxVM {
     }
 
 }
+
+impl TcgAlgorithmRegistry for TdxVM {}

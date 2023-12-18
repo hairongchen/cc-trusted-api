@@ -22,8 +22,8 @@ lazy_static! {
 
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
-    fn get_algorithm_string(_algo_id: u8) -> String{
-        todo!()
+    fn get_algorithm_string(&self) -> String{
+        ALGO_NAME_MAP.get(self.algo_id).unwrap().to_owned()
     }
 }
 
