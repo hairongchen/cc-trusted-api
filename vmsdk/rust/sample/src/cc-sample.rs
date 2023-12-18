@@ -14,6 +14,6 @@ fn main() {
     }
 
     let default_algo =  get_default_algorithm();
-    println!("default algo is: {}", default_algo.default_algo_str);
+    println!("default algo is: {}", default_algo.algo_id_str);
 
 }
