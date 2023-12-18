@@ -7,11 +7,11 @@ fn main() {
 
     // retrieve cc report
     let quote = match get_cc_report(nonce, data, ExtraArgs{}){
-        Ok(q) => println!("quote length: {}", q.len()),
+        Ok(q) => q,
         Err(e) => {
             println!("error getting TDX report: {:?}",e);
         }
-    }
+    };
 
     match get_default_algorithm(){
         Ok(algo) => println!("TDX default algo: {}", algo.algo_id_str),
