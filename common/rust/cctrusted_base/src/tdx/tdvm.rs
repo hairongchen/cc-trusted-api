@@ -101,7 +101,7 @@ impl CVM for TdxVM {
     }
 
     fn dump_cc_report(report: Vec<u8>){
-        let mut index: u16 = 0;
+        let mut index: usize = 0;
         let mut linestr = "";
         let mut printstr = "";
 
@@ -115,7 +115,7 @@ impl CVM for TdxVM {
             '#','$','%','&','\'','(',')','*','+',',','-','.','/',':',';','<','=','>','?','@','[','\\',']','^','_','`','{','|','}','~','"','!'
         ];
 
-        while index < report.len() {
+        while usize::from(index) < report.len() {
             if index % 16 == 0 {
                 if printstr.len() != 0 {
                     println!("{} {}", linestr, printstr);
@@ -132,7 +132,7 @@ impl CVM for TdxVM {
                     }
 
                 }
-                None => printstr.push_str('.');
+                None => printstr.push_str('.'),
             }
 
             index += 1;
@@ -144,7 +144,7 @@ impl CVM for TdxVM {
                 blank.push_str("   ");
             }
             println!("{}{} {}", linestr, blank, printstr);
-        } else if index == report.len() {
+        } else if usize::from(index) == report.len() {
             println!("{} {}", linestr, printstr);
         }
 
