@@ -3,7 +3,8 @@ use crate::cvm::*;
 use crate::tdx::rtmr::TdxRTMR;
 use crate::tdx::common::*;
 use crate::tdx::report::generate_tdx_report_data;
-use crate::tcg::{TcgAlgorithmRegistry, ALGO_NAME_MAP};
+use crate::tcg::ALGO_NAME_MAP;
+use cctrusted_base::tcg::TcgAlgorithmRegistry;
 
 use anyhow::*; 
 use std::result::Result::Ok;
