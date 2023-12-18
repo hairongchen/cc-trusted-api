@@ -34,7 +34,7 @@ pub fn get_cc_report(nonce: String, data: String, _extra_args: ExtraArgs) -> Res
     cvm.process_cc_report(nonce.clone(), data.clone())
 }
 
-pub fn dump_cc_report(report Vec<u8) {
+pub fn dump_cc_report(report: Vec<u8) {
     TdxVM::dump_cc_report(report);
 }
 

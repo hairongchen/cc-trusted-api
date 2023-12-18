@@ -126,7 +126,7 @@ impl CVM for TdxVM {
             let v = report[index];
             linestr.push_str(format!("{:#02x}", v).as_str());    
             match printable.iter().position(|&c| c == (v as char)) {
-                Some(find) => {
+                Some(_) => {
                     if v < 0x9 || v > 0xD {
                         printstr.push_str(std::str::from_utf8(&[v]).unwrap());
                     }
@@ -140,7 +140,7 @@ impl CVM for TdxVM {
 
         if index % 16 != 0 {
             let mut blank = "".to_string();
-            for n in 0..=(16 - index % 16) {
+            for _ in 0..=(16 - index % 16) {
                 blank.push_str("   ");
             }
             println!("{}{} {}", linestr, blank, printstr);
