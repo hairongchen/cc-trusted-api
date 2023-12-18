@@ -4,7 +4,7 @@ use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
 use std::result::Result::Ok;
-
+use cctrusted_base::tcg::TcgAlgorithmRegistry;
 use cctrusted_base::cvm::CVM;
 
 // this struct is useful in vTPM and other TEEs
