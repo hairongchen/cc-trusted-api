@@ -106,7 +106,7 @@ impl CVM for TdxVM {
         let mut printstr = "".to_string();
 
         let printable = vec![
-            ' ','\t','\n','\r',r '\v',r '\f',
+            ' ','\t','\n','\r',
             'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
             'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
             '0','1','2','3','4','5','6','7','8','9',
@@ -124,22 +124,22 @@ impl CVM for TdxVM {
             }
 
             let v = report[index];
-            linestr.push_str(format!("{:#02x}", v));    
+            linestr.push_str(format!("{:#02x}", v).as_str());    
             match printable.iter().position(|&c| c == v) {
                 Some(find) => {
-                    if v < 0x9 || v > 0xD{
+                    if v < 0x9 || v > 0xD {
                         printstr.push_str(v);
                     }
 
                 }
-                None => printstr.push_str('.'),
+                None => printstr.push_str("."),
             }
 
             index += 1;
         }
 
         if index % 16 != 0 {
-            let mut blank = "";
+            let mut blank = "".to_string();
             for n in 0..=(16 - index % 16) {
                 blank.push_str("   ");
             }
