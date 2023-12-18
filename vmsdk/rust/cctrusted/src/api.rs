@@ -3,6 +3,8 @@ use cctrusted_base::tdx::tdvm::TdxVM;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
+use std::result::Result::Ok;
+
 use cctrusted_base::cvm::CVM;
 
 // this struct is useful in vTPM and other TEEs
@@ -54,8 +56,8 @@ pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
         TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
     };
 
-    Algo{
+    Ok(Algo{
         algo_id: cvm.algo_id,
         algo_id_str: cvm.algo_id_str
-    }
+    })
 }
