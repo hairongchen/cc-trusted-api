@@ -14,7 +14,7 @@ fn main() {
     }
 
     match get_default_algorithm(){
-        Ok(algo) => println!("quote length: {}", algo.algo_id_str()),
+        Ok(algo) => println!("quote length: {}", algo.algo_id_str),
         Err(e) => {
             println!("error getting TDX algo: {:?}",e);
         }
