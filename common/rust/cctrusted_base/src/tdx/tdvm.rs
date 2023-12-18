@@ -128,7 +128,7 @@ impl CVM for TdxVM {
             match printable.iter().position(|&c| c == (v as char)) {
                 Some(find) => {
                     if v < 0x9 || v > 0xD {
-                        printstr.push_str(v as char);
+                        printstr.push_str(std::str::from_utf8(vec![v]).unwrap());
                     }
 
                 }
