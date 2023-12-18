@@ -34,6 +34,10 @@ pub fn get_cc_report(nonce: String, data: String, _extra_args: ExtraArgs) -> Res
     cvm.process_cc_report(nonce.clone(), data.clone())
 }
 
+pub fn dump_cc_report(report Vec<u8) {
+    TdxVM::dump_cc_report(report);
+}
+
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
 pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
     todo!()

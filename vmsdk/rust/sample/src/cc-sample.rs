@@ -1,4 +1,4 @@
-use cctrusted::{get_default_algorithm, get_cc_report, ExtraArgs};
+use cctrusted::{dump_cc_report, get_default_algorithm, get_cc_report, ExtraArgs};
 
 fn main() {
 
@@ -6,7 +6,7 @@ fn main() {
     let data = "YWJjZGVmZw==".to_string();
 
     // retrieve cc report
-    match get_cc_report(nonce, data, ExtraArgs{}){
+    let quote = match get_cc_report(nonce, data, ExtraArgs{}){
         Ok(q) => println!("quote length: {}", q.len()),
         Err(e) => {
             println!("error getting TDX report: {:?}",e);
@@ -19,4 +19,6 @@ fn main() {
             println!("error getting TDX algo: {:?}",e);
         }
     }
+
+    dump_cc_report(quote);
 }

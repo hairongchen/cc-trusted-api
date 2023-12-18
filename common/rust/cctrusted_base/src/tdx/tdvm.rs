@@ -18,9 +18,7 @@ use std::result::Result::Ok;
         device_node: /dev/tdx-guest or /dev/tdx_guest
         algo_id: should be TPM_ALG_SHA384
         cc_report_raw: the raw tdx quote in byte vector, filled by get_cc_report()
-        //cc_report: the parsed tdx quote, filled by get_cc_report()
         td_report_raw: the raw td report in byte vector, filled by get_cc_report()
-        //td_report: the parsed tdreport, filled by get_cc_report()
         rtrms: TDX rtmr algorithm and hash, filled by get_cc_measurement()
 */
 pub struct TdxVM {
@@ -78,8 +76,6 @@ impl CVM for TdxVM {
             )),
         };
 
-        self.parse_cc_report();
-
         Ok(self.cc_report_raw.clone())
     }
 
@@ -94,7 +90,7 @@ impl CVM for TdxVM {
     }
 
     fn parse_cc_report(&self) {
-        println!("parse the quote");
+        todo!()
     }
 
     fn parse_cc_measurement(&self){
@@ -104,9 +100,54 @@ impl CVM for TdxVM {
         todo!()
     }
 
-    fn dump_cc_report(&self){
-        todo!()
+    fn dump_cc_report(report Vec<u8>){
+        let mut index: u16 = 0;
+        let mut linestr = "";
+        let mut printstr = "";
+
+        let printable = Vec![
+            ' ','\t','\n','\r','\v','\f',
+            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+            '0','1','2','3','4','5','6','7','8','9',
+            'a','b','c','d','e','f',
+            'A','B','C','D','E','F',
+            '#','$','%','&','\'','(',')','*','+',',','-','.','/',':',';','<','=','>','?','@','[','\\',']','^','_','`','{','|','}','~','"','!'
+        ]
+
+        while index < report.len() {
+            if index % 16 == 0 
+                if printstr.len() != 0 {
+                    println!("{} {}", linestr, printstr);
+                }
+                linestr = format!("{:#08x}", ((index/16) as u16)*16);
+            let v = report[index];
+            linestr.push_str(format!("{:#02x}"), v);    
+            match printable.iter().position(|&c| c == v) {
+                Some(find) => {
+                    if v < 0x9 || v > 0xD{
+                        printstr.push_str(v);
+                    }
+
+                }
+                None => printstr.push_str('.');
+            }
+
+            index += 1;
+        }
+
+        if index % 16 != 0 {
+            let mut blank = "";
+            for n in 0..=(16 - index % 16) {
+                blank.push_str("   ");
+            }
+            println!("{}{} {}", linestr, blank, printstr);
+        } else if index == report.len() {
+            println!("{} {}", linestr, printstr);
+        }
+
     }
+
     fn dump_cc_measurement(&self){
         todo!()
     }
