@@ -46,7 +46,7 @@ pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
 
 pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
     // instance a cvm according to detected TEE type
-    let mut cvm = match detect_cc_type().tee_type {
+    let cvm = match detect_cc_type().tee_type {
         TeeType::TDX => {
             TdxVM::new()
         },
