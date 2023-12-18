@@ -102,11 +102,11 @@ impl CVM for TdxVM {
 
     fn dump_cc_report(report: Vec<u8>){
         let mut index: usize = 0;
-        let mut linestr = "";
-        let mut printstr = "";
+        let mut linestr = "".to_string();;
+        let mut printstr = "".to_string();;
 
         let printable = vec![
-            ' ','\t','\n','\r',r"\v",r"\f",
+            ' ','\t','\n','\r',r'\v',r'\f',
             'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
             'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
             '0','1','2','3','4','5','6','7','8','9',
@@ -124,7 +124,7 @@ impl CVM for TdxVM {
             }
 
             let v = report[index];
-            linestr.push_str(format!("{:#02x}"), v);    
+            linestr.push_str(format!("{:#02x}", v));    
             match printable.iter().position(|&c| c == v) {
                 Some(find) => {
                     if v < 0x9 || v > 0xD{
