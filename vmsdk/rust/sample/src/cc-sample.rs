@@ -1,4 +1,4 @@
-use cctrusted::{get_default_algorithm, Algo, get_cc_report, ExtraArgs};
+use cctrusted::{get_default_algorithm, get_cc_report, ExtraArgs};
 
 fn main() {
 
