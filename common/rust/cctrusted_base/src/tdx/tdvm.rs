@@ -123,4 +123,8 @@ impl CVM for TdxVM {
 
 }
 
-impl TcgAlgorithmRegistry for TdxVM {}
+impl TcgAlgorithmRegistry for TdxVM {
+    fn get_algorithm_string(&self) -> String{
+        ALGO_NAME_MAP.get(self.algo_id).unwrap().to_owned()
+    }
+}
