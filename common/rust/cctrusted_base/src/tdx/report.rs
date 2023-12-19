@@ -28,8 +28,6 @@ struct tdx_1_5_report_req {
     tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
-
-
 impl TdxVM {
     pub fn generate_tdx_report_data(
         &self,
@@ -91,98 +89,99 @@ impl TdxVM {
         };
 
         match self.version {
-            TdxVersion::TDX_1_0 => match get_tdx_1_0_report(device_node, report_data) {
+            TdxVersion::TDX_1_0 => match self.get_tdx_1_0_report(device_node, report_data) {
                 Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
                 Ok(report) => Ok(report),
             },
-            TdxVersion::TDX_1_5 => match get_tdx_1_5_report(device_node, report_data) {
+            TdxVersion::TDX_1_5 => match self.get_tdx_1_5_report(device_node, report_data) {
                 Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
                 Ok(report) => Ok(report),
             },
         }
     }
+
+    fn get_tdx_1_0_report(&self, device_node: File, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
+        let report_data_bytes = match base64::decode(report_data) {
+            Ok(v) => v,
+            Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
+        };
+    
+        //prepare get TDX report request data
+        let mut report_data_array: [u8; REPORT_DATA_LEN as usize] = [0; REPORT_DATA_LEN as usize];
+        report_data_array.copy_from_slice(&report_data_bytes[0..]);
+        let td_report: [u8; TDX_REPORT_LEN as usize] = [0; TDX_REPORT_LEN as usize];
+    
+        //build the request
+        let request = tdx_1_0_report_req {
+            subtype: 0 as u8,
+            reportdata: ptr::addr_of!(report_data_array) as u64,
+            rpd_len: REPORT_DATA_LEN,
+            tdreport: ptr::addr_of!(td_report) as u64,
+            tdr_len: TDX_REPORT_LEN,
+        };
+    
+        //build the operator code
+        ioctl_readwrite!(
+            get_report_1_0_ioctl,
+            b'T',
+            TdxOperation::TDX_GET_TD_REPORT,
+            u64
+        );
+    
+        //apply the ioctl command
+        match unsafe {
+            get_report_1_0_ioctl(device_node.as_raw_fd(), ptr::addr_of!(request) as *mut u64)
+        } {
+            Err(e) => {
+                return Err(anyhow!(
+                    "[get_tdx_1_0_report] Fail to get TDX report: {:?}",
+                    e
+                ))
+            }
+            Ok(_) => (),
+        };
+    
+        Ok(td_report.to_vec())
+    }
+    
+    fn get_tdx_1_5_report(&self, device_node: File, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
+        let report_data_bytes = match base64::decode(report_data) {
+            Ok(v) => v,
+            Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
+        };
+    
+        //prepare get TDX report request data
+        let mut request = tdx_1_5_report_req {
+            reportdata: [0; REPORT_DATA_LEN as usize],
+            tdreport: [0; TDX_REPORT_LEN as usize],
+        };
+        request.reportdata.copy_from_slice(&report_data_bytes[0..]);
+    
+        //build the operator code
+        ioctl_readwrite!(
+            get_report_1_5_ioctl,
+            b'T',
+            TdxOperation::TDX_GET_TD_REPORT,
+            tdx_1_5_report_req
+        );
+    
+        //apply the ioctl command
+        match unsafe {
+            get_report_1_5_ioctl(
+                device_node.as_raw_fd(),
+                ptr::addr_of!(request) as *mut tdx_1_5_report_req,
+            )
+        } {
+            Err(e) => {
+                return Err(anyhow!(
+                    "[get_tdx_1_5_report] Fail to get TDX report: {:?}",
+                    e
+                ))
+            }
+            Ok(_) => (),
+        };
+    
+        Ok(request.tdreport.to_vec())
+    }
 }
 
-fn get_tdx_1_0_report(device_node: File, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
-    let report_data_bytes = match base64::decode(report_data) {
-        Ok(v) => v,
-        Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
-    };
-
-    //prepare get TDX report request data
-    let mut report_data_array: [u8; REPORT_DATA_LEN as usize] = [0; REPORT_DATA_LEN as usize];
-    report_data_array.copy_from_slice(&report_data_bytes[0..]);
-    let td_report: [u8; TDX_REPORT_LEN as usize] = [0; TDX_REPORT_LEN as usize];
-
-    //build the request
-    let request = tdx_1_0_report_req {
-        subtype: 0 as u8,
-        reportdata: ptr::addr_of!(report_data_array) as u64,
-        rpd_len: REPORT_DATA_LEN,
-        tdreport: ptr::addr_of!(td_report) as u64,
-        tdr_len: TDX_REPORT_LEN,
-    };
-
-    //build the operator code
-    ioctl_readwrite!(
-        get_report_1_0_ioctl,
-        b'T',
-        TdxOperation::TDX_GET_TD_REPORT,
-        u64
-    );
-
-    //apply the ioctl command
-    match unsafe {
-        get_report_1_0_ioctl(device_node.as_raw_fd(), ptr::addr_of!(request) as *mut u64)
-    } {
-        Err(e) => {
-            return Err(anyhow!(
-                "[get_tdx_1_0_report] Fail to get TDX report: {:?}",
-                e
-            ))
-        }
-        Ok(_) => (),
-    };
-
-    Ok(td_report.to_vec())
-}
-
-fn get_tdx_1_5_report(device_node: File, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
-    let report_data_bytes = match base64::decode(report_data) {
-        Ok(v) => v,
-        Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
-    };
-
-    //prepare get TDX report request data
-    let mut request = tdx_1_5_report_req {
-        reportdata: [0; REPORT_DATA_LEN as usize],
-        tdreport: [0; TDX_REPORT_LEN as usize],
-    };
-    request.reportdata.copy_from_slice(&report_data_bytes[0..]);
-
-    //build the operator code
-    ioctl_readwrite!(
-        get_report_1_5_ioctl,
-        b'T',
-        TdxOperation::TDX_GET_TD_REPORT,
-        tdx_1_5_report_req
-    );
-
-    //apply the ioctl command
-    match unsafe {
-        get_report_1_5_ioctl(
-            device_node.as_raw_fd(),
-            ptr::addr_of!(request) as *mut tdx_1_5_report_req,
-        )
-    } {
-        Err(e) => {
-            return Err(anyhow!(
-                "[get_tdx_1_5_report] Fail to get TDX report: {:?}",
-                e
-            ))
-        }
-        Ok(_) => (),
-    };
-
-    Ok(request.tdreport.to_vec())
-}
