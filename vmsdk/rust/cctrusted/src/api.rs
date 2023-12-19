@@ -3,7 +3,7 @@ use std::result::Result;
 use std::result::Result::Ok;
 
 use cctrusted_base::cc_type::{TeeType, CcType};
-use cctrusted_base::cvm::CVM;
+use cctrusted_base::cvm::{CVM, Dump};
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::tdvm::TdxVM;
 
@@ -12,11 +12,11 @@ use crate::api_data::*;
 fn build_cvm() -> Box<dyn CVM> {
     // instance a cvm according to detected TEE type
     match CcType::new().tee_type {
-        TeeType::TDX => TdxVM::new(),
+        TeeType::TDX => Box::new(TdxVM::new()),
         TeeType::SEV => todo!(),
         TeeType::CCA => todo!(),
         TeeType::TPM => todo!(),
-        TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
+        TeeType::PLAIN => panic("[get_cc_report] Error: not in any TEE!"),
     }
 }
 
