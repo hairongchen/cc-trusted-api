@@ -32,6 +32,7 @@ struct tdx_1_5_report_req {
 
 impl TdxVM {
     pub fn generate_tdx_report_data(
+        &self,
         nonce: String,
         data: Option<String>,
     ) -> Result<String, anyhow::Error> {
