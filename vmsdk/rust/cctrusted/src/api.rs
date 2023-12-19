@@ -2,7 +2,7 @@ use anyhow::*;
 use std::result::Result;
 use std::result::Result::Ok;
 
-use cctrusted_base::cc_type::TeeType;
+use cctrusted_base::cc_type::{TeeType, CcType};
 use cctrusted_base::cvm::CVM;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::tdvm::TdxVM;
