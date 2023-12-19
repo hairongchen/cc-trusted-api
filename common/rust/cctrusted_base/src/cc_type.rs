@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 use std::path::Path;
+use crate::cvm::CVM;
+use crate::tdx::tdvm::TdxVM;
 
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]
