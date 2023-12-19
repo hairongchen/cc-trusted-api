@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
+use crate::cc_type::*;
 use std::collections::HashMap;
 use std::path::Path;
-use crate::cc_type::*;
 
 // TDX version ID
 #[derive(Clone, Eq, Hash, PartialEq)]
@@ -12,8 +12,8 @@ pub enum TdxVersion {
 
 // TDX version ID to version string map
 lazy_static! {
-    pub static  ref TDX_VERSION_MAP: HashMap<TdxVersion, String> = {
-        let mut map:HashMap<TdxVersion, String> = HashMap::new();
+    pub static ref TDX_VERSION_MAP: HashMap<TdxVersion, String> = {
+        let mut map: HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, "1.0".to_string());
         map.insert(TdxVersion::TDX_1_5, "1.5".to_string());
         map
@@ -22,8 +22,8 @@ lazy_static! {
 
 // TDX version ID to device path string map
 lazy_static! {
-    pub static  ref TDX_DEVICE_NODE_MAP: HashMap<TdxVersion, String> = {
-        let mut map:HashMap<TdxVersion, String> = HashMap::new();
+    pub static ref TDX_DEVICE_NODE_MAP: HashMap<TdxVersion, String> = {
+        let mut map: HashMap<TdxVersion, String> = HashMap::new();
         map.insert(TdxVersion::TDX_1_0, TEE_TDX_1_0_PATH.to_string());
         map.insert(TdxVersion::TDX_1_5, TEE_TDX_1_5_PATH.to_string());
         map

@@ -9,8 +9,8 @@ pub const TPM_ALG_SHA512: u8 = 0xD;
 
 // hash algorithm ID to algorithm name string map
 lazy_static! {
-    pub static  ref ALGO_NAME_MAP: HashMap<u8, String> = {
-        let mut map:HashMap<u8, String> = HashMap::new();
+    pub static ref ALGO_NAME_MAP: HashMap<u8, String> = {
+        let mut map: HashMap<u8, String> = HashMap::new();
         map.insert(TPM_ALG_ERROR, "TPM_ALG_RSA".to_string());
         map.insert(TPM_ALG_TDES, "TPM_ALG_TDES".to_string());
         map.insert(TPM_ALG_SHA256, "TPM_ALG_SHA256".to_string());
@@ -29,10 +29,10 @@ pub trait TcgAlgorithmRegistry {
 #[allow(dead_code)]
 pub struct TcgDigest {
     algo_id: u8,
-    hash: Vec<u8>
+    hash: Vec<u8>,
 }
 
-// this trait retrieve IMR's max index of a TEE and hash value 
+// this trait retrieve IMR's max index of a TEE and hash value
 pub trait TcgIMR {
     fn max_index(&self) -> u8;
     fn get_index(&self) -> u8;

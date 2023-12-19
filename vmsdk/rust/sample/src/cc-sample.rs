@@ -1,23 +1,21 @@
-use cctrusted::{dump_cc_report, get_default_algorithm, get_cc_report, ExtraArgs};
+use cctrusted::{dump_cc_report, get_cc_report, get_default_algorithm, ExtraArgs};
 
 fn main() {
-
     let nonce = "MTIzNDU2Nzg=".to_string();
     let data = "YWJjZGVmZw==".to_string();
 
-    
-    match get_default_algorithm(){
+    match get_default_algorithm() {
         Ok(algo) => println!("TDX default algo: {}", algo.algo_id_str),
         Err(e) => {
-            println!("error getting TDX algo: {:?}",e);
+            println!("error getting TDX algo: {:?}", e);
         }
     }
 
     // retrieve cc report
-    let quote = match get_cc_report(nonce, data, ExtraArgs{}){
+    let quote = match get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
-            panic!("error getting TDX report: {:?}",e);
+            panic!("error getting TDX report: {:?}", e);
         }
     };
 

@@ -1,15 +1,15 @@
-use std::collections::HashMap;
 use crate::tcg::*;
+use std::collections::HashMap;
 
 #[allow(dead_code)]
 pub struct TdxRTMR {
     index: u8,
-    digests: HashMap<u8, TcgDigest>
+    digests: HashMap<u8, TcgDigest>,
 }
 
 impl TcgIMR for TdxRTMR {
-    fn max_index(&self) -> u8{
-        return 3
+    fn max_index(&self) -> u8 {
+        return 3;
     }
 
     fn get_index(&self) -> u8 {
@@ -23,5 +23,4 @@ impl TcgIMR for TdxRTMR {
     fn is_valid(&self) -> bool {
         todo!()
     }
-
 }

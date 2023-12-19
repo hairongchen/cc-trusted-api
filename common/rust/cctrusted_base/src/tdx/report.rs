@@ -1,12 +1,12 @@
 #![allow(non_camel_case_types)]
 use anyhow::*;
 use nix::*;
+use sha2::{Digest, Sha512};
 use std::fs::File;
 use std::os::unix::io::AsRawFd;
 use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
-use sha2::{Sha512,Digest};
 
 use super::common::*;
 use super::tdvm::TdxVM;
@@ -70,11 +70,11 @@ pub fn generate_tdx_report_data(
 
 impl TdxVM {
     pub fn get_td_report(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
-
         let device_node = match File::options()
-        .read(true)
-        .write(true)
-        .open(self.device_node.device_path.clone()){
+            .read(true)
+            .write(true)
+            .open(self.device_node.device_path.clone())
+        {
             Err(e) => {
                 return Err(anyhow!(
                     "[get_td_report] Fail to open {}: {:?}",

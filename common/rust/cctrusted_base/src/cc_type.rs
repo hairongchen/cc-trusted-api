@@ -1,5 +1,5 @@
-use std::path::Path;
 use std::collections::HashMap;
+use std::path::Path;
 
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]
@@ -13,8 +13,8 @@ pub enum TeeType {
 
 // TEE type to type name string mapping
 lazy_static! {
-    pub static  ref TEE_NAME_MAP: HashMap<TeeType, String> = {
-        let mut map:HashMap<TeeType, String> = HashMap::new();
+    pub static ref TEE_NAME_MAP: HashMap<TeeType, String> = {
+        let mut map: HashMap<TeeType, String> = HashMap::new();
         map.insert(TeeType::PLAIN, "PLAIN".to_string());
         map.insert(TeeType::TDX, "TDX".to_string());
         map.insert(TeeType::SEV, "SEV".to_string());
@@ -34,7 +34,7 @@ pub const TEE_CCA_PATH: &str = "";
 // holds the TEE type info
 pub struct CcType {
     pub tee_type: TeeType,
-    pub tee_type_str: String
+    pub tee_type_str: String,
 }
 
 // a function to detect the TEE type
@@ -42,9 +42,7 @@ pub fn detect_cc_type() -> CcType {
     let mut tee_type = TeeType::PLAIN;
     if Path::new(TEE_TPM_PATH).exists() {
         tee_type = TeeType::TPM;
-    } else if Path::new(TEE_TDX_1_0_PATH).exists()
-        || Path::new(TEE_TDX_1_5_PATH).exists()
-    {
+    } else if Path::new(TEE_TDX_1_0_PATH).exists() || Path::new(TEE_TDX_1_5_PATH).exists() {
         tee_type = TeeType::TDX;
     } else if Path::new(TEE_SEV_PATH).exists() {
         tee_type = TeeType::SEV;
@@ -52,5 +50,8 @@ pub fn detect_cc_type() -> CcType {
         // TODO add support for CCA and etc.
     }
 
-    return CcType { tee_type: tee_type.clone(), tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned() }
+    return CcType {
+        tee_type: tee_type.clone(),
+        tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned(),
+    };
 }

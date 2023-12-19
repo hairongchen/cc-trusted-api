@@ -1,11 +1,11 @@
 use crate::cc_type::*;
 use crate::cvm::*;
-use crate::tdx::rtmr::TdxRTMR;
+use crate::tcg::{TcgAlgorithmRegistry, ALGO_NAME_MAP};
 use crate::tdx::common::*;
 use crate::tdx::report::generate_tdx_report_data;
-use crate::tcg::{TcgAlgorithmRegistry, ALGO_NAME_MAP};
+use crate::tdx::rtmr::TdxRTMR;
 
-use anyhow::*; 
+use anyhow::*;
 use std::result::Result::Ok;
 
 //struct TdReport {}
@@ -34,10 +34,15 @@ pub struct TdxVM {
 // implement the structure create function
 impl TdxVM {
     pub fn new() -> TdxVM {
-        let cc_type = CcType{tee_type: TeeType::TDX, tee_type_str: TEE_NAME_MAP.get(&TeeType::TDX).unwrap().to_owned()};
+        let cc_type = CcType {
+            tee_type: TeeType::TDX,
+            tee_type_str: TEE_NAME_MAP.get(&TeeType::TDX).unwrap().to_owned(),
+        };
 
         let version = get_tdx_version();
-        let device_node = DeviceNode {device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned()};
+        let device_node = DeviceNode {
+            device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned(),
+        };
         let algo_id = crate::tcg::TPM_ALG_SHA384;
 
         TdxVM {
@@ -47,7 +52,7 @@ impl TdxVM {
             algo_id,
             cc_report_raw: Vec::new(),
             td_report_raw: Vec::new(),
-            rtrms: Vec::new()
+            rtrms: Vec::new(),
         }
     }
 }
@@ -55,7 +60,7 @@ impl TdxVM {
 // all TdxVM's interfaces should implement CVM trait
 impl CVM for TdxVM {
     // retrieve TDX quote
-    fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>{
+    fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
         let report_data = match generate_tdx_report_data(nonce, Some(data)) {
             Ok(r) => r,
             Err(e) => {
@@ -68,10 +73,7 @@ impl CVM for TdxVM {
 
         self.cc_report_raw = match self.get_tdx_quote(report_data) {
             Ok(q) => q,
-            Err(e) => return Err(anyhow!(
-                "[get_cc_report] error getting TDX quote: {:?}",
-                e
-            )),
+            Err(e) => return Err(anyhow!("[get_cc_report] error getting TDX quote: {:?}", e)),
         };
 
         Ok(self.cc_report_raw.clone())
@@ -91,10 +93,10 @@ impl CVM for TdxVM {
         todo!()
     }
 
-    fn parse_cc_measurement(&self){
+    fn parse_cc_measurement(&self) {
         todo!()
     }
-    fn parse_cc_eventlog(&self){
+    fn parse_cc_eventlog(&self) {
         todo!()
     }
 
@@ -105,19 +107,19 @@ impl CVM for TdxVM {
         00000020 35 FB B4 91 29 27 55 B2 E8 E8 23 B6 00 00 00 00  5...)'U...#.....
     ...
      */
-    fn dump_cc_report(report: Vec<u8>){
+    fn dump_cc_report(report: Vec<u8>) {
         let mut index: usize = 0;
         let mut linestr = "".to_string();
         let mut printstr = "".to_string();
 
         let printable = vec![
-            ' ','\t','\n','\r',
-            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-            '0','1','2','3','4','5','6','7','8','9',
-            'a','b','c','d','e','f',
-            'A','B','C','D','E','F',
-            '#','$','%','&','\'','(',')','*','+',',','-','.','/',':',';','<','=','>','?','@','[','\\',']','^','_','`','{','|','}','~','"','!'
+            ' ', '\t', '\n', '\r', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+            'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+            'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+            'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
+            'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F', '#', '$', '%', '&', '\'', '(', ')',
+            '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^',
+            '_', '`', '{', '|', '}', '~', '"', '!',
         ];
 
         while usize::from(index) < report.len() {
@@ -126,11 +128,11 @@ impl CVM for TdxVM {
                     println!("{} {}", linestr, printstr);
                     printstr = "".to_string();
                 }
-                linestr = format!("{:08X} ", ((index/16) as u16)*16);
+                linestr = format!("{:08X} ", ((index / 16) as u16) * 16);
             }
 
             let v = report[index];
-            linestr.push_str(format!("{:02X} ", v).as_str());    
+            linestr.push_str(format!("{:02X} ", v).as_str());
             match printable.iter().position(|&c| c == (v as char)) {
                 Some(_) => {
                     if v < 0x9 || v > 0xD {
@@ -138,7 +140,6 @@ impl CVM for TdxVM {
                     } else {
                         printstr.push_str(".");
                     }
-
                 }
                 None => printstr.push_str("."),
             }
@@ -155,27 +156,28 @@ impl CVM for TdxVM {
         } else if usize::from(index) == report.len() {
             println!("{} {}", linestr, printstr);
         }
-
     }
 
-    fn dump_cc_measurement(&self){
+    fn dump_cc_measurement(&self) {
         todo!()
     }
-    fn dump_cc_eventlog(&self){
+    fn dump_cc_eventlog(&self) {
         todo!()
     }
 
     fn dump(&self) {
         println!("======================================");
         println!("CVM type = {}", self.cc_type.tee_type_str);
-        println!("CVM version = {}", TDX_VERSION_MAP.get(&self.version).unwrap().to_owned());
+        println!(
+            "CVM version = {}",
+            TDX_VERSION_MAP.get(&self.version).unwrap().to_owned()
+        );
         println!("======================================");
     }
-
 }
 
 impl TcgAlgorithmRegistry for TdxVM {
-    fn get_algorithm_string(&self) -> String{
+    fn get_algorithm_string(&self) -> String {
         ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 }

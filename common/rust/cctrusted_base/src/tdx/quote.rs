@@ -92,9 +92,10 @@ impl TdxVM {
         let qgs_msg = generate_qgs_quote_msg(report_data_array);
 
         let device_node = match File::options()
-        .read(true)
-        .write(true)
-        .open(self.device_node.device_path.clone()){
+            .read(true)
+            .write(true)
+            .open(self.device_node.device_path.clone())
+        {
             Err(e) => {
                 return Err(anyhow!(
                     "[get_td_report] Fail to open {}: {:?}",
@@ -137,12 +138,11 @@ impl TdxVM {
                     u64
                 );
                 match unsafe {
-                    get_quote_1_0_ioctl(
-                        device_node.as_raw_fd(),
-                        ptr::addr_of!(request) as *mut u64,
-                    )
+                    get_quote_1_0_ioctl(device_node.as_raw_fd(), ptr::addr_of!(request) as *mut u64)
                 } {
-                    Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e)),
+                    Err(e) => {
+                        return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e))
+                    }
                     Ok(_r) => _r,
                 };
             }
@@ -159,7 +159,9 @@ impl TdxVM {
                         ptr::addr_of!(request) as *mut tdx_quote_req,
                     )
                 } {
-                    Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e)),
+                    Err(e) => {
+                        return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e))
+                    }
                     Ok(_r) => _r,
                 };
             }

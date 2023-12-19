@@ -1,13 +1,13 @@
 // holds the device node info
 pub struct DeviceNode {
-    pub device_path: String
+    pub device_path: String,
 }
 
 pub struct CcEventlogs {
     //TODO
 }
 
-/*** 
+/***
     the interfaces a cvm should support:
         - dump: show basic CVM info like TEE type and version
         - process_cc_report: retrive and parse CVM report
