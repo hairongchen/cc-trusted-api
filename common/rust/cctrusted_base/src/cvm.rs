@@ -28,7 +28,7 @@ pub trait CVM {
     fn dump(&self);
 
     // show the raw data in hex format
-    fn dump_cc_report(&self);
+    fn dump_cc_report(&self, report);
     fn dump_cc_measurement(&self);
     fn dump_cc_eventlog(&self);    
 }
