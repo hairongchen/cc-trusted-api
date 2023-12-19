@@ -54,29 +54,6 @@ struct qgs_msg_get_quote_resp {
     id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
 }
 
-fn generate_qgs_quote_msg(report: [u8; TDX_REPORT_LEN as usize]) -> qgs_msg_get_quote_req {
-    //build quote service message header to be used by QGS
-    let qgs_header = qgs_msg_header {
-        major_version: 1,
-        minor_version: 0,
-        msg_type: 0,
-        size: 16 + 8 + TDX_REPORT_LEN, // header + report_size and id_list_size + TDX_REPORT_LEN
-        error_code: 0,
-    };
-
-    //build quote service message body to be used by QGS
-    let mut qgs_request = qgs_msg_get_quote_req {
-        header: qgs_header,
-        report_size: TDX_REPORT_LEN,
-        id_list_size: 0,
-        report_id_list: [0; TDX_REPORT_LEN as usize],
-    };
-
-    qgs_request.report_id_list.copy_from_slice(&report[0..]);
-
-    qgs_request
-}
-
 impl TdxVM {
     pub fn get_tdx_quote(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
         //retrieve TDX report
@@ -90,7 +67,7 @@ impl TdxVM {
         };
 
         //build QGS request message
-        let qgs_msg = generate_qgs_quote_msg(report_data_array);
+        let qgs_msg = self.generate_qgs_quote_msg(report_data_array);
 
         let device_node = match File::options()
             .read(true)
@@ -196,4 +173,27 @@ impl TdxVM {
 
         Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
+
+    fn generate_qgs_quote_msg(&self, report: [u8; TDX_REPORT_LEN as usize]) -> qgs_msg_get_quote_req {
+        //build quote service message header to be used by QGS
+        let qgs_header = qgs_msg_header {
+            major_version: 1,
+            minor_version: 0,
+            msg_type: 0,
+            size: 16 + 8 + TDX_REPORT_LEN, // header + report_size and id_list_size + TDX_REPORT_LEN
+            error_code: 0,
+        };
+    
+        //build quote service message body to be used by QGS
+        let mut qgs_request = qgs_msg_get_quote_req {
+            header: qgs_header,
+            report_size: TDX_REPORT_LEN,
+            id_list_size: 0,
+            report_id_list: [0; TDX_REPORT_LEN as usize],
+        };
+    
+        qgs_request.report_id_list.copy_from_slice(&report[0..]);
+    
+        qgs_request
+    }    
 }
