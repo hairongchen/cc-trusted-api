@@ -119,6 +119,7 @@ impl CVM for TdxVM {
             if index % 16 == 0 {
                 if printstr.len() != 0 {
                     println!("{} {}", linestr, printstr);
+                    printstr = "".to_string();
                 }
                 linestr = format!("{:#08x}", ((index/16) as u16)*16);
             }
