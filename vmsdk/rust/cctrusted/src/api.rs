@@ -19,7 +19,7 @@ pub fn get_cc_report(
 }
 
 pub fn dump_cc_report(report: Vec<u8>) {
-    let mut cvm = CcType::build_cvm();
+    let cvm = CcType::build_cvm();
 
     cvm.dump_cc_report(report);
 }
