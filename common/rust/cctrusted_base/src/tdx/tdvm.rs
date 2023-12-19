@@ -125,7 +125,7 @@ impl CVM for TdxVM {
     ...
      */
     fn dump_cc_report(&self) {
-        let report = self.cc_report_raw;
+        let report = &self.cc_report_raw;
         let mut index: usize = 0;
         let mut linestr = "".to_string();
         let mut printstr = "".to_string();
