@@ -1,5 +1,3 @@
-pub mod api;
-
 use anyhow::*;
 use std::result::Result;
 use std::result::Result::Ok;
