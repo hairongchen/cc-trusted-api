@@ -17,22 +17,6 @@ pub struct Algo {
     pub algo_id_str: String,
 }
 
-pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
-    // instance a cvm according to detected TEE type
-    let cvm = match CcType::new().tee_type {
-        TeeType::TDX => TdxVM::new(),
-        TeeType::SEV => todo!(),
-        TeeType::CCA => todo!(),
-        TeeType::TPM => todo!(),
-        TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
-    };
-
-    Ok(Algo {
-        algo_id: cvm.algo_id,
-        algo_id_str: cvm.get_algorithm_string(),
-    })
-}
-
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
 pub fn get_cc_report(
     nonce: String,
@@ -73,4 +57,20 @@ pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
 // this CC API takes eventlog start offset and count as input and returns the eventlog data
 pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
     todo!()
+}
+
+pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
+    // instance a cvm according to detected TEE type
+    let cvm = match CcType::new().tee_type {
+        TeeType::TDX => TdxVM::new(),
+        TeeType::SEV => todo!(),
+        TeeType::CCA => todo!(),
+        TeeType::TPM => todo!(),
+        TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
+    };
+
+    Ok(Algo {
+        algo_id: cvm.algo_id,
+        algo_id_str: cvm.get_algorithm_string(),
+    })
 }
