@@ -147,7 +147,7 @@ impl CVM for TdxVM {
         if index % 16 != 0 {
             let mut blank = "".to_string();
             for _ in 0..=(16 - index % 16) {
-                blank.push_str("   ");
+                blank.push_str(" ");
             }
             println!("{}{} {}", linestr, blank, printstr);
         } else if usize::from(index) == report.len() {
