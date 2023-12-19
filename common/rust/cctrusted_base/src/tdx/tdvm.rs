@@ -125,7 +125,7 @@ impl CVM for TdxVM {
             }
 
             let v = report[index];
-            linestr.push_str(format!("{:X}  ", v).as_str());    
+            linestr.push_str(format!("{:2X}  ", v).as_str());    
             match printable.iter().position(|&c| c == (v as char)) {
                 Some(_) => {
                     if v < 0x9 || v > 0xD {
