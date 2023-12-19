@@ -11,7 +11,10 @@ pub fn get_cc_report(
     data: String,
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
-    let mut cvm = CcType::build_cvm();
+     let mut cvm = match CcType::build_cvm(); {
+        Ok(c) => c,
+        Err(e) => return Err(anyhow!("[get_cc_report] error getting quote: {:?}", e)),
+    }
 
     // call CVM trait defined methods
     cvm.dump();
@@ -19,8 +22,11 @@ pub fn get_cc_report(
 }
 
 pub fn dump_cc_report(report: Vec<u8>) {
-    let cvm = CcType::build_cvm();
-
+    let cvm = match CcType::build_cvm(); {
+        Ok(c) => c,
+        Err(e) => return Err(anyhow!("[get_cc_report] error getting quote: {:?}", e)),
+    }
+    
     cvm.dump_cc_report(report);
 }
 
