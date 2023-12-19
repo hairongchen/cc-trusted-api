@@ -13,7 +13,7 @@ use super::common::*;
 use super::tdvm::*;
 
 #[repr(C)]
-pub struct qgs_msg_header {
+struct qgs_msg_header {
     major_version: u16, // TDX major version
     minor_version: u16, // TDX minor version
     msg_type: u32,      // GET_QUOTE_REQ or GET_QUOTE_RESP
@@ -22,7 +22,7 @@ pub struct qgs_msg_header {
 }
 
 #[repr(C)]
-pub struct qgs_msg_get_quote_req {
+struct qgs_msg_get_quote_req {
     header: qgs_msg_header,                        // header.type = GET_QUOTE_REQ
     report_size: u32,                              // cannot be 0
     id_list_size: u32,                             // length of id_list, in byte, can be 0
@@ -30,7 +30,7 @@ pub struct qgs_msg_get_quote_req {
 }
 
 #[repr(C)]
-pub struct tdx_quote_hdr {
+struct tdx_quote_hdr {
     version: u64,                       // Quote version, filled by TD
     status: u64,                        // Status code of Quote request, filled by VMM
     in_len: u32,                        // Length of TDREPORT, filled by TD
@@ -40,13 +40,13 @@ pub struct tdx_quote_hdr {
 }
 
 #[repr(C)]
-pub struct tdx_quote_req {
+struct tdx_quote_req {
     buf: u64, // Pass user data that includes TDREPORT as input. Upon successful completion of IOCTL, output is copied back to the same buffer
     len: u64, // Length of the Quote buffer
 }
 
 #[repr(C)]
-pub struct qgs_msg_get_quote_resp {
+struct qgs_msg_get_quote_resp {
     header: qgs_msg_header,        // header.type = GET_QUOTE_RESP
     selected_id_size: u32,         // can be 0 in case only one id is sent in request
     quote_size: u32,               // length of quote_data, in byte
