@@ -79,12 +79,11 @@ impl CVM for TdxVM {
             }
         };
 
-        self.cc_report_raw = match self.get_tdx_quote(report_data) {
-            Ok(q) => q,
-            Err(e) => return Err(anyhow!("[get_cc_report] error getting TDX quote: {:?}", e)),
+        match self.get_tdx_quote(report_data) {
+            Ok(q) => Ok(q)
+            Err(e) => return Err(anyhow!("[get_cc_report] error getting TDX quote: {:?}", e))
         };
 
-        Ok(self.cc_report_raw.clone())
     }
 
     // retrieve TDX RTMR
