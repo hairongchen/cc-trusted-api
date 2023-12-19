@@ -12,7 +12,7 @@ use super::common::*;
 use super::tdvm::TdxVM;
 
 #[repr(C)]
-pub struct tdx_1_0_report_req {
+struct tdx_1_0_report_req {
     subtype: u8,     // Subtype of TDREPORT: fixed as 0 by TDX Module specification
     reportdata: u64, // User-defined REPORTDATA to be included into TDREPORT
     rpd_len: u32,    // Length of the REPORTDATA: fixed as 64 bytes by the TDX Module specification
@@ -21,7 +21,7 @@ pub struct tdx_1_0_report_req {
 }
 
 #[repr(C)]
-pub struct tdx_1_5_report_req {
+struct tdx_1_5_report_req {
     reportdata: [u8; REPORT_DATA_LEN as usize], // User buffer with REPORTDATA to be included into TDREPORT
     tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
