@@ -65,7 +65,7 @@ impl CcType {
     pub fn build_cvm() -> Result<Box<dyn CVM>, anyhow::Error> {
         // instance a cvm according to detected TEE type
         match CcType::new().tee_type {
-            TeeType::TDX => Box::new(TdxVM::new()),
+            TeeType::TDX => Ok(Box::new(TdxVM::new())),
             TeeType::SEV => todo!(),
             TeeType::CCA => todo!(),
             TeeType::TPM => todo!(),
