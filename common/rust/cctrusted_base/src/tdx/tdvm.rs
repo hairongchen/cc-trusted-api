@@ -69,7 +69,7 @@ impl TdxVM {
 impl CVM for TdxVM {
     // retrieve TDX quote
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
-        let report_data = match generate_tdx_report_data(nonce, Some(data)) {
+        let report_data = match Self.generate_tdx_report_data(nonce, Some(data)) {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!(
