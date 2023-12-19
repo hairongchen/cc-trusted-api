@@ -121,11 +121,11 @@ impl CVM for TdxVM {
                     println!("{} {}", linestr, printstr);
                     printstr = "".to_string();
                 }
-                linestr = format!("{:08X}  ", ((index/16) as u16)*16);
+                linestr = format!("{:08X} ", ((index/16) as u16)*16);
             }
 
             let v = report[index];
-            linestr.push_str(format!("{:02X}  ", v).as_str());    
+            linestr.push_str(format!("{:02X} ", v).as_str());    
             match printable.iter().position(|&c| c == (v as char)) {
                 Some(_) => {
                     if v < 0x9 || v > 0xD {
