@@ -16,18 +16,20 @@ pub struct CcEventlogs {
 */
 pub trait CVM {
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>;
-    fn process_cc_measurement();
-    fn process_cc_eventlog();
+    fn process_cc_measurement(&self);
+    fn process_cc_eventlog(&self);
 
     // parse raw data to standard structure defined by TEE or TCG spec
     fn parse_cc_report(&self);
     fn parse_cc_measurement(&self);
     fn parse_cc_eventlog(&self);
+}
 
+pub trait Dump {
     // show the raw data in hex format
     fn dump_cc_report(report: Vec<u8>);
-    fn dump_cc_measurement(&self);
-    fn dump_cc_eventlog(&self);
+    fn dump_cc_measurement();
+    fn dump_cc_eventlog();
 
     //Dump confidential VM information
     fn dump(&self);

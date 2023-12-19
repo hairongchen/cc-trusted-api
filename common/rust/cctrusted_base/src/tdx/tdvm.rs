@@ -87,12 +87,12 @@ impl CVM for TdxVM {
     }
 
     // retrieve TDX RTMR
-    fn process_cc_measurement() -> () {
+    fn process_cc_measurement(&self) -> () {
         todo!()
     }
 
     // retrieve TDX CCEL and IMA eventlog
-    fn process_cc_eventlog() -> () {
+    fn process_cc_eventlog(&self) -> () {
         todo!()
     }
 
@@ -106,7 +106,9 @@ impl CVM for TdxVM {
     fn parse_cc_eventlog(&self) {
         todo!()
     }
+}
 
+impl Dump for TdxVM {
     // dumnp cc report(TDX quote) in following format:
     /*
         00000000 04 00 02 00 81 00 00 00 00 00 00 00 93 9A 72 33  ..............r3
