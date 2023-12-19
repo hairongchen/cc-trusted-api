@@ -3,6 +3,10 @@ name = "cctrusted_base"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "cctrusted"
+path = "src/lib.rs"
+
 [dependencies]
 anyhow = "1.0"
 base64 = "0.13.0"
