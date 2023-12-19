@@ -167,10 +167,10 @@ impl Dump for TdxVM {
         }
     }
 
-    fn dump_cc_measurement(&self) {
+    fn dump_cc_measurement() {
         todo!()
     }
-    fn dump_cc_eventlog(&self) {
+    fn dump_cc_eventlog() {
         todo!()
     }
 
