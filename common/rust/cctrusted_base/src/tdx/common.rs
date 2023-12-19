@@ -41,14 +41,3 @@ pub enum TdxOperation {
 pub const REPORT_DATA_LEN: u32 = 64;
 pub const TDX_REPORT_LEN: u32 = 1024;
 pub const TDX_QUOTE_LEN: usize = 4 * 4096;
-
-// function to detect the TDX version
-pub fn get_tdx_version() -> TdxVersion {
-    if Path::new(TEE_TDX_1_0_PATH).exists() {
-        TdxVersion::TDX_1_0
-    } else if Path::new(TEE_TDX_1_5_PATH).exists() {
-        TdxVersion::TDX_1_5
-    } else {
-        panic!("get_tdx_version: no TDX device found!");
-    }
-}

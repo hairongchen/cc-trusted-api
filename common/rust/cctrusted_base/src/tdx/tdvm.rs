@@ -55,6 +55,17 @@ impl TdxVM {
             rtrms: Vec::new(),
         }
     }
+
+    // function to detect the TDX version
+    pub fn get_tdx_version() -> TdxVersion {
+        if Path::new(TEE_TDX_1_0_PATH).exists() {
+            TdxVersion::TDX_1_0
+        } else if Path::new(TEE_TDX_1_5_PATH).exists() {
+            TdxVersion::TDX_1_5
+        } else {
+            panic!("get_tdx_version: no TDX device found!");
+        }
+    }
 }
 
 // all TdxVM's interfaces should implement CVM trait
