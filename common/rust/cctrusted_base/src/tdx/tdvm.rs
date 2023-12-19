@@ -124,8 +124,7 @@ impl CVM for TdxVM {
         00000020 35 FB B4 91 29 27 55 B2 E8 E8 23 B6 00 00 00 00  5...)'U...#.....
     ...
      */
-    fn dump_cc_report(&self) {
-        let report = &self.cc_report_raw;
+    fn dump_cc_report(&self, report: Vec<u8>) {
         let mut index: usize = 0;
         let mut linestr = "".to_string();
         let mut printstr = "".to_string();

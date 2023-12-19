@@ -21,8 +21,7 @@ pub fn get_cc_report(
 pub fn dump_cc_report(report: Vec<u8>) {
     let mut cvm = CcType::build_cvm();
 
-    cvm.cc_report_raw = report;
-    cvm.dump_cc_report();
+    cvm.dump_cc_report(report);
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
