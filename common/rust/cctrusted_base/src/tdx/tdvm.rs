@@ -4,6 +4,7 @@ use crate::tcg::{TcgAlgorithmRegistry, ALGO_NAME_MAP};
 use crate::tdx::common::*;
 use crate::tdx::report::generate_tdx_report_data;
 use crate::tdx::rtmr::TdxRTMR;
+use std::path::Path;
 
 use anyhow::*;
 use std::result::Result::Ok;
@@ -39,7 +40,7 @@ impl TdxVM {
             tee_type_str: TEE_NAME_MAP.get(&TeeType::TDX).unwrap().to_owned(),
         };
 
-        let version = get_tdx_version();
+        let version = Self::get_tdx_version();
         let device_node = DeviceNode {
             device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned(),
         };
