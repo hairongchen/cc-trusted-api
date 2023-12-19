@@ -1,5 +1,3 @@
-mod data;
-
 // this struct is used in vTPM and other TEE scenarios
 // e.g.: vTPM may need report based on selective PCRs
 pub struct ExtraArgs {}
