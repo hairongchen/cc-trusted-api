@@ -1,5 +1,4 @@
 #![allow(non_camel_case_types)]
-
 use anyhow::*;
 use nix::*;
 use std::fs::File;
@@ -7,9 +6,10 @@ use std::os::unix::io::AsRawFd;
 use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
+use sha2::{Sha512,Digest};
+
 use super::common::*;
 use super::tdvm::TdxVM;
-use sha2::{Sha512,Digest};
 
 #[repr(C)]
 pub struct tdx_1_0_report_req {

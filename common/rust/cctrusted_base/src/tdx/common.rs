@@ -1,8 +1,7 @@
 #![allow(non_camel_case_types)]
-
 use std::collections::HashMap;
-use crate::cc_type::*;
 use std::path::Path;
+use crate::cc_type::*;
 
 // TDX version ID
 #[derive(Clone, Eq, Hash, PartialEq)]
@@ -38,12 +37,12 @@ pub enum TdxOperation {
     TDX_1_5_GET_QUOTE = 4,
 }
 
-// quote and tdreport basic length
+// quote and tdreport length
 pub const REPORT_DATA_LEN: u32 = 64;
 pub const TDX_REPORT_LEN: u32 = 1024;
 pub const TDX_QUOTE_LEN: usize = 4 * 4096;
 
-// detect the TDX version
+// function to detect the TDX version
 pub fn get_tdx_version() -> TdxVersion {
     if Path::new(TEE_TDX_1_0_PATH).exists() {
         TdxVersion::TDX_1_0

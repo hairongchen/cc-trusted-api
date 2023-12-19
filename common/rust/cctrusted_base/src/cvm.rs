@@ -19,10 +19,12 @@ pub trait CVM {
     fn process_cc_measurement();
     fn process_cc_eventlog();
 
+    // parse raw data to standard structure defined by TEE or TCG spec
     fn parse_cc_report(&self);
     fn parse_cc_measurement(&self);
     fn parse_cc_eventlog(&self);
 
+    // show the raw data in hex format
     fn dump_cc_report(report: Vec<u8>);
     fn dump_cc_measurement(&self);
     fn dump_cc_eventlog(&self);

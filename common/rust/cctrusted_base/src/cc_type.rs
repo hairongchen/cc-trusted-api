@@ -37,7 +37,7 @@ pub struct CcType {
     pub tee_type_str: String
 }
 
-// detect the TEE type
+// a function to detect the TEE type
 pub fn detect_cc_type() -> CcType {
     let mut tee_type = TeeType::PLAIN;
     if Path::new(TEE_TPM_PATH).exists() {
