@@ -19,7 +19,7 @@ pub struct Algo {
 
 pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
     // instance a cvm according to detected TEE type
-    let cvm = match TeeType::detect_cc_type().tee_type {
+    let cvm = match TeeType::new().tee_type {
         TeeType::TDX => TdxVM::new(),
         TeeType::SEV => todo!(),
         TeeType::CCA => todo!(),
@@ -40,7 +40,7 @@ pub fn get_cc_report(
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
     // instance a cvm according to detected TEE type
-    let mut cvm = match TeeType::detect_cc_type().tee_type {
+    let mut cvm = match TeeType::new().tee_type {
         TeeType::TDX => TdxVM::new(),
         TeeType::SEV => todo!(),
         TeeType::CCA => todo!(),
@@ -54,7 +54,7 @@ pub fn get_cc_report(
 }
 
 pub fn dump_cc_report(report: Vec<u8>) {
-    match TeeType::detect_cc_type().tee_type {
+    match TeeType::new().tee_type {
         TeeType::TDX => {
             TdxVM::dump_cc_report(report);
         }
