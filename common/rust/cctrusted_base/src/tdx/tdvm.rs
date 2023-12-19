@@ -27,9 +27,7 @@ pub struct TdxVM {
     pub device_node: DeviceNode,
     pub algo_id: u8,
     pub cc_report_raw: Vec<u8>,
-    //cc_report: Option<CcReport>,
     pub td_report_raw: Vec<u8>,
-    //td_report: Option<TdReport>,
     pub rtrms: Vec<TdxRTMR>,
 }
 
