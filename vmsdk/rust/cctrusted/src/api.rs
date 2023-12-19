@@ -1,10 +1,10 @@
 use anyhow::*;
-use cctrusted_base::tdx::tdvm::TdxVM;
-use cctrusted_base::tcg::TcgDigest;
-use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use std::result::Result;
 use std::result::Result::Ok;
-use cctrusted_base::tcg::TcgAlgorithmRegistry;
+
+use cctrusted_base::tdx::tdvm::TdxVM;
+use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
+use cctrusted_base::cc_type::{detect_cc_type, TeeType};
 use cctrusted_base::cvm::CVM;
 
 // this struct is used in vTPM and other TEE scenarios
