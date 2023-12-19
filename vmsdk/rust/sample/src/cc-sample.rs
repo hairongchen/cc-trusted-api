@@ -5,13 +5,6 @@ fn main() {
     let nonce = "MTIzNDU2Nzg=".to_string();
     let data = "YWJjZGVmZw==".to_string();
 
-    match get_default_algorithm() {
-        Ok(algo) => println!("TDX default algo: {}", algo.algo_id_str),
-        Err(e) => {
-            println!("error getting TDX algo: {:?}", e);
-        }
-    }
-
     // retrieve cc report
     let quote = match get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
