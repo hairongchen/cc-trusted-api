@@ -6,7 +6,6 @@ use cctrusted_base::cc_type::{TeeType, CcType};
 use cctrusted_base::cvm::{CVM, Dump};
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::tdvm::TdxVM;
-use cctrusted_base::cc_type::build_cvm;
 
 use crate::api_data::*;
 
@@ -16,7 +15,7 @@ pub fn get_cc_report(
     data: String,
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
-    let mut cvm = build_cvm();
+    let mut cvm = CcType::build_cvm();
 
     // call CVM trait defined methods
     cvm.dump();
