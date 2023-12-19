@@ -26,7 +26,7 @@ pub fn get_cc_report(
     data: String,
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
-    let cvm = build_cvm();
+    let mut cvm = build_cvm();
 
     // call CVM trait defined methods
     cvm.dump();
