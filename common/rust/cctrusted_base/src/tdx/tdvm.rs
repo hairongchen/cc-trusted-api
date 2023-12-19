@@ -80,8 +80,8 @@ impl CVM for TdxVM {
         };
 
         match self.get_tdx_quote(report_data) {
-            Ok(q) => Ok(q)
-            Err(e) => return Err(anyhow!("[get_cc_report] error getting TDX quote: {:?}", e))
+            Ok(q) => Ok(q),
+            Err(e) => return Err(anyhow!("[get_cc_report] error getting TDX quote: {:?}", e)),
         };
 
     }
