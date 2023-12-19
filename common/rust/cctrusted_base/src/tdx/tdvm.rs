@@ -2,7 +2,6 @@ use crate::cc_type::*;
 use crate::cvm::*;
 use crate::tcg::{TcgAlgorithmRegistry, ALGO_NAME_MAP};
 use crate::tdx::common::*;
-use crate::tdx::report::generate_tdx_report_data;
 use crate::tdx::rtmr::TdxRTMR;
 use std::path::Path;
 

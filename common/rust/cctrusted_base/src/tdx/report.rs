@@ -28,49 +28,51 @@ struct tdx_1_5_report_req {
     tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
-pub fn generate_tdx_report_data(
-    nonce: String,
-    data: Option<String>,
-) -> Result<String, anyhow::Error> {
-    let nonce_decoded = match base64::decode(nonce) {
-        Ok(v) => v,
-        Err(e) => {
-            return Err(anyhow!(
-                "[generate_tdx_report_data] nonce is not base64 encoded: {:?}",
-                e
-            ))
-        }
-    };
-    let mut hasher = Sha512::new();
-    hasher.update(nonce_decoded);
-    let _ret = match data {
-        Some(_encoded_data) => {
-            if _encoded_data.is_empty() {
-                hasher.update("")
-            } else {
-                let decoded_data = match base64::decode(_encoded_data) {
-                    Ok(v) => v,
-                    Err(e) => {
-                        return Err(anyhow!(
-                            "[generate_tdx_report_data] user data is not base64 encoded: {:?}",
-                            e
-                        ))
-                    }
-                };
-                hasher.update(decoded_data)
-            }
-        }
-        None => hasher.update(""),
-    };
-    let hash_array: [u8; 64] = hasher
-        .finalize()
-        .as_slice()
-        .try_into()
-        .expect("[generate_tdx_report_data] Wrong length of report data");
-    Ok(base64::encode(hash_array))
-}
+
 
 impl TdxVM {
+    pub fn generate_tdx_report_data(
+        nonce: String,
+        data: Option<String>,
+    ) -> Result<String, anyhow::Error> {
+        let nonce_decoded = match base64::decode(nonce) {
+            Ok(v) => v,
+            Err(e) => {
+                return Err(anyhow!(
+                    "[generate_tdx_report_data] nonce is not base64 encoded: {:?}",
+                    e
+                ))
+            }
+        };
+        let mut hasher = Sha512::new();
+        hasher.update(nonce_decoded);
+        let _ret = match data {
+            Some(_encoded_data) => {
+                if _encoded_data.is_empty() {
+                    hasher.update("")
+                } else {
+                    let decoded_data = match base64::decode(_encoded_data) {
+                        Ok(v) => v,
+                        Err(e) => {
+                            return Err(anyhow!(
+                                "[generate_tdx_report_data] user data is not base64 encoded: {:?}",
+                                e
+                            ))
+                        }
+                    };
+                    hasher.update(decoded_data)
+                }
+            }
+            None => hasher.update(""),
+        };
+        let hash_array: [u8; 64] = hasher
+            .finalize()
+            .as_slice()
+            .try_into()
+            .expect("[generate_tdx_report_data] Wrong length of report data");
+        Ok(base64::encode(hash_array))
+    }
+
     pub fn get_td_report(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
         let device_node = match File::options()
             .read(true)
