@@ -13,14 +13,14 @@ pub fn get_cc_report(
     data: String,
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
-     let mut cvm = match CcType::build_cvm() {
-        Ok(c) => c,
+    match CcType::build_cvm() {
+        Ok(c) => {{
+            // call CVM trait defined methods
+            cvm.dump();
+            cvm.process_cc_report(nonce, data)
+        },
         Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
-    };
-
-    // call CVM trait defined methods
-    cvm.dump();
-    cvm.process_cc_report(nonce, data)
+    }
 }
 
 pub fn dump_cc_report(report: Vec<u8>) -> Result<(), anyhow::Error> {
