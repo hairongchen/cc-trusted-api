@@ -51,7 +51,7 @@ pub fn get_cc_report(nonce: String, data: String, _extra_args: ExtraArgs) -> Res
 
     // call CVM trait defined methods
     cvm.dump();
-    cvm.process_cc_report(&nonce, &data)
+    cvm.process_cc_report(nonce, data)
 }
 
 pub fn dump_cc_report(report: Vec<u8>) {
