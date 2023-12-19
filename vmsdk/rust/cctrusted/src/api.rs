@@ -9,20 +9,24 @@ use cctrusted_base::tdx::tdvm::TdxVM;
 
 use crate::api_data::*;
 
+fn build_cvm() -> Box<dyn Trait> {
+    // instance a cvm according to detected TEE type
+    match CcType::new().tee_type {
+        TeeType::TDX => TdxVM::new(),
+        TeeType::SEV => todo!(),
+        TeeType::CCA => todo!(),
+        TeeType::TPM => todo!(),
+        TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
+    }
+}
+
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
 pub fn get_cc_report(
     nonce: String,
     data: String,
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
-    // instance a cvm according to detected TEE type
-    let mut cvm = match CcType::new().tee_type {
-        TeeType::TDX => TdxVM::new(),
-        TeeType::SEV => todo!(),
-        TeeType::CCA => todo!(),
-        TeeType::TPM => todo!(),
-        TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
-    };
+    let cvm = build_cvm();
 
     // call CVM trait defined methods
     cvm.dump();
