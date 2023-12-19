@@ -51,9 +51,9 @@ impl CcType {
             // TODO add support for CCA and etc.
         }
 
-        return CcType {
+        CcType {
             tee_type: tee_type.clone(),
             tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned(),
-        };
+        }
     }
 }

@@ -58,7 +58,7 @@ impl TdxVM {
     }
 
     // function to detect the TDX version
-    pub fn get_tdx_version() -> TdxVersion {
+    fn get_tdx_version() -> TdxVersion {
         if Path::new(TEE_TDX_1_0_PATH).exists() {
             TdxVersion::TDX_1_0
         } else if Path::new(TEE_TDX_1_5_PATH).exists() {
