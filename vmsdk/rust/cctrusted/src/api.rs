@@ -20,16 +20,10 @@ pub fn get_cc_report(
     cvm.process_cc_report(nonce, data)
 }
 
-pub fn dump_cc_report(report: Vec<u8>) {
-    match CcType::new().tee_type {
-        TeeType::TDX => {
-            TdxVM::dump_cc_report(report);
-        }
-        TeeType::SEV => todo!(),
-        TeeType::CCA => todo!(),
-        TeeType::TPM => todo!(),
-        TeeType::PLAIN => todo!(),
-    };
+pub fn dump_cc_report(self, report: Vec<u8>) {
+    let cvm = CcType::build_cvm();
+
+    cvm.dump_cc_report(report);
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data

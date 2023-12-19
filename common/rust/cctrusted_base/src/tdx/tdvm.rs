@@ -116,17 +116,16 @@ impl CVM for TdxVM {
         );
         println!("======================================");
     }
-}
 
-impl Dump for TdxVM {
-    // dumnp cc report(TDX quote) in following format:
+        // dumnp cc report(TDX quote) in following format:
     /*
         00000000 04 00 02 00 81 00 00 00 00 00 00 00 93 9A 72 33  ..............r3
         00000010 F7 9C 4C A9 94 0A 0D B3 95 7F 06 07 D5 68 59 C7  ..L..........hY.
         00000020 35 FB B4 91 29 27 55 B2 E8 E8 23 B6 00 00 00 00  5...)'U...#.....
     ...
      */
-    fn dump_cc_report(report: Vec<u8>) {
+    fn dump_cc_report(&self) {
+        let report = self.cc_report_raw;
         let mut index: usize = 0;
         let mut linestr = "".to_string();
         let mut printstr = "".to_string();
@@ -177,10 +176,10 @@ impl Dump for TdxVM {
         }
     }
 
-    fn dump_cc_measurement() {
+    fn dump_cc_measurement(&self) {
         todo!()
     }
-    fn dump_cc_eventlog() {
+    fn dump_cc_eventlog(&self) {
         todo!()
     }
 }
