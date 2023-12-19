@@ -7,7 +7,7 @@ use cctrusted_base::cvm::CVM;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::tdvm::TdxVM;
 
-use api_data::*;
+use crate::api_data::*;
 
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
 pub fn get_cc_report(
