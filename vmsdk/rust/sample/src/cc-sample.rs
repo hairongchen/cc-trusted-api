@@ -10,12 +10,13 @@ fn main() {
         Ok(q) => q,
         Err(e) => {
             println!("error getting TDX report: {:?}", e);
+            return;
         }
     };
 
     // dump the cc report
     match dump_cc_report(quote) {
-        Ok(_) => _,
+        Ok(_) => (),
         Err(e) => println!("error dump quote: {:?}", e),
     };
 }
