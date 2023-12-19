@@ -1,4 +1,5 @@
 use cctrusted::{dump_cc_report, get_cc_report, get_default_algorithm, ExtraArgs};
+use cctrusted::data::*
 
 fn main() {
     let nonce = "MTIzNDU2Nzg=".to_string();
