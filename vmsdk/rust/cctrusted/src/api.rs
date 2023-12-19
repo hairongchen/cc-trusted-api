@@ -1,4 +1,5 @@
 use std::result::Result;
+use std::result::Result::Ok;
 use anyhow::*;
 
 use cctrusted_base::cc_type::CcType;
@@ -22,13 +23,15 @@ pub fn get_cc_report(
     cvm.process_cc_report(nonce, data)
 }
 
-pub fn dump_cc_report(report: Vec<u8>) {
+pub fn dump_cc_report(report: Vec<u8>) -> Result {
     let cvm = match CcType::build_cvm() {
         Ok(c) => c,
         Err(e) => return Err(anyhow!("[get_cc_report] error getting quote: {:?}", e)),
     };
 
     cvm.dump_cc_report(report);
+
+    Ok()
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data

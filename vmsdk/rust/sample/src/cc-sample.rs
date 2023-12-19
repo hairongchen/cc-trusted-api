@@ -9,10 +9,13 @@ fn main() {
     let quote = match get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
-            panic!("error getting TDX report: {:?}", e);
+            println!("error getting TDX report: {:?}", e);
         }
     };
 
     // dump the cc report
-    dump_cc_report(quote);
+    match dump_cc_report(quote) {
+        Ok(_) => _,
+        Err(e) => println!("error dump quote: {:?}", e),
+    };
 }
