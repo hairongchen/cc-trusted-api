@@ -21,6 +21,6 @@ fn main() {
         }
     };
 
-
+    // dump the cc report
     dump_cc_report(quote);
 }
