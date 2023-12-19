@@ -14,7 +14,7 @@ pub fn get_cc_report(
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
     match CcType::build_cvm() {
-        Ok(cvm) => {
+        Ok(mut cvm) => {
             // call CVM trait defined methods
             cvm.dump();
             cvm.process_cc_report(nonce, data)
