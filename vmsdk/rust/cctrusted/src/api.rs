@@ -44,12 +44,3 @@ pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
     todo!()
 }
 
-pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
-    // instance a cvm according to detected TEE type
-    let cvm = CcType::build_cvm();
-
-    Ok(Algo {
-        algo_id: cvm.algo_id,
-        algo_id_str: cvm.get_algorithm_string(),
-    })
-}
