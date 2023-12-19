@@ -25,7 +25,7 @@ pub fn get_cc_report(
 
 pub fn dump_cc_report(report: Vec<u8>) -> Result<(), anyhow::Error> {
     match CcType::build_cvm() {
-        Ok(cvm) => cvm.dump_cc_report(report),
+        Ok(cvm) => Ok(cvm.dump_cc_report(report)),
         Err(e) => return Err(anyhow!("[dump_cc_report] error dump quote: {:?}", e)),
     }
 }
