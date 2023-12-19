@@ -9,9 +9,6 @@ use std::path::Path;
 use anyhow::*;
 use std::result::Result::Ok;
 
-//struct TdReport {}
-
-//struct TdxQuote {}
 /*
     TdxVM is an abstraction of TDX running environment, it contains:
         cc_type: should always be TDX
