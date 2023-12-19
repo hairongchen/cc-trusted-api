@@ -1,5 +1,5 @@
 use cctrusted::api_data::*;
-use cctrusted::api::{dump_cc_report, get_cc_report, get_default_algorithm};
+use cctrusted::api::{dump_cc_report, get_cc_report};
 
 fn main() {
     let nonce = "MTIzNDU2Nzg=".to_string();
