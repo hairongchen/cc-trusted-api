@@ -1,9 +1,7 @@
 use std::result::Result;
 
-use cctrusted_base::cc_type::{TeeType, CcType};
-use cctrusted_base::cvm::Dump;
+use cctrusted_base::cc_type::CcType;
 use cctrusted_base::tcg::TcgDigest;
-use cctrusted_base::tdx::tdvm::TdxVM;
 
 use crate::api_data::*;
 
@@ -20,10 +18,11 @@ pub fn get_cc_report(
     cvm.process_cc_report(nonce, data)
 }
 
-pub fn dump_cc_report(self, report: Vec<u8>) {
-    let cvm = CcType::build_cvm();
+pub fn dump_cc_report(report: Vec<u8>) {
+    let mut cvm = CcType::build_cvm();
 
-    cvm.dump_cc_report(report);
+    cvm.cc_report_raw = report;
+    cvm.dump_cc_report();
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
