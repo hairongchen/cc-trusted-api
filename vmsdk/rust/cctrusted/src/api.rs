@@ -23,13 +23,11 @@ pub fn get_cc_report(
     cvm.process_cc_report(nonce, data)
 }
 
-pub fn dump_cc_report(report: Vec<u8>) -> Result<success: bool, , anyhow::Error> {
+pub fn dump_cc_report(report: Vec<u8>) -> Result<(), anyhow::Error> {
     match CcType::build_cvm() {
         Ok(cvm) => cvm.dump_cc_report(report),
         Err(e) => return Err(anyhow!("[dump_cc_report] error dump quote: {:?}", e)),
-    };
-
-    true
+    }
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
