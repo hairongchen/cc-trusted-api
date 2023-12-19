@@ -17,6 +17,9 @@ fn main() {
     // dump the cc report
     match dump_cc_report(quote) {
         Ok(_) => (),
-        Err(e) => println!("error dump quote: {:?}", e),
+        Err(e) => {
+            println!("error dump quote: {:?}", e);
+            return;
+        }
     };
 }
