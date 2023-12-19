@@ -2,7 +2,7 @@ use anyhow::*;
 use std::result::Result;
 use std::result::Result::Ok;
 
-use cctrusted_base::cc_type::{detect_cc_type, TeeType};
+use cctrusted_base::cc_type::TeeType;
 use cctrusted_base::cvm::CVM;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::tdvm::TdxVM;
@@ -19,7 +19,7 @@ pub struct Algo {
 
 pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
     // instance a cvm according to detected TEE type
-    let cvm = match detect_cc_type().tee_type {
+    let cvm = match TeeType::detect_cc_type().tee_type {
         TeeType::TDX => TdxVM::new(),
         TeeType::SEV => todo!(),
         TeeType::CCA => todo!(),
@@ -40,7 +40,7 @@ pub fn get_cc_report(
     _extra_args: ExtraArgs,
 ) -> Result<Vec<u8>, anyhow::Error> {
     // instance a cvm according to detected TEE type
-    let mut cvm = match detect_cc_type().tee_type {
+    let mut cvm = match TeeType::detect_cc_type().tee_type {
         TeeType::TDX => TdxVM::new(),
         TeeType::SEV => todo!(),
         TeeType::CCA => todo!(),
@@ -54,7 +54,7 @@ pub fn get_cc_report(
 }
 
 pub fn dump_cc_report(report: Vec<u8>) {
-    match detect_cc_type().tee_type {
+    match TeeType::detect_cc_type().tee_type {
         TeeType::TDX => {
             TdxVM::dump_cc_report(report);
         }
