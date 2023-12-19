@@ -9,8 +9,6 @@ use cctrusted_base::tdx::tdvm::TdxVM;
 
 use crate::api_data::*;
 
-use core::panicking::panic;
-
 fn build_cvm() -> Box<dyn CVM> {
     // instance a cvm according to detected TEE type
     match CcType::new().tee_type {
