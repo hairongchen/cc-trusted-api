@@ -3,7 +3,7 @@ use std::result::Result;
 use std::result::Result::Ok;
 
 use cctrusted_base::cc_type::{TeeType, CcType};
-use cctrusted_base::cvm::{CVM, Dump};
+use cctrusted_base::cvm::Dump;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::tdvm::TdxVM;
 
@@ -46,13 +46,7 @@ pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
 
 pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
     // instance a cvm according to detected TEE type
-    let cvm = match CcType::new().tee_type {
-        TeeType::TDX => TdxVM::new(),
-        TeeType::SEV => todo!(),
-        TeeType::CCA => todo!(),
-        TeeType::TPM => todo!(),
-        TeeType::PLAIN => return Err(anyhow!("[get_cc_report] Error: not in any TEE!")),
-    };
+    let cvm = CcType::build_cvm();
 
     Ok(Algo {
         algo_id: cvm.algo_id,
