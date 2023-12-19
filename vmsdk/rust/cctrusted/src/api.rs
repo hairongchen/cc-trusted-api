@@ -9,7 +9,7 @@ use cctrusted_base::tdx::tdvm::TdxVM;
 
 use crate::api_data::*;
 
-fn build_cvm() -> Box<dyn Trait> {
+fn build_cvm() -> Box<dyn CVM> {
     // instance a cvm according to detected TEE type
     match CcType::new().tee_type {
         TeeType::TDX => TdxVM::new(),
