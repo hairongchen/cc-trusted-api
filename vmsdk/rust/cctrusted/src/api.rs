@@ -15,7 +15,7 @@ pub fn get_cc_report(
 ) -> Result<Vec<u8>, anyhow::Error> {
      let mut cvm = match CcType::build_cvm() {
         Ok(c) => c,
-        Err(e) => return Err(anyhow!("[get_cc_report] error getting quote: {:?}", e)),
+        Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
     };
 
     // call CVM trait defined methods
@@ -23,15 +23,13 @@ pub fn get_cc_report(
     cvm.process_cc_report(nonce, data)
 }
 
-pub fn dump_cc_report(report: Vec<u8>) -> Result {
-    let cvm = match CcType::build_cvm() {
-        Ok(c) => c,
-        Err(e) => return Err(anyhow!("[get_cc_report] error getting quote: {:?}", e)),
+pub fn dump_cc_report(report: Vec<u8>) -> Result<success: bool, , anyhow::Error> {
+    match CcType::build_cvm() {
+        Ok(cvm) => cvm.dump_cc_report(report),
+        Err(e) => return Err(anyhow!("[dump_cc_report] error dump quote: {:?}", e)),
     };
 
-    cvm.dump_cc_report(report);
-
-    Ok()
+    true
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
