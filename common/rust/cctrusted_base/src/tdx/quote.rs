@@ -40,7 +40,7 @@ struct tdx_quote_hdr {
 }
 
 #[repr(C)]
-#![warn(private_in_public)]
+#![allow(private_in_public)]
 struct tdx_quote_req {
     buf: u64, // Pass user data that includes TDREPORT as input. Upon successful completion of IOCTL, output is copied back to the same buffer
     len: u64, // Length of the Quote buffer
