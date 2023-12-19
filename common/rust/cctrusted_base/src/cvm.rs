@@ -23,6 +23,9 @@ pub trait CVM {
     fn parse_cc_report(&self);
     fn parse_cc_measurement(&self);
     fn parse_cc_eventlog(&self);
+
+    //Dump confidential VM information
+    fn dump(&self);
 }
 
 pub trait Dump {
@@ -31,6 +34,4 @@ pub trait Dump {
     fn dump_cc_measurement();
     fn dump_cc_eventlog();
 
-    //Dump confidential VM information
-    fn dump(&self);
 }

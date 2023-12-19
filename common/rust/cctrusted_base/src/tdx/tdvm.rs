@@ -106,6 +106,16 @@ impl CVM for TdxVM {
     fn parse_cc_eventlog(&self) {
         todo!()
     }
+
+    fn dump(&self) {
+        println!("======================================");
+        println!("CVM type = {}", self.cc_type.tee_type_str);
+        println!(
+            "CVM version = {}",
+            TDX_VERSION_MAP.get(&self.version).unwrap().to_owned()
+        );
+        println!("======================================");
+    }
 }
 
 impl Dump for TdxVM {
@@ -172,16 +182,6 @@ impl Dump for TdxVM {
     }
     fn dump_cc_eventlog() {
         todo!()
-    }
-
-    fn dump(&self) {
-        println!("======================================");
-        println!("CVM type = {}", self.cc_type.tee_type_str);
-        println!(
-            "CVM version = {}",
-            TDX_VERSION_MAP.get(&self.version).unwrap().to_owned()
-        );
-        println!("======================================");
     }
 }
 
