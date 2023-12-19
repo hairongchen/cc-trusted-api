@@ -56,4 +56,15 @@ impl CcType {
             tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned(),
         }
     }
+
+    fn build_cvm() -> Box<dyn CVM> {
+        // instance a cvm according to detected TEE type
+        match CcType::new().tee_type {
+            TeeType::TDX => Box::new(TdxVM::new()),
+            TeeType::SEV => todo!(),
+            TeeType::CCA => todo!(),
+            TeeType::TPM => todo!(),
+            TeeType::PLAIN => panic!("[get_cc_report] Error: not in any TEE!"),
+        }
+    }
 }

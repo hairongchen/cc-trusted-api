@@ -6,19 +6,9 @@ use cctrusted_base::cc_type::{TeeType, CcType};
 use cctrusted_base::cvm::{CVM, Dump};
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::tdvm::TdxVM;
+use cctrusted_base::cc_type::build_cvm;
 
 use crate::api_data::*;
-
-fn build_cvm() -> Box<dyn CVM> {
-    // instance a cvm according to detected TEE type
-    match CcType::new().tee_type {
-        TeeType::TDX => Box::new(TdxVM::new()),
-        TeeType::SEV => todo!(),
-        TeeType::CCA => todo!(),
-        TeeType::TPM => todo!(),
-        TeeType::PLAIN => panic!("[get_cc_report] Error: not in any TEE!"),
-    }
-}
 
 // this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
 pub fn get_cc_report(
