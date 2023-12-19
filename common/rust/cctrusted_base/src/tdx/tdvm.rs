@@ -135,6 +135,8 @@ impl CVM for TdxVM {
                 Some(_) => {
                     if v < 0x9 || v > 0xD {
                         printstr.push_str(std::str::from_utf8(&[v]).unwrap());
+                    } else {
+                        printstr.push_str(".");
                     }
 
                 }
