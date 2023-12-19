@@ -5,7 +5,7 @@ edition = "2021"
 
 [lib]
 name = "cctrusted"
-path = "src/api.rs"
+path = "src/lib.rs"
 
 [dependencies]
 cctrusted_base = { path = "../../../common/rust/cctrusted_base" }
