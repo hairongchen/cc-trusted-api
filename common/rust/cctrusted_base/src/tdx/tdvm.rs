@@ -121,6 +121,8 @@ impl CVM for TdxVM {
 
 impl TcgAlgorithmRegistry for TdxVM {
     fn get_algorithm_id(&self) -> u8 {
-        &self.algo_id
+        self.algo_id
     }
 }
+
+impl BuildCVM for TdxVM {}
