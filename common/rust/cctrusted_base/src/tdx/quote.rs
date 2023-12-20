@@ -8,7 +8,6 @@ use std::os::unix::io::AsRawFd;
 use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
-use log::*;
 
 use super::common::*;
 use super::tdvm::*;
@@ -148,7 +147,6 @@ impl TdxVM {
 
         //inspect the response and retrive quote data
         let out_len = quote_header.out_len;
-        info!("quote version: {}",quote_header.version);
         let qgs_msg_resp_size =
             unsafe { std::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
 
