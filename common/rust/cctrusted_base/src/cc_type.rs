@@ -4,7 +4,6 @@ use std::collections::HashMap;
 use std::path::Path;
 use multi_trait_object::*;
 
-use crate::cvm::CVM;
 use crate::tdx::tdvm::TdxVM;
 
 // supported TEE types

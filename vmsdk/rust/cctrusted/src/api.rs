@@ -2,7 +2,7 @@ use std::result::Result;
 use std::result::Result::Ok;
 use anyhow::*;
 
-use cctrusted_base::cc_type::{CcType,ALGO_NAME_MAP};
+use cctrusted_base::cc_type::{CcType,ALGO_NAME_MAP, BuildCVM};
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::binary_blob::dump_data;
 

@@ -4,7 +4,7 @@ use log::info;
 
 use crate::cc_type::*;
 use crate::cvm::*;
-use crate::tcg::{TcgAlgorithmRegistry, ALGO_NAME_MAP};
+use crate::tcg::TcgAlgorithmRegistry;
 use crate::tdx::common::*;
 use crate::tdx::rtmr::TdxRTMR;
 use std::path::Path;
