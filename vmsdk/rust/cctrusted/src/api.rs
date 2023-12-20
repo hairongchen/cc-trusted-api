@@ -4,6 +4,7 @@ use anyhow::*;
 
 use cctrusted_base::cc_type::CcType;
 use cctrusted_base::tcg::TcgDigest;
+use cctrusted_base::binary_blob::dump_data;
 
 use crate::api_data::*;
 
@@ -24,10 +25,7 @@ pub fn get_cc_report(
 }
 
 pub fn dump_cc_report(report: Vec<u8>) -> Result<(), anyhow::Error> {
-    match CcType::build_cvm() {
-        Ok(cvm) => Ok(cvm.dump_cc_report(report)),
-        Err(e) => return Err(anyhow!("[dump_cc_report] error dump quote: {:?}", e)),
-    }
+    Ok(dump_data(report))
 }
 
 // this CC API takes IMR register index and algorithm ID as input and returns the IMR data
