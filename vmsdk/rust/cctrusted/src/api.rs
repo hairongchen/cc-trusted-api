@@ -2,8 +2,8 @@ use std::result::Result;
 use std::result::Result::Ok;
 use anyhow::*;
 
-use cctrusted_base::cc_type::{CcType,ALGO_NAME_MAP, BuildCVM};
-use cctrusted_base::tcg::TcgDigest;
+use cctrusted_base::cc_type::CcType;
+use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 use cctrusted_base::binary_blob::dump_data;
 
 use crate::api_data::*;
@@ -44,7 +44,7 @@ pub fn get_default_algorithm() -> Result<Algo, anyhow::Error>{
             // call CVM trait defined methods
             let algo_id = cvm.get_algorithm_id();
             Ok(Algo{
-                algo_id: cvm.algo_id,
+                algo_id: algo_id,
                 algo_id_str: ALGO_NAME_MAP.get(algo_id).unwrap().to_owned()
             })
         },
