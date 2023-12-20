@@ -1,6 +1,6 @@
 use log::*;
 use cctrusted::api_data::*;
-use cctrusted::api::{dump_cc_report, get_cc_report};
+use cctrusted::api::{dump_cc_report, get_cc_report, get_default_algorithm};
 
 fn main() {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
@@ -32,8 +32,8 @@ fn main() {
     info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");
     match get_default_algorithm() {
         Ok(algo) => {
-            info!("supported algorithm: {}", algo.algo_id_str),
-            (),
+            info!("supported algorithm: {}", algo.algo_id_str);
+            ();
         },
         Err(e) => {
             error!("error get algorithm: {:?}", e);
