@@ -10,3 +10,4 @@ path = "src/cc-sample.rs"
 [dependencies]
 cctrusted = { path = "../cctrusted" }
 anyhow = "1.0"
+log = "0.4.20"

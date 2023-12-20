@@ -1,3 +1,5 @@
+use log::{info, warn};
+
 /* dumnp cc data(TDX quote) in following format:
     00000000 04 00 02 00 81 00 00 00 00 00 00 00 93 9A 72 33  ..............r3
     00000010 F7 9C 4C A9 94 0A 0D B3 95 7F 06 07 D5 68 59 C7  ..L..........hY.
@@ -23,7 +25,7 @@ pub fn dump_data(data: Vec<u8>) {
     while usize::from(index) < data.len() {
         if index % 16 == 0 {
             if printstr.len() != 0 {
-                println!("{} {}", linestr, printstr);
+                info!("{} {}", linestr, printstr);
                 printstr = "".to_string();
             }
             linestr = format!("{:08X} ", ((index / 16) as u16) * 16);
@@ -50,9 +52,9 @@ pub fn dump_data(data: Vec<u8>) {
         for _ in 1..=(16 - index % 16) {
             blank.push_str("   ");
         }
-        println!("{}{} {}", linestr, blank, printstr);
+        info!("{}{} {}", linestr, blank, printstr);
     } else if usize::from(index) == data.len() {
-        println!("{} {}", linestr, printstr);
+        info!("{} {}", linestr, printstr);
     }
 }
 
