@@ -26,9 +26,4 @@ pub trait CVM {
 
     //Dump confidential VM information
     fn dump(&self);
-
-    // show the raw data in hex format
-    fn dump_cc_report(&self, report: Vec<u8>);
-    fn dump_cc_measurement(&self);
-    fn dump_cc_eventlog(&self);    
 }

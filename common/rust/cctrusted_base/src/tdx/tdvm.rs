@@ -116,13 +116,6 @@ impl CVM for TdxVM {
         );
         println!("======================================");
     }
-
-    fn dump_cc_measurement(&self) {
-        todo!()
-    }
-    fn dump_cc_eventlog(&self) {
-        todo!()
-    }
 }
 
 impl TcgAlgorithmRegistry for TdxVM {
