@@ -5,7 +5,7 @@
 ...
 */
 
-fn dump_data(data: Vec<u8>) {
+pub fn dump_data(data: Vec<u8>) {
     let mut index: usize = 0;
     let mut linestr = "".to_string();
     let mut printstr = "".to_string();
