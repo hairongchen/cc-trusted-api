@@ -22,7 +22,7 @@ lazy_static! {
 
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
-    fn get_algorithm_string(&self) -> String;
+    fn get_algorithm_id(&self) -> u8;
 }
 
 // digest format: (algo id, hash value)

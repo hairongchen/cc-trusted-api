@@ -42,10 +42,11 @@ pub fn get_default_algorithm() -> Result<Algo, anyhow::Error>{
     match CcType::build_cvm() {
         Ok(cvm) => {
             // call CVM trait defined methods
-            Algo{
+            let algo_id = cvm.get_algorithm_id();
+            Ok(Algo{
                 algo_id: cvm.algo_id,
-                algo_id_str: ALGO_NAME_MAP.get(cvm.algo_id).unwrap().to_owned()
-            }
+                algo_id_str: ALGO_NAME_MAP.get(algo_id).unwrap().to_owned()
+            })
         },
         Err(e) => return Err(anyhow!("[get_default_algorithm] error get algorithm: {:?}", e)),
     }
