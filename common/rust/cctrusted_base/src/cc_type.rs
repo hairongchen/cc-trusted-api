@@ -66,7 +66,7 @@ impl CcType {
         }
     }
 
-    pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
+    pub fn build_cvm() -> Result<Box<dyn CVM + TcgAlgorithmRegistry>, anyhow::Error> {
         // instance a cvm according to detected TEE type
         match CcType::new().tee_type {
             TeeType::TDX => Ok(Box::new(TdxVM::new())),
