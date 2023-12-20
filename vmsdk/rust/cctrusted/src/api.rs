@@ -2,7 +2,7 @@ use std::result::Result;
 use std::result::Result::Ok;
 use anyhow::*;
 
-use cctrusted_base::cc_type::CcType;
+use cctrusted_base::cc_type::{CcType,ALGO_NAME_MAP};
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::binary_blob::dump_data;
 
@@ -36,5 +36,18 @@ pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
 // this CC API takes eventlog start offset and count as input and returns the eventlog data
 pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
     todo!()
+}
+
+pub fn get_default_algorithm() -> Result<Algo, anyhow::Error>{
+    match CcType::build_cvm() {
+        Ok(cvm) => {
+            // call CVM trait defined methods
+            Algo{
+                algo_id: cvm.algo_id,
+                algo_id_str: ALGO_NAME_MAP.get(cvm.algo_id).unwrap().to_owned()
+            }
+        },
+        Err(e) => return Err(anyhow!("[get_default_algorithm] error get algorithm: {:?}", e)),
+    }
 }
 
