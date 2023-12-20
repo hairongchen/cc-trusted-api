@@ -60,8 +60,6 @@ impl TdxVM {
             TdxVersion::TDX_1_0
         } else if Path::new(TEE_TDX_1_5_PATH).exists() {
             TdxVersion::TDX_1_5
-        } else {
-            panic!("get_tdx_version: no TDX device found!");
         }
     }
 }
