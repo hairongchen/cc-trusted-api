@@ -1,8 +1,10 @@
-use log::info;
+use log::*;
 use cctrusted::api_data::*;
 use cctrusted::api::{dump_cc_report, get_cc_report};
 
 fn main() {
+    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
+    
     let nonce = "MTIzNDU2Nzg=".to_string();
     let data = "YWJjZGVmZw==".to_string();
 

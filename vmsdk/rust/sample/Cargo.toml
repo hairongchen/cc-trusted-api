@@ -11,3 +11,4 @@ path = "src/cc-sample.rs"
 cctrusted = { path = "../cctrusted" }
 anyhow = "1.0"
 log = "0.4.20"
+env_logger = "0.10.0"
