@@ -1,6 +1,6 @@
 use anyhow::*;
-use std::result::Result::Ok;
 use log::info;
+use std::result::Result::Ok;
 
 use crate::cc_type::*;
 use crate::cvm::*;
@@ -84,7 +84,6 @@ impl CVM for TdxVM {
             Ok(q) => Ok(q),
             Err(e) => return Err(anyhow!("[get_cc_report] error getting TDX quote: {:?}", e)),
         }
-
     }
 
     // retrieve TDX RTMR

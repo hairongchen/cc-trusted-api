@@ -1,11 +1,11 @@
 use anyhow::*;
-use std::result::Result;
 use std::collections::HashMap;
 use std::path::Path;
+use std::result::Result;
 
-use crate::tdx::tdvm::TdxVM;
 use crate::cvm::CVM;
 use crate::tcg::TcgAlgorithmRegistry;
+use crate::tdx::tdvm::TdxVM;
 
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]

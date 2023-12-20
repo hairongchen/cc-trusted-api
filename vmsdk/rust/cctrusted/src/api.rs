@@ -1,10 +1,10 @@
+use anyhow::*;
 use std::result::Result;
 use std::result::Result::Ok;
-use anyhow::*;
 
+use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::cc_type::CcType;
 use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
-use cctrusted_base::binary_blob::dump_data;
 
 use crate::api_data::*;
 
@@ -19,7 +19,7 @@ pub fn get_cc_report(
             // call CVM trait defined methods
             cvm.dump();
             cvm.process_cc_report(nonce, data)
-        },
+        }
         Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
     }
 }
@@ -38,17 +38,21 @@ pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
     todo!()
 }
 
-pub fn get_default_algorithm() -> Result<Algo, anyhow::Error>{
+pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
     match CcType::build_cvm() {
         Ok(cvm) => {
             // call CVM trait defined methods
             let algo_id = cvm.get_algorithm_id();
-            Ok(Algo{
+            Ok(Algo {
                 algo_id: algo_id,
-                algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned()
+                algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
             })
-        },
-        Err(e) => return Err(anyhow!("[get_default_algorithm] error get algorithm: {:?}", e)),
+        }
+        Err(e) => {
+            return Err(anyhow!(
+                "[get_default_algorithm] error get algorithm: {:?}",
+                e
+            ))
+        }
     }
 }
-

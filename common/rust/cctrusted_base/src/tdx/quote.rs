@@ -174,7 +174,10 @@ impl TdxVM {
         Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
 
-    fn generate_qgs_quote_msg(&self, report: [u8; TDX_REPORT_LEN as usize]) -> qgs_msg_get_quote_req {
+    fn generate_qgs_quote_msg(
+        &self,
+        report: [u8; TDX_REPORT_LEN as usize],
+    ) -> qgs_msg_get_quote_req {
         //build quote service message header to be used by QGS
         let qgs_header = qgs_msg_header {
             major_version: 1,
@@ -183,7 +186,7 @@ impl TdxVM {
             size: 16 + 8 + TDX_REPORT_LEN, // header + report_size and id_list_size + TDX_REPORT_LEN
             error_code: 0,
         };
-    
+
         //build quote service message body to be used by QGS
         let mut qgs_request = qgs_msg_get_quote_req {
             header: qgs_header,
@@ -191,9 +194,9 @@ impl TdxVM {
             id_list_size: 0,
             report_id_list: [0; TDX_REPORT_LEN as usize],
         };
-    
+
         qgs_request.report_id_list.copy_from_slice(&report[0..]);
-    
+
         qgs_request
-    }    
+    }
 }

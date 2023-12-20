@@ -1,10 +1,10 @@
-use log::*;
-use cctrusted::api_data::*;
 use cctrusted::api::{dump_cc_report, get_cc_report, get_default_algorithm};
+use cctrusted::api_data::*;
+use log::*;
 
 fn main() {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-    
+
     let nonce = "MTIzNDU2Nzg=".to_string();
     let data = "YWJjZGVmZw==".to_string();
 
@@ -34,7 +34,7 @@ fn main() {
         Ok(algo) => {
             info!("supported algorithm: {}", algo.algo_id_str);
             ();
-        },
+        }
         Err(e) => {
             error!("error get algorithm: {:?}", e);
             return;
