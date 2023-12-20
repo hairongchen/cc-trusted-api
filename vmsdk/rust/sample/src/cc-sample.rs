@@ -9,19 +9,21 @@ fn main() {
     let data = "YWJjZGVmZw==".to_string();
 
     // retrieve cc report
+    info!("call cc trusted API [get_cc_report] to retrieve cc report!")
     let quote = match get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
-            err!("error getting TDX report: {:?}", e);
+            error!("error getting TDX report: {:?}", e);
             return;
         }
     };
 
     // dump the cc report
+    info!("call cc trusted API [dump_cc_report] to dump cc report!")
     match dump_cc_report(quote) {
         Ok(_) => (),
         Err(e) => {
-            err!("error dump quote: {:?}", e);
+            error!("error dump quote: {:?}", e);
             return;
         }
     };
