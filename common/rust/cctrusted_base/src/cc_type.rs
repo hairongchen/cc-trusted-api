@@ -42,6 +42,8 @@ pub struct CcType {
     pub tee_type_str: String,
 }
 
+impl_trait_object!(BuildCVM, dyn CVM, dyn TcgAlgorithmRegistry);
+
 impl CcType {
     // a function to detect the TEE type
     pub fn new() -> CcType {
@@ -61,8 +63,6 @@ impl CcType {
             tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned(),
         }
     }
-
-    impl_trait_object!(BuildCVM, dyn CVM, dyn TcgAlgorithmRegistry);
 
     pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
         // instance a cvm according to detected TEE type
