@@ -5,6 +5,8 @@ use std::path::Path;
 use multi_trait_object::*;
 
 use crate::tdx::tdvm::TdxVM;
+use crate::cvm::CVM;
+use crate::tcg::TcgAlgorithmRegistry;
 
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]
