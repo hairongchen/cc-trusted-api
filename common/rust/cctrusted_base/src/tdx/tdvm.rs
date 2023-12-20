@@ -60,6 +60,8 @@ impl TdxVM {
             TdxVersion::TDX_1_0
         } else if Path::new(TEE_TDX_1_5_PATH).exists() {
             TdxVersion::TDX_1_5
+        } else {
+            TdxVersion::TDX_1_0
         }
     }
 }
