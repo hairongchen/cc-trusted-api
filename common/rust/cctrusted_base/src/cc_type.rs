@@ -43,7 +43,8 @@ pub struct CcType {
     pub tee_type_str: String,
 }
 
-trait BuildCVM: CVM + TcgAlgorithmRegistry {}
+// used for return of Boxed trait object in build_cvm()
+pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
 
 impl CcType {
     // a function to detect the TEE type
