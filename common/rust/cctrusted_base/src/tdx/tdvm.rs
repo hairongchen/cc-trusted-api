@@ -15,8 +15,8 @@ use std::path::Path;
         version: 1.0 or 1.5
         device_node: /dev/tdx-guest or /dev/tdx_guest
         algo_id: should be TPM_ALG_SHA384
-        cc_report_raw: the raw tdx quote in byte vector, filled by get_cc_report()
-        td_report_raw: the raw td report in byte vector, filled by get_cc_report()
+        cc_report_raw: the raw tdx quote in byte vector
+        td_report_raw: the raw td report in byte vector
         rtrms: TDX rtmr algorithm and hash, filled by get_cc_measurement()
 */
 pub struct TdxVM {
