@@ -2,7 +2,6 @@ use anyhow::*;
 use std::result::Result;
 use std::collections::HashMap;
 use std::path::Path;
-use multi_trait_object::*;
 
 use crate::tdx::tdvm::TdxVM;
 use crate::cvm::CVM;
@@ -44,9 +43,7 @@ pub struct CcType {
     pub tee_type_str: String,
 }
 
-struct BuildCVM{}
-
-impl_trait_object!(BuildCVM, dyn CVM, dyn TcgAlgorithmRegistry);
+trait BuildCVM: CVM + TcgAlgorithmRegistry {}
 
 impl CcType {
     // a function to detect the TEE type
