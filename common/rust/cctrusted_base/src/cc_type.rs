@@ -44,6 +44,8 @@ pub struct CcType {
     pub tee_type_str: String,
 }
 
+struct BuildCVM{}
+
 impl_trait_object!(BuildCVM, dyn CVM, dyn TcgAlgorithmRegistry);
 
 impl CcType {
