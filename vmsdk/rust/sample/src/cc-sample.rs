@@ -12,7 +12,7 @@ fn main() {
     let quote = match get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
-            info!("error getting TDX report: {:?}", e);
+            err!("error getting TDX report: {:?}", e);
             return;
         }
     };
@@ -21,7 +21,7 @@ fn main() {
     match dump_cc_report(quote) {
         Ok(_) => (),
         Err(e) => {
-            info!("error dump quote: {:?}", e);
+            err!("error dump quote: {:?}", e);
             return;
         }
     };
