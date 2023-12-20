@@ -1,4 +1,4 @@
-use log::{info, warn};
+use log::info;
 
 /* dumnp cc data(TDX quote) in following format:
     00000000 04 00 02 00 81 00 00 00 00 00 00 00 93 9A 72 33  ..............r3

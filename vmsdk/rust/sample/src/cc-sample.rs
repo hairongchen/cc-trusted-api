@@ -1,3 +1,4 @@
+use log::info;
 use cctrusted::api_data::*;
 use cctrusted::api::{dump_cc_report, get_cc_report};
 
