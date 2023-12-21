@@ -38,6 +38,7 @@ pub const TEE_SEV_PATH: &str = "/dev/sev-guest";
 pub const TEE_CCA_PATH: &str = "";
 
 // holds the TEE type info
+#[derive(Clone)]
 pub struct CcType {
     pub tee_type: TeeType,
     pub tee_type_str: String,
