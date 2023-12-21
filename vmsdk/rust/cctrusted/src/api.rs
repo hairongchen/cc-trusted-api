@@ -40,11 +40,12 @@ pub fn get_cc_report(
                     Err(e) => {
                         error!("error getting cc report: {:?}", e);
                         return;
-                },
+                    },
                 cc_type: cvm.get_cc_type()
+                }
             }
-        }
         Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
+        }
     }
 }
 
