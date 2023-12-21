@@ -1,13 +1,5 @@
 use cctrusted_base::cc_type::CcType;
 
-pub enum LocalTeeType {
-    PLAIN = -1,
-    TDX = 0,
-    SEV = 1,
-    CCA = 2,
-    TPM = 3,
-}
-
 // this struct is used in vTPM and other TEE scenarios
 // e.g.: vTPM may need report based on selective PCRs
 pub struct ExtraArgs {}
