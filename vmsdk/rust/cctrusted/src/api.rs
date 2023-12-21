@@ -57,9 +57,9 @@ pub fn dump_cc_report(report: Vec<u8>) -> Result<(), anyhow::Error> {
         algo_id (u8): the alrogithms ID
     
     Returns:
-        The array of TcgDigest struct implement TcgIMR trait
+        TcgDigest struct
  */
-pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
+pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
     todo!()
 }
 
@@ -73,9 +73,9 @@ pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
     OS type and cloud native type event beyond the measured-boot.
 
     Returns:
-        array of TcgEventLog struct
+        TcgEventLog struct
 */
-pub fn get_cc_eventlog(_start: u16, _count: u16) -> Vec<TcgEventLog> {
+pub fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
     todo!()
 }
 
