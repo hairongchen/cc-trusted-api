@@ -41,7 +41,7 @@ pub fn get_cc_report(
                         error!("error get cc report: {:?}", e);
                         return;
                     },
-                }
+                },
                 cc_type: cvm.get_cc_type()
             })
         }

@@ -6,8 +6,8 @@ use cctrusted_base::cc_type::CcType;
 pub struct ExtraArgs {}
 
 pub struct CcReport {
-    cc_report: Vec<u8>,
-    cc_type: CcType
+    pub cc_report: Vec<u8>,
+    pub cc_type: CcType
 }
 
 impl CcReport {
