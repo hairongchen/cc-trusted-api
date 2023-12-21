@@ -2,7 +2,6 @@ use anyhow::*;
 use std::result::Result;
 use std::result::Result::Ok;
 
-use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::cc_type::CcType;
 use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
@@ -36,11 +35,16 @@ pub fn get_cc_report(
             // call CVM trait defined methods
             cvm.dump();
             CcReport {
-                cc_report: cvm.process_cc_report(nonce, data),
-                cc_type: cvm.cc_type
-            };
-        Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
+                cc_report: match cvm.process_cc_report(nonce, data){
+                    Ok(r) => r,
+                    Err(e) => {
+                        error!("error getting cc report: {:?}", e);
+                        return;
+                },
+                cc_type: cvm.get_cc_type()
+            }
         }
+        Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
     }
 }
 

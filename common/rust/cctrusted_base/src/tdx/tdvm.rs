@@ -108,6 +108,10 @@ impl CVM for TdxVM {
         todo!()
     }
 
+    fn get_cc_type(&self) -> CcType{
+        return self.cc_type;
+    }
+
     fn dump(&self) {
         info!("======================================");
         info!("CVM type = {}", self.cc_type.tee_type_str);

@@ -1,4 +1,5 @@
 use crate::tcg::TcgDigest;
+use crate::cc_type::CcType;
 
 // holds the device node info
 pub struct DeviceNode {
@@ -44,6 +45,7 @@ pub trait CVM {
     fn parse_cc_measurement(&self);
     fn parse_cc_eventlog(&self);
 
+    fn get_cc_type(&self) -> CcType;
     //Dump confidential VM information
     fn dump(&self);
 }
