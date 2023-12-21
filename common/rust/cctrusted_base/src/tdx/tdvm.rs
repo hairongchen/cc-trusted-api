@@ -98,7 +98,7 @@ impl CVM for TdxVM {
     }
 
     fn parse_cc_report(&self) {
-        todo!()
+        info!("TODO: parse the TDX quote!")
     }
 
     fn parse_cc_measurement(&self) {
