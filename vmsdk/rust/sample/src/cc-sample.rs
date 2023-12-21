@@ -35,7 +35,7 @@ fn main() {
         }
     };
 
-    if report.cc_type.tee_type == TeeType::TDX{
+    if report.cc_type.tee_type == LocalTeeType::TDX{
         let tdx_quote: TdxQuote = ParsedCcReport::parse_cc_report(report.cc_report);
         info!("name = {}, var1 = {}", tdx_quote.name, tdx_quote.var1);
     }
