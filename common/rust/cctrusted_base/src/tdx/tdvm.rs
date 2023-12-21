@@ -109,7 +109,7 @@ impl CVM for TdxVM {
     }
 
     fn get_cc_type(&self) -> CcType{
-        return self.cc_type;
+        return self.cc_type.clone();
     }
 
     fn dump(&self) {
