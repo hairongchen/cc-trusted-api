@@ -38,8 +38,7 @@ pub fn get_cc_report(
                 cc_report: match cvm.process_cc_report(nonce, data){
                     Ok(r) => r,
                     Err(e) => {
-                        error!("error get cc report: {:?}", e);
-                        return;
+                        return Err(anyhow!("[get_cc_report] error get cc report: {:?}", e));
                     },
                 },
                 cc_type: cvm.get_cc_type()
