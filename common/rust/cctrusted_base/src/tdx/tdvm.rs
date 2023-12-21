@@ -11,13 +11,13 @@ use std::path::Path;
 
 /*
     TdxVM is an abstraction of TDX running environment, it contains:
-        cc_type: should always be TDX
-        version: 1.0 or 1.5
+        cc_type: should always be CcType built with TeeType::TDX
+        version: TdxVersion::TDX_1_0 or TdxVersion::TDX_1_5
         device_node: /dev/tdx-guest or /dev/tdx_guest
         algo_id: should be TPM_ALG_SHA384
-        cc_report_raw: the raw tdx quote in byte vector
-        td_report_raw: the raw td report in byte vector
-        rtrms: TDX rtmr algorithm and hash, filled by get_cc_measurement()
+        cc_report_raw: the raw tdx quote in byte array
+        td_report_raw: the raw td report in byte array
+        rtrms: array of TdxRTMR struct
 */
 pub struct TdxVM {
     pub cc_type: CcType,
@@ -29,8 +29,9 @@ pub struct TdxVM {
     pub rtrms: Vec<TdxRTMR>,
 }
 
-// implement the structure create function
+// implement the structure method and associated function
 impl TdxVM {
+    // associated function: to build a TdxVM sturcture instance
     pub fn new() -> TdxVM {
         let cc_type = CcType {
             tee_type: TeeType::TDX,
@@ -54,7 +55,7 @@ impl TdxVM {
         }
     }
 
-    // function to detect the TDX version
+    // associated function to detect the TDX version
     fn get_tdx_version() -> TdxVersion {
         if Path::new(TEE_TDX_1_0_PATH).exists() {
             TdxVersion::TDX_1_0
@@ -66,7 +67,7 @@ impl TdxVM {
     }
 }
 
-// all TdxVM's interfaces should implement CVM trait
+// TdxVM implements the interfaces defined in CVM trait
 impl CVM for TdxVM {
     // retrieve TDX quote
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
@@ -87,7 +88,7 @@ impl CVM for TdxVM {
     }
 
     // retrieve TDX RTMR
-    fn process_cc_measurement(&self) -> () {
+    fn process_cc_measurement(&self, index u8, algo_id u8) -> TcgDigest {
         todo!()
     }
 

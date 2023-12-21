@@ -7,19 +7,34 @@ pub struct CcEventlogs {
     //TODO
 }
 
-/***
-    the interfaces a cvm should support:
-        - dump: show basic CVM info like TEE type and version
-        - process_cc_report: retrive CVM signed report
-        - process_cc_measurement: retrive CVM measurement registers, e.g.: RTMRs, vTPM PCRs, etc.
-        - process_cc_eventlog: retrive CVM eventlog, e.g.: CCEL, IMA log, ect.
-        - parse_cc_report: parse CVM report
-        - parse_cc_measurement: parse CVM measurement
-        - parse_cc_eventlog: parse CVM eventlog
-*/
+// the interfaces a cvm should implement
 pub trait CVM {
+
+    /***
+        retrive CVM signed report
+
+        Args:
+            nonce (String): against replay attacks
+            data (String): user data
+
+        Returns:
+            the cc report byte array or error information
+    */    
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>;
-    fn process_cc_measurement(&self);
+
+    /***
+        retrive CVM measurement registers, e.g.: RTMRs, vTPM PCRs, etc.
+
+        Args:
+            index (u8): the index of measurement register,
+            algo_id (u8): the alrogithms ID
+
+        Returns:
+            TcgDigest struct
+    */   
+    fn process_cc_measurement(&self, index u8, algo_id u8) -> TcgDigest;
+    
+    //TODO!
     fn process_cc_eventlog(&self);
 
     // parse raw data to standard structure defined by TEE or TCG spec

@@ -1,6 +1,6 @@
 use log::info;
 
-/* dumnp cc data(TDX quote) in following format:
+/* dumnp raw cc report in following format:
     00000000 04 00 02 00 81 00 00 00 00 00 00 00 93 9A 72 33  ..............r3
     00000010 F7 9C 4C A9 94 0A 0D B3 95 7F 06 07 D5 68 59 C7  ..L..........hY.
     00000020 35 FB B4 91 29 27 55 B2 E8 E8 23 B6 00 00 00 00  5...)'U...#.....
