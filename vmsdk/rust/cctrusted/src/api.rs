@@ -79,7 +79,20 @@ pub fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
     todo!()
 }
 
-pub fn get_default_algorithm() -> Result<Algo, anyhow::Error> {
+/***
+    Get the default Digest algorithms supported by trusted foundation.
+
+    Different trusted foundation may support different algorithms, for example
+    the Intel TDX use SHA384, TPM uses SHA256.
+
+    Beyond the default digest algorithm, some trusted foundation like TPM
+    may support multiple algorithms.
+
+    Returns:
+        The Algorithm struct
+
+*/
+pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
     match CcType::build_cvm() {
         Ok(cvm) => {
             // call CVM trait defined methods

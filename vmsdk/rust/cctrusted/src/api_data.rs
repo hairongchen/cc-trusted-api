@@ -3,7 +3,7 @@
 pub struct ExtraArgs {}
 
 // return structure for get_default_algorithm
-pub struct Algo {
+pub struct Algorithm {
     pub algo_id: u8,
     pub algo_id_str: String,
 }
