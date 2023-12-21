@@ -10,14 +10,15 @@ pub struct CcReport {
 }
 
 pub struct TdxQuote{
-    name: String,
-    var1: u8
+    pub name: String,
+    pub var1: u8
 }
 
+#[allow(dead_code)]
 pub struct TpmQuote{
-    name: String,
-    var1: u8,
-    var2: u8
+    pub name: String,
+    pub var1: u8,
+    pub var2: u8
 }
 
 pub struct ParsedCcReport {}
