@@ -8,7 +8,23 @@ use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 
 use crate::api_data::*;
 
-// this CC API takes nonce, data and open extra argument structure as input and returns raw TEE report
+/*** 
+    Get the cc report for given nonce and data.
+
+    The cc report is signing of attestation data (IMR values or hashes of IMR
+    values), made by a trusted foundation (TPM) using a key trusted by the
+    verifier.
+    
+    Different trusted foundation may use different cc report format.
+
+    Args:
+        nonce (String): against replay attacks
+        data (String): user data
+        extraArgs: for TPM, it will be given list of IMR/PCRs
+    
+    Returns:
+        The cc report byte array or error information
+*/
 pub fn get_cc_report(
     nonce: String,
     data: String,
@@ -28,13 +44,37 @@ pub fn dump_cc_report(report: Vec<u8>) -> Result<(), anyhow::Error> {
     Ok(dump_data(report))
 }
 
-// this CC API takes IMR register index and algorithm ID as input and returns the IMR data
+/***
+    Get measurement register according to given selected index and algorithms
+
+    Each trusted foundation in CC environment provides the multiple measurement
+    registers, the count is update to ``get_measurement_count()``. And for each
+    measurement register, it may provides multiple digest for different algorithms.
+
+    Args:
+        index (u8): the index of measurement register,
+        algo_id (u8): the alrogithms ID
+    
+    Returns:
+        The array of TcgDigest struct implement TcgIMR trait
+ */
 pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> Vec<TcgDigest> {
     todo!()
 }
 
-// this CC API takes eventlog start offset and count as input and returns the eventlog data
-pub fn get_cc_eventlog(_start: u16, _count: u16) -> () {
+/***
+    Get eventlog for given index and count.
+
+    TCG log in Eventlog. Verify to spoof events in the TCG log, hence defeating
+    remotely-attested measured-boot.
+    
+    To measure the full CC runtime environment, the eventlog may include addtional
+    OS type and cloud native type event beyond the measured-boot.
+
+    Returns:
+        array of TcgEventLog struct
+*/
+pub fn get_cc_eventlog(_start: u16, _count: u16) -> Vec<TcgEventLog> {
     todo!()
 }
 
