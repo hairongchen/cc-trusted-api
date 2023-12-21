@@ -34,7 +34,7 @@ pub fn get_cc_report(
         Ok(mut cvm) => {
             // call CVM trait defined methods
             cvm.dump();
-            CcReport {
+            Ok(CcReport {
                 cc_report: match cvm.process_cc_report(nonce, data){
                     Ok(r) => r,
                     Err(e) => {
@@ -43,7 +43,7 @@ pub fn get_cc_report(
                     },
                 }
                 cc_type: cvm.get_cc_type()
-            }
+            })
         }
         Err(e) => return Err(anyhow!("[get_cc_report] error create cvm: {:?}", e)),
     }
