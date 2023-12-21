@@ -1,3 +1,5 @@
+use crate::tcg::TcgDigest;
+
 // holds the device node info
 pub struct DeviceNode {
     pub device_path: String,
