@@ -14,6 +14,10 @@ impl CcReport {
     pub fn dump_cc_report(&self){
         dump_data(&(self.cc_report));
     }
+
+    pub fn parse_cc_report(&self){
+        todo!()
+    }
 }
 
 // return structure for get_default_algorithm
