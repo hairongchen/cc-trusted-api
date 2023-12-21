@@ -88,7 +88,7 @@ impl CVM for TdxVM {
     }
 
     // retrieve TDX RTMR
-    fn process_cc_measurement(&self, index: u8, algo_id: u8) -> TcgDigest {
+    fn process_cc_measurement(&self, _index: u8, _algo_id: u8) -> TcgDigest {
         todo!()
     }
 
