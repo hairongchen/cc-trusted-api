@@ -23,7 +23,7 @@ struct TpmQuote{
 pub struct ParsedCcReport {}
 
 trait ParseCcReport<T> {
-    fn parse_cc_report(Vec<u8>) -> T;
+    fn parse_cc_report(_report: Vec<u8>) -> T;
 }
 
 impl ParseCcReport<TdxQuote> for ParsedCcReport{
@@ -37,7 +37,7 @@ impl ParseCcReport<TdxQuote> for ParsedCcReport{
 
 impl ParseCcReport<TpmQuote> for ParsedCcReport{
     fn parse_cc_report(_report: Vec<u8>) -> TpmQuote{
-        TdxQuote{
+        TpmQuote{
             name: "TPM".to_string(),
             var1: 0,
             var2: 2
