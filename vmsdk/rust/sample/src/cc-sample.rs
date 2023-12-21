@@ -1,4 +1,4 @@
-use cctrusted::api::{dump_cc_report, get_cc_report, get_default_algorithm};
+use cctrusted::api::*;
 use cctrusted::api_data::*;
 use log::*;
 

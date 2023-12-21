@@ -27,25 +27,6 @@ pub trait ParseCcReport<T> {
     fn parse_cc_report(_report: Vec<u8>) -> T;
 }
 
-impl ParseCcReport<TdxQuote> for ParsedCcReport{
-    fn parse_cc_report(_report: Vec<u8>) -> TdxQuote{
-        TdxQuote{
-            name: "TDX".to_string(),
-            var1: 1
-        }
-    }
-}
-
-impl ParseCcReport<TpmQuote> for ParsedCcReport{
-    fn parse_cc_report(_report: Vec<u8>) -> TpmQuote{
-        TpmQuote{
-            name: "TPM".to_string(),
-            var1: 0,
-            var2: 2
-        }
-    }
-} 
-
 // return structure for get_default_algorithm
 pub struct Algorithm {
     pub algo_id: u8,
