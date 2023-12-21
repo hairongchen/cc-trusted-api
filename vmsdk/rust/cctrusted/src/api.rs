@@ -38,14 +38,10 @@ pub fn get_cc_report(
             CcReport {
                 cc_report: cvm.process_cc_report(nonce, data),
                 cc_type: cvm.cc_type
-            }
+            };
         Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
         }
     }
-}
-
-pub fn dump_cc_report(report: Vec<u8>) {
-    dump_data(report)
 }
 
 /***
