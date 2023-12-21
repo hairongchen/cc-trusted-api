@@ -48,7 +48,7 @@ pub fn get_cc_report(
     }
 }
 
-pub fn dump_cc_report(report: Vec<u8>) {
+pub fn dump_cc_report(report: &Vec<u8>) {
     dump_data(report)
 }
 
