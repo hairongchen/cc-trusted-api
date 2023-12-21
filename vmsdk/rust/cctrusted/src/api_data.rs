@@ -21,7 +21,7 @@ pub struct TpmQuote{
     pub var2: u8
 }
 
-pub struct ParsedCcReport {}
+pub struct BaseCcReport {}
 
 pub trait ParseCcReport<T> {
     fn parse_cc_report(_report: Vec<u8>) -> T;
