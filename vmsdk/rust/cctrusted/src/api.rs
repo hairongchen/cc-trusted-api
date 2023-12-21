@@ -24,19 +24,21 @@ use crate::api_data::*;
         extraArgs: for TPM, it will be given list of IMR/PCRs
 
     Returns:
-        The cc report byte array or error information
+        The cCcReport struct or error information
 */
 pub fn get_cc_report(
     nonce: String,
     data: String,
     _extra_args: ExtraArgs,
-) -> Result<Vec<u8>, anyhow::Error> {
+) -> Result<CcReport, anyhow::Error> {
     match CcType::build_cvm() {
         Ok(mut cvm) => {
             // call CVM trait defined methods
             cvm.dump();
-            cvm.process_cc_report(nonce, data)
-        }
+            CcReport {
+                cc_report: cvm.process_cc_report(nonce, data),
+                cc_type: cvm.cc_type
+            }
         Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
     }
 }
