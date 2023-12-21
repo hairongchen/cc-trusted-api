@@ -1,4 +1,3 @@
-use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::cc_type::CcType;
 
 // this struct is used in vTPM and other TEE scenarios
