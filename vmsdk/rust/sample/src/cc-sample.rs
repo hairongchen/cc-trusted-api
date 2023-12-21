@@ -31,8 +31,8 @@ fn main() {
     // get cvm default algorithm
     info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");
     match get_default_algorithm() {
-        Ok(algo) => {
-            info!("supported algorithm: {}", algo.algo_id_str);
+        Ok(algorithm) => {
+            info!("supported algorithm: {}", algorithm.algo_id_str);
             ();
         }
         Err(e) => {

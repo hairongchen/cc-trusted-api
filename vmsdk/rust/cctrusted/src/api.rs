@@ -97,7 +97,7 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
         Ok(cvm) => {
             // call CVM trait defined methods
             let algo_id = cvm.get_algorithm_id();
-            Ok(Algo {
+            Ok(Algorithm {
                 algo_id: algo_id,
                 algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
             })
