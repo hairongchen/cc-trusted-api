@@ -118,7 +118,7 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
     }
 }
 
-impl ParseCcReport<TdxQuote> for ParsedCcReport{
+impl ParseCcReport<TdxQuote> for BaseCcReport{
     fn parse_cc_report(_report: Vec<u8>) -> TdxQuote{
         TdxQuote{
             name: "TDX".to_string(),
@@ -127,7 +127,7 @@ impl ParseCcReport<TdxQuote> for ParsedCcReport{
     }
 }
 
-impl ParseCcReport<TpmQuote> for ParsedCcReport{
+impl ParseCcReport<TpmQuote> for BaseCcReport{
     fn parse_cc_report(_report: Vec<u8>) -> TpmQuote{
         TpmQuote{
             name: "TPM".to_string(),
