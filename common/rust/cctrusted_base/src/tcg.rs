@@ -39,5 +39,3 @@ pub trait TcgIMR {
     fn get_hash(&self) -> Vec<&str>;
     fn is_valid(&self) -> bool;
 }
-
-pub struct TcgEventLog{}
