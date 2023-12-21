@@ -40,6 +40,7 @@ pub fn get_cc_report(
                 cc_type: cvm.cc_type
             }
         Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
+        }
     }
 }
 
