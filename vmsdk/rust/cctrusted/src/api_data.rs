@@ -12,7 +12,7 @@ pub struct CcReport {
 
 impl CcReport {
     pub fn dump_cc_report(&self){
-        dump_data(&self.cc_report);
+        dump_data(&(self.cc_report));
     }
 }
 
