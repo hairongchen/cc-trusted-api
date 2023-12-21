@@ -34,4 +34,7 @@ fn main() {
             return;
         }
     };
+
+    let tq: TdxQuote = ParseCcReport::parse_cc_report(report.cc_report);
+    info!("name = {}, var1 = {}", tq.name, tq.var1);
 }

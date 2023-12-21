@@ -52,21 +52,6 @@ pub fn dump_cc_report(report: Vec<u8>) {
     dump_data(report)
 }
 
-pub fn parse_cc_report(report: Vec<u8>) {
-    match CcType::build_cvm() {
-        Ok(cvm) => {
-            // call CVM trait defined methods
-            cvm.parse_cc_report();
-        }
-        Err(e) => {
-            return Err(anyhow!(
-                "[parse_cc_report] error parse cc report: {:?}",
-                e
-            ))
-        }
-    }
-}
-
 /***
    Get measurement register according to given selected index and algorithms
 
