@@ -35,7 +35,6 @@ fn main() {
         }
     };
 
-    let pr = ParseCcReport{};
-    let tq: TdxQuote = pr::parse_cc_report(report.cc_report);
+    let tq: TdxQuote = ParsedCcReport::parse_cc_report(report.cc_report);
     info!("name = {}, var1 = {}", tq.name, tq.var1);
 }
