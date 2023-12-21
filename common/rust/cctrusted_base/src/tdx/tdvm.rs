@@ -4,7 +4,7 @@ use std::result::Result::Ok;
 
 use crate::cc_type::*;
 use crate::cvm::*;
-use crate::tcg::TcgAlgorithmRegistry;
+use crate::tcg::{TcgAlgorithmRegistry,TcgDigest};
 use crate::tdx::common::*;
 use crate::tdx::rtmr::TdxRTMR;
 use std::path::Path;
@@ -88,7 +88,7 @@ impl CVM for TdxVM {
     }
 
     // retrieve TDX RTMR
-    fn process_cc_measurement(&self, index u8, algo_id u8) -> TcgDigest {
+    fn process_cc_measurement(&self, index: u8, algo_id: u8) -> TcgDigest {
         todo!()
     }
 
