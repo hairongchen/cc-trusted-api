@@ -26,8 +26,8 @@ trait ParseCcReport<T> {
     fn parse_cc_report(Vec<u8>) -> T;
 }
 
-implement ParseCcReport<TdxQuote> for ParsedCcReport{
-    fn parse_cc_report(Vec<u8>) -> TdxQuote{
+impl ParseCcReport<TdxQuote> for ParsedCcReport{
+    fn parse_cc_report(_report: Vec<u8>) -> TdxQuote{
         TdxQuote{
             name: "TDX".to_string(),
             var1: 1
@@ -35,8 +35,8 @@ implement ParseCcReport<TdxQuote> for ParsedCcReport{
     }
 }
 
-implement ParseCcReport<TpmQuote> for ParsedCcReport{
-    fn parse_cc_report(Vec<u8>) -> TpmQuote{
+impl ParseCcReport<TpmQuote> for ParsedCcReport{
+    fn parse_cc_report(_report: Vec<u8>) -> TpmQuote{
         TdxQuote{
             name: "TPM".to_string(),
             var1: 0,
