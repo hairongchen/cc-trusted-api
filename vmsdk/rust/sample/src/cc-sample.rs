@@ -10,7 +10,7 @@ fn main() {
 
     // retrieve cc report
     info!("call cc trusted API [get_cc_report] to retrieve cc report!");
-    let cc_report = match get_cc_report(nonce, data, ExtraArgs {}) {
+    let report = match get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
@@ -20,7 +20,7 @@ fn main() {
 
     // dump the cc report
     info!("call cc trusted API [dump_cc_report] to dump cc report!");
-    dump_cc_report(cc_report);
+    dump_cc_report(report.cc_report);
 
     // get cvm default algorithm
     info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");

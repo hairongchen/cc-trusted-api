@@ -2,7 +2,6 @@ use anyhow::*;
 use std::result::Result;
 use std::result::Result::Ok;
 
-use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::cc_type::CcType;
 use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
@@ -30,14 +29,22 @@ pub fn get_cc_report(
     nonce: String,
     data: String,
     _extra_args: ExtraArgs,
-) -> Result<Vec<u8>, anyhow::Error> {
+) -> Result<CcReport, anyhow::Error> {
     match CcType::build_cvm() {
         Ok(mut cvm) => {
             // call CVM trait defined methods
             cvm.dump();
-            cvm.process_cc_report(nonce, data)
+            Ok(CcReport {
+                cc_report: match cvm.process_cc_report(nonce, data){
+                    Ok(r) => r,
+                    Err(e) => {
+                        return Err(anyhow!("[get_cc_report] error get cc report: {:?}", e));
+                    },
+                },
+                cc_type: cvm.get_cc_type()
+            })
         }
-        Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
+        Err(e) => return Err(anyhow!("[get_cc_report] error create cvm: {:?}", e)),
     }
 }
 
