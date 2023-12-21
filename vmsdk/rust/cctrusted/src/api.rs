@@ -41,8 +41,8 @@ pub fn get_cc_report(
     }
 }
 
-pub fn dump_cc_report(report: Vec<u8>) -> Result<(), anyhow::Error> {
-    Ok(dump_data(report))
+pub fn dump_cc_report(report: Vec<u8>) {
+    dump_data(report)
 }
 
 /***

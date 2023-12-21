@@ -20,13 +20,7 @@ fn main() {
 
     // dump the cc report
     info!("call cc trusted API [dump_cc_report] to dump cc report!");
-    match dump_cc_report(cc_report) {
-        Ok(_) => (),
-        Err(e) => {
-            error!("error dump cc report: {:?}", e);
-            return;
-        }
-    };
+    dump_cc_report(cc_report);
 
     // get cvm default algorithm
     info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");
