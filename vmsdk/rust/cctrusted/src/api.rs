@@ -38,14 +38,14 @@ pub fn get_cc_report(
                 cc_report: match cvm.process_cc_report(nonce, data){
                     Ok(r) => r,
                     Err(e) => {
-                        error!("error getting cc report: {:?}", e);
+                        error!("error get cc report: {:?}", e);
                         return;
                     },
                 }
                 cc_type: cvm.get_cc_type()
             }
-        Err(e) => return Err(anyhow!("[get_cc_report] error get quote: {:?}", e)),
         }
+        Err(e) => return Err(anyhow!("[get_cc_report] error create cvm: {:?}", e)),
     }
 }
 
