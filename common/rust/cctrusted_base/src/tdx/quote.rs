@@ -232,8 +232,8 @@ impl TdxVM {
 // }
 
 pub struct TdxQuote {
-    name: String,
-    var: u8
+    pub name: String,
+    pub var: u8
 }
 
 #[repr(C)]
@@ -271,7 +271,7 @@ pub const QUOTE_AUTH_DATA_ATTESTATION_KEY_OFFSET:i32 = 764; // 64 bytes of attes
 pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET:i32       = 770; // (authSize-6-128) bytes of cert_data in auth_data, start from index 770 of quote string
 
 impl TdxVM{
-    pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
+    pub fn parse_tdx_quote(_quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
         Ok(TdxQuote{
             name: "TDX".to_string(),
             var: 1
