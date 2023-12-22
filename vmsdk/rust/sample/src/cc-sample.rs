@@ -23,6 +23,17 @@ fn main() {
     info!("call cc trusted API [dump_cc_report] to dump cc report!");
     dump_cc_report(&report.cc_report);
 
+    if report.cc_type == TYPE_TDX{
+        let tdx_quote: CcParsedTdxReport = match CcReport::parse_cc_report(report.cc_report){
+            Ok(q) => q,
+            Err(e) => {
+                error!("error parse tdx quote: {:?}", e);
+                return;
+            }   
+        };
+        info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
+    }
+
     // get cvm default algorithm
     info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");
     match get_default_algorithm() {
@@ -36,14 +47,4 @@ fn main() {
         }
     };
 
-    if report.cc_type == TYPE_TDX{
-        let tdx_quote: CcTdxReport = match CcReport::parse_cc_report(report.cc_report){
-            Ok(q) => q,
-            Err(e) => {
-                error!("error parse tdx quote: {:?}", e);
-                return;
-            }   
-        };
-        info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
-    }
 }
