@@ -121,27 +121,14 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
 
 impl ParseCcReport<TdxQuote> for CcReport{
     fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
-
-        match CcType::build_cvm() {
-            Ok(mut cvm) => {
-                match TdxQuote::parse_tdx_quote(report){
-                    Ok(tdx_quote) => Ok(tdx_quote),
-                    Err(e) => {
-                        return Err(anyhow!(
-                            "[parse_cc_report] error parse tdx quote: {:?}",
-                            e
-                        ))
-                    }
-                }
-            
-            }
+        match TdxQuote::parse_tdx_quote(report){
+            Ok(tdx_quote) => Ok(tdx_quote),
             Err(e) => {
                 return Err(anyhow!(
                     "[parse_cc_report] error parse tdx quote: {:?}",
                     e
                 ))
             }
-        
         }
     }
 }
