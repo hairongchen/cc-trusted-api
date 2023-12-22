@@ -38,7 +38,7 @@ fn main() {
         );
     }
 
-    // get cvm default algorithm with API "get_default_algorithm"
+    // get TEE default algorithm with API "get_default_algorithm"
     info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");
     match get_default_algorithm() {
         Ok(algorithm) => {
