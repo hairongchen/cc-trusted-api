@@ -97,17 +97,6 @@ impl CVM for TdxVM {
         todo!()
     }
 
-    // fn parse_cc_report(&self) {
-    //     info!("TODO: parse the TDX quote!")
-    // }
-
-    // fn parse_cc_measurement(&self) {
-    //     todo!()
-    // }
-    // fn parse_cc_eventlog(&self) {
-    //     todo!()
-    // }
-
     fn get_cc_type(&self) -> CcType{
         return self.cc_type.clone();
     }

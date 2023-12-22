@@ -40,11 +40,6 @@ pub trait CVM {
     //TODO!
     fn process_cc_eventlog(&self);
 
-    // parse raw data to standard structure defined by TEE or TCG spec
-    // fn parse_cc_report(&self);
-    // fn parse_cc_measurement(&self);
-    // fn parse_cc_eventlog(&self);
-
     fn get_cc_type(&self) -> CcType;
 
     //Dump confidential VM information

@@ -6,7 +6,6 @@ use cctrusted_base::cc_type::CcType;
 use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 use cctrusted_base::tdx::quote::TdxQuote;
-use cctrusted_base::tdx::tdvm::TdxVM;
 
 use crate::api_data::*;
 
@@ -122,14 +121,27 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
 
 impl ParseCcReport<TdxQuote> for CcReport{
     fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
-        match TdxVM::parse_tdx_quote(report){
-            Ok(tdx_quote) => Ok(tdx_quote),
+
+        match CcType::build_cvm() {
+            Ok(mut cvm) => {
+                match cvm.parse_tdx_quote(report){
+                    Ok(tdx_quote) => Ok(tdx_quote),
+                    Err(e) => {
+                        return Err(anyhow!(
+                            "[parse_cc_report] error parse tdx quote: {:?}",
+                            e
+                        ))
+                    }
+                }
+            
+            }
             Err(e) => {
                 return Err(anyhow!(
                     "[parse_cc_report] error parse tdx quote: {:?}",
                     e
                 ))
             }
+        
         }
     }
 }
