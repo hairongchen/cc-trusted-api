@@ -9,7 +9,7 @@ fn main() {
     let nonce = "MTIzNDU2Nzg=".to_string();
     let data = "YWJjZGVmZw==".to_string();
 
-    // retrieve cc report
+    // retrieve cc report with API "get_cc_report"
     info!("call cc trusted API [get_cc_report] to retrieve cc report!");
     let report = match get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
@@ -19,10 +19,11 @@ fn main() {
         }
     };
 
-    // dump the cc report
+    // dump the cc report with API "dump_cc_report"
     info!("call cc trusted API [dump_cc_report] to dump cc report!");
     dump_cc_report(&report.cc_report);
 
+    // parse the cc report with API "parse_cc_report"
     if report.cc_type == TYPE_TDX{
         let tdx_quote: CcParsedTdxReport = match CcReport::parse_cc_report(report.cc_report){
             Ok(q) => q,
@@ -34,7 +35,7 @@ fn main() {
         info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
     }
 
-    // get cvm default algorithm
+    // get cvm default algorithm with API "get_default_algorithm"
     info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");
     match get_default_algorithm() {
         Ok(algorithm) => {
