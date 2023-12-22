@@ -129,6 +129,7 @@ impl ParseCcReport<TdxQuote> for CcReport{
                     "[parse_cc_report] error parse tdx quote: {:?}",
                     e
                 ))
+            }
         }
     }
 }
