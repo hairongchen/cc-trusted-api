@@ -34,7 +34,7 @@ pub fn get_cc_report(
     data: String,
     _extra_args: ExtraArgs,
 ) -> Result<CcReport, anyhow::Error> {
-    match CcType::build_cvm() {
+    match CcType::build_tee() {
         Ok(mut cvm) => {
             // call CVM trait defined methods
             cvm.dump();
@@ -104,10 +104,10 @@ pub fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
 
 */
 pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
-    match CcType::build_cvm() {
-        Ok(cvm) => {
+    match CcType::build_tee() {
+        Ok(tee) => {
             // call CVM trait defined methods
-            let algo_id = cvm.get_algorithm_id();
+            let algo_id = tee.get_algorithm_id();
             Ok(Algorithm {
                 algo_id: algo_id,
                 algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),

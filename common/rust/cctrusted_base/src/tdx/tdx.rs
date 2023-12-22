@@ -118,4 +118,4 @@ impl TcgAlgorithmRegistry for Tdx {
     }
 }
 
-impl BuildCVM for Tdx {}
+impl BuildTee for Tdx {}
