@@ -27,7 +27,7 @@ pub struct CcReport {
  **************************************
  */
 // return of API parse_cc_report() in TDX case
-//#[derive(Copy)]
+#[derive(Clone)]
 pub struct CcTdxReport {
     pub name: String,
     pub var: u8
