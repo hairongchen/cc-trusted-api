@@ -124,12 +124,20 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
 impl ParseCcReport<CcTdxReport> for CcReport{
     fn parse_cc_report(report: Vec<u8>) -> Result<CcTdxReport, anyhow::Error>{
         match TdxQuote::parse_tdx_quote(report){
-            Ok(tdx_quote) => Ok({
-                CcTdxReport{
-                    name: tdx_quote.name,
-                    var: tdx_quote.var
+            Ok(tdx_quote) =>{
+                let q = CcTdxReport{
+                    name: "".to_string(),
+                    var: 0
                 }
-            }),
+                // Ok({
+                //     CcTdxReport{
+                //         name: tdx_quote.name,
+                //         var: tdx_quote.var
+                //     }
+                // })
+                q = tdx_quote;
+                Ok(q)
+            },
             Err(e) => {
                 return Err(anyhow!(
                     "[parse_cc_report] error parse tdx quote: {:?}",
