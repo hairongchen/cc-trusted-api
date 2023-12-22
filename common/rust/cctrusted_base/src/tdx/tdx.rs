@@ -103,9 +103,9 @@ impl TEE for Tdx {
 
     fn dump(&self) {
         info!("======================================");
-        info!("CVM type = {}", self.cc_type.tee_type_str);
+        info!("TEE type = {}", self.cc_type.tee_type_str);
         info!(
-            "CVM version = {}",
+            "TEE version = {}",
             TDX_VERSION_MAP.get(&self.version).unwrap().to_owned()
         );
         info!("======================================");
