@@ -139,8 +139,8 @@ impl ParseCcReport<CcTdxReport> for CcReport{
                 // })
                 unsafe {
                     let report_ref: &CcTdxReport = mem::transmute(&tdx_quote);
-                    let report_copy = *report_ref;
-                    Ok(report_copy)
+                    //let report_copy = report_ref;
+                    Ok(report_ref)
                 }
             },
             Err(e) => {
