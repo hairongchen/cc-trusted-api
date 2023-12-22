@@ -34,14 +34,14 @@ fn main() {
             return;
         }
     };
-
-    let tdx_quote: CcTdxReport = match CcReport::parse_cc_report(report.cc_report){
-        Ok(q) => q,
-        Err(e) => {
-            error!("error parse tdx quote: {:?}", e);
-            return;
-        }   
-    };
-    info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
-
+    if report.cc_type == TYPE_TDX{
+        let tdx_quote: CcTdxReport = match CcReport::parse_cc_report(report.cc_report){
+            Ok(q) => q,
+            Err(e) => {
+                error!("error parse tdx quote: {:?}", e);
+                return;
+            }   
+        };
+        info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
+    }
 }

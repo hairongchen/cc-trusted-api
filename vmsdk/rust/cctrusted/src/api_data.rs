@@ -1,8 +1,8 @@
-pub const PLAIN:i8 = -1;
-pub const TDX:i8 = 0;
-pub const SEV:i8 = 1;
-pub const CCA:i8 = 2;
-pub const TPM:i8 = 3;
+pub const TYPE_PLAIN:i8 = -1;
+pub const TYPE_TDX:i8 = 0;
+pub const TYPE_SEV:i8 = 1;
+pub const TYPE_CCA:i8 = 2;
+pub const TYPE_TPM:i8 = 3;
 
 // input of API get_cc_report()
 // this struct is used in vTPM and other TEE scenarios
