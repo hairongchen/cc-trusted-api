@@ -1,26 +1,30 @@
 use cctrusted_base::cc_type::CcType;
 
+// input of API get_cc_report()
 // this struct is used in vTPM and other TEE scenarios
 // e.g.: vTPM may need report based on selective PCRs
 pub struct ExtraArgs {}
 
+// return of API get_cc_report()
 pub struct CcReport {
     pub cc_report: Vec<u8>,
     pub cc_type: CcType
 }
 
+// return of API parse_cc_report()
 pub struct TdxQuote{
     pub name: String,
     pub var1: u8
 }
 
-#[allow(dead_code)]
+// return of API parse_cc_report()
 pub struct TpmQuote{
-    pub name: String,
-    pub var1: u8,
-    pub var2: u8
+    // TODO
 }
 
+// trait to be implemented for cc report parsing 
+// return of the trait function depends on the type of cc report, e.g.:
+// TdxQuote, TpmQuote and etc.
 pub trait ParseCcReport<T> {
     fn parse_cc_report(_report: Vec<u8>) -> T;
 }
