@@ -35,7 +35,7 @@ fn main() {
         }
     };
 
-    let tdx_quote: TdxQuote match CcReport::parse_cc_report(report.cc_report){
+    let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report){
         Ok(q) => q,
         Err(e) => {
             error!("error parse tdx quote: {:?}", e);
