@@ -1,4 +1,5 @@
 use cctrusted_base::cc_type::CcType;
+use cctrusted_base::tdx::quote::TdxQuote;
 
 // input of API get_cc_report()
 // this struct is used in vTPM and other TEE scenarios

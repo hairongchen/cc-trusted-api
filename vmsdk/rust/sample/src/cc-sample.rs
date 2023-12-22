@@ -41,8 +41,7 @@ fn main() {
             error!("error parse tdx quote: {:?}", e);
             return;
         }   
-    }
+    };
     info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
-    
-    
+
 }
