@@ -11,6 +11,11 @@ pub struct CcReport {
     pub cc_type: CcType
 }
 
+pub struct CcTdxReport {
+    pub name: String,
+    pub var: u8
+}
+
 /***
     trait to be implemented for cc report parsing.
 
