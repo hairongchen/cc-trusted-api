@@ -124,7 +124,7 @@ impl ParseCcReport<TdxQuote> for CcReport{
 
         match CcType::build_cvm() {
             Ok(mut cvm) => {
-                match cvm.parse_tdx_quote(report){
+                match TdxQuote::parse_tdx_quote(report){
                     Ok(tdx_quote) => Ok(tdx_quote),
                     Err(e) => {
                         return Err(anyhow!(

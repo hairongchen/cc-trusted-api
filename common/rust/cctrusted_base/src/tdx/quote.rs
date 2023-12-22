@@ -270,8 +270,8 @@ pub const QUOTE_AUTH_DATA_SIGNATURE_OFFSET:i32      = 700; // 64 bytes of signat
 pub const QUOTE_AUTH_DATA_ATTESTATION_KEY_OFFSET:i32 = 764; // 64 bytes of attestation_key in auth_data, start from index 764 of quote string
 pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET:i32       = 770; // (authSize-6-128) bytes of cert_data in auth_data, start from index 770 of quote string
 
-impl TdxVM{
-    pub fn parse_tdx_quote(&self, _quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
+impl TdxQuote{
+    pub fn parse_tdx_quote(_quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
         Ok(TdxQuote{
             name: "TDX".to_string(),
             var: 1
