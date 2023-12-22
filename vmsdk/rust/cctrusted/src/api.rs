@@ -126,3 +126,9 @@ impl ParseCcReport<TdxQuote> for CcReport{
         }
     }
 }
+
+impl ParseCcReport<TpmQuote> for CcReport{
+    fn parse_cc_report(_report: Vec<u8>) -> TpmQuote{
+        todo!()
+    }
+}
