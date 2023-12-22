@@ -41,6 +41,6 @@ pub trait TEE {
 
     fn get_cc_type(&self) -> CcType;
 
-    //Dump confidential VM information
+    //Dump confidential TEE information
     fn dump(&self);
 }
