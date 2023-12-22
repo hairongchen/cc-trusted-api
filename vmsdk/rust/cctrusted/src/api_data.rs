@@ -12,12 +12,6 @@ pub struct CcReport {
 }
 
 // return of API parse_cc_report()
-pub struct TdxQuote{
-    pub name: String,
-    pub var1: u8
-}
-
-// return of API parse_cc_report()
 pub struct TpmQuote{
     // TODO
 }

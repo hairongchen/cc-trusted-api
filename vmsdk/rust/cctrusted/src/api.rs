@@ -119,11 +119,8 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
 }
 
 impl ParseCcReport<TdxQuote> for CcReport{
-    fn parse_cc_report(_report: Vec<u8>) -> TdxQuote{
-        TdxQuote{
-            name: "TDX".to_string(),
-            var1: 1
-        }
+    fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
+        TdxVM::parse_cc_report(report)
     }
 }
 
