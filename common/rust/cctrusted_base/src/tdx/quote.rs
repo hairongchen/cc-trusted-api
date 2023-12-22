@@ -227,7 +227,7 @@ impl TdxVM {
 pub struct TdxQuote {
     pub header: SGXQuoteHeader,
     pub tdreport: TDReport,
-    pub signature:      [u8; 64]  // ECDSA signature, r component followed by s component, 2 x 32 bytes
+    pub signature:      [u8; 64],  // ECDSA signature, r component followed by s component, 2 x 32 bytes
     pub cert_data:       Vec<u8>   // Data required to certify Attestation Key used to sign the Quote
 }
 
@@ -257,13 +257,13 @@ pub struct TDReport  {
 	pub report_data:     [u8; 64],  // Additional Report Data
 }
 
-pub const QUOTE_HEADER_OFFSET                 = 0;   // 48 bytes quote header, start from index 0 of quote string
-pub const QUOTE_TDREPORT_OFFSET               = 48;  // 584 bytes tdreport, start from index 48 of quote string
-pub const QUOTE_AUTH_DATA_SIZE_OFFSET           = 632; // 4 bytes auth size, start from index 632 of quote string
-pub const QUOTE_AUTH_DATA_CONTENT_OFFSET        = 636; // authSize bytes in auth_data, start from index 636 of quote string
-pub const QUOTE_AUTH_DATA_SIGNATURE_OFFSET      = 700; // 64 bytes of signature in auth_data, start from index 700 of quote string
-pub const QUOTE_AUTH_DATA_ATTESTATION_KEY_OFFSET = 764; // 64 bytes of attestation_key in auth_data, start from index 764 of quote string
-pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET       = 770; // (authSize-6-128) bytes of cert_data in auth_data, start from index 770 of quote string
+pub const QUOTE_HEADER_OFFSET:i32                 = 0;   // 48 bytes quote header, start from index 0 of quote string
+pub const QUOTE_TDREPORT_OFFSET:i32               = 48;  // 584 bytes tdreport, start from index 48 of quote string
+pub const QUOTE_AUTH_DATA_SIZE_OFFSET:i32           = 632; // 4 bytes auth size, start from index 632 of quote string
+pub const QUOTE_AUTH_DATA_CONTENT_OFFSET:i32        = 636; // authSize bytes in auth_data, start from index 636 of quote string
+pub const QUOTE_AUTH_DATA_SIGNATURE_OFFSET:i32      = 700; // 64 bytes of signature in auth_data, start from index 700 of quote string
+pub const QUOTE_AUTH_DATA_ATTESTATION_KEY_OFFSET:i32 = 764; // 64 bytes of attestation_key in auth_data, start from index 764 of quote string
+pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET:i32       = 770; // (authSize-6-128) bytes of cert_data in auth_data, start from index 770 of quote string
 
 impl TdxVM{
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
