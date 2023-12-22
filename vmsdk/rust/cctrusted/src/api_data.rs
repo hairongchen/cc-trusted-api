@@ -1,4 +1,4 @@
-pub enmu ReportType {
+pub enum ReportType {
     PLAIN:u8 = -1,
     TDX:u8 = 0,
     SEV:u8 = 1,
