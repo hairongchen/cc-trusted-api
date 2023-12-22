@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use std::result::Result;
 
-use crate::cvm::CVM;
+use crate::tee::TEE;
 use crate::tcg::TcgAlgorithmRegistry;
 use crate::tdx::tdx::Tdx;
 
