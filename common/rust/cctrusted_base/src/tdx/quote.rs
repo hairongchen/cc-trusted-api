@@ -233,37 +233,37 @@ pub struct TdxQuote {
 
 #[repr(C)]
 pub struct SGXQuoteHeader  {
-	pub version: u16        // The version this quote structure.
-	pub attestation_key: u16     // sgx_attestation_algorithm_id_t.  Describes the type of signature in the signature_data[] field.
-	pub tee_type: u32        // Type of Trusted Execution Environment for which the Quote has been generated. Supported values: 0 (SGX), 0x81(TDX)
-	pub reserved: u32       // Reserved field.
-	pub vendor_id: [u8; 16]  // Unique identifier of QE Vendor.
-	pub user_data: [u8; 20]  // Custom attestation key owner data.
+	pub version: u16,        // The version this quote structure.
+	pub attestation_key: u16,     // sgx_attestation_algorithm_id_t.  Describes the type of signature in the signature_data[] field.
+	pub tee_type: u32,        // Type of Trusted Execution Environment for which the Quote has been generated. Supported values: 0 (SGX), 0x81(TDX)
+	pub reserved: u32,       // Reserved field.
+	pub vendor_id: [u8; 16],  // Unique identifier of QE Vendor.
+	pub user_data: [u8; 20],  // Custom attestation key owner data.
 }
 
 #[repr(C)]
 pub struct TDReport  {
-	pub tee_tcb_svn:      [u8; 16]  // Array of TEE TCB SVNs
-	pub mrseam:         [u8; 48]  // Measurement of the SEAM module (SHA384 hash)
-	pub mrseam_signer:   [u8; 48]  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
-	pub seam_attributes: [u8; 8]   // ATTRIBUTES of SEAM
-	pub td_attributes:   [u8; 8]   // ATTRIBUTES of TD
-	pub xfam:           [u8; 8]   // XFAM of TD
-	pub mrtd:           [u8; 48]  // Measurement of the initial contents of the TD (SHA384 hash)
-	pub mrconfigid:     [u8; 48]  // Software defined ID for non-owner-defined configuration of the TD
-	pub mrowner:        [u8; 48]  // Software defined ID for the guest TD’s owner
-	pub mrownerconfig:  [u8; 48]  // Software defined ID for owner-defined configuration of the TD
-	pub rtmrs:          [u8; 192] // Array of 4 runtime extendable measurement registers (SHA384 hash)
-	pub report_data:     [u8; 64]  // Additional Report Data
+	pub tee_tcb_svn:      [u8; 16],  // Array of TEE TCB SVNs
+	pub mrseam:         [u8; 48],  // Measurement of the SEAM module (SHA384 hash)
+	pub mrseam_signer:   [u8; 48],  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
+	pub seam_attributes: [u8; 8],   // ATTRIBUTES of SEAM
+	pub td_attributes:   [u8; 8],   // ATTRIBUTES of TD
+	pub xfam:           [u8; 8],   // XFAM of TD
+	pub mrtd:           [u8; 48],  // Measurement of the initial contents of the TD (SHA384 hash)
+	pub mrconfigid:     [u8; 48],  // Software defined ID for non-owner-defined configuration of the TD
+	pub mrowner:        [u8; 48],  // Software defined ID for the guest TD’s owner
+	pub mrownerconfig:  [u8; 48],  // Software defined ID for owner-defined configuration of the TD
+	pub rtmrs:          [u8; 192], // Array of 4 runtime extendable measurement registers (SHA384 hash)
+	pub report_data:     [u8; 64],  // Additional Report Data
 }
 
-pub QuoteHeaderOffset                 = 0   // 48 bytes quote header, start from index 0 of quote string
-pub QuoteTDReportOffset               = 48  // 584 bytes tdreport, start from index 48 of quote string
-pub QuoteAuthDataSizeOffset           = 632 // 4 bytes auth size, start from index 632 of quote string
-pub QuoteAuthDataContentOffset        = 636 // authSize bytes in auth_data, start from index 636 of quote string
-pub QuoteAuthDataSignatureOffset      = 700 // 64 bytes of signature in auth_data, start from index 700 of quote string
-pub QuoteAuthDataAttestationKeyOffset = 764 // 64 bytes of attestation_key in auth_data, start from index 764 of quote string
-pub QuoteAuthDataCertDataOffset       = 770 // (authSize-6-128) bytes of cert_data in auth_data, start from index 770 of quote string
+pub const QUOTE_HEADER_OFFSET                 = 0;   // 48 bytes quote header, start from index 0 of quote string
+pub const QUOTE_TDREPORT_OFFSET               = 48;  // 584 bytes tdreport, start from index 48 of quote string
+pub const QUOTE_AUTH_DATA_SIZE_OFFSET           = 632; // 4 bytes auth size, start from index 632 of quote string
+pub const QUOTE_AUTH_DATA_CONTENT_OFFSET        = 636; // authSize bytes in auth_data, start from index 636 of quote string
+pub const QUOTE_AUTH_DATA_SIGNATURE_OFFSET      = 700; // 64 bytes of signature in auth_data, start from index 700 of quote string
+pub const QUOTE_AUTH_DATA_ATTESTATION_KEY_OFFSET = 764; // 64 bytes of attestation_key in auth_data, start from index 764 of quote string
+pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET       = 770; // (authSize-6-128) bytes of cert_data in auth_data, start from index 770 of quote string
 
 impl TdxVM{
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
