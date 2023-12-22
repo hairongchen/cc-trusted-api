@@ -1,4 +1,4 @@
-pub enum CcType {
+pub enum ReportType {
     PLAIN = -1,
     TDX = 0,
     SEV = 1,
