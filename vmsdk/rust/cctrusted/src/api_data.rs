@@ -1,9 +1,9 @@
-pub enum ReportType {
-    PLAIN = -1,
-    TDX = 0,
-    SEV = 1,
-    CCA = 2,
-    TPM = 3,
+pub ReportType {
+    PLAIN:u8 = -1,
+    TDX:u8 = 0,
+    SEV:u8 = 1,
+    CCA:u8 = 2,
+    TPM:u8 = 3,
 }
 
 // input of API get_cc_report()
