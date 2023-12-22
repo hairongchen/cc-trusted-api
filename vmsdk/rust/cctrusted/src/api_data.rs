@@ -20,7 +20,7 @@ pub struct TpmQuote{
 // return of the trait function depends on the type of cc report, e.g.:
 // TdxQuote, TpmQuote and etc.
 pub trait ParseCcReport<T> {
-    fn parse_cc_report(_report: Vec<u8>) -> T;
+    fn parse_cc_report(_report: Vec<u8>) -> Result<T, anyhow::Error>;
 }
 
 // return structure for get_default_algorithm
