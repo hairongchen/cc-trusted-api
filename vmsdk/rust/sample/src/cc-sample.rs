@@ -32,7 +32,7 @@ fn main() {
                 return;
             }   
         };
-        info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
+        info!("name = {}, var = {}", tdx_quote.dummy_var1, tdx_quote.dummy_var2);
     }
 
     // get cvm default algorithm with API "get_default_algorithm"

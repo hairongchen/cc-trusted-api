@@ -29,8 +29,8 @@ pub struct CcReport {
 // return of API parse_cc_report() in TDX case
 #[derive(Clone)]
 pub struct CcParsedTdxReport {
-    pub name: String,
-    pub var: u8
+    pub dummy_var1: u8,
+    pub dummy_var2: u8
 }
 
 // return of API parse_cc_report() in TPM case
