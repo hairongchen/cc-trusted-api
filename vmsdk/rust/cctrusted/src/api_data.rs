@@ -1,13 +1,19 @@
-pub const TYPE_PLAIN:i8 = -1;
-pub const TYPE_TDX:i8 = 0;
-pub const TYPE_SEV:i8 = 1;
-pub const TYPE_CCA:i8 = 2;
-pub const TYPE_TPM:i8 = 3;
+/***
+*************************************
+ * API get_cc_report() related data *
+ ************************************
+ */
 
 // input of API get_cc_report()
 // this struct is used in vTPM and other TEE scenarios
 // e.g.: vTPM may need report based on selective PCRs
 pub struct ExtraArgs {}
+
+pub const TYPE_PLAIN:i8 = -1;
+pub const TYPE_TDX:i8 = 0;
+pub const TYPE_SEV:i8 = 1;
+pub const TYPE_CCA:i8 = 2;
+pub const TYPE_TPM:i8 = 3;
 
 // return of API get_cc_report()
 pub struct CcReport {
@@ -15,6 +21,11 @@ pub struct CcReport {
     pub cc_type: i8
 }
 
+/***
+***************************************
+ * API parse_cc_report() related data *
+ **************************************
+ */
 // return of API parse_cc_report() in TDX case
 pub struct CcTdxReport {
     pub name: String,
@@ -41,6 +52,11 @@ pub trait ParseCcReport<T> {
     fn parse_cc_report(_report: Vec<u8>) -> Result<T, anyhow::Error>;
 }
 
+/***
+*********************************************
+ * API get_default_algorithm() related data *
+ ********************************************
+ */
 // return structure for get_default_algorithm
 pub struct Algorithm {
     pub algo_id: u8,
