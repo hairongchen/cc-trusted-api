@@ -5,7 +5,7 @@ use std::result::Result;
 
 use crate::cvm::CVM;
 use crate::tcg::TcgAlgorithmRegistry;
-use crate::tdx::tdvm::Tdx;
+use crate::tdx::tdx::Tdx;
 
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]

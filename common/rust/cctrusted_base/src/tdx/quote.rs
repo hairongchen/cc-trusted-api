@@ -10,7 +10,7 @@ use std::result::Result;
 use std::result::Result::Ok;
 
 use super::common::*;
-use super::tdvm::*;
+use super::tdx::*;
 
 #[repr(C)]
 struct qgs_msg_header {

@@ -68,7 +68,7 @@ impl Tdx {
 }
 
 // Tdx implements the interfaces defined in CVM trait
-impl CVM for Tdx {
+impl TEE for Tdx {
     // retrieve TDX quote
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
         let report_data = match self.generate_tdx_report_data(nonce, Some(data)) {
