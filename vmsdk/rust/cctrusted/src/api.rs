@@ -123,24 +123,13 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
 }
 
 // this function parses cc report to the TDX quote struct
-impl ParseCcReport<CcTdxReport> for CcReport{
-    fn parse_cc_report(report: Vec<u8>) -> Result<CcTdxReport, anyhow::Error>{
+impl ParseCcReport<CcParsedTdxReport> for CcReport{
+    fn parse_cc_report(report: Vec<u8>) -> Result<CcParsedTdxReport, anyhow::Error>{
         match TdxQuote::parse_tdx_quote(report){
             Ok(tdx_quote) =>{
-                // let q = CcTdxReport{
-                //     name: "".to_string(),
-                //     var: 0
-                // };
-                // Ok({
-                //     CcTdxReport{
-                //         name: tdx_quote.name,
-                //         var: tdx_quote.var
-                //     }
-                // })
                 unsafe {
-                    let report_ref: &CcTdxReport = mem::transmute(&tdx_quote);
-                    //let report_copy = report_ref;
-                    Ok(report_ref.clone())
+                    let report: &CcParsedTdxReport = mem::transmute(&tdx_quote);
+                    Ok(report.clone())
                 }
             },
             Err(e) => {
