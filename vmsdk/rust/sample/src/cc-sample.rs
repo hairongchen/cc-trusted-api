@@ -3,6 +3,7 @@ use cctrusted::api_data::*;
 use log::*;
 
 fn main() {
+    // set log level
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     let nonce = "MTIzNDU2Nzg=".to_string();
@@ -34,6 +35,7 @@ fn main() {
             return;
         }
     };
+
     if report.cc_type == TYPE_TDX{
         let tdx_quote: CcTdxReport = match CcReport::parse_cc_report(report.cc_report){
             Ok(q) => q,
