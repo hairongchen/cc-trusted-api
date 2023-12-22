@@ -1,5 +1,6 @@
 use cctrusted::api::*;
 use cctrusted::api_data::*;
+use cctrusted_base::tdx::quote::TdxQuote;
 use log::*;
 
 fn main() {
