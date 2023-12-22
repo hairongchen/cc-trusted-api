@@ -224,11 +224,16 @@ impl TdxVM {
 // 	pub cert_data:       Vec<u8>   // Data required to certify Attestation Key used to sign the Quote
 // }
 
+// pub struct TdxQuote {
+//     pub header: SGXQuoteHeader,
+//     pub tdreport: TDReport,
+//     pub signature:      [u8; 64],  // ECDSA signature, r component followed by s component, 2 x 32 bytes
+//     pub cert_data:       Vec<u8>   // Data required to certify Attestation Key used to sign the Quote
+// }
+
 pub struct TdxQuote {
-    pub header: SGXQuoteHeader,
-    pub tdreport: TDReport,
-    pub signature:      [u8; 64],  // ECDSA signature, r component followed by s component, 2 x 32 bytes
-    pub cert_data:       Vec<u8>   // Data required to certify Attestation Key used to sign the Quote
+    name: String,
+    var: u8
 }
 
 #[repr(C)]
@@ -267,6 +272,9 @@ pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET:i32       = 770; // (authSize-6-128) 
 
 impl TdxVM{
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
-        Ok(TdxQuote{})
+        Ok(TdxQuote{
+            name: "TDX",
+            var: 1
+        })
     }
 }
