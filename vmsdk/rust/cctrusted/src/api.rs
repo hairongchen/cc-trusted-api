@@ -1,6 +1,8 @@
 use anyhow::*;
 use std::result::Result;
 use std::result::Result::Ok;
+use std::mem;
+
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::cc_type::CcType;
 use cctrusted_base::eventlog::TcgEventLog;
@@ -125,18 +127,19 @@ impl ParseCcReport<CcTdxReport> for CcReport{
     fn parse_cc_report(report: Vec<u8>) -> Result<CcTdxReport, anyhow::Error>{
         match TdxQuote::parse_tdx_quote(report){
             Ok(tdx_quote) =>{
-                let q = CcTdxReport{
-                    name: "".to_string(),
-                    var: 0
-                }
+                // let q = CcTdxReport{
+                //     name: "".to_string(),
+                //     var: 0
+                // };
                 // Ok({
                 //     CcTdxReport{
                 //         name: tdx_quote.name,
                 //         var: tdx_quote.var
                 //     }
                 // })
-                q = tdx_quote;
-                Ok(q)
+                let report_ref: &CcTdxReport = std::mem::transmute(&tdx_quote);
+                let report_copy = *report_ref;
+                Ok(report_copy)
             },
             Err(e) => {
                 return Err(anyhow!(
