@@ -267,6 +267,6 @@ pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET       = 770; // (authSize-6-128) byte
 
 impl TdxVM{
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
-        TdxQuote{}
+        Ok(TdxQuote{})
     }
 }
