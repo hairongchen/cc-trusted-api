@@ -11,10 +11,14 @@ pub struct CcReport {
     pub cc_type: CcType
 }
 
+// return of API parse_cc_report() in TDX case
 pub struct CcTdxReport {
     pub name: String,
     pub var: u8
 }
+
+// return of API parse_cc_report() in TPM case
+pub struct CcTpmReport {}
 
 /***
     trait to be implemented for cc report parsing.
