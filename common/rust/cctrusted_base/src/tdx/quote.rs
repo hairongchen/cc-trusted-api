@@ -273,7 +273,7 @@ pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET:i32       = 770; // (authSize-6-128) 
 impl TdxVM{
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
         Ok(TdxQuote{
-            name: "TDX",
+            name: "TDX".to_string(),
             var: 1
         })
     }
