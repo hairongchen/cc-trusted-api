@@ -67,7 +67,7 @@ impl Tdx {
     }
 }
 
-// Tdx implements the interfaces defined in CVM trait
+// Tdx implements the interfaces defined in TEE trait
 impl TEE for Tdx {
     // retrieve TDX quote
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
