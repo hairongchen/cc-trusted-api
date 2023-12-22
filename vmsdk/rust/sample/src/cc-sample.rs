@@ -36,6 +36,6 @@ fn main() {
     };
 
     let tdx_quote: TdxQuote = CcReport::parse_cc_report(report.cc_report);
-    info!("name = {}, var1 = {}", tdx_quote.name, tdx_quote.var1);
+    info!("name = {}, var = {}", tdx_quote.name, tdx_quote.var);
     
 }
