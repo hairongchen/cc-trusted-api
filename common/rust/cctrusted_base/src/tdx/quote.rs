@@ -232,8 +232,8 @@ impl TdxVM {
 // }
 
 pub struct TdxQuote {
-    pub name: String,
-    pub var: u8
+    pub dummy_var1: u8,
+    pub dummy_var2: u8
 }
 
 #[repr(C)]
