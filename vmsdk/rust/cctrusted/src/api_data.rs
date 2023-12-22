@@ -14,7 +14,7 @@ pub struct ExtraArgs {}
 // return of API get_cc_report()
 pub struct CcReport {
     pub cc_report: Vec<u8>,
-    pub cc_type: ReportType
+    pub cc_type: u8
 }
 
 // return of API parse_cc_report() in TDX case
