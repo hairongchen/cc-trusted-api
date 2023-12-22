@@ -35,20 +35,20 @@ pub fn get_cc_report(
     _extra_args: ExtraArgs,
 ) -> Result<CcReport, anyhow::Error> {
     match CcType::build_tee() {
-        Ok(mut cvm) => {
-            // call CVM trait defined methods
-            cvm.dump();
+        Ok(mut tee) => {
+            // call tee trait defined methods
+            tee.dump();
             Ok(CcReport {
-                cc_report: match cvm.process_cc_report(nonce, data) {
+                cc_report: match tee.process_cc_report(nonce, data) {
                     Ok(r) => r,
                     Err(e) => {
                         return Err(anyhow!("[get_cc_report] error get cc report: {:?}", e));
                     }
                 },
-                cc_type: cvm.get_cc_type().tee_type as i8,
+                cc_type: tee.get_cc_type().tee_type as i8,
             })
         }
-        Err(e) => return Err(anyhow!("[get_cc_report] error create cvm: {:?}", e)),
+        Err(e) => return Err(anyhow!("[get_cc_report] error create tee: {:?}", e)),
     }
 }
 
@@ -106,7 +106,7 @@ pub fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
 pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
     match CcType::build_tee() {
         Ok(tee) => {
-            // call CVM trait defined methods
+            // call tee trait defined methods
             let algo_id = tee.get_algorithm_id();
             Ok(Algorithm {
                 algo_id: algo_id,
