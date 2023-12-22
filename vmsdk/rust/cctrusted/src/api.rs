@@ -6,6 +6,7 @@ use cctrusted_base::cc_type::CcType;
 use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 use cctrusted_base::tdx::quote::TdxQuote;
+use cctrusted_base::tpm::quote::TpmQuote;
 
 use crate::api_data::*;
 
@@ -119,6 +120,7 @@ pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
     }
 }
 
+// this function parses cc report to the TDX quote struct
 impl ParseCcReport<TdxQuote> for CcReport{
     fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error>{
         match TdxQuote::parse_tdx_quote(report){
@@ -133,6 +135,7 @@ impl ParseCcReport<TdxQuote> for CcReport{
     }
 }
 
+// this function parses cc report to the TPM quote struct
 impl ParseCcReport<TpmQuote> for CcReport{
     fn parse_cc_report(_report: Vec<u8>) -> Result<TpmQuote, anyhow::Error>{
         todo!()
