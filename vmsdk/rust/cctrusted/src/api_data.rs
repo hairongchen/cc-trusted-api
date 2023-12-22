@@ -1,4 +1,10 @@
-use cctrusted_base::cc_type::CcType;
+pub enum CcType {
+    PLAIN = -1,
+    TDX = 0,
+    SEV = 1,
+    CCA = 2,
+    TPM = 3,
+}
 
 // input of API get_cc_report()
 // this struct is used in vTPM and other TEE scenarios
