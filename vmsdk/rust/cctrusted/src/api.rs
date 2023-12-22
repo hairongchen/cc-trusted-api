@@ -43,7 +43,7 @@ pub fn get_cc_report(
                         return Err(anyhow!("[get_cc_report] error get cc report: {:?}", e));
                     },
                 },
-                cc_type: cvm.get_cc_type().tee_type as u8
+                cc_type: cvm.get_cc_type().tee_type as i8
             })
         }
         Err(e) => return Err(anyhow!("[get_cc_report] error create cvm: {:?}", e)),

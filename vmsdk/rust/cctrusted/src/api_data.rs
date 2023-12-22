@@ -1,10 +1,8 @@
-pub enum ReportType {
-    PLAIN:u8 = -1,
-    TDX:u8 = 0,
-    SEV:u8 = 1,
-    CCA:u8 = 2,
-    TPM:u8 = 3,
-}
+pub const PLAIN:i8 = -1;
+pub const TDX:i8 = 0;
+pub const SEV:i8 = 1;
+pub const CCA:i8 = 2;
+pub const TPM:i8 = 3;
 
 // input of API get_cc_report()
 // this struct is used in vTPM and other TEE scenarios
