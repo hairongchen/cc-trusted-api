@@ -34,7 +34,7 @@ pub struct CcParsedTdxReport {
 }
 
 // return of API parse_cc_report() in TPM case
-pub struct CcTpmReport {}
+pub struct CcParsedTpmReport {}
 
 /***
     trait to be implemented for cc report parsing.
