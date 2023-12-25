@@ -51,7 +51,7 @@ pub enum IntelTeeType {
     TEE_TDX = 0x00000081
 }
 
-pub const QE_VENDOR_INTEL_SGX = "939a7233f79c4ca9940a0db3957f0607";
+pub const QE_VENDOR_INTEL_SGX: &str = "939a7233f79c4ca9940a0db3957f0607";
 
 pub enum QeCertDataType {
     /*** QE Certification Data Type.

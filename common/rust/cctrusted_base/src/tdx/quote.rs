@@ -8,6 +8,7 @@ use std::os::unix::io::AsRawFd;
 use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
+use std::mem::transmute;
 
 use super::common::*;
 use super::tdx::*;
