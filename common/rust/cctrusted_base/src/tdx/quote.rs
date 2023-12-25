@@ -237,7 +237,7 @@ pub struct TdxQuote {
     pub dummy_var2: u8,
 }
 
-#[repr(C)]
+#[repr(C), packed]
 pub struct TdxQuoteHeader {
     /*** TD Quote Header.
 
@@ -291,7 +291,8 @@ pub struct TdxQuoteHeader {
     tee_type: IntelTeeType,
     reserved_1: [u8;2],
     reserved_2: [u8;2],
-    qe_vendor: [u8;16]    
+    qe_vendor: [u8;16],
+    user_data: [u8;20] 
 }
 
 #[repr(C, packed)]
