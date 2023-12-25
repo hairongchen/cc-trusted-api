@@ -237,7 +237,7 @@ pub struct TdxQuote {
     pub dummy_var2: u8,
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct TdxQuoteHeader {
     /*** TD Quote Header.
 
