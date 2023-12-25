@@ -289,9 +289,9 @@ pub struct TdxQuoteHeader {
     version: u16,
     ak_type: AttestationKeyType,
     tee_type: IntelTeeType,
-    reserved_1: [u8,2],
-    reserved_2: [u8,2],
-    qe_vendor: [u8,16]    
+    reserved_1: [u8;2],
+    reserved_2: [u8;2],
+    qe_vendor: [u8;16]    
 }
 
 #[repr(C, packed)]
@@ -508,46 +508,46 @@ pub struct TdxQuoteSignature {
 //     pub report_data: [u8; 64], // Additional Report Data
 // }
 
-pub struct TdxQuote {
-    /*** TDX Quote.
+// pub struct TdxQuote {
+//     /*** TDX Quote.
 
-    Atrributes:
-        header: A ``TdxQuoteHeader`` storing the data of Quote Header.
-        body: A ``TdxQuoteBody`` storing the data of TD Quote body.
-        sig: Quote Signature. Currently only support ``TdxQuoteEcdsa256Sigature``.
+//     Atrributes:
+//         header: A ``TdxQuoteHeader`` storing the data of Quote Header.
+//         body: A ``TdxQuoteBody`` storing the data of TD Quote body.
+//         sig: Quote Signature. Currently only support ``TdxQuoteEcdsa256Sigature``.
 
-    Definition reference:
-    https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
-    A.3. Version 4 Quote Format (TDX-ECDSA, SGX-ECDSA, and SGX-EPID)
-    Endianess: Little Endian (applies to all integer fields). Size in bytes:
-    Name            Size    Type            Description
-    Quote Header    48      TD Quote Header Header of Quote data structure.
-                                            This field is transparent, i.e., the user knows its
-                                            internal structure.
-                                            Rest of the Quote data structure can be treated as
-                                            opaque, i.e., hidden from the user.
-    TD Quote Body   584     TD Quote Body   Report of the attested TD.
-                                            The REPORTDATA contained in this field is defined
-                                            by the TD developer. See the description of the
-                                            field for example usages.
-    Quote Signature 4       Integer         Size of the Quote Signature Data structure
-    Data Len
+//     Definition reference:
+//     https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
+//     A.3. Version 4 Quote Format (TDX-ECDSA, SGX-ECDSA, and SGX-EPID)
+//     Endianess: Little Endian (applies to all integer fields). Size in bytes:
+//     Name            Size    Type            Description
+//     Quote Header    48      TD Quote Header Header of Quote data structure.
+//                                             This field is transparent, i.e., the user knows its
+//                                             internal structure.
+//                                             Rest of the Quote data structure can be treated as
+//                                             opaque, i.e., hidden from the user.
+//     TD Quote Body   584     TD Quote Body   Report of the attested TD.
+//                                             The REPORTDATA contained in this field is defined
+//                                             by the TD developer. See the description of the
+//                                             field for example usages.
+//     Quote Signature 4       Integer         Size of the Quote Signature Data structure
+//     Data Len
 
-    Quote Signature Variable Signature      Variable-length data containing the signature and
-    Data                     Dependent      supporting data. For instance, an ECDSA P-256
-                                            Signature
+//     Quote Signature Variable Signature      Variable-length data containing the signature and
+//     Data                     Dependent      supporting data. For instance, an ECDSA P-256
+//                                             Signature
 
-    For Version 5
-    TODO: implement version 5 according to A.4. Version 5 Quote Format.
-    */
+//     For Version 5
+//     TODO: implement version 5 according to A.4. Version 5 Quote Format.
+//     */
 
-    header: TdxQuoteHeader,
-    version: u16,
-    body: TdxQuoteBody,
-    // TODO! header.ak_type == AttestationKeyType.ECDSA_P256 or AttestationKeyType.ECDSA_P384
-    sig: TdxQuoteSignature
+//     header: TdxQuoteHeader,
+//     version: u16,
+//     body: TdxQuoteBody,
+//     // TODO! header.ak_type == AttestationKeyType.ECDSA_P256 or AttestationKeyType.ECDSA_P384
+//     sig: TdxQuoteSignature
 
-}
+// }
 
 
 
