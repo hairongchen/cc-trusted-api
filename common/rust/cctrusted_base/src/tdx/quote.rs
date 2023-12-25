@@ -553,7 +553,7 @@ pub struct TdxQuoteSignature {
 
 impl TdxQuote {
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
-        let tdx_quote_header: TdxQuoteHeader = unsafe { transmute::<[u8; 48], TdxQuoteHeader>(&quote[0..48]) };
+        let tdx_quote_header: TdxQuoteHeader = unsafe { transmute::<[u8; 48], TdxQuoteHeader>(quote[0..48].try_into().expect("slice with incorrect length")) };
         Ok(TdxQuote{
             dummy_var1: tdx_quote_header.version as u8,
             dummy_var2: tdx_quote_header.tee_type as u8
