@@ -1,16 +1,12 @@
 #![allow(non_camel_case_types)]
 use anyhow::*;
-use nix::*;
 use core::convert::TryInto;
-use std::fs::File;
 use core::mem;
-use std::os::unix::io::AsRawFd;
 use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;
 
 use crate::tdx::common::*;
-use crate::tdx::tdvm::*;
 
 #[repr(C)]
 struct qgs_msg_header {
@@ -54,7 +50,7 @@ struct qgs_msg_get_quote_resp {
     id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
 }
 
-impl Tdx{
+impl Tdx {
     pub fn prepare_tdx_quote_request(tdreport: Vec<u8>) -> Result<Vec<u8>, anyhow::Error> {
         //retrieve TDX report
         // let report_data_vec = match get_td_report(report_data) {
@@ -67,7 +63,7 @@ impl Tdx{
         };
     
         //build QGS request message
-        let qgs_msg = generate_qgs_quote_msg(report_data_array);
+        let qgs_msg = Self::generate_qgs_quote_msg(report_data_array);
     
         //build quote generation request header
         let mut quote_header = tdx_quote_hdr {
@@ -116,19 +112,19 @@ impl Tdx{
     
         qgs_request
     }
-    
-    
-    pub struct TdxQuote {
-        pub dummy_var1: u8,
-        pub dummy_var2: u8,
-    }
-    
-    impl TdxQuote {
-        pub fn parse_tdx_quote(_quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
-            Ok(TdxQuote {
-                dummy_var1: 1,
-                dummy_var2: 2,
-            })
-        }
+}
+
+pub struct TdxQuote {
+    pub dummy_var1: u8,
+    pub dummy_var2: u8,
+}
+
+impl TdxQuote {
+    pub fn parse_tdx_quote(_quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
+        Ok(TdxQuote {
+            dummy_var1: 1,
+            dummy_var2: 2,
+        })
     }
 }
+

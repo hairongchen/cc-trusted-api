@@ -9,6 +9,13 @@ use crate::tdx::common::*;
 use crate::tdx::rtmr::TdxRTMR;
 use std::path::Path;
 
+// TDX ioctl operation code to be used for get TDX quote and TD Report
+pub enum TdxOperation {
+    TDX_GET_TD_REPORT = 1,
+    TDX_1_0_GET_QUOTE = 2,
+    TDX_1_5_GET_QUOTE = 4,
+}
+
 /*
     TdxVM is an abstraction of TDX running environment, it contains:
         cc_type: should always be CcType built with TeeType::TDX
@@ -191,7 +198,7 @@ impl CVM for TdxVM {
             }
             Ok(fd) => fd,
         };
-        
+
         //build the operator code and apply the ioctl command
         match self.version {
             TdxVersion::TDX_1_0 => {

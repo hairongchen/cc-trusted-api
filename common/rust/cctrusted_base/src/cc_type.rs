@@ -3,10 +3,6 @@ use std::collections::HashMap;
 use std::path::Path;
 use core::result::Result;
 
-use crate::cvm::CVM;
-use crate::tcg::TcgAlgorithmRegistry;
-use crate::tdx::tdvm::TdxVM;
-
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]
 pub enum TeeType {
@@ -44,9 +40,6 @@ pub struct CcType {
     pub tee_type_str: String,
 }
 
-// used for return of Boxed trait object in build_cvm()
-pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
-
 impl CcType {
     // a function to detect the TEE type
     pub fn new() -> CcType {
@@ -64,17 +57,6 @@ impl CcType {
         CcType {
             tee_type: tee_type.clone(),
             tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned(),
-        }
-    }
-
-    pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
-        // instance a CVM according to detected TEE type
-        match CcType::new().tee_type {
-            TeeType::TDX => Ok(Box::new(TdxVM::new())),
-            TeeType::SEV => todo!(),
-            TeeType::CCA => todo!(),
-            TeeType::TPM => todo!(),
-            TeeType::PLAIN => return Err(anyhow!("[build_cvm] Error: not in any TEE!")),
         }
     }
 }

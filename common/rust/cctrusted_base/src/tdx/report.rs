@@ -1,15 +1,10 @@
 #![allow(non_camel_case_types)]
 use anyhow::*;
-use nix::*;
 use sha2::{Digest, Sha512};
-use std::fs::File;
-use std::os::unix::io::AsRawFd;
 use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;
-
 use crate::tdx::common::*;
-use crate::tdx::tdvm::TdxVM;
 
 #[repr(C)]
 #[allow(private_in_public)]
@@ -28,7 +23,7 @@ struct tdx_1_5_report_req {
     tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
-impl Tdx{
+impl Tdx {
     pub fn generate_tdx_report_data(
         nonce: String,
         data: Option<String>,
