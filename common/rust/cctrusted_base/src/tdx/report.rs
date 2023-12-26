@@ -1,7 +1,7 @@
 #![allow(non_camel_case_types)]
 use anyhow::*;
 use sha2::{Digest, Sha512};
-use core::ptr;
+//use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;
 use crate::tdx::common::*;
@@ -67,6 +67,8 @@ impl Tdx {
     pub fn prepare_tdx_1_0_report_request(
         report_data: String,
     ) -> Result<tdx_1_0_report_req, anyhow::Error> {
+        todo!()
+
         // let report_data_bytes = match base64::decode(report_data) {
         //     Ok(v) => v,
         //     Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
@@ -90,6 +92,7 @@ impl Tdx {
     pub fn prepare_tdx_1_5_report_request(
         report_data: String,
     ) -> Result<tdx_1_5_report_req, anyhow::Error> {
+        todo!()
         // let report_data_bytes = match base64::decode(report_data) {
         //     Ok(v) => v,
         //     Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
@@ -102,7 +105,7 @@ impl Tdx {
         // };
         // request.reportdata.copy_from_slice(&report_data_bytes[0..]);
     
-        Ok(request)
+        //Ok(request)
     }
     
 }
