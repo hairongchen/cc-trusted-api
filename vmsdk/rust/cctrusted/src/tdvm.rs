@@ -99,9 +99,7 @@ impl TdxVM {
         match self.version {
             //TdxVersion::TDX_1_0 => match Tdx::prepare_tdx_1_0_report_request(report_data) {
             TdxVersion::TDX_1_0 => {
-                    Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-                    Ok(request) => {
-                        let report_data_bytes = match base64::decode(report_data) {
+                    let report_data_bytes = match base64::decode(report_data) {
                         Ok(v) => v,
                         Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
                     };
@@ -142,12 +140,9 @@ impl TdxVM {
                     };
                 
                     Ok(request.tdreport.to_vec())
-                },
             },
             //TdxVersion::TDX_1_5 => match Tdx::prepare_tdx_1_5_report_request(report_data) {
             TdxVersion::TDX_1_5 => {
-                Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-                Ok(request) => {
                     let report_data_bytes = match base64::decode(report_data) {
                         Ok(v) => v,
                         Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
@@ -159,7 +154,7 @@ impl TdxVM {
                         tdreport: [0; TDX_REPORT_LEN as usize],
                     };
                     request.reportdata.copy_from_slice(&report_data_bytes[0..]);
-                    
+
                     //build the operator code
                     ioctl_readwrite!(
                         get_report_1_5_ioctl,
@@ -185,7 +180,6 @@ impl TdxVM {
                     };
                 
                     Ok(request.tdreport.to_vec())
-                },
             },
         }
     }
