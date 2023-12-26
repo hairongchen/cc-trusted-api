@@ -1,7 +1,12 @@
+use anyhow::*;
+use core::mem;
 use crate::api_data::*;
 use crate::tcg::TcgDigest;
 use crate::eventlog::TcgEventLog;
 use crate::api_data::Algorithm;
+use crate::tdx::quote::TdxQuote;
+use crate::tpm::quote::TpmQuote;
+
 
 pub trait CCTrustedApi {
     /***
