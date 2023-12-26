@@ -9,9 +9,7 @@ pub struct DeviceNode {
     pub device_path: String,
 }
 
-pub struct CcEventlogs {
-    //TODO
-}
+pub struct CcEventlogs {}
 
 // used for return of Boxed trait object in build_cvm()
 pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
@@ -29,7 +27,6 @@ pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
 
 // the interfaces a CVM should implement
 pub trait CVM {
-
     /***
         retrive CVM signed report
 
