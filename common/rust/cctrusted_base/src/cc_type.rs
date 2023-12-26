@@ -45,7 +45,7 @@ pub struct CcType {
 }
 
 // used for return of Boxed trait object in build_cvm()
-pub trait BuildCVM: TEE + TcgAlgorithmRegistry {}
+pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
 
 impl CcType {
     // a function to detect the TEE type
@@ -70,7 +70,7 @@ impl CcType {
     pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
         // instance a CVM according to detected TEE type
         match CcType::new().tee_type {
-            TeeType::TDX => Ok(Box::new(Tdx::new())),
+            TeeType::TDX => Ok(Box::new(TdxVM::new())),
             TeeType::SEV => todo!(),
             TeeType::CCA => todo!(),
             TeeType::TPM => todo!(),

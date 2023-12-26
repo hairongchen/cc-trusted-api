@@ -6,5 +6,5 @@ pub mod cc_type;
 pub mod cvm;
 pub mod eventlog;
 pub mod tcg;
-pub mod tdvm;
+pub mod tdx;
 pub mod tpm;
