@@ -1,13 +1,13 @@
 #![allow(non_camel_case_types)]
 use anyhow::*;
 use nix::*;
-use std::convert::TryInto;
-use std::fs::File;
-use std::mem;
-use std::os::unix::io::AsRawFd;
-use std::ptr;
-use std::result::Result;
-use std::result::Result::Ok;
+use core::convert::TryInto;
+use core::fs::File;
+use core::mem;
+use core::os::unix::io::AsRawFd;
+use core::ptr;
+use core::result::Result;
+use core::result::Result::Ok;
 
 use crate::tdx::common::*;
 use crate::tdx::tdvm::*;
@@ -96,7 +96,7 @@ impl TdxVM {
 
         let qgs_msg_bytes = unsafe {
             let ptr = &qgs_msg as *const qgs_msg_get_quote_req as *const u8;
-            std::slice::from_raw_parts(ptr, mem::size_of::<qgs_msg_get_quote_req>())
+            core::slice::from_raw_parts(ptr, mem::size_of::<qgs_msg_get_quote_req>())
         };
         quote_header.data[0..(16 + 8 + TDX_REPORT_LEN) as usize]
             .copy_from_slice(&qgs_msg_bytes[0..((16 + 8 + TDX_REPORT_LEN) as usize)]);
@@ -148,7 +148,7 @@ impl TdxVM {
         //inspect the response and retrive quote data
         let out_len = quote_header.out_len;
         let qgs_msg_resp_size =
-            unsafe { std::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
+            unsafe { core::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
 
         let qgs_msg_resp = unsafe {
             let raw_ptr = ptr::addr_of!(quote_header.data) as *mut qgs_msg_get_quote_resp;

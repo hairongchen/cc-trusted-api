@@ -1,7 +1,7 @@
 use anyhow::*;
-use std::collections::HashMap;
-use std::path::Path;
-use std::result::Result;
+use core::collections::HashMap;
+use core::path::Path;
+use core::result::Result;
 
 use crate::cvm::CVM;
 use crate::tcg::TcgAlgorithmRegistry;

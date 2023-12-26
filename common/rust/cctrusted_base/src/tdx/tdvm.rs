@@ -1,13 +1,13 @@
 use anyhow::*;
 use log::info;
-use std::result::Result::Ok;
+use core::result::Result::Ok;
 
 use crate::cc_type::*;
 use crate::cvm::*;
 use crate::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use crate::tdx::common::*;
 use crate::tdx::rtmr::TdxRTMR;
-use std::path::Path;
+use core::path::Path;
 
 /*
     TdxVM is an abstraction of TDX running environment, it contains:
