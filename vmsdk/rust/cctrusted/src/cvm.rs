@@ -1,4 +1,6 @@
-use crate::tcg::{TcgDigest,TcgAlgorithmRegistry};
+use anyhow::*;
+use cctrusted_base::tcg::{TcgDigest,TcgAlgorithmRegistry};
+use cctrusted_base::cc_type::CcType;
 
 // holds the device node info
 pub struct DeviceNode {
