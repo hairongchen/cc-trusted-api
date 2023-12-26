@@ -5,7 +5,7 @@ use core::result::Result::Ok;
 use crate::tdx::common::*;
 
 #[repr(C)]
-struct qgs_msg_header {
+pub struct qgs_msg_header {
     major_version: u16, // TDX major version
     minor_version: u16, // TDX minor version
     msg_type: u32,      // GET_QUOTE_REQ or GET_QUOTE_RESP
@@ -15,7 +15,7 @@ struct qgs_msg_header {
 
 #[repr(C)]
 pub struct qgs_msg_get_quote_req {
-    pub header: qgs_msg_header,                        // header.type = GET_QUOTE_REQ
+    header: qgs_msg_header,                        // header.type = GET_QUOTE_REQ
     report_size: u32,                              // cannot be 0
     id_list_size: u32,                             // length of id_list, in byte, can be 0
     report_id_list: [u8; TDX_REPORT_LEN as usize], // report followed by id list
