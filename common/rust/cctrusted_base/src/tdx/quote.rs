@@ -18,7 +18,7 @@ struct qgs_msg_header {
 }
 
 #[repr(C)]
-struct qgs_msg_get_quote_req {
+pub struct qgs_msg_get_quote_req {
     header: qgs_msg_header,                        // header.type = GET_QUOTE_REQ
     report_size: u32,                              // cannot be 0
     id_list_size: u32,                             // length of id_list, in byte, can be 0
@@ -36,14 +36,13 @@ struct tdx_quote_hdr {
 }
 
 #[repr(C)]
-#[allow(private_in_public)]
-struct tdx_quote_req {
+pub struct tdx_quote_req {
     buf: u64, // Pass user data that includes TDREPORT as input. Upon successful completion of IOCTL, output is copied back to the same buffer
     len: u64, // Length of the Quote buffer
 }
 
 #[repr(C)]
-struct qgs_msg_get_quote_resp {
+pub struct qgs_msg_get_quote_resp {
     header: qgs_msg_header,        // header.type = GET_QUOTE_RESP
     selected_id_size: u32,         // can be 0 in case only one id is sent in request
     quote_size: u32,               // length of quote_data, in byte
