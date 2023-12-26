@@ -94,72 +94,65 @@ impl TdxVM {
             Ok(fd) => fd,
         };
 
-    let request = match self.version {
-        TdxVersion::TDX_1_0 => match Tdx::prepare_tdx_1_0_report_request(report_data) {
-            Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-            Ok(r) => r,
-        },
-        TdxVersion::TDX_1_5 => match Tdx::prepare_tdx_1_5_report_request(report_data) {
-            Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-            Ok(r) => r,
-        },
-    };
-
-    match self.version {
-        TdxVersion::TDX_1_0 => {      
-            //build the operator code
-            ioctl_readwrite!(
-                get_report_1_0_ioctl,
-                b'T',
-                TdxOperation::TDX_GET_TD_REPORT,
-                u64
-            );
-        
-            //apply the ioctl command
-            match unsafe {
-                get_report_1_0_ioctl(device_node.as_raw_fd(), ptr::addr_of!(request) as *mut u64)
-            } {
-                Err(e) => {
-                    return Err(anyhow!(
-                        "[get_td_report] Fail to get TDX report: {:?}",
-                        e
-                    ))
-                }
-                Ok(_) => (),
-            };
-        
-            Ok(request.tdreport.to_vec())
-        },
-
-        TdxVersion::TDX_1_5 => {  
-            //build the operator code
-            ioctl_readwrite!(
-                get_report_1_5_ioctl,
-                b'T',
-                TdxOperation::TDX_GET_TD_REPORT,
-                tdx_1_5_report_req
-            );
-        
-            //apply the ioctl command
-            match unsafe {
-                get_report_1_5_ioctl(
-                    device_node.as_raw_fd(),
-                    ptr::addr_of!(request) as *mut tdx_1_5_report_req,
-                )
-            } {
-                Err(e) => {
-                    return Err(anyhow!(
-                        "[get_td_report] Fail to get TDX report: {:?}",
-                        e
-                    ))
-                }
-                Ok(_) => (),
-            };
-        
-            Ok(request.tdreport.to_vec())},
-    }
-
-
+        match self.version {
+            TdxVersion::TDX_1_0 => match Tdx::prepare_tdx_1_0_report_request(report_data) {
+                Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
+                Ok(request) => {
+                    //build the operator code
+                    ioctl_readwrite!(
+                        get_report_1_0_ioctl,
+                        b'T',
+                        TdxOperation::TDX_GET_TD_REPORT,
+                        u64
+                    );
+                
+                    //apply the ioctl command
+                    match unsafe {
+                        get_report_1_0_ioctl(device_node.as_raw_fd(), ptr::addr_of!(request) as *mut u64)
+                    } {
+                        Err(e) => {
+                            return Err(anyhow!(
+                                "[get_td_report] Fail to get TDX report: {:?}",
+                                e
+                            ))
+                        }
+                        Ok(_) => (),
+                    };
+                
+                    Ok(request.tdreport.to_vec())
+                },
+            },
+            TdxVersion::TDX_1_5 => match Tdx::prepare_tdx_1_5_report_request(report_data) {
+                Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
+                Ok(request) => {
+                    //build the operator code
+                    ioctl_readwrite!(
+                        get_report_1_5_ioctl,
+                        b'T',
+                        TdxOperation::TDX_GET_TD_REPORT,
+                        tdx_1_5_report_req
+                    );
+                
+                    //apply the ioctl command
+                    match unsafe {
+                        get_report_1_5_ioctl(
+                            device_node.as_raw_fd(),
+                            ptr::addr_of!(request) as *mut tdx_1_5_report_req,
+                        )
+                    } {
+                        Err(e) => {
+                            return Err(anyhow!(
+                                "[get_td_report] Fail to get TDX report: {:?}",
+                                e
+                            ))
+                        }
+                        Ok(_) => (),
+                    };
+                
+                    Ok(request.tdreport.to_vec())
+                },
+            },
+        }
     }
 
     // associated function to detect the TDX version
