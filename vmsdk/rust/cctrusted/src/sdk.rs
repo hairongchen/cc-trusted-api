@@ -6,11 +6,10 @@ use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::cc_type::CcType;
 use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
-use cctrusted_base::tdx::quote::TdxQuote;
-use cctrusted_base::tpm::quote::TpmQuote;
 
 use cctrusted_base::api_data::*;
 use cctrusted_base::api::*;
+use crate::cvm::build_cvm;
 
 pub struct API {}
 
@@ -37,7 +36,7 @@ impl CCTrustedApi for API {
         data: String,
         _extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error> {
-        match CcType::build_cvm() {
+        match build_cvm() {
             Ok(mut cvm) => {
                 // call CVM trait defined methods
                 cvm.dump();
@@ -107,7 +106,7 @@ impl CCTrustedApi for API {
     
     */
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
-        match CcType::build_cvm() {
+        match build_cvm() {
             Ok(cvm) => {
                 // call CVM trait defined methods
                 let algo_id = cvm.get_algorithm_id();

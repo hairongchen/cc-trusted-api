@@ -13,19 +13,19 @@ pub struct CcEventlogs {
 // used for return of Boxed trait object in build_cvm()
 pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
 
+pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
+    // instance a CVM according to detected TEE type
+    match CcType::new().tee_type {
+        TeeType::TDX => Ok(Box::new(TdxVM::new())),
+        TeeType::SEV => todo!(),
+        TeeType::CCA => todo!(),
+        TeeType::TPM => todo!(),
+        TeeType::PLAIN => return Err(anyhow!("[build_cvm] Error: not in any TEE!")),
+    }
+}
+
 // the interfaces a CVM should implement
 pub trait CVM {
-
-    pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
-        // instance a CVM according to detected TEE type
-        match CcType::new().tee_type {
-            TeeType::TDX => Ok(Box::new(TdxVM::new())),
-            TeeType::SEV => todo!(),
-            TeeType::CCA => todo!(),
-            TeeType::TPM => todo!(),
-            TeeType::PLAIN => return Err(anyhow!("[build_cvm] Error: not in any TEE!")),
-        }
-    }
 
     /***
         retrive CVM signed report
