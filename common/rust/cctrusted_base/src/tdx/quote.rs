@@ -23,9 +23,9 @@ pub struct qgs_msg_get_quote_req {
 
 #[repr(C)]
 pub struct tdx_quote_hdr {
-    version: u64,                       // Quote version, filled by TD
-    status: u64,                        // Status code of Quote request, filled by VMM
-    in_len: u32,                        // Length of TDREPORT, filled by TD
+    pub version: u64,                       // Quote version, filled by TD
+    pub status: u64,                        // Status code of Quote request, filled by VMM
+    pub in_len: u32,                        // Length of TDREPORT, filled by TD
     pub out_len: u32,                       // Length of Quote, filled by VMM
     pub data_len_be_bytes: [u8; 4],         // big-endian 4 bytes indicate the size of data following
     pub data: [u8; TDX_QUOTE_LEN as usize], // Actual Quote data or TDREPORT on input
@@ -39,10 +39,10 @@ pub struct tdx_quote_req {
 
 #[repr(C)]
 pub struct qgs_msg_get_quote_resp {
-    header: qgs_msg_header,        // header.type = GET_QUOTE_RESP
-    selected_id_size: u32,         // can be 0 in case only one id is sent in request
-    quote_size: u32,               // length of quote_data, in byte
-    id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
+    pub header: qgs_msg_header,        // header.type = GET_QUOTE_RESP
+    pub selected_id_size: u32,         // can be 0 in case only one id is sent in request
+    pub quote_size: u32,               // length of quote_data, in byte
+    pub id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
 }
 
 impl Tdx {
@@ -50,7 +50,7 @@ impl Tdx {
         todo!()
     }
     
-    fn generate_qgs_quote_msg(
+    pub fn generate_qgs_quote_msg(
         report: [u8; TDX_REPORT_LEN as usize],
     ) -> qgs_msg_get_quote_req {
         //build quote service message header to be used by QGS
