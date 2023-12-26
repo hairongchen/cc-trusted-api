@@ -1,3 +1,5 @@
+use crate::cc_type::TeeType;
+
 /***
  ************************************
  * API get_cc_report() related data *
@@ -12,7 +14,7 @@ pub struct ExtraArgs {}
 // return of API get_cc_report()
 pub struct CcReport {
     pub cc_report: Vec<u8>,
-    pub cc_type: tee_type,
+    pub cc_type: TeeType,
 }
 
 /***
