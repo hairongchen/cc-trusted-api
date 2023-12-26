@@ -18,7 +18,7 @@ pub struct tdx_1_0_report_req {
 #[repr(C)]
 pub struct tdx_1_5_report_req {
     reportdata: [u8; REPORT_DATA_LEN as usize], // User buffer with REPORTDATA to be included into TDREPORT
-    tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
+    pub tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
 impl Tdx {
