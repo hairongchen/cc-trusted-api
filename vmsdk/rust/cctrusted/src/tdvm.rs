@@ -110,7 +110,7 @@ impl TdxVM {
                     let td_report: [u8; TDX_REPORT_LEN as usize] = [0; TDX_REPORT_LEN as usize];
                 
                     //build the request
-                    tdx_1_0_report_req {
+                    let request = tdx_1_0_report_req {
                         subtype: 0 as u8,
                         reportdata: ptr::addr_of!(report_data_array) as u64,
                         rpd_len: REPORT_DATA_LEN,
