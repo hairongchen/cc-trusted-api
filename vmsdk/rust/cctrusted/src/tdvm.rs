@@ -10,6 +10,8 @@ use cctrusted_base::tdx::rtmr::TdxRTMR;
 use std::path::Path;
 use core::ptr;
 use nix::*;
+use cctrusted_base::tdx::report::*;
+use cctrusted_base::tdx::quote::*;
 
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
