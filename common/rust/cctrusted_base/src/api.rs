@@ -1,3 +1,8 @@
+use crate::api_data::*;
+use crate::tcg::TcgDigest;
+use crate::eventlog::TcgEventLog;
+use crate::api_data::Algorithm;
+
 pub trait CCTrustedApi {
     /***
     Get the cc report for given nonce and data.

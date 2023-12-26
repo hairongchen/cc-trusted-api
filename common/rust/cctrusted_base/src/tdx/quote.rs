@@ -51,7 +51,7 @@ struct qgs_msg_get_quote_resp {
 }
 
 impl Tdx {
-    pub fn prepare_tdx_quote_request(tdreport: Vec<u8>) -> Result<Vec<u8>, anyhow::Error> {
+    pub fn prepare_tdx_quote_request(tdreport: Vec<u8>) -> Result<qgs_msg_get_quote_req, anyhow::Error> {
         //retrieve TDX report
         // let report_data_vec = match get_td_report(report_data) {
         //     Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX report: {:?}", e)),
@@ -82,10 +82,10 @@ impl Tdx {
         quote_header.data[0..(16 + 8 + TDX_REPORT_LEN) as usize]
             .copy_from_slice(&qgs_msg_bytes[0..((16 + 8 + TDX_REPORT_LEN) as usize)]);
     
-        tdx_quote_req {
+        Ok(tdx_quote_req {
             buf: ptr::addr_of!(quote_header) as u64,
             len: TDX_QUOTE_LEN as u64,
-        }
+        })
     }
     
     fn generate_qgs_quote_msg(

@@ -1,7 +1,5 @@
-use anyhow::*;
 use std::collections::HashMap;
 use std::path::Path;
-use core::result::Result;
 
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]
