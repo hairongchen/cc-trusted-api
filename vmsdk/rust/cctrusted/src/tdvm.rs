@@ -177,7 +177,7 @@ impl CVM for TdxVM {
             Err(e) => return Err(anyhow!("[process_cc_report] error getting TD report: {:?}", e)),
         };
 
-        let tdx_quote_request = match self.prepare_tdx_quote_request(tdreport) {
+        let tdx_quote_request = match Tdx::prepare_tdx_quote_request(tdreport) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("[process_cc_report] error getting TDX quote: {:?}", e)),
         };

@@ -11,7 +11,7 @@ pub struct tdx_1_0_report_req {
     subtype: u8,     // Subtype of TDREPORT: fixed as 0 by TDX Module specification
     reportdata: u64, // User-defined REPORTDATA to be included into TDREPORT
     rpd_len: u32,    // Length of the REPORTDATA: fixed as 64 bytes by the TDX Module specification
-    tdreport: u64,   // TDREPORT output from TDCALL[TDG.MR.REPORT]
+    pub tdreport: u64,   // TDREPORT output from TDCALL[TDG.MR.REPORT]
     tdr_len: u32,    // Length of the TDREPORT: fixed as 1024 bytes by the TDX Module specification
 }
 
