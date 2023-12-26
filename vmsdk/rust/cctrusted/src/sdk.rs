@@ -13,7 +13,7 @@ use cctrusted_base::tpm::quote::TpmQuote;
 use cctrusted_base::api_data::*;
 use cctrusted_base::api::*;
 
-pub struct API {};
+pub struct API {}
 
 impl CCTrustedApi for API {
     /***
@@ -33,7 +33,7 @@ impl CCTrustedApi for API {
         Returns:
             The cc report byte array or error information
     */
-    pub fn get_cc_report(
+    fn get_cc_report(
         nonce: String,
         data: String,
         _extra_args: ExtraArgs,
@@ -56,7 +56,7 @@ impl CCTrustedApi for API {
         }
     }
     
-    pub fn dump_cc_report(report: &Vec<u8>) {
+    fn dump_cc_report(report: &Vec<u8>) {
         dump_data(report)
     }
     
@@ -74,7 +74,7 @@ impl CCTrustedApi for API {
        Returns:
            TcgDigest struct
     */
-    pub fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
+    fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
         todo!()
     }
     
@@ -90,7 +90,7 @@ impl CCTrustedApi for API {
         Returns:
             TcgEventLog struct
     */
-    pub fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
+    fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
         todo!()
     }
     
@@ -107,7 +107,7 @@ impl CCTrustedApi for API {
             The Algorithm struct
     
     */
-    pub fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
+    fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
         match CcType::build_cvm() {
             Ok(cvm) => {
                 // call CVM trait defined methods
@@ -128,7 +128,7 @@ impl CCTrustedApi for API {
 }
 
 // this function parses cc report to the TDX quote struct
-impl ParseCcReport<CcParsedTdxReport> for CcReport {
+impl ParseCcReport<TdxQuote> for CcReport {
     fn parse_cc_report(report: Vec<u8>) -> Result<CcParsedTdxReport, anyhow::Error> {
         match TdxQuote::parse_tdx_quote(report) {
             Ok(tdx_quote) => unsafe {
