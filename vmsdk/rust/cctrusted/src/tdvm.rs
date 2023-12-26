@@ -57,16 +57,13 @@ impl TdxVM {
         let device_node = DeviceNode {
             device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned(),
         };
-        let algo_id = crate::tcg::TPM_ALG_SHA384;
+        let algo_id = cctrusted_base::tcg::TPM_ALG_SHA384;
 
         TdxVM {
             cc_type,
             version,
             device_node,
             algo_id,
-            cc_report_raw: Vec::new(),
-            td_report_raw: Vec::new(),
-            rtrms: Vec::new(),
         }
     }
 
@@ -131,7 +128,7 @@ impl TdxVM {
                 Ok(_) => (),
             };
         
-            Ok(td_report.to_vec())
+            Ok(request.tdreport.to_vec())
         },
 
         TdxVersion::TDX_1_5 => {  
@@ -247,6 +244,7 @@ impl CVM for TdxVM {
         };
     
         //inspect the response and retrive quote data
+        let quote_header = tdx_quote_request.buf as tdx_quote_hdr;
         let out_len = quote_header.out_len;
         let qgs_msg_resp_size =
             unsafe { core::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
