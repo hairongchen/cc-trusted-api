@@ -15,6 +15,7 @@ use nix::*;
 use cctrusted_base::tdx::report::*;
 use cctrusted_base::tdx::quote::*;
 use std::fs::File;
+use std::os::fd::AsRawFd;
 
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
@@ -39,9 +40,9 @@ pub struct TdxVM {
     pub version: TdxVersion,
     pub device_node: DeviceNode,
     pub algo_id: u8,
-    pub cc_report_raw: Vec<u8>,
-    pub td_report_raw: Vec<u8>,
-    pub rtrms: Vec<TdxRTMR>,
+    // pub cc_report_raw: Vec<u8>,
+    // pub td_report_raw: Vec<u8>,
+    // pub rtrms: Vec<TdxRTMR>,
 }
 
 // implement the structure method and associated function
