@@ -129,10 +129,10 @@ impl CCTrustedApi for API {
 
 // this function parses cc report to the TDX quote struct
 impl ParseCcReport<TdxQuote> for CcReport {
-    fn parse_cc_report(report: Vec<u8>) -> Result<CcParsedTdxReport, anyhow::Error> {
+    fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
         match TdxQuote::parse_tdx_quote(report) {
             Ok(tdx_quote) => unsafe {
-                let report: &CcParsedTdxReport = mem::transmute(&tdx_quote);
+                let report: &TdxQuote = mem::transmute(&tdx_quote);
                 Ok(report.clone())
             },
             Err(e) => return Err(anyhow!("[parse_cc_report] error parse tdx quote: {:?}", e)),
