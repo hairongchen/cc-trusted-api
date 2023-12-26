@@ -1,7 +1,6 @@
 #![allow(non_camel_case_types)]
 use anyhow::*;
 use sha2::{Digest, Sha512};
-//use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;
 use crate::tdx::common::*;
@@ -63,49 +62,4 @@ impl Tdx {
             .expect("[generate_tdx_report_data] Wrong length of report data");
         Ok(base64::encode(hash_array))
     }
-    
-    pub fn prepare_tdx_1_0_report_request(
-        _report_data: String,
-    ) -> Result<tdx_1_0_report_req, anyhow::Error> {
-        todo!()
-
-        // let report_data_bytes = match base64::decode(report_data) {
-        //     Ok(v) => v,
-        //     Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
-        // };
-    
-        // //prepare get TDX report request data
-        // let mut report_data_array: [u8; REPORT_DATA_LEN as usize] = [0; REPORT_DATA_LEN as usize];
-        // report_data_array.copy_from_slice(&report_data_bytes[0..]);
-        // let td_report: [u8; TDX_REPORT_LEN as usize] = [0; TDX_REPORT_LEN as usize];
-    
-        // //build the request
-        // Ok(tdx_1_0_report_req {
-        //     subtype: 0 as u8,
-        //     reportdata: ptr::addr_of!(report_data_array) as u64,
-        //     rpd_len: REPORT_DATA_LEN,
-        //     tdreport: ptr::addr_of!(td_report) as u64,
-        //     tdr_len: TDX_REPORT_LEN,
-        // })
-    }
-
-    pub fn prepare_tdx_1_5_report_request(
-        _report_data: String,
-    ) -> Result<tdx_1_5_report_req, anyhow::Error> {
-        todo!()
-        // let report_data_bytes = match base64::decode(report_data) {
-        //     Ok(v) => v,
-        //     Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
-        // };
-    
-        // //prepare get TDX report request data
-        // let mut request = tdx_1_5_report_req {
-        //     reportdata: [0; REPORT_DATA_LEN as usize],
-        //     tdreport: [0; TDX_REPORT_LEN as usize],
-        // };
-        // request.reportdata.copy_from_slice(&report_data_bytes[0..]);
-    
-        //Ok(request)
-    }
-    
 }

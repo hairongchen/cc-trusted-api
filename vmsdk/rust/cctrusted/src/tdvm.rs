@@ -32,18 +32,12 @@ pub enum TdxOperation {
         version: TdxVersion::TDX_1_0 or TdxVersion::TDX_1_5
         device_node: /dev/tdx-guest or /dev/tdx_guest
         algo_id: should be TPM_ALG_SHA384
-        cc_report_raw: the raw tdx quote in byte array
-        td_report_raw: the raw td report in byte array
-        rtrms: array of TdxRTMR struct
 */
 pub struct TdxVM {
     pub cc_type: CcType,
     pub version: TdxVersion,
     pub device_node: DeviceNode,
     pub algo_id: u8,
-    // pub cc_report_raw: Vec<u8>,
-    // pub td_report_raw: Vec<u8>,
-    // pub rtrms: Vec<TdxRTMR>,
 }
 
 // implement the structure method and associated function
@@ -97,7 +91,6 @@ impl TdxVM {
         };
 
         match self.version {
-            //TdxVersion::TDX_1_0 => match Tdx::prepare_tdx_1_0_report_request(report_data) {
             TdxVersion::TDX_1_0 => {
                     let report_data_bytes = match base64::decode(report_data) {
                         Ok(v) => v,
@@ -141,7 +134,6 @@ impl TdxVM {
                 
                     Ok(td_report.to_vec())
             },
-            //TdxVersion::TDX_1_5 => match Tdx::prepare_tdx_1_5_report_request(report_data) {
             TdxVersion::TDX_1_5 => {
                     let report_data_bytes = match base64::decode(report_data) {
                         Ok(v) => v,
@@ -206,11 +198,6 @@ impl CVM for TdxVM {
             Err(e) => return Err(anyhow!("[process_cc_report] error getting TD report: {:?}", e)),
         };
 
-                //retrieve TDX report
-        // let report_data_vec = match get_td_report(report_data) {
-        //     Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX report: {:?}", e)),
-        //     Ok(report) => report,
-        // };
         let report_data_array: [u8; TDX_REPORT_LEN as usize] = match tdreport.try_into() {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("[get_tdx_quote] Wrong TDX report format: {:?}", e)),
@@ -240,11 +227,6 @@ impl CVM for TdxVM {
             buf: ptr::addr_of!(quote_header) as u64,
             len: TDX_QUOTE_LEN as u64,
         };
-
-        // let tdx_quote_request = match Tdx::prepare_tdx_quote_request(tdreport) {
-        //     Ok(r) => r,
-        //     Err(e) => return Err(anyhow!("[process_cc_report] error getting TDX quote: {:?}", e)),
-        // };
 
         let device_node = match File::options()
         .read(true)

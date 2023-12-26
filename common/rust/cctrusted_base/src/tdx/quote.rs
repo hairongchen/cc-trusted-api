@@ -45,11 +45,7 @@ pub struct qgs_msg_get_quote_resp {
     pub id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
 }
 
-impl Tdx {
-    pub fn prepare_tdx_quote_request(_tdreport: Vec<u8>) -> Result<tdx_quote_req, anyhow::Error> {
-        todo!()
-    }
-    
+impl Tdx {    
     pub fn generate_qgs_quote_msg(
         report: [u8; TDX_REPORT_LEN as usize],
     ) -> qgs_msg_get_quote_req {
