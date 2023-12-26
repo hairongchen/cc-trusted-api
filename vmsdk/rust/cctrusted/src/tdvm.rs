@@ -8,7 +8,6 @@ use cctrusted_base::cc_type::*;
 use crate::cvm::*;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::common::*;
-use cctrusted_base::tdx::rtmr::TdxRTMR;
 use std::path::Path;
 use core::ptr;
 use nix::*;
@@ -98,11 +97,11 @@ impl TdxVM {
     let request = match self.version {
         TdxVersion::TDX_1_0 => match Tdx::prepare_tdx_1_0_report_request(report_data) {
             Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-            Ok(r) => Ok(r),
+            Ok(r) => r,
         },
         TdxVersion::TDX_1_5 => match Tdx::prepare_tdx_1_5_report_request(report_data) {
             Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
-            Ok(r) => Ok(r),
+            Ok(r) => r,
         },
     };
 
