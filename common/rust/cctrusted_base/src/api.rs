@@ -6,7 +6,9 @@ use crate::eventlog::TcgEventLog;
 use crate::api_data::Algorithm;
 use crate::tdx::quote::TdxQuote;
 use crate::tpm::quote::TpmQuote;
-
+use core::result::Result::Ok;
+use core::result::Result;
+use core::result::Result::Ok;
 
 pub trait CCTrustedApi {
     /***

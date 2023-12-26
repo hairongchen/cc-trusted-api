@@ -113,6 +113,7 @@ impl Tdx {
     }
 }
 
+#[derive(Clone)]
 pub struct TdxQuote {
     pub dummy_var1: u8,
     pub dummy_var2: u8,
