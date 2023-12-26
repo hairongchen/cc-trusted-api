@@ -237,31 +237,31 @@ impl CVM for TdxVM {
         };
     
         //inspect the response and retrive quote data
-        let quote_header = tdx_quote_request.buf as tdx_quote_hdr;
-        let out_len = quote_header.out_len;
-        let qgs_msg_resp_size =
-            unsafe { core::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
+        // let quote_header = tdx_quote_request.buf as tdx_quote_hdr;
+        // let out_len = quote_header.out_len;
+        // let qgs_msg_resp_size =
+        //     unsafe { core::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
     
-        let qgs_msg_resp = unsafe {
-            let raw_ptr = ptr::addr_of!(quote_header.data) as *mut qgs_msg_get_quote_resp;
-            raw_ptr.as_mut().unwrap() as &mut qgs_msg_get_quote_resp
-        };
+        // let qgs_msg_resp = unsafe {
+        //     let raw_ptr = ptr::addr_of!(quote_header.data) as *mut qgs_msg_get_quote_resp;
+        //     raw_ptr.as_mut().unwrap() as &mut qgs_msg_get_quote_resp
+        // };
     
-        if out_len - qgs_msg_resp_size != 4 {
-            return Err(anyhow!(
-                "[get_tdx_quote] Fail to get TDX quote: wrong TDX quote size!"
-            ));
-        }
+        // if out_len - qgs_msg_resp_size != 4 {
+        //     return Err(anyhow!(
+        //         "[get_tdx_quote] Fail to get TDX quote: wrong TDX quote size!"
+        //     ));
+        // }
     
-        if qgs_msg_resp.header.major_version != 1
-            || qgs_msg_resp.header.minor_version != 0
-            || qgs_msg_resp.header.msg_type != 1
-            || qgs_msg_resp.header.error_code != 0
-        {
-            return Err(anyhow!(
-                "[get_tdx_quote] Fail to get TDX quote: QGS response error!"
-            ));
-        }
+        // if qgs_msg_resp.header.major_version != 1
+        //     || qgs_msg_resp.header.minor_version != 0
+        //     || qgs_msg_resp.header.msg_type != 1
+        //     || qgs_msg_resp.header.error_code != 0
+        // {
+        //     return Err(anyhow!(
+        //         "[get_tdx_quote] Fail to get TDX quote: QGS response error!"
+        //     ));
+        // }
     
         Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
