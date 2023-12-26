@@ -9,7 +9,6 @@ use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 use cctrusted_base::api_data::*;
 use cctrusted_base::api::*;
 use crate::cvm::build_cvm;
-use crate::tdvm::TdxVM;
 
 pub struct API {}
 

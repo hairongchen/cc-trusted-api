@@ -1,3 +1,5 @@
+#![allow(non_camel_case_types)]
+
 use anyhow::*;
 use log::info;
 use core::result::Result::Ok;
@@ -12,6 +14,7 @@ use core::ptr;
 use nix::*;
 use cctrusted_base::tdx::report::*;
 use cctrusted_base::tdx::quote::*;
+use std::fs::File;
 
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
