@@ -8,8 +8,8 @@ use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
 
-use super::common::*;
-use super::tdx::Tdx;
+use crate::tdx::common::*;
+use crate::tdx::tdvm::TdxVM;
 
 #[repr(C)]
 #[allow(private_in_public)]
@@ -28,7 +28,7 @@ struct tdx_1_5_report_req {
     tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
-impl Tdx {
+impl TdxVM {
     pub fn generate_tdx_report_data(
         &self,
         nonce: String,

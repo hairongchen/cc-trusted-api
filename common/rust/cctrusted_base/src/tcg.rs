@@ -32,7 +32,7 @@ pub struct TcgDigest {
     hash: Vec<u8>,
 }
 
-// this trait retrieve IMR's max index of a TEE and hash value
+// this trait retrieve IMR's max index of a CVM and hash value
 pub trait TcgIMR {
     fn max_index(&self) -> u8;
     fn get_index(&self) -> u8;

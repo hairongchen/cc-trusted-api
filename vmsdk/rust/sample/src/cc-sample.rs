@@ -20,8 +20,8 @@ fn main() {
     };
 
     // dump the cc report with API "dump_cc_report"
-    info!("call cc trusted API [dump_cc_report] to dump cc report!");
-    dump_cc_report(&report.cc_report);
+    //info!("call cc trusted API [dump_cc_report] to dump cc report!");
+    //dump_cc_report(&report.cc_report);
 
     // parse the cc report with API "parse_cc_report"
     if report.cc_type == TYPE_TDX {
@@ -38,8 +38,8 @@ fn main() {
         );
     }
 
-    // get TEE default algorithm with API "get_default_algorithm"
-    info!("call cc trusted API [get_default_algorithm] to get TEE supported algorithm!");
+    // get CVM default algorithm with API "get_default_algorithm"
+    info!("call cc trusted API [get_default_algorithm] to get CVM supported algorithm!");
     match get_default_algorithm() {
         Ok(algorithm) => {
             info!("supported algorithm: {}", algorithm.algo_id_str);

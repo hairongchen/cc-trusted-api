@@ -10,10 +10,10 @@ pub struct CcEventlogs {
     //TODO
 }
 
-// the interfaces a TEE should implement
-pub trait TEE {
+// the interfaces a CVM should implement
+pub trait CVM {
     /***
-        retrive TEE signed report
+        retrive CVM signed report
 
         Args:
             nonce (String): against replay attacks
@@ -25,7 +25,7 @@ pub trait TEE {
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>;
 
     /***
-        retrive TEE measurement registers, e.g.: RTMRs, vTPM PCRs, etc.
+        retrive CVM measurement registers, e.g.: RTMRs, vTPM PCRs, etc.
 
         Args:
             index (u8): the index of measurement register,
@@ -41,6 +41,6 @@ pub trait TEE {
 
     fn get_cc_type(&self) -> CcType;
 
-    //Dump confidential TEE information
+    //Dump confidential CVM information
     fn dump(&self);
 }

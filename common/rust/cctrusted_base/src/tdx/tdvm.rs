@@ -3,14 +3,14 @@ use log::info;
 use std::result::Result::Ok;
 
 use crate::cc_type::*;
-use crate::tee::*;
+use crate::cvm::*;
 use crate::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use crate::tdx::common::*;
 use crate::tdx::rtmr::TdxRTMR;
 use std::path::Path;
 
 /*
-    Tdx is an abstraction of TDX running environment, it contains:
+    TdxVM is an abstraction of TDX running environment, it contains:
         cc_type: should always be CcType built with TeeType::TDX
         version: TdxVersion::TDX_1_0 or TdxVersion::TDX_1_5
         device_node: /dev/tdx-guest or /dev/tdx_guest
@@ -19,7 +19,7 @@ use std::path::Path;
         td_report_raw: the raw td report in byte array
         rtrms: array of TdxRTMR struct
 */
-pub struct Tdx {
+pub struct TdxVM {
     pub cc_type: CcType,
     pub version: TdxVersion,
     pub device_node: DeviceNode,
@@ -30,9 +30,9 @@ pub struct Tdx {
 }
 
 // implement the structure method and associated function
-impl Tdx {
-    // associated function: to build a Tdx sturcture instance
-    pub fn new() -> Tdx {
+impl TdxVM {
+    // associated function: to build a TdxVM sturcture instance
+    pub fn new() -> TdxVM {
         let cc_type = CcType {
             tee_type: TeeType::TDX,
             tee_type_str: TEE_NAME_MAP.get(&TeeType::TDX).unwrap().to_owned(),
@@ -44,7 +44,7 @@ impl Tdx {
         };
         let algo_id = crate::tcg::TPM_ALG_SHA384;
 
-        Tdx {
+        TdxVM {
             cc_type,
             version,
             device_node,
@@ -67,8 +67,8 @@ impl Tdx {
     }
 }
 
-// Tdx implements the interfaces defined in TEE trait
-impl TEE for Tdx {
+// TdxVM implements the interfaces defined in CVM trait
+impl CVM for TdxVM {
     // retrieve TDX quote
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
         let report_data = match self.generate_tdx_report_data(nonce, Some(data)) {
@@ -103,19 +103,19 @@ impl TEE for Tdx {
 
     fn dump(&self) {
         info!("======================================");
-        info!("TEE type = {}", self.cc_type.tee_type_str);
+        info!("CVM type = {}", self.cc_type.tee_type_str);
         info!(
-            "TEE version = {}",
+            "CVM version = {}",
             TDX_VERSION_MAP.get(&self.version).unwrap().to_owned()
         );
         info!("======================================");
     }
 }
 
-impl TcgAlgorithmRegistry for Tdx {
+impl TcgAlgorithmRegistry for TdxVM {
     fn get_algorithm_id(&self) -> u8 {
         self.algo_id
     }
 }
 
-impl BuildTee for Tdx {}
+impl BuildCVM for TdxVM {}

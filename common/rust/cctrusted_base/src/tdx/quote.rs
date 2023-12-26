@@ -9,8 +9,8 @@ use std::ptr;
 use std::result::Result;
 use std::result::Result::Ok;
 
-use super::common::*;
-use super::tdx::*;
+use crate::tdx::common::*;
+use crate::tdx::tdvm::*;
 
 #[repr(C)]
 struct qgs_msg_header {
@@ -54,7 +54,7 @@ struct qgs_msg_get_quote_resp {
     id_quote: [u8; TDX_QUOTE_LEN], // selected id followed by quote
 }
 
-impl Tdx {
+impl TdxVM {
     pub fn get_tdx_quote(&self, report_data: String) -> Result<Vec<u8>, anyhow::Error> {
         //retrieve TDX report
         let report_data_vec = match self.get_td_report(report_data) {

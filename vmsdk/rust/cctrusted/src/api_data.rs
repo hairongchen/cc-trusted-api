@@ -5,7 +5,7 @@
  */
 
 // input of API get_cc_report()
-// this struct is used in vTPM and other TEE scenarios
+// this struct is used in vTPM and other CVM scenarios
 // e.g.: vTPM may need report based on selective PCRs
 pub struct ExtraArgs {}
 
