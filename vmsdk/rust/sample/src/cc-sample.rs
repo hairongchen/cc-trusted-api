@@ -1,5 +1,7 @@
 use cctrusted::sdk::*;
 use cctrusted_base::cc_type::TeeType;
+use cctrusted_base::api_data::*;
+use cctrusted_base::tdx::quote::TdxQuote;
 use log::*;
 
 fn main() {
@@ -25,7 +27,7 @@ fn main() {
 
     // parse the cc report with API "parse_cc_report"
     if report.cc_type == TeeType::TDX {
-        let tdx_quote: CcParsedTdxReport = match CcReport::parse_cc_report(report.cc_report) {
+        let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
             Ok(q) => q,
             Err(e) => {
                 error!("error parse tdx quote: {:?}", e);
