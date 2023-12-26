@@ -3,7 +3,7 @@
 use anyhow::*;
 use log::info;
 use core::result::Result::Ok;
-
+use core::result::Result;
 use cctrusted_base::cc_type::*;
 use crate::cvm::*;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};

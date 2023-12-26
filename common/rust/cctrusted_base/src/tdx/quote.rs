@@ -26,7 +26,7 @@ pub struct qgs_msg_get_quote_req {
 }
 
 #[repr(C)]
-struct tdx_quote_hdr {
+pub struct tdx_quote_hdr {
     version: u64,                       // Quote version, filled by TD
     status: u64,                        // Status code of Quote request, filled by VMM
     in_len: u32,                        // Length of TDREPORT, filled by TD
