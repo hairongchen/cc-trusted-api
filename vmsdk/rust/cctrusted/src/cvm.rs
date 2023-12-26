@@ -44,3 +44,4 @@ pub trait CVM {
     //Dump confidential CVM information
     fn dump(&self);
 }
+

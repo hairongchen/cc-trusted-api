@@ -2,6 +2,8 @@
 use crate::cc_type::*;
 use std::collections::HashMap;
 
+struct Tdx{};
+
 // TDX version ID
 #[derive(Clone, Eq, Hash, PartialEq)]
 pub enum TdxVersion {
