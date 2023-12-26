@@ -96,9 +96,9 @@ pub trait CCTrustedApi {
 
     TDX quote parsing Example:
     if following is provided:
-    let tdx_quote: TdxQuote = parse_cc_report(cc_report_str);
+        let tdx_quote: TdxQuote = parse_cc_report(cc_report_str);
     then this implementation in api.rs will be called:
-    fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error>;
+        fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error>;
 */
 pub trait ParseCcReport<T> {
     fn parse_cc_report(_report: Vec<u8>) -> Result<T, anyhow::Error>;
