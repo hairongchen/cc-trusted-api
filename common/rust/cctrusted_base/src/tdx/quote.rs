@@ -51,7 +51,7 @@ struct qgs_msg_get_quote_resp {
 }
 
 impl Tdx {
-    pub fn prepare_tdx_quote_request(tdreport: Vec<u8>) -> Result<qgs_msg_get_quote_req, anyhow::Error> {
+    pub fn prepare_tdx_quote_request(tdreport: Vec<u8>) -> Result<tdx_quote_req, anyhow::Error> {
         //retrieve TDX report
         // let report_data_vec = match get_td_report(report_data) {
         //     Err(e) => return Err(anyhow!("[get_tdx_quote] Fail to get TDX report: {:?}", e)),
