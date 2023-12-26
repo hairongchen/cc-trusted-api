@@ -10,7 +10,7 @@ use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 use cctrusted_base::tdx::quote::TdxQuote;
 use cctrusted_base::tpm::quote::TpmQuote;
 
-use crate::api_data::*;
+use cctrusted_base::api_data::*;
 
 /***
     Get the cc report for given nonce and data.
