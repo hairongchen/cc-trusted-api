@@ -274,7 +274,6 @@ impl CVM for TdxVM {
         };
     
         //inspect the response and retrive quote data
-        let quote_header = tdx_quote_request.buf as tdx_quote_hdr;
         let out_len = quote_header.out_len;
         let qgs_msg_resp_size =
             unsafe { core::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
