@@ -119,7 +119,7 @@ impl TdxVM {
                         Ok(_) => (),
                     };
                 
-                    Ok(request.tdreport.to_vec())
+                    Ok(request.tdreport.to_be())
                 },
             },
             TdxVersion::TDX_1_5 => match Tdx::prepare_tdx_1_5_report_request(report_data) {

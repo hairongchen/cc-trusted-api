@@ -69,9 +69,9 @@ impl Tdx {
             version: 1,
             status: 0,
             in_len: (mem::size_of_val(&qgs_msg) + 4) as u32,
-            out_len: 0,
-            data_len_be_bytes: (1048 as u32).to_be_bytes(),
-            data: [0; TDX_QUOTE_LEN as usize],
+            pub out_len: 0,
+            pub data_len_be_bytes: (1048 as u32).to_be_bytes(),
+            pub data: [0; TDX_QUOTE_LEN as usize],
         };
     
         let qgs_msg_bytes = unsafe {
