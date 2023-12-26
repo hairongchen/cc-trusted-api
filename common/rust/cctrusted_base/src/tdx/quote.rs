@@ -30,9 +30,9 @@ pub struct tdx_quote_hdr {
     version: u64,                       // Quote version, filled by TD
     status: u64,                        // Status code of Quote request, filled by VMM
     in_len: u32,                        // Length of TDREPORT, filled by TD
-    out_len: u32,                       // Length of Quote, filled by VMM
-    data_len_be_bytes: [u8; 4],         // big-endian 4 bytes indicate the size of data following
-    data: [u8; TDX_QUOTE_LEN as usize], // Actual Quote data or TDREPORT on input
+    pub out_len: u32,                       // Length of Quote, filled by VMM
+    pub data_len_be_bytes: [u8; 4],         // big-endian 4 bytes indicate the size of data following
+    pub data: [u8; TDX_QUOTE_LEN as usize], // Actual Quote data or TDREPORT on input
 }
 
 #[repr(C)]
@@ -69,9 +69,9 @@ impl Tdx {
             version: 1,
             status: 0,
             in_len: (mem::size_of_val(&qgs_msg) + 4) as u32,
-            pub out_len: 0,
-            pub data_len_be_bytes: (1048 as u32).to_be_bytes(),
-            pub data: [0; TDX_QUOTE_LEN as usize],
+            out_len: 0,
+            data_len_be_bytes: (1048 as u32).to_be_bytes(),
+            data: [0; TDX_QUOTE_LEN as usize],
         };
     
         let qgs_msg_bytes = unsafe {
