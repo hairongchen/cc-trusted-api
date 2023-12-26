@@ -6,19 +6,19 @@ use crate::tdx::common::*;
 
 #[repr(C)]
 pub struct qgs_msg_header {
-    major_version: u16, // TDX major version
-    minor_version: u16, // TDX minor version
-    msg_type: u32,      // GET_QUOTE_REQ or GET_QUOTE_RESP
-    size: u32,          // size of the whole message, include this header, in byte
-    error_code: u32,    // used in response only
+    pub major_version: u16, // TDX major version
+    pub minor_version: u16, // TDX minor version
+    pub msg_type: u32,      // GET_QUOTE_REQ or GET_QUOTE_RESP
+    pub size: u32,          // size of the whole message, include this header, in byte
+    pub error_code: u32,    // used in response only
 }
 
 #[repr(C)]
 pub struct qgs_msg_get_quote_req {
-    header: qgs_msg_header,                        // header.type = GET_QUOTE_REQ
-    report_size: u32,                              // cannot be 0
-    id_list_size: u32,                             // length of id_list, in byte, can be 0
-    report_id_list: [u8; TDX_REPORT_LEN as usize], // report followed by id list
+    pub header: qgs_msg_header,                        // header.type = GET_QUOTE_REQ
+    pub report_size: u32,                              // cannot be 0
+    pub id_list_size: u32,                             // length of id_list, in byte, can be 0
+    pub report_id_list: [u8; TDX_REPORT_LEN as usize], // report followed by id list
 }
 
 #[repr(C)]
