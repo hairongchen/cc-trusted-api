@@ -29,7 +29,15 @@ pub trait CCTrustedApi {
     */
     fn get_cc_report(nonce: String, data: String, _extra_args: ExtraArgs) -> Result<CcReport, anyhow::Error>;
 
-    // dump the cc report in hex and char
+    /***
+    Dump the given cc report in hex and char format
+
+    Args:
+        report (Vec<u8>): cc report to be printed
+
+    Returns:
+        None
+    */
     fn dump_cc_report(report: &Vec<u8>);
 
     /***
@@ -77,7 +85,6 @@ pub trait CCTrustedApi {
     */
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error>;
 
-    // this trait parse cc report to the TDX quote struct
 }
 
 /***
@@ -97,7 +104,7 @@ pub trait ParseCcReport<T> {
     fn parse_cc_report(_report: Vec<u8>) -> Result<T, anyhow::Error>;
 }
 
-// this function parses cc report to the TDX quote struct
+// this function parses cc report to the TdxQuote struct
 impl ParseCcReport<TdxQuote> for CcReport {
     fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
         match TdxQuote::parse_tdx_quote(report) {
@@ -110,7 +117,7 @@ impl ParseCcReport<TdxQuote> for CcReport {
     }
 }
 
-// this function parses cc report to the TPM quote struct
+// this function parses cc report to the TpmQuote struct
 impl ParseCcReport<TpmQuote> for CcReport {
     fn parse_cc_report(_report: Vec<u8>) -> Result<TpmQuote, anyhow::Error> {
         todo!()

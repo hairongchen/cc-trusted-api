@@ -13,23 +13,7 @@ use crate::cvm::build_cvm;
 pub struct API {}
 
 impl CCTrustedApi for API {
-    /***
-        Get the cc report for given nonce and data.
 
-        The cc report is signing of attestation data (IMR values or hashes of IMR
-        values), made by a trusted foundation (TPM) using a key trusted by the
-        verifier.
-
-        Different trusted foundation may use different cc report format.
-
-        Args:
-            nonce (String): against replay attacks
-            data (String): user data
-            extraArgs: for TPM, it will be given list of IMR/PCRs
-
-        Returns:
-            The cc report byte array or error information
-    */
     fn get_cc_report(
         nonce: String,
         data: String,
@@ -57,53 +41,14 @@ impl CCTrustedApi for API {
         dump_data(report)
     }
     
-    /***
-       Get measurement register according to given selected index and algorithms
-    
-       Each trusted foundation in CC environment provides the multiple measurement
-       registers, the count is update to ``get_measurement_count()``. And for each
-       measurement register, it may provides multiple digest for different algorithms.
-    
-       Args:
-           index (u8): the index of measurement register,
-           algo_id (u8): the alrogithms ID
-    
-       Returns:
-           TcgDigest struct
-    */
     fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
         todo!()
     }
     
-    /***
-        Get eventlog for given index and count.
-    
-        TCG log in Eventlog. Verify to spoof events in the TCG log, hence defeating
-        remotely-attested measured-boot.
-    
-        To measure the full CC runtime environment, the eventlog may include addtional
-        OS type and cloud native type event beyond the measured-boot.
-    
-        Returns:
-            TcgEventLog struct
-    */
     fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
         todo!()
     }
-    
-    /***
-        Get the default Digest algorithms supported by trusted foundation.
-    
-        Different trusted foundation may support different algorithms, for example
-        the Intel TDX use SHA384, TPM uses SHA256.
-    
-        Beyond the default digest algorithm, some trusted foundation like TPM
-        may support multiple algorithms.
-    
-        Returns:
-            The Algorithm struct
-    
-    */
+
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
         match build_cvm() {
             Ok(cvm) => {
