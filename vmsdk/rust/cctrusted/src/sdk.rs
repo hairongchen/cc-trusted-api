@@ -46,7 +46,7 @@ impl CCTrustedApi for API {
                             return Err(anyhow!("[get_cc_report] error get cc report: {:?}", e));
                         }
                     },
-                    cc_type: cvm.get_cc_type(),
+                    cc_type: cvm.get_cc_type().cc_type,
                 })
             }
             Err(e) => return Err(anyhow!("[get_cc_report] error create cvm: {:?}", e)),

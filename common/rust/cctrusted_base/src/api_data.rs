@@ -12,7 +12,7 @@ pub struct ExtraArgs {}
 // return of API get_cc_report()
 pub struct CcReport {
     pub cc_report: Vec<u8>,
-    pub cc_type: i8,
+    pub cc_type: tee_type,
 }
 
 /***
