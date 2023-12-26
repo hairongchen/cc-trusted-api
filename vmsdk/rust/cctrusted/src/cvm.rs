@@ -1,4 +1,3 @@
-use crate::cc_type::CcType;
 use crate::tcg::{TcgDigest,TcgAlgorithmRegistry};
 
 // holds the device node info
