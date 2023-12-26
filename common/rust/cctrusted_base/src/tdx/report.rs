@@ -65,7 +65,7 @@ impl Tdx {
     }
     
     pub fn prepare_tdx_1_0_report_request(
-        report_data: String,
+        _report_data: String,
     ) -> Result<tdx_1_0_report_req, anyhow::Error> {
         todo!()
 
@@ -90,7 +90,7 @@ impl Tdx {
     }
 
     pub fn prepare_tdx_1_5_report_request(
-        report_data: String,
+        _report_data: String,
     ) -> Result<tdx_1_5_report_req, anyhow::Error> {
         todo!()
         // let report_data_bytes = match base64::decode(report_data) {
