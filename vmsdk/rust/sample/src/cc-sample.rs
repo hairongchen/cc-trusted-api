@@ -1,4 +1,4 @@
-//use cctrusted::sdk::*;
+use cctrusted::sdk::*;
 use cctrusted_base::cc_type::TeeType;
 use cctrusted_base::api::*;
 use cctrusted_base::api_data::*;
@@ -14,7 +14,7 @@ fn main() {
 
     // retrieve cc report with API "get_cc_report"
     info!("call cc trusted API [get_cc_report] to retrieve cc report!");
-    let report = match get_cc_report(nonce, data, ExtraArgs {}) {
+    let report = match API::get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
@@ -23,8 +23,8 @@ fn main() {
     };
 
     // dump the cc report with API "dump_cc_report"
-    //info!("call cc trusted API [dump_cc_report] to dump cc report!");
-    //dump_cc_report(&report.cc_report);
+    info!("call cc trusted API [dump_cc_report] to dump cc report!");
+    API::dump_cc_report(&report.cc_report);
 
     // parse the cc report with API "parse_cc_report"
     if report.cc_type == TeeType::TDX {
@@ -43,7 +43,7 @@ fn main() {
 
     // get CVM default algorithm with API "get_default_algorithm"
     info!("call cc trusted API [get_default_algorithm] to get CVM supported algorithm!");
-    match get_default_algorithm() {
+    match API::get_default_algorithm() {
         Ok(algorithm) => {
             info!("supported algorithm: {}", algorithm.algo_id_str);
             ();
