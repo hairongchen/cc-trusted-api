@@ -1,5 +1,4 @@
 use anyhow::*;
-use core::mem;
 use core::result::Result;
 use core::result::Result::Ok;
 
@@ -127,22 +126,4 @@ impl CCTrustedApi for API {
     }    
 }
 
-// this function parses cc report to the TDX quote struct
-impl ParseCcReport<TdxQuote> for CcReport {
-    fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
-        match TdxQuote::parse_tdx_quote(report) {
-            Ok(tdx_quote) => unsafe {
-                let report: &TdxQuote = mem::transmute(&tdx_quote);
-                Ok(report.clone())
-            },
-            Err(e) => return Err(anyhow!("[parse_cc_report] error parse tdx quote: {:?}", e)),
-        }
-    }
-}
 
-// this function parses cc report to the TPM quote struct
-impl ParseCcReport<TpmQuote> for CcReport {
-    fn parse_cc_report(_report: Vec<u8>) -> Result<TpmQuote, anyhow::Error> {
-        todo!()
-    }
-}
