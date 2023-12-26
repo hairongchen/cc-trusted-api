@@ -2,12 +2,15 @@ use anyhow::*;
 use log::info;
 use core::result::Result::Ok;
 
-use crate::cc_type::*;
+use cctrusted_base::cc_type::*;
 use crate::cvm::*;
-use crate::tcg::{TcgAlgorithmRegistry, TcgDigest};
-use crate::tdx::common::*;
-use crate::tdx::rtmr::TdxRTMR;
+use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
+use cctrusted_base::tdx::common::*;
+use cctrusted_base::tdx::rtmr::TdxRTMR;
 use std::path::Path;
+use core::ptr;
+use nix::*;
+
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
 pub enum TdxOperation {
@@ -98,7 +101,7 @@ impl TdxVM {
             Err(e) => return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e)),
             Ok(r) => Ok(r),
         },
-    }
+    };
 
     match self.version {
         TdxVersion::TDX_1_0 => {      
@@ -177,12 +180,12 @@ impl CVM for TdxVM {
         let tdreport = match self.get_td_report(nonce, data) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("[process_cc_report] error getting TD report: {:?}", e)),
-        }
+        };
 
         let tdx_quote_request = match self.prepare_tdx_quote_request(tdreport) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("[process_cc_report] error getting TDX quote: {:?}", e)),
-        }
+        };
 
         let device_node = match File::options()
         .read(true)

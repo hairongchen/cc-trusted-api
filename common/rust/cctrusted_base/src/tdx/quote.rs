@@ -2,7 +2,6 @@
 use anyhow::*;
 use core::convert::TryInto;
 use core::mem;
-use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;
 
