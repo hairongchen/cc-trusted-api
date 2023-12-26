@@ -2,6 +2,9 @@
 
 use anyhow::*;
 use log::info;
+use core::convert::TryInto;
+use core::mem;
+use core::ptr;
 use core::result::Result::Ok;
 use core::result::Result;
 use cctrusted_base::cc_type::*;
@@ -9,7 +12,6 @@ use crate::cvm::*;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::common::*;
 use std::path::Path;
-use core::ptr;
 use nix::*;
 use cctrusted_base::tdx::report::*;
 use cctrusted_base::tdx::quote::*;
@@ -119,7 +121,7 @@ impl TdxVM {
                         Ok(_) => (),
                     };
                 
-                    Ok(request.tdreport.to_be())
+                    Ok(request.tdreport.to_vec())
                 },
             },
             TdxVersion::TDX_1_5 => match Tdx::prepare_tdx_1_5_report_request(report_data) {
@@ -188,7 +190,7 @@ impl CVM for TdxVM {
         };
     
         //build QGS request message
-        let qgs_msg = Self::generate_qgs_quote_msg(report_data_array);
+        let qgs_msg = Tdx::generate_qgs_quote_msg(report_data_array);
     
         //build quote generation request header
         let mut quote_header = tdx_quote_hdr {

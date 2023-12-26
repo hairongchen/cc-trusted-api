@@ -1,8 +1,4 @@
 #![allow(non_camel_case_types)]
-use anyhow::*;
-use core::convert::TryInto;
-use core::mem;
-use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;
 
@@ -50,7 +46,7 @@ pub struct qgs_msg_get_quote_resp {
 }
 
 impl Tdx {
-    pub fn prepare_tdx_quote_request(tdreport: Vec<u8>) -> Result<tdx_quote_req, anyhow::Error> {
+    pub fn prepare_tdx_quote_request(_tdreport: Vec<u8>) -> Result<tdx_quote_req, anyhow::Error> {
         todo!()
     }
     
