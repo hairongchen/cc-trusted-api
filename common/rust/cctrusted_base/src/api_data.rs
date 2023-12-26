@@ -5,7 +5,6 @@ use crate::cc_type::TeeType;
  * API get_cc_report() related data *
  ************************************
  */
-
 // input of API get_cc_report()
 // this struct is used in vTPM and other CVM scenarios
 // e.g.: vTPM may need report based on selective PCRs
