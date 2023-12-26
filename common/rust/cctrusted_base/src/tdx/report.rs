@@ -2,8 +2,8 @@
 use anyhow::*;
 use nix::*;
 use sha2::{Digest, Sha512};
-use core::fs::File;
-use core::os::unix::io::AsRawFd;
+use std::fs::File;
+use std::os::unix::io::AsRawFd;
 use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;

@@ -2,9 +2,9 @@
 use anyhow::*;
 use nix::*;
 use core::convert::TryInto;
-use core::fs::File;
+use std::fs::File;
 use core::mem;
-use core::os::unix::io::AsRawFd;
+use std::os::unix::io::AsRawFd;
 use core::ptr;
 use core::result::Result;
 use core::result::Result::Ok;

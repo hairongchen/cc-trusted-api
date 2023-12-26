@@ -1,6 +1,6 @@
 #![allow(non_camel_case_types)]
 use crate::cc_type::*;
-use core::collections::HashMap;
+use std::collections::HashMap;
 
 // TDX version ID
 #[derive(Clone, Eq, Hash, PartialEq)]

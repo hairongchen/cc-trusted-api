@@ -1,5 +1,5 @@
 use crate::tcg::*;
-use core::collections::HashMap;
+use std::collections::HashMap;
 
 #[allow(dead_code)]
 pub struct TdxRTMR {

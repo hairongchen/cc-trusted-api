@@ -7,7 +7,7 @@ use crate::cvm::*;
 use crate::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use crate::tdx::common::*;
 use crate::tdx::rtmr::TdxRTMR;
-use core::path::Path;
+use std::path::Path;
 
 /*
     TdxVM is an abstraction of TDX running environment, it contains:
