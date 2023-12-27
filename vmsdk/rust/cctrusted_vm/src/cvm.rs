@@ -22,6 +22,27 @@ pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
     }
 }
 
+impl CcType {
+    // a function to detect the TEE type
+    pub fn new() -> CcType {
+        let mut tee_type = TeeType::PLAIN;
+        if Path::new(TEE_TPM_PATH).exists() {
+            tee_type = TeeType::TPM;
+        } else if Path::new(TEE_TDX_1_0_PATH).exists() || Path::new(TEE_TDX_1_5_PATH).exists() {
+            tee_type = TeeType::TDX;
+        } else if Path::new(TEE_SEV_PATH).exists() {
+            tee_type = TeeType::SEV;
+        } else {
+            // TODO add support for CCA and etc.
+        }
+
+        CcType {
+            tee_type: tee_type.clone(),
+            tee_type_str: TEE_NAME_MAP.get(&tee_type).unwrap().to_owned(),
+        }
+    }
+}
+
 // used for return of Boxed trait object in build_cvm()
 pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
 
@@ -52,9 +73,26 @@ pub trait CVM {
     */
     fn process_cc_measurement(&self, _index: u8, _algo_id: u8) -> TcgDigest;
 
-    //TODO!
+    /***
+        retrive CVM eventlogs
+
+        Args:
+            start and count of eventlogs
+
+        Returns:
+            array of eventlogs
+    */
     fn process_cc_eventlog(&self);
 
+    /***
+        retrive CVM type
+
+        Args:
+            None
+
+        Returns:
+            CcType of CVM
+    */
     fn get_cc_type(&self) -> CcType;
 
     //Dump confidential CVM information
