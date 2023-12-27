@@ -1,4 +1,4 @@
-use cctrusted::sdk::API;
+use cctrusted_vm::sdk::API;
 use cctrusted_base::cc_type::TeeType;
 use cctrusted_base::api::*;
 use cctrusted_base::api_data::*;
