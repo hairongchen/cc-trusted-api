@@ -9,8 +9,6 @@ pub struct DeviceNode {
     pub device_path: String,
 }
 
-pub struct CcEventlogs {}
-
 pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
     // instance a CVM according to detected TEE type
     match CcType::new().tee_type {
