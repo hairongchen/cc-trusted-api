@@ -11,9 +11,6 @@ pub struct DeviceNode {
 
 pub struct CcEventlogs {}
 
-// used for return of Boxed trait object in build_cvm()
-pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
-
 pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
     // instance a CVM according to detected TEE type
     match CcType::new().tee_type {
@@ -24,6 +21,9 @@ pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
         TeeType::PLAIN => return Err(anyhow!("[build_cvm] Error: not in any TEE!")),
     }
 }
+
+// used for return of Boxed trait object in build_cvm()
+pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
 
 // the interfaces a CVM should implement
 pub trait CVM {
