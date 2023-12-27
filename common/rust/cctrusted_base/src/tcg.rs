@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+//use std::collections::HashMap;
+use hashbrown::HashMap;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
 pub const TPM_ALG_RSA: u8 = 0x1;

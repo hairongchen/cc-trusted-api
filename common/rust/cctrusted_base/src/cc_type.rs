@@ -1,4 +1,5 @@
-use std::collections::HashMap;
+//use std::collections::HashMap;
+use hashbrown::HashMap;
 use std::path::Path;
 
 // supported TEE types
