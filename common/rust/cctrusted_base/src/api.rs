@@ -104,7 +104,7 @@ pub trait ParseCcReport<T> {
     fn parse_cc_report(_report: Vec<u8>) -> Result<T, anyhow::Error>;
 }
 
-// this function parses raw cc report to the TdxQuote struct
+// API function parses raw cc report to TdxQuote struct
 impl ParseCcReport<TdxQuote> for CcReport {
     fn parse_cc_report(report: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
         match TdxQuote::parse_tdx_quote(report) {
@@ -117,7 +117,7 @@ impl ParseCcReport<TdxQuote> for CcReport {
     }
 }
 
-// this function parses raw cc report to the TpmQuote struct
+// API function parses raw cc report to TpmQuote struct
 impl ParseCcReport<TpmQuote> for CcReport {
     fn parse_cc_report(_report: Vec<u8>) -> Result<TpmQuote, anyhow::Error> {
         todo!()
