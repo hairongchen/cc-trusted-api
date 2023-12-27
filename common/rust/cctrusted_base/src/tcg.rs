@@ -1,4 +1,3 @@
-//use std::collections::HashMap;
 use hashbrown::HashMap;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
