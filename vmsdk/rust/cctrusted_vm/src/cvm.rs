@@ -1,7 +1,7 @@
 use anyhow::*;
 use cctrusted_base::tcg::{TcgDigest,TcgAlgorithmRegistry};
-use cctrusted_base::cc_type::*;
-use std::path::Path;
+use cctrusted_base::cc_type::CcType;
+use cctrusted_base::cc_type::TeeType;
 use crate::tdvm::TdxVM;
 
 // holds the device node info
@@ -13,7 +13,7 @@ pub struct CcEventlogs {}
 
 pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
     // instance a CVM according to detected TEE type
-    match CcType::new().tee_type {
+    match CcType.detect_cc_type().tee_type {
         TeeType::TDX => Ok(Box::new(TdxVM::new())),
         TeeType::SEV => todo!(),
         TeeType::CCA => todo!(),
@@ -22,9 +22,9 @@ pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
     }
 }
 
-impl CcType {
+impl DetectCCType for CcType {
     // a function to detect the TEE type
-    pub fn new() -> CcType {
+    fn detect_cc_type() -> CcType {
         let mut tee_type = TeeType::PLAIN;
         if Path::new(TEE_TPM_PATH).exists() {
             tee_type = TeeType::TPM;

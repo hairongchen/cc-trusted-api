@@ -37,3 +37,7 @@ pub struct CcType {
     pub tee_type: TeeType,
     pub tee_type_str: String,
 }
+
+pub trait DetectCCType{
+    fn detect_cc_type() -> CcType;
+}
