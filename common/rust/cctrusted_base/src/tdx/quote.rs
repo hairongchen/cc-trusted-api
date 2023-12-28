@@ -355,7 +355,7 @@ pub struct TdxQuoteSignature {
 
 #[derive(Clone)]
 pub struct TdxQuote {
-    pub dummy_var1: i32,
+    pub dummy_var1: usize,
     pub dummy_var2: [u8;64],
 }
 
