@@ -1,5 +1,4 @@
 use hashbrown::HashMap;
-use std::path::Path;
 
 // supported TEE types
 #[derive(Clone, Eq, Hash, PartialEq)]
