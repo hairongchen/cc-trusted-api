@@ -398,7 +398,7 @@ impl TdxQuote {
             TDX_QUOTE_VERSION_4 => {
                 let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
                 Ok(TdxQuote{
-                    dummy_var1: tdx_quote_header.version as u8,
+                    dummy_var1: tdx_quote_header.ak_type as u8,
                     dummy_var2: tdx_quote_body.report_data
                 })
             }
