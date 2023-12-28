@@ -38,13 +38,13 @@ pub const TDX_QUOTE_LEN: usize = 4 * 4096;
 
 
 pub enum AttestationKeyType {
-    ECDSA_P256 = 2,
-    ECDSA_P384 = 3
+    ECDSA_P256:u16 = 2,
+    ECDSA_P384:u16 = 3
 }
 
 pub enum IntelTeeType {
-    TEE_SGX = 0x00000000,
-    TEE_TDX = 0x00000081
+    TEE_SGX:u32 = 0x00000000,
+    TEE_TDX:u32 = 0x00000081
 }
 
 pub const QE_VENDOR_INTEL_SGX: &str = "939a7233f79c4ca9940a0db3957f0607";
