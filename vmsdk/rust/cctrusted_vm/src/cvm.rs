@@ -9,6 +9,10 @@ pub struct DeviceNode {
     pub device_path: String,
 }
 
+/*** 
+ instance a specific  object containers specific CVM methods 
+ and desired trait functions specified by "dyn BuildCVM"
+*/
 pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
     // instance a CVM according to detected TEE type
     match get_cvm_type().tee_type {
@@ -20,6 +24,7 @@ pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {
     }
 }
 
+// detect CVM type
 pub fn get_cvm_type() -> CcType {
     let mut tee_type = TeeType::PLAIN;
     if Path::new(TEE_TPM_PATH).exists() {
@@ -39,6 +44,7 @@ pub fn get_cvm_type() -> CcType {
 }
 
 // used for return of Boxed trait object in build_cvm()
+// this composed trait includes functions in both trait CVM and trait TcgAlgorithmRegistry
 pub trait BuildCVM: CVM + TcgAlgorithmRegistry {}
 
 // the interfaces a CVM should implement
