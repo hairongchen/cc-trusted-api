@@ -65,8 +65,8 @@ pub enum QeCertDataType {
     QE_REPORT_CERT          = 6,
     PLATFORM_MANIFEST       = 7, // Currently not supported
 }
-pub const TDX_QUOTE_VERSION_4 = 4;
-pub const TDX_QUOTE_VERSION_5 = 5;
+pub const TDX_QUOTE_VERSION_4:u16 = 4;
+pub const TDX_QUOTE_VERSION_5:u16 = 5;
 
 pub const QUOTE_HEADER_OFFSET: i32 = 0; // 48 bytes quote header, start from index 0 of quote string
 pub const QUOTE_TDREPORT_OFFSET: i32 = 48; // 584 bytes tdreport, start from index 48 of quote string
