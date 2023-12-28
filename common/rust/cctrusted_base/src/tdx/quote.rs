@@ -140,21 +140,6 @@ pub struct TdxQuoteHeader {
 }
 
 #[repr(C)]
-pub struct TdxQuoteTeeTcbSvn {
-    /*** TEE TCB SVN structure in TD Quote Body.
-
-    Atrributes:
-        data: A bytearray fo the raw data.
-
-    Definition reference:
-    https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
-    A.3.3. TEE_TCB_SVN
-    */
-
-    data:  Vec<u8>
-}
-
-#[repr(C)]
 pub struct TdxQuoteBody {
     /*** TD Quote Body.
 
@@ -327,23 +312,6 @@ pub struct TdxQuoteSignature {
     data: Vec<u8>
 }
 
-
-#[repr(C)]
-pub struct TDReport {
-    pub tee_tcb_svn: [u8; 16],    // Array of TEE TCB SVNs
-    pub mrseam: [u8; 48],         // Measurement of the SEAM module (SHA384 hash)
-    pub mrseam_signer: [u8; 48],  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
-    pub seam_attributes: [u8; 8], // ATTRIBUTES of SEAM
-    pub td_attributes: [u8; 8],   // ATTRIBUTES of TD
-    pub xfam: [u8; 8],            // XFAM of TD
-    pub mrtd: [u8; 48],           // Measurement of the initial contents of the TD (SHA384 hash)
-    pub mrconfigid: [u8; 48], // Software defined ID for non-owner-defined configuration of the TD
-    pub mrowner: [u8; 48],    // Software defined ID for the guest TD’s owner
-    pub mrownerconfig: [u8; 48], // Software defined ID for owner-defined configuration of the TD
-    pub rtmrs: [u8; 192],     // Array of 4 runtime extendable measurement registers (SHA384 hash)
-    pub report_data: [u8; 64], // Additional Report Data
-}
-
 // pub struct TdxQuote {
 //     /*** TDX Quote.
 
@@ -387,7 +355,7 @@ pub struct TDReport {
 
 #[derive(Clone)]
 pub struct TdxQuote {
-    pub dummy_var1: u8,
+    pub dummy_var1: i32,
     pub dummy_var2: [u8;64],
 }
 
@@ -397,8 +365,10 @@ impl TdxQuote {
 
         if tdx_quote_header.version == TDX_QUOTE_VERSION_4 {
                 let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
+                let sig_len = unsafe { transmute::<[u8; 4], i32>(quote[632..636].try_into().expect("slice with incorrect length")) };
+
                 Ok(TdxQuote{
-                    dummy_var1: tdx_quote_header.ak_type as u8,
+                    dummy_var1: sig_len,
                     dummy_var2: tdx_quote_body.report_data
                 })
             }
