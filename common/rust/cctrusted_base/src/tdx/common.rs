@@ -2,7 +2,7 @@
 use crate::cc_type::*;
 use hashbrown::HashMap;
 
-pub struct Tdx{}
+pub struct Tdx {}
 
 // TDX version ID
 #[derive(Clone, Eq, Hash, PartialEq)]

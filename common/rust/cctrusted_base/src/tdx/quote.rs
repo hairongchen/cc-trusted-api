@@ -15,9 +15,9 @@ pub struct qgs_msg_header {
 
 #[repr(C)]
 pub struct qgs_msg_get_quote_req {
-    pub header: qgs_msg_header,                        // header.type = GET_QUOTE_REQ
-    pub report_size: u32,                              // cannot be 0
-    pub id_list_size: u32,                             // length of id_list, in byte, can be 0
+    pub header: qgs_msg_header, // header.type = GET_QUOTE_REQ
+    pub report_size: u32,       // cannot be 0
+    pub id_list_size: u32,      // length of id_list, in byte, can be 0
     pub report_id_list: [u8; TDX_REPORT_LEN as usize], // report followed by id list
 }
 
@@ -27,7 +27,7 @@ pub struct tdx_quote_hdr {
     pub status: u64,                        // Status code of Quote request, filled by VMM
     pub in_len: u32,                        // Length of TDREPORT, filled by TD
     pub out_len: u32,                       // Length of Quote, filled by VMM
-    pub data_len_be_bytes: [u8; 4],         // big-endian 4 bytes indicate the size of data following
+    pub data_len_be_bytes: [u8; 4], // big-endian 4 bytes indicate the size of data following
     pub data: [u8; TDX_QUOTE_LEN as usize], // Actual Quote data or TDREPORT on input
 }
 
@@ -55,9 +55,7 @@ impl Tdx {
         Returns:
             qgs_msg_get_quote_req struct instance
     */
-    pub fn generate_qgs_quote_msg(
-        report: [u8; TDX_REPORT_LEN as usize],
-    ) -> qgs_msg_get_quote_req {
+    pub fn generate_qgs_quote_msg(report: [u8; TDX_REPORT_LEN as usize]) -> qgs_msg_get_quote_req {
         //build quote service message header to be used by QGS
         let qgs_header = qgs_msg_header {
             major_version: 1,
@@ -66,7 +64,7 @@ impl Tdx {
             size: 16 + 8 + TDX_REPORT_LEN, // header + report_size and id_list_size + TDX_REPORT_LEN
             error_code: 0,
         };
-    
+
         //build quote service message body to be used by QGS
         let mut qgs_request = qgs_msg_get_quote_req {
             header: qgs_header,
@@ -74,9 +72,9 @@ impl Tdx {
             id_list_size: 0,
             report_id_list: [0; TDX_REPORT_LEN as usize],
         };
-    
+
         qgs_request.report_id_list.copy_from_slice(&report[0..]);
-    
+
         qgs_request
     }
 }
@@ -95,4 +93,3 @@ impl TdxQuote {
         })
     }
 }
-

@@ -1,12 +1,11 @@
-use anyhow::*;
-use cctrusted_base::tcg::{TcgDigest,TcgAlgorithmRegistry};
-use cctrusted_base::cc_type::*;
 use crate::tdvm::TdxVM;
+use anyhow::*;
+use cctrusted_base::cc_type::*;
+use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use std::path::Path;
 
 // the interfaces a CVM should implement
 pub trait CVM {
-
     /***
         retrive CVM signed report
 
@@ -66,8 +65,8 @@ pub struct DeviceNode {
     pub device_path: String,
 }
 
-/*** 
- instance a specific  object containers specific CVM methods 
+/***
+ instance a specific  object containers specific CVM methods
  and desired trait functions specified by "dyn BuildCVM"
 */
 pub fn build_cvm() -> Result<Box<dyn BuildCVM>, anyhow::Error> {

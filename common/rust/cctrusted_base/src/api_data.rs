@@ -21,9 +21,9 @@ pub struct CcReport {
  * API parse_cc_report() related data *
  **************************************
 */
-/*** 
+/***
   the return data structure is defined in cctrusted_base
-  e.g.: 
+  e.g.:
    - cctrusted_base::tdx::quote::TdxQuote;
    - cctrusted_base::tpm::quote::TpmQuote;
 */

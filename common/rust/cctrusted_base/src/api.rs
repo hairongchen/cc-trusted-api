@@ -1,11 +1,11 @@
-use anyhow::*;
-use core::mem;
-use crate::api_data::*;
-use crate::tcg::TcgDigest;
-use crate::eventlog::TcgEventLog;
 use crate::api_data::Algorithm;
+use crate::api_data::*;
+use crate::eventlog::TcgEventLog;
+use crate::tcg::TcgDigest;
 use crate::tdx::quote::TdxQuote;
 use crate::tpm::quote::TpmQuote;
+use anyhow::*;
+use core::mem;
 use core::result::Result;
 use core::result::Result::Ok;
 
@@ -27,7 +27,11 @@ pub trait CCTrustedApi {
         Returns:
             The cc report byte array or error information
     */
-    fn get_cc_report(nonce: String, data: String, _extra_args: ExtraArgs) -> Result<CcReport, anyhow::Error>;
+    fn get_cc_report(
+        nonce: String,
+        data: String,
+        _extra_args: ExtraArgs,
+    ) -> Result<CcReport, anyhow::Error>;
 
     /***
         Dump the given cc report in hex and char format
@@ -84,7 +88,6 @@ pub trait CCTrustedApi {
 
     */
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error>;
-
 }
 
 /***

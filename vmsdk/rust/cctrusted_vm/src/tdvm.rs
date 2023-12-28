@@ -1,23 +1,22 @@
 #![allow(non_camel_case_types)]
 
+use crate::cvm::*;
 use anyhow::*;
-use log::info;
+use cctrusted_base::cc_type::*;
+use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
+use cctrusted_base::tdx::common::*;
+use cctrusted_base::tdx::quote::*;
+use cctrusted_base::tdx::report::*;
 use core::convert::TryInto;
 use core::mem;
 use core::ptr;
-use core::result::Result::Ok;
 use core::result::Result;
-use cctrusted_base::cc_type::*;
-use crate::cvm::*;
-use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
-use cctrusted_base::tdx::common::*;
-use std::path::Path;
+use core::result::Result::Ok;
+use log::info;
 use nix::*;
-use cctrusted_base::tdx::report::*;
-use cctrusted_base::tdx::quote::*;
 use std::fs::File;
 use std::os::fd::AsRawFd;
-
+use std::path::Path;
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
 pub enum TdxOperation {
@@ -65,7 +64,6 @@ impl TdxVM {
 
     // TdxVM struct method: get tdreport
     pub fn get_td_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
-
         let report_data = match Tdx::generate_tdx_report_data(nonce, Some(data)) {
             Ok(r) => r,
             Err(e) => {
@@ -77,9 +75,9 @@ impl TdxVM {
         };
 
         let device_node = match File::options()
-        .read(true)
-        .write(true)
-        .open(self.device_node.device_path.clone())
+            .read(true)
+            .write(true)
+            .open(self.device_node.device_path.clone())
         {
             Err(e) => {
                 return Err(anyhow!(
@@ -93,87 +91,85 @@ impl TdxVM {
 
         match self.version {
             TdxVersion::TDX_1_0 => {
-                    let report_data_bytes = match base64::decode(report_data) {
-                        Ok(v) => v,
-                        Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
-                    };
-                
-                    //prepare get TDX report request data
-                    let mut report_data_array: [u8; REPORT_DATA_LEN as usize] = [0; REPORT_DATA_LEN as usize];
-                    report_data_array.copy_from_slice(&report_data_bytes[0..]);
-                    let td_report: [u8; TDX_REPORT_LEN as usize] = [0; TDX_REPORT_LEN as usize];
-                
-                    //build the request
-                    let request = tdx_1_0_report_req {
-                        subtype: 0 as u8,
-                        reportdata: ptr::addr_of!(report_data_array) as u64,
-                        rpd_len: REPORT_DATA_LEN,
-                        tdreport: ptr::addr_of!(td_report) as u64,
-                        tdr_len: TDX_REPORT_LEN,
-                    };
+                let report_data_bytes = match base64::decode(report_data) {
+                    Ok(v) => v,
+                    Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
+                };
 
-                    //build the operator code
-                    ioctl_readwrite!(
-                        get_report_1_0_ioctl,
-                        b'T',
-                        TdxOperation::TDX_GET_TD_REPORT,
-                        u64
-                    );
-                
-                    //apply the ioctl command
-                    match unsafe {
-                        get_report_1_0_ioctl(device_node.as_raw_fd(), ptr::addr_of!(request) as *mut u64)
-                    } {
-                        Err(e) => {
-                            return Err(anyhow!(
-                                "[get_td_report] Fail to get TDX report: {:?}",
-                                e
-                            ))
-                        }
-                        Ok(_) => (),
-                    };
-                
-                    Ok(td_report.to_vec())
-            },
+                //prepare get TDX report request data
+                let mut report_data_array: [u8; REPORT_DATA_LEN as usize] =
+                    [0; REPORT_DATA_LEN as usize];
+                report_data_array.copy_from_slice(&report_data_bytes[0..]);
+                let td_report: [u8; TDX_REPORT_LEN as usize] = [0; TDX_REPORT_LEN as usize];
+
+                //build the request
+                let request = tdx_1_0_report_req {
+                    subtype: 0 as u8,
+                    reportdata: ptr::addr_of!(report_data_array) as u64,
+                    rpd_len: REPORT_DATA_LEN,
+                    tdreport: ptr::addr_of!(td_report) as u64,
+                    tdr_len: TDX_REPORT_LEN,
+                };
+
+                //build the operator code
+                ioctl_readwrite!(
+                    get_report_1_0_ioctl,
+                    b'T',
+                    TdxOperation::TDX_GET_TD_REPORT,
+                    u64
+                );
+
+                //apply the ioctl command
+                match unsafe {
+                    get_report_1_0_ioctl(
+                        device_node.as_raw_fd(),
+                        ptr::addr_of!(request) as *mut u64,
+                    )
+                } {
+                    Err(e) => {
+                        return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
+                    }
+                    Ok(_) => (),
+                };
+
+                Ok(td_report.to_vec())
+            }
             TdxVersion::TDX_1_5 => {
-                    let report_data_bytes = match base64::decode(report_data) {
-                        Ok(v) => v,
-                        Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
-                    };
-                
-                    //prepare get TDX report request data
-                    let mut request = tdx_1_5_report_req {
-                        reportdata: [0; REPORT_DATA_LEN as usize],
-                        tdreport: [0; TDX_REPORT_LEN as usize],
-                    };
-                    request.reportdata.copy_from_slice(&report_data_bytes[0..]);
+                let report_data_bytes = match base64::decode(report_data) {
+                    Ok(v) => v,
+                    Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
+                };
 
-                    //build the operator code
-                    ioctl_readwrite!(
-                        get_report_1_5_ioctl,
-                        b'T',
-                        TdxOperation::TDX_GET_TD_REPORT,
-                        tdx_1_5_report_req
-                    );
-                
-                    //apply the ioctl command
-                    match unsafe {
-                        get_report_1_5_ioctl(
-                            device_node.as_raw_fd(),
-                            ptr::addr_of!(request) as *mut tdx_1_5_report_req,
-                        )
-                    } {
-                        Err(e) => {
-                            return Err(anyhow!(
-                                "[get_td_report] Fail to get TDX report: {:?}",
-                                e
-                            ))
-                        }
-                        Ok(_) => (),
-                    };
-                
-                    Ok(request.tdreport.to_vec())
-            },
+                //prepare get TDX report request data
+                let mut request = tdx_1_5_report_req {
+                    reportdata: [0; REPORT_DATA_LEN as usize],
+                    tdreport: [0; TDX_REPORT_LEN as usize],
+                };
+                request.reportdata.copy_from_slice(&report_data_bytes[0..]);
+
+                //build the operator code
+                ioctl_readwrite!(
+                    get_report_1_5_ioctl,
+                    b'T',
+                    TdxOperation::TDX_GET_TD_REPORT,
+                    tdx_1_5_report_req
+                );
+
+                //apply the ioctl command
+                match unsafe {
+                    get_report_1_5_ioctl(
+                        device_node.as_raw_fd(),
+                        ptr::addr_of!(request) as *mut tdx_1_5_report_req,
+                    )
+                } {
+                    Err(e) => {
+                        return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
+                    }
+                    Ok(_) => (),
+                };
+
+                Ok(request.tdreport.to_vec())
+            }
         }
     }
 
@@ -193,20 +189,24 @@ impl TdxVM {
 impl CVM for TdxVM {
     // CVM trait function: get tdx quote
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
-
         let tdreport = match self.get_td_report(nonce, data) {
             Ok(r) => r,
-            Err(e) => return Err(anyhow!("[process_cc_report] error getting TD report: {:?}", e)),
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_report] error getting TD report: {:?}",
+                    e
+                ))
+            }
         };
 
         let report_data_array: [u8; TDX_REPORT_LEN as usize] = match tdreport.try_into() {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("[get_tdx_quote] Wrong TDX report format: {:?}", e)),
         };
-    
+
         //build QGS request message
         let qgs_msg = Tdx::generate_qgs_quote_msg(report_data_array);
-    
+
         //build quote generation request header
         let mut quote_header = tdx_quote_hdr {
             version: 1,
@@ -216,23 +216,23 @@ impl CVM for TdxVM {
             data_len_be_bytes: (1048 as u32).to_be_bytes(),
             data: [0; TDX_QUOTE_LEN as usize],
         };
-    
+
         let qgs_msg_bytes = unsafe {
             let ptr = &qgs_msg as *const qgs_msg_get_quote_req as *const u8;
             core::slice::from_raw_parts(ptr, mem::size_of::<qgs_msg_get_quote_req>())
         };
         quote_header.data[0..(16 + 8 + TDX_REPORT_LEN) as usize]
             .copy_from_slice(&qgs_msg_bytes[0..((16 + 8 + TDX_REPORT_LEN) as usize)]);
-    
+
         let tdx_quote_request = tdx_quote_req {
             buf: ptr::addr_of!(quote_header) as u64,
             len: TDX_QUOTE_LEN as u64,
         };
 
         let device_node = match File::options()
-        .read(true)
-        .write(true)
-        .open(self.device_node.device_path.clone())
+            .read(true)
+            .write(true)
+            .open(self.device_node.device_path.clone())
         {
             Err(e) => {
                 return Err(anyhow!(
@@ -254,7 +254,10 @@ impl CVM for TdxVM {
                     u64
                 );
                 match unsafe {
-                    get_quote_1_0_ioctl(device_node.as_raw_fd(), ptr::addr_of!(tdx_quote_request) as *mut u64)
+                    get_quote_1_0_ioctl(
+                        device_node.as_raw_fd(),
+                        ptr::addr_of!(tdx_quote_request) as *mut u64,
+                    )
                 } {
                     Err(e) => {
                         return Err(anyhow!("[get_tdx_quote] Fail to get TDX quote: {:?}", e))
@@ -282,23 +285,23 @@ impl CVM for TdxVM {
                 };
             }
         };
-    
+
         //inspect the response and retrive quote data
         let out_len = quote_header.out_len;
         let qgs_msg_resp_size =
             unsafe { core::mem::transmute::<[u8; 4], u32>(quote_header.data_len_be_bytes) }.to_be();
-    
+
         let qgs_msg_resp = unsafe {
             let raw_ptr = ptr::addr_of!(quote_header.data) as *mut qgs_msg_get_quote_resp;
             raw_ptr.as_mut().unwrap() as &mut qgs_msg_get_quote_resp
         };
-    
+
         if out_len - qgs_msg_resp_size != 4 {
             return Err(anyhow!(
                 "[get_tdx_quote] Fail to get TDX quote: wrong TDX quote size!"
             ));
         }
-    
+
         if qgs_msg_resp.header.major_version != 1
             || qgs_msg_resp.header.minor_version != 0
             || qgs_msg_resp.header.msg_type != 1
@@ -308,7 +311,7 @@ impl CVM for TdxVM {
                 "[get_tdx_quote] Fail to get TDX quote: QGS response error!"
             ));
         }
-    
+
         Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
 
