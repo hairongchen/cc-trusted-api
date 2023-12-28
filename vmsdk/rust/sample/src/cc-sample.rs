@@ -37,7 +37,7 @@ fn main() {
         };
         info!(
             "dummy_var1 = {}, dummy_var2 = {}",
-            tdx_quote.dummy_var1, tdx_quote.dummy_var2.to_string()
+            tdx_quote.dummy_var1, str::from_utf8(&tdx_quote.dummy_var2).unwrap()
         );
     }
 
