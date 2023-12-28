@@ -169,7 +169,7 @@ pub struct TdxQuoteBody {
 
     Atrributes:
         data: A bytearray fo the raw data.
-        tee_tcb_svn: A ``TdxQuoteTeeTcbSvn`` describing the TCB of TDX.
+        tee_tcb_svn: describing the TCB of TDX.
         mrseam: A bytearray storing the Measurement of the TDX Module.
         mrsignerseam: A bytearray that should be zero for the Intel TDX Module.
         seamattributes: A bytearray storing SEAMATRIBUTES. Must be zero for TDX 1.0.
@@ -242,7 +242,7 @@ pub struct TdxQuoteBody {
                                                 Migration TD
     */
 
-     pub tee_tcb_svn:      TdxQuoteTeeTcbSvn,  // Array of TEE TCB SVNs
+     pub tee_tcb_svn:      [u8; 16],  // Array of TEE TCB SVNs
      pub mrseam:         [u8; 48],  // Measurement of the SEAM module (SHA384 hash)
      pub mrseam_signer:   [u8; 48],  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
      pub seam_attributes: [u8; 8],   // ATTRIBUTES of SEAM
@@ -387,15 +387,26 @@ pub struct TDReport {
 #[derive(Clone)]
 pub struct TdxQuote {
     pub dummy_var1: u8,
-    pub dummy_var2: u8,
+    pub dummy_var2: [u8;64],
 }
 
 impl TdxQuote {
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
         let tdx_quote_header: TdxQuoteHeader = unsafe { transmute::<[u8; 48], TdxQuoteHeader>(quote[0..48].try_into().expect("slice with incorrect length")) };
-        Ok(TdxQuote{
-            dummy_var1: tdx_quote_header.version as u8,
-            dummy_var2: tdx_quote_header.tee_type as u8
-        })
+
+        match tdx_quote_header.version{
+            TDX_QUOTE_VERSION_4 => {
+                let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
+                Ok(TdxQuote{
+                    dummy_var1: tdx_quote_header.version as u8,
+                    dummy_var2: tdx_quote_body.user_data
+                })
+            }
+            TDX_QUOTE_VERSION_5 =>{
+                // TODO: implement version 5
+                todo!()    
+            }
+        }
+
     }
 }
