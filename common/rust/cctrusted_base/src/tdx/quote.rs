@@ -1,6 +1,7 @@
 #![allow(non_camel_case_types)]
 use core::result::Result;
 use core::result::Result::Ok;
+use core::mem::transmute;
 
 use crate::tdx::common::*;
 
