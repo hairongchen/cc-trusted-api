@@ -96,10 +96,6 @@ impl TdxVM {
                     Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
                 };
 
-                //prepare get TDX report request data
-                let mut report_data_array: [u8; REPORT_DATA_LEN as usize] =
-                    [0; REPORT_DATA_LEN as usize];
-                report_data_array.copy_from_slice(&report_data_bytes[0..]);
                 let td_report: [u8; TDX_REPORT_LEN as usize] = [0; TDX_REPORT_LEN as usize];
 
                 //build the request
