@@ -2,6 +2,7 @@
 use core::result::Result;
 use core::result::Result::Ok;
 use core::mem::transmute;
+use anyhow::anyhow;
 
 use crate::tdx::common::*;
 
