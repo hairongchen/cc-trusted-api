@@ -14,6 +14,7 @@ pub struct API {}
 
 impl CCTrustedApi for API {
 
+    // CCTrustedApi trait function: get report of a CVM
     fn get_cc_report(
         nonce: String,
         data: String,
@@ -37,18 +38,22 @@ impl CCTrustedApi for API {
         }
     }
     
+    // CCTrustedApi trait function: dump report of a CVM in hex and char format
     fn dump_cc_report(report: &Vec<u8>) {
         dump_data(report)
     }
     
+    // CCTrustedApi trait function: get measurements of a CVM
     fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
         todo!()
     }
     
+    // CCTrustedApi trait function: get eventlogs of a CVM
     fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
         todo!()
     }
 
+    // CCTrustedApi trait function: get default algorithm of a CVM
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
         match build_cvm() {
             Ok(cvm) => {

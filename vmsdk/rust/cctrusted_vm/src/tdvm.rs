@@ -42,7 +42,7 @@ pub struct TdxVM {
 
 // implement the structure method and associated function
 impl TdxVM {
-    // associated function: to build a TdxVM sturcture instance
+    // TdxVM struct associated function: to build a TdxVM sturcture instance
     pub fn new() -> TdxVM {
         let cc_type = CcType {
             tee_type: TeeType::TDX,
@@ -63,6 +63,7 @@ impl TdxVM {
         }
     }
 
+    // TdxVM struct method: get tdreport
     pub fn get_td_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
 
         let report_data = match Tdx::generate_tdx_report_data(nonce, Some(data)) {
@@ -176,7 +177,7 @@ impl TdxVM {
         }
     }
 
-    // associated function to detect the TDX version
+    // TdxVM struct associated function: detect the TDX version
     fn get_tdx_version() -> TdxVersion {
         if Path::new(TEE_TDX_1_0_PATH).exists() {
             TdxVersion::TDX_1_0
@@ -190,7 +191,7 @@ impl TdxVM {
 
 // TdxVM implements the interfaces defined in CVM trait
 impl CVM for TdxVM {
-    // retrieve TDX quote
+    // CVM trait function: get tdx quote
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
 
         let tdreport = match self.get_td_report(nonce, data) {
@@ -311,20 +312,22 @@ impl CVM for TdxVM {
         Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
 
-    // retrieve TDX RTMR
+    // CVM trait function: retrieve TDX RTMR
     fn process_cc_measurement(&self, _index: u8, _algo_id: u8) -> TcgDigest {
         todo!()
     }
 
-    // retrieve TDX CCEL and IMA eventlog
+    // CVM trait function: retrieve TDX CCEL and IMA eventlog
     fn process_cc_eventlog(&self) -> () {
         todo!()
     }
 
+    // CVM trait function: retrive CVM type
     fn get_cc_type(&self) -> CcType {
         return self.cc_type.clone();
     }
 
+    // CVM trait function: dump CVM basic information
     fn dump(&self) {
         info!("======================================");
         info!("CVM type = {}", self.cc_type.tee_type_str);
@@ -337,6 +340,7 @@ impl CVM for TdxVM {
 }
 
 impl TcgAlgorithmRegistry for TdxVM {
+    // TcgAlgorithmRegistry trait function: return CVM default algorithm ID
     fn get_algorithm_id(&self) -> u8 {
         self.algo_id
     }

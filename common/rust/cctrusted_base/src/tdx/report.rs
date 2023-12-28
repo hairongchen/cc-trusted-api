@@ -21,6 +21,16 @@ pub struct tdx_1_5_report_req {
 }
 
 impl Tdx {
+    /***
+        generate tdx report data with nonce and data
+
+        Args:
+            nonce (String): against replay attacks
+            data (String): user data
+
+        Returns:
+            The tdreport byte array
+    */
     pub fn generate_tdx_report_data(
         nonce: String,
         data: Option<String>,
