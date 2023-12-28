@@ -394,7 +394,7 @@ impl TdxQuote {
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
         let tdx_quote_header: TdxQuoteHeader = unsafe { transmute::<[u8; 48], TdxQuoteHeader>(quote[0..48].try_into().expect("slice with incorrect length")) };
 
-        match tdx_quote_header.version as u16 {
+        match tdx_quote_header.version {
             TDX_QUOTE_VERSION_4 => {
                 let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
                 Ok(TdxQuote{
@@ -404,8 +404,9 @@ impl TdxQuote {
             }
             TDX_QUOTE_VERSION_5 =>{
                 // TODO: implement version 5
-                todo!()    
-            }
+                todo!()   
+            },
+            0_u16..=3_u16 | 6_u16..=u16::MAX => todo!()
         }
 
     }
