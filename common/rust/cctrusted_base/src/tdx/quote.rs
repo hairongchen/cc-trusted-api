@@ -367,6 +367,20 @@ impl TdxQuote {
                 let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
                 let sig_len = unsafe { transmute::<[u8; 4], i32>(quote[632..636].try_into().expect("slice with incorrect length")) }.to_le();
                 let sig_idx_end = 636 + sig_len;
+                
+                if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
+                    todo!()
+                } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
+                    todo!()
+                } else {
+                    return Err(anyhow!(
+                        "[parse_tdx_quote] unknown ak_type: {:}",
+                        tdx_quote_header.ak_type
+                    ));                    
+                }
+
+
+
                 Ok(TdxQuote{
                     dummy_var1: quote.len(),
                     dummy_var2: tdx_quote_body.report_data
