@@ -79,7 +79,7 @@ impl Tdx {
     }
 }
 
-#[repr(C), packed]
+#[repr(C)]
 pub struct TdxQuoteHeader {
     /*** TD Quote Header.
 
@@ -137,7 +137,7 @@ pub struct TdxQuoteHeader {
     user_data: [u8;20] 
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct TdxQuoteTeeTcbSvn {
     /*** TEE TCB SVN structure in TD Quote Body.
 
@@ -152,7 +152,7 @@ pub struct TdxQuoteTeeTcbSvn {
     data:  Vec<u8>
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct TdxQuoteBody {
     /*** TD Quote Body.
 
@@ -258,7 +258,7 @@ pub struct TdxQuoteBody {
      pub report_data:     [u8; 64],  // Additional Report Data
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct TdxQuoteQeReportCert {
     /*** TD Quote QE Report Certification Data.
 
@@ -279,7 +279,7 @@ pub struct TdxQuoteQeReportCert {
     qe_auth_cert: Vec<u8>
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct TdxQuoteQeCert {
     /*** TD Quote QE Certification Data.
 
@@ -298,7 +298,7 @@ pub struct TdxQuoteQeCert {
     cert_data: Vec<u8>
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct TdxQuoteEcdsa256Sigature {
     /*** TD Quote ECDSA 256-bit Quote Signature.
 
@@ -320,7 +320,7 @@ pub struct TdxQuoteEcdsa256Sigature {
     qe_cert: TdxQuoteQeCert
 }
 
-#[repr(C, packed)]
+#[repr(C)]
 pub struct TdxQuoteSignature {
     data: Vec<u8>
 }
