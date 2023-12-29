@@ -312,52 +312,50 @@ pub struct TdxQuoteSignature {
     data: Vec<u8>
 }
 
-// pub struct TdxQuote {
-//     /*** TDX Quote.
-
-//     Atrributes:
-//         header: A ``TdxQuoteHeader`` storing the data of Quote Header.
-//         body: A ``TdxQuoteBody`` storing the data of TD Quote body.
-//         sig: Quote Signature. Currently only support ``TdxQuoteEcdsa256Sigature``.
-
-//     Definition reference:
-//     https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
-//     A.3. Version 4 Quote Format (TDX-ECDSA, SGX-ECDSA, and SGX-EPID)
-//     Endianess: Little Endian (applies to all integer fields). Size in bytes:
-//     Name            Size    Type            Description
-//     Quote Header    48      TD Quote Header Header of Quote data structure.
-//                                             This field is transparent, i.e., the user knows its
-//                                             internal structure.
-//                                             Rest of the Quote data structure can be treated as
-//                                             opaque, i.e., hidden from the user.
-//     TD Quote Body   584     TD Quote Body   Report of the attested TD.
-//                                             The REPORTDATA contained in this field is defined
-//                                             by the TD developer. See the description of the
-//                                             field for example usages.
-//     Quote Signature 4       Integer         Size of the Quote Signature Data structure
-//     Data Len
-
-//     Quote Signature Variable Signature      Variable-length data containing the signature and
-//     Data                     Dependent      supporting data. For instance, an ECDSA P-256
-//                                             Signature
-
-//     For Version 5
-//     TODO: implement version 5 according to A.4. Version 5 Quote Format.
-//     */
-
-//     header: TdxQuoteHeader,
-//     version: u16,
-//     body: TdxQuoteBody,
-//     // TODO! header.ak_type == AttestationKeyType.ECDSA_P256 or AttestationKeyType.ECDSA_P384
-//     sig: TdxQuoteSignature
-
-// }
-
-#[derive(Clone)]
 pub struct TdxQuote {
-    pub dummy_var1: usize,
-    pub dummy_var2: [u8;64],
+    /*** TDX Quote.
+
+    Atrributes:
+        header: A ``TdxQuoteHeader`` storing the data of Quote Header.
+        body: A ``TdxQuoteBody`` storing the data of TD Quote body.
+        sig: Quote Signature. Currently only support ``TdxQuoteEcdsa256Sigature``.
+
+    Definition reference:
+    https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
+    A.3. Version 4 Quote Format (TDX-ECDSA, SGX-ECDSA, and SGX-EPID)
+    Endianess: Little Endian (applies to all integer fields). Size in bytes:
+    Name            Size    Type            Description
+    Quote Header    48      TD Quote Header Header of Quote data structure.
+                                            This field is transparent, i.e., the user knows its
+                                            internal structure.
+                                            Rest of the Quote data structure can be treated as
+                                            opaque, i.e., hidden from the user.
+    TD Quote Body   584     TD Quote Body   Report of the attested TD.
+                                            The REPORTDATA contained in this field is defined
+                                            by the TD developer. See the description of the
+                                            field for example usages.
+    Quote Signature 4       Integer         Size of the Quote Signature Data structure
+    Data Len
+
+    Quote Signature Variable Signature      Variable-length data containing the signature and
+    Data                     Dependent      supporting data. For instance, an ECDSA P-256
+                                            Signature
+
+    For Version 5
+    TODO: implement version 5 according to A.4. Version 5 Quote Format.
+    */
+
+    header: TdxQuoteHeader,
+    body: TdxQuoteBody,
+    tdx_quote_signature: Option<TdxQuoteSignature>, // for AttestationKeyType.ECDSA_P256
+    tdx_suote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P384
 }
+
+// #[derive(Clone)]
+// pub struct TdxQuote {
+//     pub dummy_var1: usize,
+//     pub dummy_var2: [u8;64],
+// }
 
 impl TdxQuote {
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
@@ -367,11 +365,23 @@ impl TdxQuote {
                 let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
                 let sig_len = unsafe { transmute::<[u8; 4], i32>(quote[632..636].try_into().expect("slice with incorrect length")) }.to_le();
                 let sig_idx_end = 636 + sig_len;
-                
+
                 if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
+                    let sig = quote[636..700].to_vec;
+                    let ak = quote[700..764].to_vec;
                     todo!()
                 } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
-                    todo!()
+                    let tdx_quote_signature = TdxQuoteSignature{
+                        data: quote[636:sig_idx_end].to_vec(),
+                    };
+
+                    Ok(TdxQuote{
+                        header: tdx_quote_header,
+                        body: tdx_quote_body,
+                        tdx_quote_signature: Some(tdx_quote_signature),
+                        tdx_suote_ecdsa256_sigature: None              
+                    })
+
                 } else {
                     return Err(anyhow!(
                         "[parse_tdx_quote] unknown ak_type: {:}",
@@ -381,10 +391,10 @@ impl TdxQuote {
 
 
 
-                Ok(TdxQuote{
-                    dummy_var1: quote.len(),
-                    dummy_var2: tdx_quote_body.report_data
-                })
+                // Ok(TdxQuote{
+                //     dummy_var1: quote.len(),
+                //     dummy_var2: tdx_quote_body.report_data
+                // })
             }
         else if tdx_quote_header.version == TDX_QUOTE_VERSION_5 {
                 // TODO: implement version 5
