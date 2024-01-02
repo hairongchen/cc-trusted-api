@@ -39,10 +39,10 @@ fn main() {
             "version = {}, report_data = {}",
             tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
         );
-        // info!(
-        //     "body_rtrm1 = {}, report_data- from TdxEnclaveReportBody = {}",
-        //     tdx_quote.body.rtmr1, base64::encode(&tdx_quote.tdx_suote_ecdsa256_sigature.qe_cert.cert_data_struct.qe_report.report_data)
-        // );
+        info!(
+            "body_rtrm1 = {}, report_data- from TdxEnclaveReportBody = {}",
+            tdx_quote.body.rtmr1, base64::encode(&tdx_quote.tdx_suote_ecdsa256_sigature.qe_cert.cert_type)
+        );
     }
 
     // get CVM default algorithm with API "get_default_algorithm"
