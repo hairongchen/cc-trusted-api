@@ -67,11 +67,3 @@ pub enum QeCertDataType {
 }
 pub const TDX_QUOTE_VERSION_4:u16 = 4;
 pub const TDX_QUOTE_VERSION_5:u16 = 5;
-
-pub const QUOTE_HEADER_OFFSET: i32 = 0; // 48 bytes quote header, start from index 0 of quote string
-pub const QUOTE_TDREPORT_OFFSET: i32 = 48; // 584 bytes tdreport, start from index 48 of quote string
-pub const QUOTE_AUTH_DATA_SIZE_OFFSET: i32 = 632; // 4 bytes auth size, start from index 632 of quote string
-pub const QUOTE_AUTH_DATA_CONTENT_OFFSET: i32 = 636; // authSize bytes in auth_data, start from index 636 of quote string
-pub const QUOTE_AUTH_DATA_SIGNATURE_OFFSET: i32 = 700; // 64 bytes of signature in auth_data, start from index 700 of quote string
-pub const QUOTE_AUTH_DATA_ATTESTATION_KEY_OFFSET: i32 = 764; // 64 bytes of attestation_key in auth_data, start from index 764 of quote string
-pub const QUOTE_AUTH_DATA_CERT_DATA_OFFSET: i32 = 770; // (authSize-6-128) bytes of cert_data in auth_data, start from index 770 of quote string

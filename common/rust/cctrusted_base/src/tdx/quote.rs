@@ -279,12 +279,12 @@ pub struct TdxQuoteQeReportCert {
     */
     qe_report: TdxEnclaveReportBody,
     qe_report_sig: [u8; 64],
-    qe_auth_data: Vec<u8>
+    qe_auth_data: Vec<u8>,
     qe_auth_cert: TdxQuoteQeCert
 }
 
 impl TdxQuoteQeReportCert {
-    pub fn new(data: Vec<8>){
+    pub fn new(data: Vec<u8>){
         let tdx_enclave_report_body: TdxEnclaveReportBody = unsafe { transmute::<[u8; 384], TdxEnclaveReportBody>(data[0..384].try_into().expect("slice with incorrect length")) };
         let qe_report_sig = data[384..448].to_vec();
         let auth_data_size = unsafe { transmute::<[u8; 2], u16>(data[448..450].try_into().expect("slice with incorrect length")) }.to_le();
@@ -292,7 +292,7 @@ impl TdxQuoteQeReportCert {
         if auth_data_size > 0 {
             let qe_auth_data = data[450..auth_data_end].to_vec();
         } else {
-            qe_auth_data = Vec::new();
+            let qe_auth_data = Vec::new();
         }
 
         TdxQuoteQeReportCert{
@@ -325,24 +325,24 @@ pub struct TdxQuoteQeCert {
 }
 
 impl TdxQuoteQeCert {
-    pub fn new(data: Vec<8>) -> TdxQuoteQeCert{
+    pub fn new(data: Vec<u8>) -> TdxQuoteQeCert{
         let cert_type = unsafe { transmute::<[u8; 2], u16>(data[0..2].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_size = unsafe { transmute::<[u8; 4], u16>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_data_end = 6 + cert_size;
 
-        if cert_type == QeCertDataType.QE_REPORT_CERT{
+        if cert_type == QeCertDataType.QE_REPORT_CERT as i16 {
             let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type,
                 cert_data_struct: Some(cert_data),
-                cert_data_vec = None
+                cert_data_vec: None
             }
         } else {
             let cert_data = data[6..cert_data_end].to_vec();
             TdxQuoteQeCert{
                 cert_type: cert_type,
                 cert_data_struct: None,
-                cert_data_vec = Some(cert_data)
+                cert_data_vec: Some(cert_data)
             }
         }
 
@@ -443,7 +443,7 @@ impl TdxQuote {
 
             } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
                 let tdx_quote_signature = TdxQuoteSignature{
-                    data: quote[636:sig_idx_end].to_vec(),
+                    data: quote[636..sig_idx_end].to_vec(),
                 };
 
                 Ok(TdxQuote{
