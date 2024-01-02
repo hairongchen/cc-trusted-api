@@ -3,6 +3,7 @@ use core::result::Result;
 use core::result::Result::Ok;
 use core::mem::transmute;
 use anyhow::anyhow;
+use log::*;
 
 use crate::tdx::common::*;
 
@@ -444,6 +445,8 @@ impl TdxQuote {
             let sig_idx_end = 636 + sig_len;
 
             if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
+                info!("ECDSA_P256");
+
                 let tdx_quote_ecdsa256_sigature = TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end as usize].to_vec());
 
                 Ok(TdxQuote{
@@ -454,6 +457,8 @@ impl TdxQuote {
                 })
 
             } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
+                info!("ECDSA_P384");
+
                 let tdx_quote_signature = TdxQuoteSignature{
                     data: quote[636..sig_idx_end as usize].to_vec(),
                 };
