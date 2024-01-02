@@ -55,6 +55,7 @@ pub const QE_VENDOR_INTEL_SGX: &str = "939a7233f79c4ca9940a0db3957f0607";
 
 #[derive(PartialEq)]
 #[derive(Clone)]
+#[repr(i16)]
 pub enum QeCertDataType {
     /*** QE Certification Data Type.
 
