@@ -40,13 +40,13 @@ fn main() {
             tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
         );
         
-        match tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert {
-            None => "tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert.cert_type!",
-            Some(qe_cert) => info!(
-                "cert_type = {}",
-                qe_cert.cert_type
-            ),
-        };
+        info!(
+            "cert_type = {}",
+            match tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert {
+                None => "tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert.cert_type!",
+                Some(qe_cert) => qe_cert,
+            }
+        );
     }
 
     // get CVM default algorithm with API "get_default_algorithm"
