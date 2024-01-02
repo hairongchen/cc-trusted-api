@@ -298,7 +298,7 @@ impl TdxQuoteQeReportCert {
             qe_report: tdx_enclave_report_body,
             qe_report_sig: qe_report_sig,
             qe_auth_data: qe_auth_data,
-            qe_auth_cert: TdxQuoteQeCert::new(data[auth_data_end..].to_vec())
+            qe_auth_cert: Box::new(TdxQuoteQeCert::new(data[auth_data_end..].to_vec()))
         }
 
     }
@@ -329,7 +329,7 @@ impl TdxQuoteQeCert {
         let cert_size = unsafe { transmute::<[u8; 4], u16>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_data_end = 6 + cert_size;
 
-        if cert_type == QeCertDataType::QE_REPORT_CERT as i16 {
+        if cert_type == (QeCertDataType::QE_REPORT_CERT as i16).try_into().unwrap() {
             let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type,
@@ -383,6 +383,7 @@ pub struct TdxQuoteSignature {
     data: Vec<u8>
 }
 
+#[derive(Clone)]
 pub struct TdxQuote {
     /*** TDX Quote.
 

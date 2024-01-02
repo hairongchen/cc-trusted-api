@@ -36,6 +36,7 @@ pub const REPORT_DATA_LEN: u32 = 64;
 pub const TDX_REPORT_LEN: u32 = 1024;
 pub const TDX_QUOTE_LEN: usize = 4 * 4096;
 
+#[derive(PartialEq)]
 #[repr(u16)]
 pub enum AttestationKeyType {
     ECDSA_P256 = 2,
