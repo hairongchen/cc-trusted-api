@@ -335,7 +335,7 @@ impl TdxQuoteQeCert {
         let cert_data_end = 6 + cert_size;
 
         if cert_type as QeCertDataType == QeCertDataType::QE_REPORT_CERT {
-            let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end as usize].to_vec());
+            let cert_data = TdxQuoteQeReportCert::new(data[6..cert_data_end as usize].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type as QeCertDataType,
                 cert_data_struct: Some(cert_data),
@@ -344,7 +344,7 @@ impl TdxQuoteQeCert {
         } else {
             let cert_data = data[6..cert_data_end as usize].to_vec();
             TdxQuoteQeCert{
-                cert_type: cert_type,
+                cert_type: cert_type as QeCertDataType,
                 cert_data_struct: None,
                 cert_data_vec: Some(cert_data)
             }
@@ -377,10 +377,16 @@ pub struct TdxQuoteEcdsa256Sigature {
 }
 
 impl TdxQuoteEcdsa256Sigature {
-    pub fn new(data: Vec<u8>) -> TdxQuoteEcdsa256Sigature{
+    pub fn new(data: Vec<u8>) -> TdxQuoteEcdsa256Sigature {
         let sig = data[0..64].to_vec();
         let ak = data[64..128].to_vec();
         let qe_cert = TdxQuoteQeCert::new(data[128..data.len()].to_vec());
+
+        TdxQuoteEcdsa256Sigature {
+            sig: sig,
+            ak: ak,
+            qe_cert: qe_cert
+        }
     }
 }
 
