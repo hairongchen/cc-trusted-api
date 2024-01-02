@@ -42,9 +42,12 @@ fn main() {
         
         info!(
             "cert_type = {}",
-            match tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert {
-                None => "tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert.cert_type!",
-                Some(qe_cert) => qe_cert,
+            match tdx_quote.tdx_quote_ecdsa256_sigature{
+                None => "no tdx_quote.tdx_quote_ecdsa256_sigature!",
+                Some(tdx_quote_ecdsa256_sigature) => match tdx_quote_ecdsa256_sigature.qe_cert {
+                    None => "no tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert!",
+                    Some(qe_cert) => qe_cert.cert_type,
+                }
             }
         );
     }
