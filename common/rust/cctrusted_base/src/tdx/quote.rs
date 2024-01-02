@@ -467,10 +467,7 @@ impl TdxQuote {
                 })
 
             } else {
-                return Err(anyhow!(
-                    "[parse_tdx_quote] unknown ak_type: {:}",
-                    tdx_quote_header.ak_type
-                ));                    
+                return Err(anyhow!("[parse_tdx_quote] unknown ak_type!"));                    
             }
 
         }
