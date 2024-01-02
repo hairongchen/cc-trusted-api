@@ -36,8 +36,8 @@ fn main() {
             }
         };
         info!(
-            "dummy_var1 = {}, dummy_var2 = {}",
-            tdx_quote.dummy_var1, base64::encode(&tdx_quote.dummy_var2)
+            "version = {}, dummy_var2 = {}",
+            tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
         );
     }
 
