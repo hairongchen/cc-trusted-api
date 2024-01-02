@@ -82,6 +82,7 @@ impl Tdx {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct TdxQuoteHeader {
     /*** TD Quote Header.
 
@@ -140,6 +141,7 @@ pub struct TdxQuoteHeader {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct TdxQuoteBody {
     /*** TD Quote Body.
 
@@ -291,14 +293,14 @@ impl TdxQuoteQeReportCert {
         let auth_data_end = 450 + auth_data_size;
         let mut qe_auth_data = Vec::new();
         if auth_data_size > 0 {
-            qe_auth_data = data[450..auth_data_end].to_vec();
+            qe_auth_data = data[450..auth_data_end as usizes].to_vec();
         }
 
         TdxQuoteQeReportCert{
             qe_report: tdx_enclave_report_body,
             qe_report_sig: qe_report_sig,
             qe_auth_data: qe_auth_data,
-            qe_auth_cert: Box::new(TdxQuoteQeCert::new(data[auth_data_end..].to_vec()))
+            qe_auth_cert: Box::new(TdxQuoteQeCert::new(data[auth_data_end as usizes ..].to_vec()))
         }
 
     }
@@ -330,14 +332,14 @@ impl TdxQuoteQeCert {
         let cert_data_end = 6 + cert_size;
 
         if cert_type == (QeCertDataType::QE_REPORT_CERT as i16).try_into().unwrap() {
-            let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end].to_vec());
+            let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end as usizes].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type,
                 cert_data_struct: Some(cert_data),
                 cert_data_vec: None
             }
         } else {
-            let cert_data = data[6..cert_data_end].to_vec();
+            let cert_data = data[6..cert_data_end as usizes].to_vec();
             TdxQuoteQeCert{
                 cert_type: cert_type,
                 cert_data_struct: None,
@@ -379,6 +381,7 @@ impl TdxQuoteEcdsa256Sigature {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct TdxQuoteSignature {
     data: Vec<u8>
 }
@@ -432,7 +435,7 @@ impl TdxQuote {
             let sig_idx_end = 636 + sig_len;
 
             if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
-                let tdx_quote_ecdsa256_sigature = TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end].to_vec);
+                let tdx_quote_ecdsa256_sigature = TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end as usizes].to_vec);
 
                 Ok(TdxQuote{
                     header: tdx_quote_header,
@@ -443,7 +446,7 @@ impl TdxQuote {
 
             } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
                 let tdx_quote_signature = TdxQuoteSignature{
-                    data: quote[636..sig_idx_end].to_vec(),
+                    data: quote[636..sig_idx_end as usizes].to_vec(),
                 };
 
                 Ok(TdxQuote{
