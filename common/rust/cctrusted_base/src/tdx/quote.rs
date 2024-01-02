@@ -288,7 +288,7 @@ pub struct TdxQuoteQeReportCert {
 }
 
 impl TdxQuoteQeReportCert {
-    pub fn new(data: Vec<u8>){
+    pub fn new(data: Vec<u8>) -> TdxQuoteQeReportCert{
         let tdx_enclave_report_body: TdxEnclaveReportBody = unsafe { transmute::<[u8; 384], TdxEnclaveReportBody>(data[0..384].try_into().expect("slice with incorrect length")) };
         let qe_report_sig = data[384..448].try_into().unwrap();
         let auth_data_size = unsafe { transmute::<[u8; 2], u16>(data[448..450].try_into().expect("slice with incorrect length")) }.to_le();
@@ -337,7 +337,7 @@ impl TdxQuoteQeCert {
         if cert_type == (QeCertDataType::QE_REPORT_CERT as i16).try_into().unwrap() {
             let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end as usize].to_vec());
             TdxQuoteQeCert{
-                cert_type: cert_type,
+                cert_type: cert_type as QeCertDataType,
                 cert_data_struct: Some(cert_data),
                 cert_data_vec: None
             }
