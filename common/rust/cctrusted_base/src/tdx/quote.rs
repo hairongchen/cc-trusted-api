@@ -338,7 +338,7 @@ impl TdxQuoteQeCert {
             let cert_data = TdxQuoteQeReportCert::new(data[6..cert_data_end as usize].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type as QeCertDataType,
-                cert_data_struct: Some(cert_data),
+                cert_data_struct: Some(Box::new(cert_data)),
                 cert_data_vec: None
             }
         } else {
@@ -378,8 +378,8 @@ pub struct TdxQuoteEcdsa256Sigature {
 
 impl TdxQuoteEcdsa256Sigature {
     pub fn new(data: Vec<u8>) -> TdxQuoteEcdsa256Sigature {
-        let sig = data[0..64].to_vec();
-        let ak = data[64..128].to_vec();
+        let sig = data[0..64].try_into().unwrap();
+        let ak = data[64..128].try_into().unwrap();
         let qe_cert = TdxQuoteQeCert::new(data[128..data.len()].to_vec());
 
         TdxQuoteEcdsa256Sigature {
