@@ -248,6 +248,7 @@ pub struct TdxQuoteBody {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct TdxEnclaveReportBody {
     cpu_svn: [u8;16],
     miscselect: [u8;4],
@@ -264,6 +265,7 @@ pub struct TdxEnclaveReportBody {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct TdxQuoteQeReportCert {
     /*** TD Quote QE Report Certification Data.
 
@@ -307,6 +309,7 @@ impl TdxQuoteQeReportCert {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct TdxQuoteQeCert {
     /*** TD Quote QE Certification Data.
 
@@ -351,6 +354,7 @@ impl TdxQuoteQeCert {
 }
 
 #[repr(C)]
+#[derive(Clone)]
 pub struct TdxQuoteEcdsa256Sigature {
     /*** TD Quote ECDSA 256-bit Quote Signature.
 
@@ -435,7 +439,7 @@ impl TdxQuote {
             let sig_idx_end = 636 + sig_len;
 
             if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
-                let tdx_quote_ecdsa256_sigature = TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end as usize].to_vec);
+                let tdx_quote_ecdsa256_sigature = TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end as usize].to_vec());
 
                 Ok(TdxQuote{
                     header: tdx_quote_header,
