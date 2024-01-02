@@ -331,7 +331,7 @@ pub struct TdxQuoteQeCert {
 impl TdxQuoteQeCert {
     pub fn new(data: Vec<u8>) -> TdxQuoteQeCert{
         let cert_type:QeCertDataType = unsafe { transmute::<[u8; 2], QeCertDataType>(data[0..2].try_into().expect("slice with incorrect length"))};
-        let cert_size = unsafe { transmute::<[u8; 4], u16>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
+        let cert_size = unsafe { transmute::<[u8; 4], u32>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_data_end = 6 + cert_size;
 
         if cert_type == QeCertDataType::QE_REPORT_CERT {
