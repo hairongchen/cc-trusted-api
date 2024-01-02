@@ -334,7 +334,7 @@ impl TdxQuoteQeCert {
         let cert_size = unsafe { transmute::<[u8; 4], u16>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_data_end = 6 + cert_size;
 
-        if cert_type == (QeCertDataType::QE_REPORT_CERT as i16).try_into().unwrap() {
+        if cert_type as QeCertDataType == QeCertDataType::QE_REPORT_CERT {
             let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end as usize].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type as QeCertDataType,
