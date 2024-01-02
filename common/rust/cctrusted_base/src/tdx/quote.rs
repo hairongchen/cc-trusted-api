@@ -289,10 +289,9 @@ impl TdxQuoteQeReportCert {
         let qe_report_sig = data[384..448].to_vec();
         let auth_data_size = unsafe { transmute::<[u8; 2], u16>(data[448..450].try_into().expect("slice with incorrect length")) }.to_le();
         let auth_data_end = 450 + auth_data_size;
+        let mut qe_auth_data = Vec::new();
         if auth_data_size > 0 {
-            let qe_auth_data = data[450..auth_data_end].to_vec();
-        } else {
-            let qe_auth_data = Vec::new();
+            qe_auth_data = data[450..auth_data_end].to_vec();
         }
 
         TdxQuoteQeReportCert{
@@ -330,7 +329,7 @@ impl TdxQuoteQeCert {
         let cert_size = unsafe { transmute::<[u8; 4], u16>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_data_end = 6 + cert_size;
 
-        if cert_type == QeCertDataType.QE_REPORT_CERT as i16 {
+        if cert_type == QeCertDataType::QE_REPORT_CERT as i16 {
             let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type,
