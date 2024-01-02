@@ -290,7 +290,7 @@ pub struct TdxQuoteQeReportCert {
 impl TdxQuoteQeReportCert {
     pub fn new(data: Vec<u8>){
         let tdx_enclave_report_body: TdxEnclaveReportBody = unsafe { transmute::<[u8; 384], TdxEnclaveReportBody>(data[0..384].try_into().expect("slice with incorrect length")) };
-        let qe_report_sig = data[384..448];
+        let qe_report_sig = &data[384..448];
         let auth_data_size = unsafe { transmute::<[u8; 2], u16>(data[448..450].try_into().expect("slice with incorrect length")) }.to_le();
         let auth_data_end = 450 + auth_data_size;
         let mut qe_auth_data = Vec::new();
