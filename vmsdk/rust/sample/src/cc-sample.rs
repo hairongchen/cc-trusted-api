@@ -43,7 +43,10 @@ fn main() {
         info!(
             "cert_type = {}",
             match tdx_quote.tdx_quote_ecdsa256_sigature{
-                None => "no tdx_quote.tdx_quote_ecdsa256_sigature!",
+                None =>  {
+                    error!("no tdx_quote.tdx_quote_ecdsa256_sigature!");
+                    return;
+                }
                 Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type
                 // match tdx_quote_ecdsa256_sigature.qe_cert {
                 //     None => "no tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert!",
