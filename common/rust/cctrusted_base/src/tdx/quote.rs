@@ -440,7 +440,7 @@ pub struct TdxQuote {
     pub header: TdxQuoteHeader,
     pub body: TdxQuoteBody,
     pub tdx_quote_signature: Option<TdxQuoteSignature>, // for AttestationKeyType.ECDSA_P256
-    pub tdx_suote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P384
+    pub tdx_quote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P384
 }
 
 impl TdxQuote {
@@ -460,7 +460,7 @@ impl TdxQuote {
                     header: tdx_quote_header,
                     body: tdx_quote_body,
                     tdx_quote_signature: None,
-                    tdx_suote_ecdsa256_sigature: Some(tdx_quote_ecdsa256_sigature)              
+                    tdx_quote_ecdsa256_sigature: Some(tdx_quote_ecdsa256_sigature)              
                 })
 
             } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
@@ -474,7 +474,7 @@ impl TdxQuote {
                     header: tdx_quote_header,
                     body: tdx_quote_body,
                     tdx_quote_signature: Some(tdx_quote_signature),
-                    tdx_suote_ecdsa256_sigature: None              
+                    tdx_quote_ecdsa256_sigature: None              
                 })
 
             } else {

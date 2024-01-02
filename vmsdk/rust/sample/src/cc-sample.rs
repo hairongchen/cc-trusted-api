@@ -41,7 +41,7 @@ fn main() {
         );
         info!(
             "cert_type = {}",
-            tdx_quote.tdx_suote_ecdsa256_sigature.qe_cert.cert_type
+            tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert.cert_type
         );
     }
 
