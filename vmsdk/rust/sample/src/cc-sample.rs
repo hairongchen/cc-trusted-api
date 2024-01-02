@@ -47,7 +47,7 @@ fn main() {
                     error!("no tdx_quote.tdx_quote_ecdsa256_sigature!");
                     return;
                 }
-                Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type
+                Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type as u8
                 // match tdx_quote_ecdsa256_sigature.qe_cert {
                 //     None => "no tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert!",
                 //     Some(qe_cert) => qe_cert.cert_type,
