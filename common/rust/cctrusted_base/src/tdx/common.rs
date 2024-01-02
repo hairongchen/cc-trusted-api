@@ -38,12 +38,14 @@ pub const TDX_QUOTE_LEN: usize = 4 * 4096;
 
 #[derive(PartialEq)]
 #[repr(u16)]
+#[derive(Clone)]
 pub enum AttestationKeyType {
     ECDSA_P256 = 2,
     ECDSA_P384 = 3
 }
 
 #[repr(u32)]
+#[derive(Clone)]
 pub enum IntelTeeType {
     TEE_SGX = 0x00000000,
     TEE_TDX = 0x00000081
