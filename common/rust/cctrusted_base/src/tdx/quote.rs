@@ -131,13 +131,13 @@ pub struct TdxQuoteHeader {
                                                 platform
     */
 
-    version: u16,
-    ak_type: AttestationKeyType,
-    tee_type: IntelTeeType,
-    reserved_1: [u8;2],
-    reserved_2: [u8;2],
-    qe_vendor: [u8;16],
-    user_data: [u8;20] 
+    pub version: u16,
+    pub ak_type: AttestationKeyType,
+    pub tee_type: IntelTeeType,
+    pub reserved_1: [u8;2],
+    pub reserved_2: [u8;2],
+    pub qe_vendor: [u8;16],
+    pub user_data: [u8;20] 
 }
 
 #[repr(C)]
@@ -229,39 +229,38 @@ pub struct TdxQuoteBody {
     MRSERVICETD     48              SHA384      Measurement of the initial contents of the
                                                 Migration TD
     */
-
-     pub tee_tcb_svn:      [u8; 16],  // Array of TEE TCB SVNs
-     pub mrseam:         [u8; 48],  // Measurement of the SEAM module (SHA384 hash)
-     pub mrseam_signer:   [u8; 48],  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
-     pub seam_attributes: [u8; 8],   // ATTRIBUTES of SEAM
-     pub td_attributes:   [u8; 8],   // ATTRIBUTES of TD
-     pub xfam:           [u8; 8],   // XFAM of TD
-     pub mrtd:           [u8; 48],  // Measurement of the initial contents of the TD (SHA384 hash)
-     pub mrconfigid:     [u8; 48],  // Software defined ID for non-owner-defined configuration of the TD
-     pub mrowner:        [u8; 48],  // Software defined ID for the guest TD’s owner
-     pub mrownerconfig:  [u8; 48],  // Software defined ID for owner-defined configuration of the TD
-     pub rtmr0:          [u8; 48], // data in RTMR0(SHA384 hash)
-     pub rtmr1:          [u8; 48], // data in RTMR1(SHA384 hash)
-     pub rtmr2:          [u8; 48], // data in RTMR2(SHA384 hash)
-     pub rtmr3:          [u8; 48], // data in RTMR3(SHA384 hash)
-     pub report_data:     [u8; 64],  // Additional Report Data
+    pub tee_tcb_svn:      [u8; 16],  // Array of TEE TCB SVNs
+    pub mrseam:         [u8; 48],  // Measurement of the SEAM module (SHA384 hash)
+    pub mrseam_signer:   [u8; 48],  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
+    pub seam_attributes: [u8; 8],   // ATTRIBUTES of SEAM
+    pub td_attributes:   [u8; 8],   // ATTRIBUTES of TD
+    pub xfam:           [u8; 8],   // XFAM of TD
+    pub mrtd:           [u8; 48],  // Measurement of the initial contents of the TD (SHA384 hash)
+    pub mrconfigid:     [u8; 48],  // Software defined ID for non-owner-defined configuration of the TD
+    pub mrowner:        [u8; 48],  // Software defined ID for the guest TD’s owner
+    pub mrownerconfig:  [u8; 48],  // Software defined ID for owner-defined configuration of the TD
+    pub rtmr0:          [u8; 48], // data in RTMR0(SHA384 hash)
+    pub rtmr1:          [u8; 48], // data in RTMR1(SHA384 hash)
+    pub rtmr2:          [u8; 48], // data in RTMR2(SHA384 hash)
+    pub rtmr3:          [u8; 48], // data in RTMR3(SHA384 hash)
+    pub report_data:     [u8; 64],  // Additional Report Data
 }
 
 #[repr(C)]
 #[derive(Clone)]
 pub struct TdxEnclaveReportBody {
-    cpu_svn: [u8;16],
-    miscselect: [u8;4],
-    reserved_1: [u8;28],
-    attributes: [u8;16],
-    mrenclave: [u8;32],
-    reserved_2: [u8;32],
-    mrsigner: [u8;32],
-    reserved_3: [u8;96],
-    isv_prodid: i16,
-    isv_svn: i16,
-    reserved_4: [u8;60],
-    report_data: [u8;64]
+    pub cpu_svn: [u8;16],
+    pub miscselect: [u8;4],
+    pub reserved_1: [u8;28],
+    pub attributes: [u8;16],
+    pub mrenclave: [u8;32],
+    pub reserved_2: [u8;32],
+    pub mrsigner: [u8;32],
+    pub reserved_3: [u8;96],
+    pub isv_prodid: i16,
+    pub isv_svn: i16,
+    pub reserved_4: [u8;60],
+    pub report_data: [u8;64]
 }
 
 #[repr(C)]
@@ -281,10 +280,10 @@ pub struct TdxQuoteQeReportCert {
     https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
     A.3.11. QE Report Certification Data
     */
-    qe_report: TdxEnclaveReportBody,
-    qe_report_sig: [u8; 64],
-    qe_auth_data: Vec<u8>,
-    qe_auth_cert: Box<TdxQuoteQeCert>
+    pub qe_report: TdxEnclaveReportBody,
+    pub qe_report_sig: [u8; 64],
+    pub qe_auth_data: Vec<u8>,
+    pub qe_auth_cert: Box<TdxQuoteQeCert>
 }
 
 impl TdxQuoteQeReportCert {
@@ -323,9 +322,9 @@ pub struct TdxQuoteQeCert {
     https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
     A.3.9. QE Certification Data - Version 4
     */
-    cert_type: QeCertDataType,
-    cert_data_struct: Option<Box<TdxQuoteQeReportCert>>,
-    cert_data_vec: Option<Vec<u8>>
+    pub cert_type: QeCertDataType,
+    pub cert_data_struct: Option<Box<TdxQuoteQeReportCert>>,
+    pub cert_data_vec: Option<Vec<u8>>
 }
 
 impl TdxQuoteQeCert {
@@ -371,9 +370,9 @@ pub struct TdxQuoteEcdsa256Sigature {
     https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
     A.3.8
     */
-    sig: [u8; 64],
-    ak: [u8; 64],
-    qe_cert: TdxQuoteQeCert
+    pub sig: [u8; 64],
+    pub ak: [u8; 64],
+    pub qe_cert: TdxQuoteQeCert
 }
 
 impl TdxQuoteEcdsa256Sigature {
@@ -393,7 +392,7 @@ impl TdxQuoteEcdsa256Sigature {
 #[repr(C)]
 #[derive(Clone)]
 pub struct TdxQuoteSignature {
-    data: Vec<u8>
+    pub data: Vec<u8>
 }
 
 #[derive(Clone)]
@@ -430,10 +429,10 @@ pub struct TdxQuote {
     TODO: implement version 5 according to A.4. Version 5 Quote Format.
     */
 
-    header: TdxQuoteHeader,
-    body: TdxQuoteBody,
-    tdx_quote_signature: Option<TdxQuoteSignature>, // for AttestationKeyType.ECDSA_P256
-    tdx_suote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P384
+    pub header: TdxQuoteHeader,
+    pub body: TdxQuoteBody,
+    pub tdx_quote_signature: Option<TdxQuoteSignature>, // for AttestationKeyType.ECDSA_P256
+    pub tdx_suote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P384
 }
 
 impl TdxQuote {
