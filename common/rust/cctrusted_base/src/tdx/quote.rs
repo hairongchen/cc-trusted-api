@@ -330,11 +330,15 @@ pub struct TdxQuoteQeCert {
 
 impl TdxQuoteQeCert {
     pub fn new(data: Vec<u8>) -> TdxQuoteQeCert{
+        info!("TdxQuoteQeCert::new()");
+
         let cert_type:QeCertDataType = unsafe { transmute::<[u8; 2], QeCertDataType>(data[0..2].try_into().expect("slice with incorrect length"))};
         let cert_size = unsafe { transmute::<[u8; 4], u32>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_data_end = 6 + cert_size;
 
         if cert_type == QeCertDataType::QE_REPORT_CERT {
+            info!("QE_REPORT_CERT");
+
             let cert_data = TdxQuoteQeReportCert::new(data[6..cert_data_end as usize].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type as QeCertDataType,
@@ -342,6 +346,8 @@ impl TdxQuoteQeCert {
                 cert_data_vec: None
             }
         } else {
+            info!("NOOOOOO! QE_REPORT_CERT");
+
             let cert_data = data[6..cert_data_end as usize].to_vec();
             TdxQuoteQeCert{
                 cert_type: cert_type as QeCertDataType,
@@ -378,6 +384,7 @@ pub struct TdxQuoteEcdsa256Sigature {
 
 impl TdxQuoteEcdsa256Sigature {
     pub fn new(data: Vec<u8>) -> TdxQuoteEcdsa256Sigature {
+        info!("TdxQuoteEcdsa256Sigature::new()");
         let sig = data[0..64].try_into().unwrap();
         let ak = data[64..128].try_into().unwrap();
         let qe_cert = TdxQuoteQeCert::new(data[128..data.len()].to_vec());
