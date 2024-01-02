@@ -280,7 +280,7 @@ pub struct TdxQuoteQeReportCert {
     qe_report: TdxEnclaveReportBody,
     qe_report_sig: [u8; 64],
     qe_auth_data: Vec<u8>,
-    qe_auth_cert: TdxQuoteQeCert
+    qe_auth_cert: Box<TdxQuoteQeCert>
 }
 
 impl TdxQuoteQeReportCert {
@@ -319,7 +319,7 @@ pub struct TdxQuoteQeCert {
     A.3.9. QE Certification Data - Version 4
     */
     cert_type: QeCertDataType,
-    cert_data_struct: Option<TdxQuoteQeReportCert>,
+    cert_data_struct: Option<Box<TdxQuoteQeReportCert>>,
     cert_data_vec: Option<Vec<u8>>
 }
 
