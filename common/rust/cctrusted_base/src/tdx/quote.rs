@@ -330,11 +330,11 @@ pub struct TdxQuoteQeCert {
 
 impl TdxQuoteQeCert {
     pub fn new(data: Vec<u8>) -> TdxQuoteQeCert{
-        let cert_type = unsafe { transmute::<[u8; 2], u16>(data[0..2].try_into().expect("slice with incorrect length")) }.to_le();
+        let cert_type:QeCertDataType = unsafe { transmute::<[u8; 2], u16>(data[0..2].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_size = unsafe { transmute::<[u8; 4], u16>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
         let cert_data_end = 6 + cert_size;
 
-        if cert_type as QeCertDataType == QeCertDataType::QE_REPORT_CERT {
+        if cert_type == QeCertDataType::QE_REPORT_CERT {
             let cert_data = TdxQuoteQeReportCert::new(data[6..cert_data_end as usize].to_vec());
             TdxQuoteQeCert{
                 cert_type: cert_type as QeCertDataType,
