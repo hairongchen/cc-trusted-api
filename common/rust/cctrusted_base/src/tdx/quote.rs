@@ -246,6 +246,22 @@ pub struct TdxQuoteBody {
 }
 
 #[repr(C)]
+pub struct TdxEnclaveReportBody {
+    cpu_svn: [u8;16],
+    miscselect: [u8;4],
+    reserved_1: [u8;28],
+    attributes: [u8;16],
+    mrenclave: [u8;32],
+    reserved_2: [u8;32],
+    mrsigner: [u8;32],
+    reserved_3: [u8;96],
+    isv_prodid: i16,
+    isv_svn: i16,
+    reserved_4: [u8;60],
+    report_data: [u8;64]
+}
+
+#[repr(C)]
 pub struct TdxQuoteQeReportCert {
     /*** TD Quote QE Report Certification Data.
 
@@ -261,9 +277,32 @@ pub struct TdxQuoteQeReportCert {
     https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
     A.3.11. QE Report Certification Data
     */
-    qe_report: [u8; 384],
+    qe_report: TdxEnclaveReportBody,
     qe_report_sig: [u8; 64],
-    qe_auth_cert: Vec<u8>
+    qe_auth_data: Vec<u8>
+    qe_auth_cert: TdxQuoteQeCert
+}
+
+impl TdxQuoteQeReportCert {
+    pub fn new(data: Vec<8>){
+        let tdx_enclave_report_body: TdxEnclaveReportBody = unsafe { transmute::<[u8; 384], TdxEnclaveReportBody>(data[0..384].try_into().expect("slice with incorrect length")) };
+        let qe_report_sig = data[384..448].to_vec();
+        let auth_data_size = unsafe { transmute::<[u8; 2], u16>(data[448..450].try_into().expect("slice with incorrect length")) }.to_le();
+        let auth_data_end = 450 + auth_data_size;
+        if auth_data_size > 0 {
+            let qe_auth_data = data[450..auth_data_end].to_vec();
+        } else {
+            qe_auth_data = Vec::new();
+        }
+
+        TdxQuoteQeReportCert{
+            qe_report: tdx_enclave_report_body,
+            qe_report_sig: qe_report_sig,
+            qe_auth_data: qe_auth_data,
+            qe_auth_cert: TdxQuoteQeCert::new(data[auth_data_end..].to_vec())
+        }
+
+    }
 }
 
 #[repr(C)]
@@ -281,8 +320,33 @@ pub struct TdxQuoteQeCert {
     A.3.9. QE Certification Data - Version 4
     */
     cert_type: QeCertDataType,
-    // TODO!: is QeCertDataType.QE_REPORT_CERT or normal cert
-    cert_data: Vec<u8>
+    cert_data_struct: Option<TdxQuoteQeReportCert>,
+    cert_data_vec: Option<Vec<u8>>
+}
+
+impl TdxQuoteQeCert {
+    pub fn new(data: Vec<8>) -> TdxQuoteQeCert{
+        let cert_type = unsafe { transmute::<[u8; 2], u16>(data[0..2].try_into().expect("slice with incorrect length")) }.to_le();
+        let cert_size = unsafe { transmute::<[u8; 4], u16>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
+        let cert_data_end = 6 + cert_size;
+
+        if cert_type == QeCertDataType.QE_REPORT_CERT{
+            let cert_data = TdxQuoteQeCert::new(data[6..cert_data_end].to_vec());
+            TdxQuoteQeCert{
+                cert_type: cert_type,
+                cert_data_struct: Some(cert_data),
+                cert_data_vec = None
+            }
+        } else {
+            let cert_data = data[6..cert_data_end].to_vec();
+            TdxQuoteQeCert{
+                cert_type: cert_type,
+                cert_data_struct: None,
+                cert_data_vec = Some(cert_data)
+            }
+        }
+
+    }
 }
 
 #[repr(C)]
@@ -305,6 +369,14 @@ pub struct TdxQuoteEcdsa256Sigature {
     sig: [u8; 64],
     ak: [u8; 64],
     qe_cert: TdxQuoteQeCert
+}
+
+impl TdxQuoteEcdsa256Sigature {
+    pub fn new(data: Vec<u8>) -> TdxQuoteEcdsa256Sigature{
+        let sig = data[0..64].to_vec();
+        let ak = data[64..128].to_vec();
+        let qe_cert = TdxQuoteQeCert::new(data[128..data.len()].to_vec());
+    }
 }
 
 #[repr(C)]
@@ -351,51 +423,44 @@ pub struct TdxQuote {
     tdx_suote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P384
 }
 
-// #[derive(Clone)]
-// pub struct TdxQuote {
-//     pub dummy_var1: usize,
-//     pub dummy_var2: [u8;64],
-// }
-
 impl TdxQuote {
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
         let tdx_quote_header: TdxQuoteHeader = unsafe { transmute::<[u8; 48], TdxQuoteHeader>(quote[0..48].try_into().expect("slice with incorrect length")) };
-
         if tdx_quote_header.version == TDX_QUOTE_VERSION_4 {
-                let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
-                let sig_len = unsafe { transmute::<[u8; 4], i32>(quote[632..636].try_into().expect("slice with incorrect length")) }.to_le();
-                let sig_idx_end = 636 + sig_len;
+            let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
+            let sig_len = unsafe { transmute::<[u8; 4], i32>(quote[632..636].try_into().expect("slice with incorrect length")) }.to_le();
+            let sig_idx_end = 636 + sig_len;
 
-                if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
-                    let sig = quote[636..700].to_vec;
-                    let ak = quote[700..764].to_vec;
-                    todo!()
-                } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
-                    let tdx_quote_signature = TdxQuoteSignature{
-                        data: quote[636:sig_idx_end].to_vec(),
-                    };
+            if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
+                let tdx_quote_ecdsa256_sigature = TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end].to_vec);
 
-                    Ok(TdxQuote{
-                        header: tdx_quote_header,
-                        body: tdx_quote_body,
-                        tdx_quote_signature: Some(tdx_quote_signature),
-                        tdx_suote_ecdsa256_sigature: None              
-                    })
+                Ok(TdxQuote{
+                    header: tdx_quote_header,
+                    body: tdx_quote_body,
+                    tdx_quote_signature: None,
+                    tdx_suote_ecdsa256_sigature: Some(tdx_quote_ecdsa256_sigature)              
+                })
 
-                } else {
-                    return Err(anyhow!(
-                        "[parse_tdx_quote] unknown ak_type: {:}",
-                        tdx_quote_header.ak_type
-                    ));                    
-                }
+            } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
+                let tdx_quote_signature = TdxQuoteSignature{
+                    data: quote[636:sig_idx_end].to_vec(),
+                };
 
+                Ok(TdxQuote{
+                    header: tdx_quote_header,
+                    body: tdx_quote_body,
+                    tdx_quote_signature: Some(tdx_quote_signature),
+                    tdx_suote_ecdsa256_sigature: None              
+                })
 
-
-                // Ok(TdxQuote{
-                //     dummy_var1: quote.len(),
-                //     dummy_var2: tdx_quote_body.report_data
-                // })
+            } else {
+                return Err(anyhow!(
+                    "[parse_tdx_quote] unknown ak_type: {:}",
+                    tdx_quote_header.ak_type
+                ));                    
             }
+
+        }
         else if tdx_quote_header.version == TDX_QUOTE_VERSION_5 {
                 // TODO: implement version 5
                 todo!()   
