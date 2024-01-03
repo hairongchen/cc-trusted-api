@@ -406,11 +406,11 @@ impl TdxQuoteQeCert {
     pub fn show(&self) {
         info!("show the data of TdxQuoteQeCert");
         info!("cert_type = {:?}", self.cert_type);
-        match self.cert_data_struct{
+        match &self.cert_data_struct{
             None =>  {
-                match self.cert_data_vec{
+                match &self.cert_data_vec{
                     None => return,
-                    Some(cert_data_vec) => info!("cert_data_vec = {:?}", self.cert_data_vec),
+                    Some(cert_data_vec) => info!("cert_data_vec = {:?}", cert_data_vec),
                 }
             }
             Some(cert_data_struct) => cert_data_struct.show(),
