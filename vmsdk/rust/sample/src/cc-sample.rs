@@ -47,17 +47,6 @@ fn main() {
         // show data of the struct TdxQuoteBody
         info!("call struct show function to show data of the struct TdxQuoteBody!");
         tdx_quote.body.show();
-        
-        // info!(
-        //     "cert_type = {}",
-        //     match tdx_quote.tdx_quote_ecdsa256_sigature{
-        //         None =>  {
-        //             error!("no tdx_quote.tdx_quote_ecdsa256_sigature!");
-        //             return;
-        //         }
-        //         Some(ref tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type as u8
-        //     }
-        // );
 
         match tdx_quote.tdx_quote_ecdsa256_sigature{
             None =>  {
