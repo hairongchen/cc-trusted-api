@@ -141,6 +141,15 @@ pub struct TdxQuoteHeader {
     pub user_data: [u8;20] 
 }
 
+impl TdxQuoteHeader {
+    pub fn show(&self){
+        info!("version = {}", self.version);
+        info!("ak_type = {}", self.ak_type);
+        info!("qe_vendor = {}", self.qe_vendor);
+        info!("user_data = {}", self.user_data);
+    }
+}
+
 #[repr(C)]
 #[derive(Clone)]
 pub struct TdxQuoteBody {

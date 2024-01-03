@@ -39,6 +39,10 @@ fn main() {
             "version = {}, report_data = {}",
             tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
         );
+
+        // show important data of the struct
+        info!("call struct show function to show important data of the struct!");
+        tdx_quote.header.show();
         
         info!(
             "cert_type = {}",
@@ -48,10 +52,6 @@ fn main() {
                     return;
                 }
                 Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type as u8
-                // match tdx_quote_ecdsa256_sigature.qe_cert {
-                //     None => "no tdx_quote.tdx_quote_ecdsa256_sigature.qe_cert!",
-                //     Some(qe_cert) => qe_cert.cert_type,
-                // }
             }
         );
     }
