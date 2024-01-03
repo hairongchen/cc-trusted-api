@@ -412,7 +412,6 @@ impl TdxQuoteQeCert {
                     None => return,
                     Some(cert_data_vec) => info!("cert_data_vec = {:?}", self.cert_data_vec),
                 }
-                self.cert_data_vec.show();
             }
             Some(cert_data_struct) => cert_data_struct.show(),
         }
