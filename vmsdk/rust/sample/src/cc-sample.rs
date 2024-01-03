@@ -40,12 +40,12 @@ fn main() {
             tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
         );
 
-        // show important data of the struct TdxQuoteHeader
-        info!("call struct show function to show important data of the struct TdxQuoteHeader!");
+        // show data of the struct TdxQuoteHeader
+        info!("call struct show function to show data of the struct TdxQuoteHeader!");
         tdx_quote.header.show();
         
-        // show important data of the struct TdxQuoteBody
-        info!("call struct show function to show important data of the struct TdxQuoteBody!");
+        // show data of the struct TdxQuoteBody
+        info!("call struct show function to show data of the struct TdxQuoteBody!");
         tdx_quote.body.show();
         
         info!(
@@ -58,6 +58,14 @@ fn main() {
                 Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type as u8
             }
         );
+
+        match tdx_quote.tdx_quote_ecdsa256_sigature{
+            None =>  {
+                error!("no tdx_quote.tdx_quote_ecdsa256_sigature!");
+                return;
+            }
+            Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.show()
+        }
     }
 
     // get CVM default algorithm with API "get_default_algorithm"

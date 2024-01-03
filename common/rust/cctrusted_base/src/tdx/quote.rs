@@ -143,7 +143,7 @@ pub struct TdxQuoteHeader {
 
 impl TdxQuoteHeader {
     pub fn show(&self){
-        info!("show the important data of TdxQuoteHeader");
+        info!("show the data of TdxQuoteHeader");
         info!("version = {}", self.version);
         info!("ak_type = {:?}", self.ak_type);
         info!("qe_vendor = {:?}", self.qe_vendor);
@@ -259,7 +259,7 @@ pub struct TdxQuoteBody {
 
 impl TdxQuoteBody {
     pub fn show(&self){
-        info!("show the important data of TdxQuoteBody");
+        info!("show the data of TdxQuoteBody");
         info!("tee_tcb_svn = {:?}", self.tee_tcb_svn);
         info!("mrseam = {:?}", self.mrseam);
         info!("mrseam_signer = {:?}", self.mrseam_signer);
@@ -293,6 +293,20 @@ pub struct TdxEnclaveReportBody {
     pub isv_svn: i16,
     pub reserved_4: [u8;60],
     pub report_data: [u8;64]
+}
+
+impl TdxEnclaveReportBody {
+    pub fn show(&self){
+        info!("show the data of TdxEnclaveReportBody");
+        info!("cpu_svn = {:?}", self.cpu_svn);
+        info!("miscselect = {:?}", self.miscselect);
+        info!("attributes = {:?}", self.attributes);
+        info!("mrenclave = {:?}", self.mrenclave);
+        info!("mrsigner = {:?}", self.mrsigner);
+        info!("isv_prodid = {:?}", self.isv_prodid);
+        info!("isv_svn = {:?}", self.isv_svn);
+        info!("report_data = {:?}", self.report_data);
+    }
 }
 
 #[repr(C)]
@@ -335,7 +349,14 @@ impl TdxQuoteQeReportCert {
             qe_auth_data: qe_auth_data,
             qe_auth_cert: Box::new(TdxQuoteQeCert::new(data[auth_data_end as usize ..].to_vec()))
         }
+    }
 
+    pub fn show(&self){
+        info!("show the data of TdxQuoteQeReportCert");
+        qe_report.show();
+        info!("qe_report_sig = {:?}", self.qe_report_sig);
+        info!("qe_report_sig = {:?}", self.qe_report_sig);
+        qe_auth_cert.show();
     }
 }
 
@@ -380,7 +401,21 @@ impl TdxQuoteQeCert {
                 cert_data_vec: Some(cert_data)
             }
         }
+    }
 
+    pub fn show(&self) {
+        info!("show the data of TdxQuoteQeCert");
+        info!("cert_type = {:?}", self.cert_type);
+        match cert_data_struct{
+            None =>  {
+                match cert_data_vec{
+                    None => _,
+                    Some(cert_data_vec) => info!("cert_data_vec = {:?}", self.cert_data_vec);
+                }
+                cert_data_vec.show();
+            }
+            Some(cert_data_struct) => cert_data_struct.show()
+        }
     }
 }
 
@@ -418,6 +453,13 @@ impl TdxQuoteEcdsa256Sigature {
             ak: ak,
             qe_cert: qe_cert
         }
+    }
+
+    pub fn show(&self){
+        info!("show the data of TdxQuoteEcdsa256Sigature");
+        info!("sig = {:?}", self.sig);
+        info!("ak = {:?}", self.ak);
+        qe_cert.show();
     }
 }
 
@@ -463,8 +505,8 @@ pub struct TdxQuote {
 
     pub header: TdxQuoteHeader,
     pub body: TdxQuoteBody,
-    pub tdx_quote_signature: Option<TdxQuoteSignature>, // for AttestationKeyType.ECDSA_P256
-    pub tdx_quote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P384
+    pub tdx_quote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P256
+    pub tdx_quote_signature: Option<TdxQuoteSignature>, // for AttestationKeyType.ECDSA_P384
 }
 
 impl TdxQuote {
