@@ -40,9 +40,13 @@ fn main() {
             tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
         );
 
-        // show important data of the struct
-        info!("call struct show function to show important data of the struct!");
+        // show important data of the struct TdxQuoteHeader
+        info!("call struct show function to show important data of the struct TdxQuoteHeader!");
         tdx_quote.header.show();
+        
+        // show important data of the struct TdxQuoteBody
+        info!("call struct show function to show important data of the struct TdxQuoteBody!");
+        tdx_quote.body.show();
         
         info!(
             "cert_type = {}",

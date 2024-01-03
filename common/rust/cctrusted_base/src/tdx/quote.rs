@@ -143,6 +143,7 @@ pub struct TdxQuoteHeader {
 
 impl TdxQuoteHeader {
     pub fn show(&self){
+        info!("show the important data of TdxQuoteHeader");
         info!("version = {}", self.version);
         info!("ak_type = {:?}", self.ak_type);
         info!("qe_vendor = {:?}", self.qe_vendor);
@@ -254,6 +255,27 @@ pub struct TdxQuoteBody {
     pub rtmr2:          [u8; 48], // data in RTMR2(SHA384 hash)
     pub rtmr3:          [u8; 48], // data in RTMR3(SHA384 hash)
     pub report_data:     [u8; 64],  // Additional Report Data
+}
+
+impl TdxQuoteBody {
+    pub fn show(&self){
+        info!("show the important data of TdxQuoteBody");
+        info!("tee_tcb_svn = {:?}", self.tee_tcb_svn);
+        info!("mrseam = {:?}", self.mrseam);
+        info!("mrseam_signer = {:?}", self.mrseam_signer);
+        info!("seam_attributes = {:?}", self.seam_attributes);
+        info!("td_attributes = {:?}", self.td_attributes);
+        info!("xfam = {:?}", self.xfam);
+        info!("mrtd = {:?}", self.mrtd);
+        info!("mrconfigid = {:?}", self.mrconfigid);
+        info!("mrowner = {:?}", self.mrowner);
+        info!("mrownerconfig = {:?}", self.mrownerconfig);
+        info!("rtmr0 = {:?}", self.rtmr0);
+        info!("rtmr1 = {:?}", self.rtmr1);
+        info!("rtmr2 = {:?}", self.rtmr2);
+        info!("rtmr3 = {:?}", self.rtmr3);
+        info!("report_data = {:?}", self.report_data);
+    }
 }
 
 #[repr(C)]
