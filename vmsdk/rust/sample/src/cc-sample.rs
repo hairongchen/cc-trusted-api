@@ -55,7 +55,7 @@ fn main() {
                     error!("no tdx_quote.tdx_quote_ecdsa256_sigature!");
                     return;
                 }
-                Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type as u8
+                Some(ref tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.qe_cert.cert_type as u8
             }
         );
 
@@ -64,7 +64,7 @@ fn main() {
                 error!("no tdx_quote.tdx_quote_ecdsa256_sigature!");
                 return;
             }
-            Some(ref tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.show()
+            Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.show()
         }
     }
 
