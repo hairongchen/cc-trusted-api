@@ -409,12 +409,12 @@ impl TdxQuoteQeCert {
         match self.cert_data_struct{
             None =>  {
                 match self.cert_data_vec{
-                    None => _,
-                    Some(cert_data_vec) => info!("cert_data_vec = {:?}", self.cert_data_vec);
+                    None => return,
+                    Some(cert_data_vec) => info!("cert_data_vec = {:?}", self.cert_data_vec),
                 }
                 self.cert_data_vec.show();
             }
-            Some(cert_data_struct) => self.cert_data_struct.show()
+            Some(cert_data_struct) => cert_data_struct.show(),
         }
     }
 }

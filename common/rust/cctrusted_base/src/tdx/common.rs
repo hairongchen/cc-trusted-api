@@ -52,7 +52,7 @@ pub enum IntelTeeType {
 
 pub const QE_VENDOR_INTEL_SGX: &str = "939a7233f79c4ca9940a0db3957f0607";
 
-#[derive(Clone,PartialEq)]
+#[derive(Clone,PartialEq,Debug)]
 #[repr(i16)]
 pub enum QeCertDataType {
     /*** QE Certification Data Type.
