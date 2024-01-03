@@ -36,9 +36,8 @@ pub const REPORT_DATA_LEN: u32 = 64;
 pub const TDX_REPORT_LEN: u32 = 1024;
 pub const TDX_QUOTE_LEN: usize = 4 * 4096;
 
-#[derive(PartialEq)]
 #[repr(u16)]
-#[derive(Clone)]
+#[derive(Clone,PartialEq,Debug)]
 pub enum AttestationKeyType {
     ECDSA_P256 = 2,
     ECDSA_P384 = 3
@@ -53,8 +52,7 @@ pub enum IntelTeeType {
 
 pub const QE_VENDOR_INTEL_SGX: &str = "939a7233f79c4ca9940a0db3957f0607";
 
-#[derive(PartialEq)]
-#[derive(Clone)]
+#[derive(Clone,PartialEq)]
 #[repr(i16)]
 pub enum QeCertDataType {
     /*** QE Certification Data Type.
