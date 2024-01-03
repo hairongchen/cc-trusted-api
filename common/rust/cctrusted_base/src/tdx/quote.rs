@@ -353,10 +353,10 @@ impl TdxQuoteQeReportCert {
 
     pub fn show(&self){
         info!("show the data of TdxQuoteQeReportCert");
-        qe_report.show();
+        self.qe_report.show();
         info!("qe_report_sig = {:?}", self.qe_report_sig);
         info!("qe_report_sig = {:?}", self.qe_report_sig);
-        qe_auth_cert.show();
+        self.qe_auth_cert.show();
     }
 }
 
@@ -406,15 +406,15 @@ impl TdxQuoteQeCert {
     pub fn show(&self) {
         info!("show the data of TdxQuoteQeCert");
         info!("cert_type = {:?}", self.cert_type);
-        match cert_data_struct{
+        match self.cert_data_struct{
             None =>  {
-                match cert_data_vec{
+                match self.cert_data_vec{
                     None => _,
                     Some(cert_data_vec) => info!("cert_data_vec = {:?}", self.cert_data_vec);
                 }
-                cert_data_vec.show();
+                self.cert_data_vec.show();
             }
-            Some(cert_data_struct) => cert_data_struct.show()
+            Some(cert_data_struct) => self.cert_data_struct.show()
         }
     }
 }
@@ -459,7 +459,7 @@ impl TdxQuoteEcdsa256Sigature {
         info!("show the data of TdxQuoteEcdsa256Sigature");
         info!("sig = {:?}", self.sig);
         info!("ak = {:?}", self.ak);
-        qe_cert.show();
+        self.qe_cert.show();
     }
 }
 
