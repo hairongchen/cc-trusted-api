@@ -53,7 +53,7 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: get measurements of a CVM
-    fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
+    fn get_cc_measurement(index: u8, algo_id: u8) -> TcgDigest {
         todo!()
     }
 

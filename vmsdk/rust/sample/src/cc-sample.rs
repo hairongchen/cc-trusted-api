@@ -54,14 +54,20 @@ fn main() {
         }
     };
 
-    match API::get_measurement_count(){
+    let max_index = match API::get_measurement_count(){
         Ok(count) => {
-            info!("count: {}", count);
-            ();
+            info!("max index: {}", count);
+            count;
         }
         Err(e) => {
             error!("error get measurement count: {:?}", e);
             return;
         }
+    }
+
+    info!("call cc trusted API [get_cc_measurement] to get CVM register!");
+    for index in 0..max_index {
+        let tcg_digest = API::get_cc_measurement(index, TPM_ALG_SHA384);
+        tcg_digest.show();
     }
 }
