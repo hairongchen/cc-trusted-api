@@ -39,7 +39,7 @@ pub trait CVM {
         Returns:
             TcgDigest struct
     */
-    fn process_cc_measurement(&self, _index: u8, _algo_id: u8) -> TcgDigest;
+    fn process_cc_measurement(&mut self, _index: u8, _algo_id: u8) -> TcgDigest;
 
     /***
         retrive CVM eventlogs

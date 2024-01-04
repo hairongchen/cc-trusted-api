@@ -4,7 +4,7 @@ use core::result::Result::Ok;
 
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::eventlog::TcgEventLog;
-use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
+use cctrusted_base::tcg::TcgDigest;
 
 use crate::cvm::build_cvm;
 use cctrusted_base::api::*;
@@ -43,7 +43,7 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: get max number of CVM IMRs
-    fn get_measurement_count() -> u8 {
+    fn get_measurement_count() -> Result<u8, anyhow::Error> {
         match build_cvm() {
             Ok(mut cvm) => {
                 Ok(cvm.get_max_index())

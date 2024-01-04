@@ -3,7 +3,7 @@
 use crate::cvm::*;
 use anyhow::*;
 use cctrusted_base::cc_type::*;
-use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest, ALGO_NAME_MAP};
+use cctrusted_base::tcg::*;
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
 use cctrusted_base::tdx::report::*;
@@ -320,7 +320,7 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: get tdx rtmr max index
-    fn get_max_index() -> u8 {
+    fn get_max_index(&self) -> u8 {
         TdxRTMR::max_index()
     }
 
@@ -336,7 +336,7 @@ impl CVM for TdxVM {
             }
         };
 
-        let tdreport = match parse_td_report(tdreport_raw, self.tdx_version) {
+        let tdreport = match Tdx::parse_td_report(tdreport_raw, self.version) {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!(
@@ -346,24 +346,24 @@ impl CVM for TdxVM {
             }        
         };
 
-        self.rtmr[0] = match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmr0) {
+        self.rtmrs[0] = match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmr0) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
-        self.rtmr[1] = match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmr1) {
+        self.rtmrs[1] = match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmr1) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
-        self.rtmr[2] = match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmr2) {
+        self.rtmrs[2] = match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmr2) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
-        self.rtmr[3] = match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmr3) {
+        self.rtmrs[3] = match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmr3) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
 
-        Ok(rtmr[index].get_tcg_digest())
+        Ok(self.rtmrs[index].get_tcg_digest())
 
     }
 
