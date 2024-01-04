@@ -61,7 +61,7 @@ impl TcgIMR for TdxRTMR {
     }
 
     fn get_tcg_digest(&self, _algo_id: u8) -> TcgDigest{
-        self.digest.1.clone()
+        self.digest.1
     }
 
     fn get_hash(&self) -> Vec<&str> {
