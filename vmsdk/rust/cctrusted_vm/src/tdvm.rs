@@ -346,10 +346,10 @@ impl CVM for TdxVM {
             }        
         };
 
-        self.rtmrs[0] = match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmr0) {
+        self.rtmrs.push(match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmr0) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        };
+        });
         self.rtmrs[1] = match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmr1) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
