@@ -343,29 +343,26 @@ impl CVM for TdxVM {
                     e
                 ))
             }        
-        }
+        };
 
-        self.rtmr[0] = TdxRTMR::new(0, tdreport.td_info.rtmr0);
-        self.rtmr[1] = TdxRTMR::new(1, tdreport.td_info.rtmr0);
-        self.rtmr[2] = TdxRTMR::new(2, tdreport.td_info.rtmr0);
-        self.rtmr[3] = TdxRTMR::new(3, tdreport.td_info.rtmr0);
+        self.rtmr[0] = match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmr0) {
+            Ok(r) => r,
+            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        };
+        self.rtmr[1] = match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmr1) {
+            Ok(r) => r,
+            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        };
+        self.rtmr[2] = match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmr2) {
+            Ok(r) => r,
+            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        };
+        self.rtmr[3] = match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmr3) {
+            Ok(r) => r,
+            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        };
 
-        if index < 0 || index > TdxRTMR::max_index {
-            return Err(anyhow!(
-                "[process_cc_measurement] invalid RTMR index: {}",
-                index
-            ));
-        }
-
-        if algo_id != TPM_ALG_SHA384 {
-            return Err(anyhow!(
-                "[process_cc_measurement] invalid Algorithm: {}",
-                self.get_algorithm_id_str(index)
-            ));
-        }
-
-
-        Ok(rtmr[index])
+        Ok(rtmr[index].get_tcg_digest())
 
     }
 
