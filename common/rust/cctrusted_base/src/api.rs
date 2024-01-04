@@ -45,6 +45,23 @@ pub trait CCTrustedApi {
     fn dump_cc_report(report: &Vec<u8>);
 
     /***
+        Get the count of measurement register.
+
+        Different trusted foundation may provide different count of measurement
+        register. For example, Intel TDX TDREPORT provides the 4 measurement
+        register by default. TPM provides 24 measurement (0~16 for SRTM and 17~24
+        for DRTM).
+
+        Beyond the real mesurement register, some SDK may extend virtual measurement
+        reigster for addtional trust chain like container, namespace, cluster in
+        cloud native paradiagm.
+
+        Returns:
+            The count of measurement registers
+    */
+    fn get_measurement_count() -> u8;
+
+    /***
         Get measurement register according to given selected index and algorithms
 
         Each trusted foundation in CC environment provides the multiple measurement
@@ -58,7 +75,7 @@ pub trait CCTrustedApi {
         Returns:
             TcgDigest struct
     */
-    fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest;
+    fn get_cc_measurement(_index: u8, _algo_id: u8) -> TdxRTMR;
 
     /***
         Get eventlog for given index and count.

@@ -37,6 +37,7 @@ pub struct TdxVM {
     pub version: TdxVersion,
     pub device_node: DeviceNode,
     pub algo_id: u8,
+    pub rtmrs: Vec<TdxRTMR>,
 }
 
 // implement the structure method and associated function
@@ -53,12 +54,14 @@ impl TdxVM {
             device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned(),
         };
         let algo_id = cctrusted_base::tcg::TPM_ALG_SHA384;
+        let rtmrs = Vec::new();
 
         TdxVM {
             cc_type,
             version,
             device_node,
             algo_id,
+            rtmrs
         }
     }
 
@@ -315,9 +318,40 @@ impl CVM for TdxVM {
         Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
 
+    // CVM trait function: get tdx rtmr max index
+    fn get_max_index() -> u8 {
+        TdxRTMR::max_index()
+    }
+
     // CVM trait function: retrieve TDX RTMR
-    fn process_cc_measurement(&self, _index: u8, _algo_id: u8) -> TcgDigest {
-        todo!()
+    fn process_cc_measurement(&mut self, index: u8, _algo_id: u8) -> Result<TdxRTMR, anyhow::Error> {
+        let tdreport_raw = match self.get_td_report("", "") {
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] error getting TD report: {:?}",
+                    e
+                ))
+            }
+        };
+
+        let tdreport = match parse_td_report(tdreport_raw, self.tdx_version) {
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] error parsing TD report: {:?}",
+                    e
+                ))
+            }        
+        }
+
+        self.rtmr[0] = TdxRTMR::new(0, tdreport.td_info.rtmr0);
+        self.rtmr[1] = TdxRTMR::new(1, tdreport.td_info.rtmr0);
+        self.rtmr[2] = TdxRTMR::new(2, tdreport.td_info.rtmr0);
+        self.rtmr[3] = TdxRTMR::new(3, tdreport.td_info.rtmr0);
+
+        Ok(rtmr[index])
+
     }
 
     // CVM trait function: retrieve TDX CCEL and IMA eventlog

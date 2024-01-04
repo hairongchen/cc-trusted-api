@@ -53,4 +53,15 @@ fn main() {
             return;
         }
     };
+
+    match API::get_measurement_count(){
+        Ok(count) => {
+            info!("count: {}", count);
+            ();
+        }
+        Err(e) => {
+            error!("error get measurement count: {:?}", e);
+            return;
+        }
+    }
 }

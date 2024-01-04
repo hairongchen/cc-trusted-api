@@ -42,6 +42,16 @@ impl CCTrustedApi for API {
         dump_data(report)
     }
 
+    // CCTrustedApi trait function: get max number of CVM IMRs
+    fn get_measurement_count() -> u8 {
+        match build_cvm() {
+            Ok(mut cvm) => {
+                Ok(cvm.get_max_index())
+            }
+            Err(e) => return Err(anyhow!("[get_measurement_count] error get cvm register max index: {:?}", e)),
+        } 
+    }
+
     // CCTrustedApi trait function: get measurements of a CVM
     fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
         todo!()
