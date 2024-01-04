@@ -58,7 +58,7 @@ fn main() {
     let max_index = match API::get_measurement_count(){
         Ok(count) => {
             info!("max index: {}", count);
-            count;
+            count
         }
         Err(e) => {
             error!("error get measurement count: {:?}", e);
