@@ -1,5 +1,4 @@
 use crate::tcg::*;
-use hashbrown::HashMap;
 
 pub struct TdxRTMR {
     index: u8,

@@ -4,6 +4,7 @@ use anyhow::*;
 use core::result::Result;
 use core::result::Result::Ok;
 use sha2::{Digest, Sha512};
+use core::mem::transmute;
 
 #[repr(C)]
 pub struct tdx_1_0_report_req {
@@ -85,7 +86,7 @@ impl TeeTcbInfo {
             let reserved = data[128..].try_into().unwrap();
             TeeTcbInfo{
                 valid,
-                tee_tcb_info,
+                tee_tcb_svn,
                 mrseam,
                 mrsignerseam,
                 attributes,
@@ -97,7 +98,7 @@ impl TeeTcbInfo {
             let reserved = data[144..].try_into().unwrap();
             TeeTcbInfo{
                 valid,
-                tee_tcb_info,
+                tee_tcb_svn,
                 mrseam,
                 mrsignerseam,
                 attributes,
@@ -203,7 +204,7 @@ impl TdInfo {
 
 #[repr(C)]
 #[derive(Clone)]
-pub struct TdReport {
+pub struct TDReport {
     pub report_mac_struct: ReportMacStruct,
     pub tee_tcb_info: TeeTcbInfo,
     pub reserved: [u8;17],

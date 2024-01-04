@@ -39,14 +39,14 @@ pub struct TcgDigest {
 impl TcgDigest {
     pub fn show(&self){
         info!("show data in struct TcgDigest");
-        info!("algo = {}", ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned());
-        info!("hash = {}", self.hash);
+        info!("algo = {}", ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned());
+        info!("hash = {:?}", self.hash);
     }
 }
 
 // traits a Tcg IMR should have
 pub trait TcgIMR {
-    fn max_index(&self) -> u8;
+    fn max_index() -> u8;
     fn get_index(&self) -> u8;
     fn get_hash(&self) -> Vec<&str>;
     fn is_valid(&self) -> bool;
