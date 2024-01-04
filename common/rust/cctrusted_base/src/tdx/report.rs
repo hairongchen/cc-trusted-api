@@ -264,7 +264,7 @@ impl Tdx {
 
     pub fn parse_td_report(report: &Vec<u8>, tdx_version: TdxVersion) -> Result<TDReport, anyhow::Error> {
         let report_mac_struct = unsafe { transmute::<[u8; 256], ReportMacStruct>(report[0..256].try_into().expect("slice with incorrect length")) };
-        let tee_tcb_info = TeeTcbInfo::new(report[256..495].to_vec(), tdx_version);
+        let tee_tcb_info = TeeTcbInfo::new(report[256..495].to_vec(), tdx_version.clone());
         let reserved = report[495..512].try_into().unwrap();
         let td_info = TdInfo::new(report[512..1024].to_vec(), tdx_version.clone());
         Ok(
