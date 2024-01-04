@@ -1,4 +1,5 @@
 use hashbrown::HashMap;
+use log::info;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
 pub const TPM_ALG_RSA: u8 = 0x1;
@@ -26,15 +27,24 @@ lazy_static! {
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
     fn get_algorithm_id(&self) -> u8;
+    fn get_algorithm_id_str(&self) -> String;
 }
 
 // digest format: (algo id, hash value)
 pub struct TcgDigest {
-    algo_id: u8,
-    hash: Vec<u8>,
+    pub algo_id: u8,
+    pub hash: Vec<u8>,
 }
 
-// this trait retrieve IMR's max index of a CVM and hash value
+impl TcgDigest {
+    pub fn show(&self){
+        info!("show data in struct TcgDigest");
+        info!("algo = {}", ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned());
+        info!("hash = {}", self.hash);
+    }
+}
+
+// traits a Tcg IMR should have
 pub trait TcgIMR {
     fn max_index(&self) -> u8;
     fn get_index(&self) -> u8;

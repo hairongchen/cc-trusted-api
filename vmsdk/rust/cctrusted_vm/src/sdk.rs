@@ -68,9 +68,10 @@ impl CCTrustedApi for API {
             Ok(cvm) => {
                 // call CVM trait defined methods
                 let algo_id = cvm.get_algorithm_id();
+                let algo_id_str = cvm.get_algorithm_id_str();
                 Ok(Algorithm {
-                    algo_id: algo_id,
-                    algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
+                    algo_id,
+                    algo_id_str,
                 })
             }
             Err(e) => {

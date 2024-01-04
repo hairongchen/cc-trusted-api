@@ -324,7 +324,7 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: retrieve TDX RTMR
-    fn process_cc_measurement(&mut self, index: u8, _algo_id: u8) -> Result<TdxRTMR, anyhow::Error> {
+    fn process_cc_measurement(&mut self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
         let tdreport_raw = match self.get_td_report("", "") {
             Ok(r) => r,
             Err(e) => {
@@ -349,6 +349,21 @@ impl CVM for TdxVM {
         self.rtmr[1] = TdxRTMR::new(1, tdreport.td_info.rtmr0);
         self.rtmr[2] = TdxRTMR::new(2, tdreport.td_info.rtmr0);
         self.rtmr[3] = TdxRTMR::new(3, tdreport.td_info.rtmr0);
+
+        if index < 0 || index > TdxRTMR::max_index {
+            return Err(anyhow!(
+                "[process_cc_measurement] invalid RTMR index: {}",
+                index
+            ));
+        }
+
+        if algo_id != TPM_ALG_SHA384 {
+            return Err(anyhow!(
+                "[process_cc_measurement] invalid Algorithm: {}",
+                self.get_algorithm_id_str(index)
+            ));
+        }
+
 
         Ok(rtmr[index])
 
@@ -380,6 +395,10 @@ impl TcgAlgorithmRegistry for TdxVM {
     // TcgAlgorithmRegistry trait function: return CVM default algorithm ID
     fn get_algorithm_id(&self) -> u8 {
         self.algo_id
+    }
+
+    fn get_algorithm_id_str(&self) -> String {
+        ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 }
 
