@@ -1,4 +1,5 @@
 use crate::tcg::*;
+use anyhow::anyhow;
 
 pub struct TdxRTMR {
     index: u8,
@@ -13,7 +14,7 @@ impl TdxRTMR{
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
 
-        match TdxRTMR::valid_algo(algo){
+        match TdxRTMR::valid_algo(algo_id){
             Ok(_) => (),
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
@@ -23,10 +24,10 @@ impl TdxRTMR{
             hash: digest.to_vec()
         };
 
-        TdxRTMR {
+        Ok(TdxRTMR {
             index: index,
             digest: (algo_id, tcg_digest)
-        }
+        })
     }
 
     pub fn valid_index(index: u8) -> Result<bool, anyhow::Error> {
@@ -42,7 +43,7 @@ impl TdxRTMR{
 
     pub fn valid_algo(algo_id: u8) -> Result<bool, anyhow::Error> {
 
-        match ALGO_NAME_MAP.get(algo_id) {
+        match ALGO_NAME_MAP.get(&algo_id) {
             Ok(_) => Ok(true),
             Err(e) => return Err(anyhow!("[valid_algo] invalid algo id: {}", algo_id)),
         };

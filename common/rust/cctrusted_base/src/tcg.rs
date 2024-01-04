@@ -48,7 +48,7 @@ impl TcgDigest {
 pub trait TcgIMR {
     fn max_index() -> u8;
     fn get_index(&self) -> u8;
-    fn get_tcg_digest(&self) -> TcgDigest;
+    fn get_tcg_digest(&self, algo_id: u8) -> TcgDigest;
     fn get_hash(&self) -> Vec<&str>;
     fn is_valid(&self) -> bool;
 }
