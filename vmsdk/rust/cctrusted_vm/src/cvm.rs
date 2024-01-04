@@ -27,7 +27,7 @@ pub trait CVM {
         Returns:
             max index of register of CVM
     */
-    fn get_max_index(&self) -> Result<u8, anyhow::Error>;
+    fn get_max_index(&self) -> u8;
 
     /***
         retrive CVM measurement registers, e.g.: RTMRs, vTPM PCRs, etc.
