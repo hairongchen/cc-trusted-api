@@ -1,6 +1,7 @@
 use cctrusted_base::api::*;
 use cctrusted_base::api_data::*;
 use cctrusted_base::cc_type::TeeType;
+use cctrusted_base::tcg::TPM_ALG_SHA384;
 use cctrusted_base::tdx::quote::TdxQuote;
 use cctrusted_vm::sdk::API;
 use log::*;
@@ -63,7 +64,7 @@ fn main() {
             error!("error get measurement count: {:?}", e);
             return;
         }
-    }
+    };
 
     info!("call cc trusted API [get_cc_measurement] to get CVM register digest!");
     for index in 0..max_index {
