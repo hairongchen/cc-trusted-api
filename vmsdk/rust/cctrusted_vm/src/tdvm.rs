@@ -3,10 +3,11 @@
 use crate::cvm::*;
 use anyhow::*;
 use cctrusted_base::cc_type::*;
-use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
+use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest, ALGO_NAME_MAP};
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
 use cctrusted_base::tdx::report::*;
+use cctrusted_base::tdx::rtmr::TdxRTMR;
 use core::convert::TryInto;
 use core::mem;
 use core::ptr;
@@ -325,7 +326,7 @@ impl CVM for TdxVM {
 
     // CVM trait function: retrieve TDX RTMR
     fn process_cc_measurement(&mut self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
-        let tdreport_raw = match self.get_td_report("", "") {
+        let tdreport_raw = match self.get_td_report("".to_string(), "".to_string()) {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!(
