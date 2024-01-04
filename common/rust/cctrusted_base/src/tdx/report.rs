@@ -94,7 +94,6 @@ impl TeeTcbInfo {
                 reserved
             }
         } else { // TDX 1.5
-            let tee_tcb_svn2 = data[128..144].try_into().unwrap();
             let reserved = data[144..].try_into().unwrap();
             TeeTcbInfo{
                 valid,
@@ -102,7 +101,7 @@ impl TeeTcbInfo {
                 mrseam,
                 mrsignerseam,
                 attributes,
-                tee_tcb_svn2: tee_tcb_svn2,
+                tee_tcb_svn2: Some(data[128..144].try_into().unwrap()),
                 reserved
             }
         }
@@ -181,7 +180,6 @@ impl TdInfo {
                 reserved
             }
         } else { // TDX 1.5
-            let servtd_hash = data[448..496].try_into().unwrap();
             let reserved = data[496..].try_into().unwrap();
             TdInfo{
                 attributes,
@@ -194,7 +192,7 @@ impl TdInfo {
                 rtmr1,
                 rtmr2,
                 rtmr3,
-                servtd_hash,
+                servtd_hash: Some(data[448..496].try_into().unwrap()),
                 reserved
             }
         }

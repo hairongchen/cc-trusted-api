@@ -31,7 +31,7 @@ impl TdxRTMR{
     }
 
     pub fn valid_index(index: u8) -> Result<bool, anyhow::Error> {
-        if index < 0 || index > TdxRTMR::max_index {
+        if index < 0 || index > TdxRTMR::max_index() {
             return Err(anyhow!(
                 "[valid_algo_id] invalid RTMR index: {}",
                 index
@@ -44,9 +44,11 @@ impl TdxRTMR{
     pub fn valid_algo(algo_id: u8) -> Result<bool, anyhow::Error> {
 
         match ALGO_NAME_MAP.get(&algo_id) {
-            Ok(_) => Ok(true),
+            Ok(_) => (),
             Err(e) => return Err(anyhow!("[valid_algo] invalid algo id: {}", algo_id)),
         };
+
+        Ok(true)
     }
 }
 
