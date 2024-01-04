@@ -31,7 +31,7 @@ pub trait TcgAlgorithmRegistry {
 }
 
 // digest format: (algo id, hash value)
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct TcgDigest {
     pub algo_id: u8,
     pub hash: Vec<u8>,
