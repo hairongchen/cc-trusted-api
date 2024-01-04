@@ -363,7 +363,7 @@ impl CVM for TdxVM {
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
 
-        Ok(self.rtmrs[index as usize].get_tcg_digest(self.get_algorithm_id))
+        Ok(self.rtmrs[index as usize].get_tcg_digest(self.get_algorithm_id()))
 
     }
 
