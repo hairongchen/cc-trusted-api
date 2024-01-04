@@ -31,7 +31,7 @@ impl TdxRTMR{
     }
 
     pub fn valid_index(index: u8) -> Result<bool, anyhow::Error> {
-        if (index < 0) || (index > TdxRTMR::max_index()) {
+        if index > TdxRTMR::max_index() {
             return Err(anyhow!(
                 "[valid_algo_id] invalid RTMR index: {}",
                 index
