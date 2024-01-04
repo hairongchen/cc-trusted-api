@@ -75,7 +75,7 @@ fn main() {
                 return;
             } 
         };
-        info!("show index: {}", index)
+        info!("show index: {}", index);
         tcg_digest.show();
     }
 }
