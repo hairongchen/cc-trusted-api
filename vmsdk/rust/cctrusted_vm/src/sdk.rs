@@ -48,17 +48,17 @@ impl CCTrustedApi for API {
             Ok(cvm) => {
                 Ok(cvm.get_max_index())
             }
-            Err(e) => return Err(anyhow!("[get_measurement_count] error get cvm register max index: {:?}", e)),
+            Err(e) => return Err(anyhow!("[get_measurement_count] error create cvm: {:?}", e)),
         } 
     }
 
     // CCTrustedApi trait function: get measurements of a CVM
     fn get_cc_measurement(index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
         match build_cvm() {
-            Ok(cvm) => {
+            Ok(mut cvm) => {
                 cvm.process_cc_measurement(index, algo_id)
             }
-            Err(e) => return Err(anyhow!("[get_cc_measurement] error get cvm register digest: {:?}", e)),
+            Err(e) => return Err(anyhow!("[get_cc_measurement] error create cvm: {:?}", e)),
         }
     }
 
