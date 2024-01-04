@@ -46,7 +46,7 @@ impl CCTrustedApi for API {
     fn get_measurement_count() -> Result<u8, anyhow::Error> {
         match build_cvm() {
             Ok(cvm) => {
-                Ok(cvm.get_max_index())
+                Ok(cvm.get_max_index()+1)
             }
             Err(e) => return Err(anyhow!("[get_measurement_count] error create cvm: {:?}", e)),
         } 
