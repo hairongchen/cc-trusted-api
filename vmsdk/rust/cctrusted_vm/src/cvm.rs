@@ -27,7 +27,7 @@ pub trait CVM {
         Returns:
             max index of register of CVM
     */
-    fn get_max_index(&self) -> u8;
+    fn get_max_index(&self) -> Result<u8, anyhow::Error>;
 
     /***
         retrive CVM measurement registers, e.g.: RTMRs, vTPM PCRs, etc.
@@ -39,7 +39,7 @@ pub trait CVM {
         Returns:
             TcgDigest struct
     */
-    fn process_cc_measurement(&mut self, _index: u8, _algo_id: u8) -> TcgDigest;
+    fn process_cc_measurement(&mut self, _index: u8, _algo_id: u8) -> Result<TcgDigest, anyhow::Error>;
 
     /***
         retrive CVM eventlogs

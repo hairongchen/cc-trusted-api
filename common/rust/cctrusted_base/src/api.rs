@@ -59,7 +59,7 @@ pub trait CCTrustedApi {
         Returns:
             The count of measurement registers
     */
-    fn get_measurement_count() -> u8;
+    fn get_measurement_count() -> Result<u8, anyhow::Error>;
 
     /***
         Get measurement register according to given selected index and algorithms
