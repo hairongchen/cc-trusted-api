@@ -67,7 +67,13 @@ fn main() {
 
     info!("call cc trusted API [get_cc_measurement] to get CVM register digest!");
     for index in 0..max_index {
-        let tcg_digest = API::get_cc_measurement(index, TPM_ALG_SHA384);
+        let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
+            Ok(tcg_digest) => tcg_digest,
+            Err(e) => {
+                error!("error get measurement: {:?}", e);
+                return;
+            } 
+        };
         tcg_digest.show();
     }
 }
