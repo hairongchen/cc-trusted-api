@@ -266,7 +266,7 @@ impl Tdx {
         let report_mac_struct = unsafe { transmute::<[u8; 256], ReportMacStruct>(report[0..256].try_into().expect("slice with incorrect length")) };
         let tee_tcb_info = TeeTcbInfo::new(report[256..495].to_vec(), tdx_version);
         let reserved = report[495..512].try_into().unwrap();
-        let td_info = TdInfo::new(report[512..1024].to_vec(), tdx_version);
+        let td_info = TdInfo::new(report[512..1024].to_vec(), tdx_version.clone());
         Ok(
             TDReport{
                 report_mac_struct,
