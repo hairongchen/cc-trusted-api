@@ -350,18 +350,18 @@ impl CVM for TdxVM {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         });
-        self.rtmrs[1] = match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmr1) {
+        self.rtmrs.push(match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmr1) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        };
-        self.rtmrs[2] = match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmr2) {
+        });
+        self.rtmrs.push(match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmr2) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        };
-        self.rtmrs[3] = match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmr3) {
+        });
+        self.rtmrs.push(match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmr3) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        };
+        });
 
         Ok(self.rtmrs[index as usize].get_tcg_digest(self.get_algorithm_id()))
 
