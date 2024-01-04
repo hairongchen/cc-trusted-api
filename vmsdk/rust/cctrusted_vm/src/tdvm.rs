@@ -55,7 +55,7 @@ impl TdxVM {
             device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned(),
         };
         let algo_id = cctrusted_base::tcg::TPM_ALG_SHA384;
-        let rtmrs = Vec::with_capacity(4);
+        let rtmrs = Vec::new();
 
         TdxVM {
             cc_type,
