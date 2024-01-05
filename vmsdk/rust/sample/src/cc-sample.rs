@@ -44,10 +44,10 @@ fn main() {
 
     // get CVM default algorithm with API "get_default_algorithm"
     info!("call cc trusted API [get_default_algorithm] to get CVM supported algorithm!");
-    match API::get_default_algorithm() {
+    let defalt_algo = match API::get_default_algorithm() {
         Ok(algorithm) => {
             info!("supported algorithm: {}", algorithm.algo_id_str);
-            ();
+            algorithm
         }
         Err(e) => {
             error!("error get algorithm: {:?}", e);
@@ -80,7 +80,7 @@ fn main() {
     // }
 
     for index in 0..count {
-        let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
+        let tcg_digest = match API::get_cc_measurement(index, defalt_algo.algo_id){
             Ok(tcg_digest) => tcg_digest,
             Err(e) => {
                 error!("error get measurement: {:?}", e);
