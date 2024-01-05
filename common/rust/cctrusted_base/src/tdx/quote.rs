@@ -146,8 +146,8 @@ impl TdxQuoteHeader {
         info!("show the data of TdxQuoteHeader");
         info!("version = {}", self.version);
         info!("ak_type = {:?}", self.ak_type);
-        info!("qe_vendor = {:?}", self.qe_vendor);
-        info!("user_data = {:?}", self.user_data);
+        info!("qe_vendor = {:x?}", self.qe_vendor);
+        info!("user_data = {:x?}", self.user_data);
     }
 }
 
@@ -261,20 +261,20 @@ impl TdxQuoteBody {
     pub fn show(&self){
         info!("show the data of TdxQuoteBody");
         info!("tee_tcb_svn = {:?}", self.tee_tcb_svn);
-        info!("mrseam = {:?}", self.mrseam);
-        info!("mrseam_signer = {:?}", self.mrseam_signer);
-        info!("seam_attributes = {:?}", self.seam_attributes);
-        info!("td_attributes = {:?}", self.td_attributes);
-        info!("xfam = {:?}", self.xfam);
-        info!("mrtd = {:?}", self.mrtd);
-        info!("mrconfigid = {:?}", self.mrconfigid);
-        info!("mrowner = {:?}", self.mrowner);
-        info!("mrownerconfig = {:?}", self.mrownerconfig);
-        info!("rtmr0 = {:?}", self.rtmr0);
-        info!("rtmr1 = {:?}", self.rtmr1);
-        info!("rtmr2 = {:?}", self.rtmr2);
-        info!("rtmr3 = {:?}", self.rtmr3);
-        info!("report_data = {:?}", self.report_data);
+        info!("mrseam = {:x?}", self.mrseam);
+        info!("mrseam_signer = {:x?}", self.mrseam_signer);
+        info!("seam_attributes = {:x?}", self.seam_attributes);
+        info!("td_attributes = {:x?}", self.td_attributes);
+        info!("xfam = {:x?}", self.xfam);
+        info!("mrtd = {:x?}", self.mrtd);
+        info!("mrconfigid = {:x?}", self.mrconfigid);
+        info!("mrowner = {:x?}", self.mrowner);
+        info!("mrownerconfig = {:x?}", self.mrownerconfig);
+        info!("rtmr0 = {:x?}", self.rtmr0);
+        info!("rtmr1 = {:x?}", self.rtmr1);
+        info!("rtmr2 = {:x?}", self.rtmr2);
+        info!("rtmr3 = {:x?}", self.rtmr3);
+        info!("report_data = {:x?}", self.report_data);
     }
 }
 
@@ -298,14 +298,14 @@ pub struct TdxEnclaveReportBody {
 impl TdxEnclaveReportBody {
     pub fn show(&self){
         info!("show the data of TdxEnclaveReportBody");
-        info!("cpu_svn = {:?}", self.cpu_svn);
-        info!("miscselect = {:?}", self.miscselect);
-        info!("attributes = {:?}", self.attributes);
-        info!("mrenclave = {:?}", self.mrenclave);
-        info!("mrsigner = {:?}", self.mrsigner);
-        info!("isv_prodid = {:?}", self.isv_prodid);
-        info!("isv_svn = {:?}", self.isv_svn);
-        info!("report_data = {:?}", self.report_data);
+        info!("cpu_svn = {:x?}", self.cpu_svn);
+        info!("miscselect = {:x?}", self.miscselect);
+        info!("attributes = {:x?}", self.attributes);
+        info!("mrenclave = {:x?}", self.mrenclave);
+        info!("mrsigner = {:x?}", self.mrsigner);
+        info!("isv_prodid = {:x?}", self.isv_prodid);
+        info!("isv_svn = {:x?}", self.isv_svn);
+        info!("report_data = {:x?}", self.report_data);
     }
 }
 
@@ -354,8 +354,8 @@ impl TdxQuoteQeReportCert {
     pub fn show(&self){
         info!("show the data of TdxQuoteQeReportCert");
         self.qe_report.show();
-        info!("qe_report_sig = {:?}", self.qe_report_sig);
-        info!("qe_auth_data = {:?}", self.qe_auth_data);
+        info!("qe_report_sig = {:x?}", self.qe_report_sig);
+        info!("qe_auth_data = {:x?}", self.qe_auth_data);
         self.qe_auth_cert.show();
     }
 }
@@ -410,7 +410,7 @@ impl TdxQuoteQeCert {
             None =>  {
                 match &self.cert_data_vec{
                     None => return,
-                    Some(cert_data_vec) => info!("cert_data_vec = {:?}", cert_data_vec),
+                    Some(cert_data_vec) => info!("cert_data_vec = {:x?}", cert_data_vec),
                 }
             }
             Some(cert_data_struct) => cert_data_struct.show(),
