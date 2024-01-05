@@ -48,7 +48,7 @@ pub trait TcgIMR {
 /***
     TCG EventType defined at
     https://trustedcomputinggroup.org/wp-content/uploads/TCG_EFI_Platform_1_22_Final_-v15.pdf
- */
+*/
 pub const EV_PREBOOT_CERT: u32 = 0x0;
 pub const EV_POST_CODE: u32 = 0x1;
 pub const EV_UNUSED: u32 = 0x2;
@@ -141,7 +141,7 @@ impl TcgEventType {
         UINT32 eventSize;
         BYTE event[eventSize];
     } TCG_PCR_EVENT2;
- */
+*/
 pub struct TcgImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
@@ -170,7 +170,7 @@ impl TcgImrEvent {
         UINT32 eventDataSize;
         BYTE event[eventDataSize]; //This is actually a TCG_EfiSpecIDEventStruct
     } TCG_PCClientPCREvent;
- */
+*/
 pub struct TcgPcClientImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
@@ -202,7 +202,7 @@ impl TcgPcClientImrEvent {
         UINT8 vendorInfoSize;
         BYTE[VendorInfoSize] vendorInfo;
     } TCG_EfiSpecIDEventStruct;
- */
+*/
 pub struct TcgEfiSpecIdEvent {
     pub signature: [u8;16],
     pub platform_class: u32,
@@ -225,7 +225,7 @@ pub struct TcgEfiSpecIdEvent {
         UINT16 algorithmId;
         UINT16 digestSize;
     } TCG_EfiSpecIdEventAlgorithmSize;
- */
+*/
 pub struct TcgEfiSpecIdEventAlgorithmSize {
     algo_id: u8,
     digest_sizes: u32
