@@ -71,6 +71,6 @@ fn main() {
                 return;
             } 
         };
-        info!("show index = {}, algo = {:?}, hash = {:#02x}", index, tcg_digest.get_algorithm_id_str(), tcg_digest.get_hash());
+        info!("show index = {}, algo = {:?}, hash = {:x?}", index, tcg_digest.get_algorithm_id_str(), tcg_digest.get_hash());
     }
 }
