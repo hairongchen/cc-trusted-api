@@ -5,6 +5,7 @@ use core::result::Result;
 use core::result::Result::Ok;
 use sha2::{Digest, Sha512};
 use core::mem::transmute;
+use log::info;
 
 #[repr(C)]
 pub struct tdx_1_0_report_req {
