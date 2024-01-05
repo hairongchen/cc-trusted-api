@@ -26,15 +26,8 @@ lazy_static! {
 
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
-    // fn get_algorithm_id(&self) -> u8;
-    // fn get_algorithm_id_str(&self) -> String;
-    pub fn get_algorithm_id(&self) -> u8 {
-        self.algo_id
-    }
-
-    pub fn get_algorithm_str(&self) -> String{
-        ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
-    }
+    fn get_algorithm_id(&self) -> u8;
+    fn get_algorithm_id_str(&self) -> String;
 }
 
 // digest format: (algo id, hash value)
@@ -57,7 +50,13 @@ impl TcgDigest {
 }
 
 impl TcgAlgorithmRegistry for TcgDigest {
+    pub fn get_algorithm_id(&self) -> u8 {
+        self.algo_id
+    }
 
+    pub fn get_algorithm_str(&self) -> String{
+        ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
+    }
 }
 
 // traits a Tcg IMR should have
