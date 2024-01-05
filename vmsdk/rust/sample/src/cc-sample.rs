@@ -54,7 +54,7 @@ fn main() {
     // get number of measurement registers in CVM
     let count = match API::get_measurement_count(){
         Ok(count) => {
-            info!("max index: {}", count);
+            info!("measurement registers count: {}", count);
             count
         }
         Err(e) => {
@@ -64,7 +64,7 @@ fn main() {
     };
 
     for index in 0..count {
-        let tcg_digest = match API::get_cc_measurement(index+1, defalt_algo.algo_id){
+        let tcg_digest = match API::get_cc_measurement(index, 0xee){
             Ok(tcg_digest) => tcg_digest,
             Err(e) => {
                 error!("error get measurement: {:?}", e);
