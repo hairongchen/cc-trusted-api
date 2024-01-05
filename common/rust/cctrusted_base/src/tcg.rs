@@ -42,3 +42,77 @@ pub trait TcgIMR {
     fn get_hash(&self) -> Vec<&str>;
     fn is_valid(&self) -> bool;
 }
+
+pub const EV_PREBOOT_CERT: u8 = 0x0
+pub const EV_POST_CODE: u8 = 0x1
+pub const EV_UNUSED: u8 = 0x2
+pub const EV_NO_ACTION: u8 = 0x3
+pub const EV_SEPARATOR: u8 = 0x4
+pub const EV_ACTION: u8 = 0x5
+pub const EV_EVENT_TAG: u8 = 0x6
+pub const EV_S_CRTM_CONTENTS: u8 = 0x7
+pub const EV_S_CRTM_VERSION: u8 = 0x8
+pub const EV_CPU_MICROCODE: u8 = 0x9
+pub const EV_PLATFORM_CONFIG_FLAGS: u8 = 0xa
+pub const EV_TABLE_OF_DEVICES: u8 = 0xb
+pub const EV_COMPACT_HASH: u8 = 0xc
+pub const EV_IPL: u8 = 0xd
+pub const EV_IPL_PARTITION_DATA: u8 = 0xe
+pub const EV_NONHOST_CODE: u8 = 0xf
+pub const EV_NONHOST_CONFIG: u8 = 0x10
+pub const EV_NONHOST_INFO: u8 = 0x11
+pub const EV_OMIT_BOOT_DEVICE_EVENTS: u8 = 0x12
+
+pub const EV_EFI_EVENT_BASE: u8 = 0x80000000
+pub const EV_EFI_VARIABLE_DRIVER_CONFIG: u8 = EV_EFI_EVENT_BASE + 0x1
+pub const EV_EFI_VARIABLE_BOOT: u8 = EV_EFI_EVENT_BASE + 0x2
+pub const EV_EFI_BOOT_SERVICES_APPLICATION: u8 = EV_EFI_EVENT_BASE + 0x3
+pub const EV_EFI_BOOT_SERVICES_DRIVER: u8 = EV_EFI_EVENT_BASE + 0x4
+pub const EV_EFI_RUNTIME_SERVICES_DRIVER: u8 = EV_EFI_EVENT_BASE + 0x5
+pub const EV_EFI_GPT_EVENT: u8 = EV_EFI_EVENT_BASE + 0x6
+pub const EV_EFI_ACTION: u8 = EV_EFI_EVENT_BASE + 0x7
+pub const EV_EFI_PLATFORM_FIRMWARE_BLOB: u8 = EV_EFI_EVENT_BASE + 0x8
+pub const EV_EFI_HANDOFF_TABLES: u8 = EV_EFI_EVENT_BASE + 0x9
+pub const EV_EFI_VARIABLE_AUTHORITY: u8 = EV_EFI_EVENT_BASE + 0x10
+
+// hash algorithm ID to algorithm name string map
+lazy_static! {
+    pub static ref TCG_EVENT_TYPE_NAME_MAP: HashMap<u8, String> = {
+        let mut map: HashMap<u8, String> = HashMap::new();
+        map.insert(EV_PREBOOT_CERT, "EV_PREBOOT_CERT".to_string());
+        map.insert(EV_POST_CODE, "EV_POST_CODE".to_string());
+        map.insert(EV_UNUSED, "EV_UNUSED".to_string());
+        map.insert(EV_NO_ACTION, "EV_NO_ACTION".to_string());
+        map.insert(EV_SEPARATOR, "EV_SEPARATOR".to_string());
+        map.insert(EV_ACTION, "EV_ACTION".to_string());
+        map.insert(EV_EVENT_TAG, "EV_EVENT_TAG".to_string());
+        map.insert(EV_S_CRTM_CONTENTS, "EV_S_CRTM_CONTENTS".to_string());
+        map.insert(EV_S_CRTM_VERSION, "EV_S_CRTM_VERSION".to_string());
+        map.insert(EV_CPU_MICROCODE, "EV_CPU_MICROCODE".to_string());
+        map.insert(EV_PLATFORM_CONFIG_FLAGS, "EV_PLATFORM_CONFIG_FLAGS".to_string());
+        map.insert(EV_TABLE_OF_DEVICES, "EV_TABLE_OF_DEVICES".to_string());
+        map.insert(EV_COMPACT_HASH, "EV_COMPACT_HASH".to_string());
+        map.insert(EV_IPL, "EV_IPL".to_string());
+        map.insert(EV_IPL_PARTITION_DATA, "EV_IPL_PARTITION_DATA".to_string());
+        map.insert(EV_NONHOST_CODE, "EV_NONHOST_CODE".to_string());
+        map.insert(EV_NONHOST_CONFIG, "EV_NONHOST_CONFIG".to_string());
+        map.insert(EV_NONHOST_INFO, "EV_NONHOST_INFO".to_string());
+        map.insert(EV_OMIT_BOOT_DEVICE_EVENTS, "EV_OMIT_BOOT_DEVICE_EVENTS".to_string());
+        map.insert(EV_EFI_EVENT_BASE, "EV_EFI_EVENT_BASE".to_string());
+        map.insert(EV_EFI_VARIABLE_DRIVER_CONFIG, "EV_EFI_VARIABLE_DRIVER_CONFIG".to_string());
+        map.insert(EV_EFI_VARIABLE_BOOT, "EV_EFI_VARIABLE_BOOT".to_string());
+        map.insert(EV_EFI_BOOT_SERVICES_APPLICATION, "EV_EFI_BOOT_SERVICES_APPLICATION".to_string());
+        map.insert(EV_EFI_BOOT_SERVICES_DRIVER, "EV_EFI_BOOT_SERVICES_DRIVER".to_string());
+        map.insert(EV_EFI_RUNTIME_SERVICES_DRIVER, "EV_EFI_RUNTIME_SERVICES_DRIVER".to_string());
+        map.insert(EV_EFI_GPT_EVENT, "EV_EFI_GPT_EVENT".to_string());
+        map.insert(EV_EFI_ACTION, "EV_EFI_ACTION".to_string());
+        map.insert(EV_EFI_PLATFORM_FIRMWARE_BLOB, "EV_EFI_PLATFORM_FIRMWARE_BLOB".to_string());
+        map.insert(EV_EFI_HANDOFF_TABLES, "EV_EFI_HANDOFF_TABLES".to_string());
+        map.insert(EV_EFI_VARIABLE_AUTHORITY, "EV_EFI_VARIABLE_AUTHORITY".to_string());
+        map
+    };
+}
+
+pub struct TcgEventType {
+
+}
