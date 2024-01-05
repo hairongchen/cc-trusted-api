@@ -230,3 +230,9 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
     algo_id: u8,
     digest_sizes: u32
 }
+
+// used for store multiple types into one Vec
+trait EventLogEntry{}
+impl EventLogEntry for TcgPcClientImrEvent{}
+impl EventLogEntry for TcgEfiSpecIdEventAlgorithmSize{}
+type EventLogEntryType = Box<dyn EventLogEntry>;
