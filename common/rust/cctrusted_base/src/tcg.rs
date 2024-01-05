@@ -54,7 +54,7 @@ impl TcgAlgorithmRegistry for TcgDigest {
         self.algo_id
     }
 
-    fn get_algorithm_str(&self) -> String{
+    fn get_algorithm_id_str(&self) -> String{
         ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 }
