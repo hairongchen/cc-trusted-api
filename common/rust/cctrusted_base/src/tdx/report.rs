@@ -143,10 +143,7 @@ pub struct TdInfo {
     pub mrconfigid: [u8;48],
     pub mrowner: [u8;48],
     pub mrownerconfig: [u8;48],
-    pub rtmr0: [u8;48],
-    pub rtmr1: [u8;48],
-    pub rtmr2: [u8;48],
-    pub rtmr3: [u8;48],
+    pub rtmrs: Vec<[u8;48]>,
     pub servtd_hash: Option<[u8;48]>,
     pub reserved: Vec<u8>,
 }
@@ -159,13 +156,13 @@ impl TdInfo {
         let mrconfigid = data[64..112].try_into().unwrap();
         let mrowner = data[112..160].try_into().unwrap();
         let mrownerconfig = data[160..208].try_into().unwrap();
-        let rtmr0 = data[208..256].try_into().unwrap();
-        let rtmr1 = data[256..304].try_into().unwrap();
-        let rtmr2 = data[304..352].try_into().unwrap();
-        let rtmr3 = data[352..400].try_into().unwrap();
+        let rtmrs = Vec::new();
+        rtmrs.push(data[208..256].try_into().unwrap());
+        rtmrs.push(data[256..304].try_into().unwrap());
+        rtmrs.push(data[304..352].try_into().unwrap());
+        rtmrs.push(data[352..400].try_into().unwrap());
 
         if tdx_version == TdxVersion::TDX_1_0 {
-            let reserved = data[400..].try_into().unwrap();
             TdInfo{
                 attributes,
                 xfam,
@@ -173,15 +170,11 @@ impl TdInfo {
                 mrconfigid,
                 mrowner,
                 mrownerconfig,
-                rtmr0,
-                rtmr1,
-                rtmr2,
-                rtmr3,
+                rtmrs,
                 servtd_hash: None,
-                reserved
+                reserved: data[400..].try_into().unwrap()
             }
         } else { // TDX 1.5
-            let reserved = data[448..].try_into().unwrap();
             TdInfo{
                 attributes,
                 xfam,
@@ -189,12 +182,9 @@ impl TdInfo {
                 mrconfigid,
                 mrowner,
                 mrownerconfig,
-                rtmr0,
-                rtmr1,
-                rtmr2,
-                rtmr3,
+                rtmrs,
                 servtd_hash: Some(data[400..448].try_into().unwrap()),
-                reserved
+                reserved: data[448..].try_into().unwrap()
             }
         }
 

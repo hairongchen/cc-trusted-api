@@ -346,19 +346,19 @@ impl CVM for TdxVM {
             }        
         };
 
-        self.rtmrs.push(match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmr0) {
+        self.rtmrs.push(match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmrs[0]) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         });
-        self.rtmrs.push(match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmr1) {
+        self.rtmrs.push(match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmrs[1]) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         });
-        self.rtmrs.push(match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmr2) {
+        self.rtmrs.push(match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmrs[2] {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         });
-        self.rtmrs.push(match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmr3) {
+        self.rtmrs.push(match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmrs[3]) {
             Ok(r) => r,
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         });
