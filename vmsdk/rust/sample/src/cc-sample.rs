@@ -66,18 +66,18 @@ fn main() {
         }
     };
 
-    info!("call cc trusted API [get_cc_measurement] to get CVM register digest!");
-    for index in 0..count {
-        let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
-            Ok(tcg_digest) => tcg_digest,
-            Err(e) => {
-                error!("error get measurement: {:?}", e);
-                return;
-            } 
-        };
-        info!("show index: {}", index);
-        tcg_digest.show();
-    }
+    // info!("call cc trusted API [get_cc_measurement] to get CVM register digest!");
+    // for index in 0..count {
+    //     let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
+    //         Ok(tcg_digest) => tcg_digest,
+    //         Err(e) => {
+    //             error!("error get measurement: {:?}", e);
+    //             return;
+    //         } 
+    //     };
+    //     info!("show index: {}", index);
+    //     tcg_digest.show();
+    // }
 
     for index in 0..count {
         let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
