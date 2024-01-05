@@ -143,7 +143,6 @@ pub struct TdInfo {
     pub mrconfigid: [u8;48],
     pub mrowner: [u8;48],
     pub mrownerconfig: [u8;48],
-    pub rtmrs: Vec<[u8;48]>,
     pub servtd_hash: Option<[u8;48]>,
     pub reserved: Vec<u8>,
 }
