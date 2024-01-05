@@ -43,37 +43,37 @@ pub trait TcgIMR {
     fn is_valid(&self) -> bool;
 }
 
-pub const EV_PREBOOT_CERT: u8 = 0x0
-pub const EV_POST_CODE: u8 = 0x1
-pub const EV_UNUSED: u8 = 0x2
-pub const EV_NO_ACTION: u8 = 0x3
-pub const EV_SEPARATOR: u8 = 0x4
-pub const EV_ACTION: u8 = 0x5
-pub const EV_EVENT_TAG: u8 = 0x6
-pub const EV_S_CRTM_CONTENTS: u8 = 0x7
-pub const EV_S_CRTM_VERSION: u8 = 0x8
-pub const EV_CPU_MICROCODE: u8 = 0x9
-pub const EV_PLATFORM_CONFIG_FLAGS: u8 = 0xa
-pub const EV_TABLE_OF_DEVICES: u8 = 0xb
-pub const EV_COMPACT_HASH: u8 = 0xc
-pub const EV_IPL: u8 = 0xd
-pub const EV_IPL_PARTITION_DATA: u8 = 0xe
-pub const EV_NONHOST_CODE: u8 = 0xf
-pub const EV_NONHOST_CONFIG: u8 = 0x10
-pub const EV_NONHOST_INFO: u8 = 0x11
-pub const EV_OMIT_BOOT_DEVICE_EVENTS: u8 = 0x12
+pub const EV_PREBOOT_CERT: u8 = 0x0;
+pub const EV_POST_CODE: u8 = 0x1;
+pub const EV_UNUSED: u8 = 0x2;
+pub const EV_NO_ACTION: u8 = 0x3;
+pub const EV_SEPARATOR: u8 = 0x4;
+pub const EV_ACTION: u8 = 0x5;
+pub const EV_EVENT_TAG: u8 = 0x6;
+pub const EV_S_CRTM_CONTENTS: u8 = 0x7;
+pub const EV_S_CRTM_VERSION: u8 = 0x8;
+pub const EV_CPU_MICROCODE: u8 = 0x9;
+pub const EV_PLATFORM_CONFIG_FLAGS: u8 = 0xa;
+pub const EV_TABLE_OF_DEVICES: u8 = 0xb;
+pub const EV_COMPACT_HASH: u8 = 0xc;
+pub const EV_IPL: u8 = 0xd;
+pub const EV_IPL_PARTITION_DATA: u8 = 0xe;
+pub const EV_NONHOST_CODE: u8 = 0xf;
+pub const EV_NONHOST_CONFIG: u8 = 0x10;
+pub const EV_NONHOST_INFO: u8 = 0x11;
+pub const EV_OMIT_BOOT_DEVICE_EVENTS: u8 = 0x12;
 
-pub const EV_EFI_EVENT_BASE: u8 = 0x80000000
-pub const EV_EFI_VARIABLE_DRIVER_CONFIG: u8 = EV_EFI_EVENT_BASE + 0x1
-pub const EV_EFI_VARIABLE_BOOT: u8 = EV_EFI_EVENT_BASE + 0x2
-pub const EV_EFI_BOOT_SERVICES_APPLICATION: u8 = EV_EFI_EVENT_BASE + 0x3
-pub const EV_EFI_BOOT_SERVICES_DRIVER: u8 = EV_EFI_EVENT_BASE + 0x4
-pub const EV_EFI_RUNTIME_SERVICES_DRIVER: u8 = EV_EFI_EVENT_BASE + 0x5
-pub const EV_EFI_GPT_EVENT: u8 = EV_EFI_EVENT_BASE + 0x6
-pub const EV_EFI_ACTION: u8 = EV_EFI_EVENT_BASE + 0x7
-pub const EV_EFI_PLATFORM_FIRMWARE_BLOB: u8 = EV_EFI_EVENT_BASE + 0x8
-pub const EV_EFI_HANDOFF_TABLES: u8 = EV_EFI_EVENT_BASE + 0x9
-pub const EV_EFI_VARIABLE_AUTHORITY: u8 = EV_EFI_EVENT_BASE + 0x10
+pub const EV_EFI_EVENT_BASE: u32 = 0x80000000;
+pub const EV_EFI_VARIABLE_DRIVER_CONFIG: u32 = EV_EFI_EVENT_BASE + 0x1;
+pub const EV_EFI_VARIABLE_BOOT: u32 = EV_EFI_EVENT_BASE + 0x2
+pub const EV_EFI_BOOT_SERVICES_APPLICATION: u32 = EV_EFI_EVENT_BASE + 0x3;
+pub const EV_EFI_BOOT_SERVICES_DRIVER: u32 = EV_EFI_EVENT_BASE + 0x4;
+pub const EV_EFI_RUNTIME_SERVICES_DRIVER: u32 = EV_EFI_EVENT_BASE + 0x5;
+pub const EV_EFI_GPT_EVENT: u32 = EV_EFI_EVENT_BASE + 0x6;
+pub const EV_EFI_ACTION: u32 = EV_EFI_EVENT_BASE + 0x7;
+pub const EV_EFI_PLATFORM_FIRMWARE_BLOB: u32 = EV_EFI_EVENT_BASE + 0x8;
+pub const EV_EFI_HANDOFF_TABLES: u32 = EV_EFI_EVENT_BASE + 0x9;
+pub const EV_EFI_VARIABLE_AUTHORITY: u32 = EV_EFI_EVENT_BASE + 0x10;
 
 // hash algorithm ID to algorithm name string map
 lazy_static! {
