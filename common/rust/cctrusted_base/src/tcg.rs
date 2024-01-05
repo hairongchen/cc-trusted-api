@@ -41,7 +41,7 @@ impl TcgDigest {
     pub fn show(&self){
         info!("show data in struct TcgDigest");
         info!("algo = {}", ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned());
-        info!("hash = {:?}", self.hash);
+        info!("hash = {:02X?}", self.hash);
     }
 
     pub fn get_hash(&self) -> Vec<u8> {
