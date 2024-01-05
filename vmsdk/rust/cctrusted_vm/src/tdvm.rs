@@ -38,7 +38,6 @@ pub struct TdxVM {
     pub version: TdxVersion,
     pub device_node: DeviceNode,
     pub algo_id: u8,
-    pub rtmrs: Vec<TdxRTMR>,
 }
 
 // implement the structure method and associated function
