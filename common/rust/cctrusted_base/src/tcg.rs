@@ -53,7 +53,7 @@ impl TcgDigest {
     }
 
     fn get_algorithm_str(&self) -> String{
-        ALGO_NAME_MAP.get(self.algo_id).unwrap().to_owned()
+        ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 }
 
