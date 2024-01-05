@@ -360,7 +360,7 @@ impl CVM for TdxVM {
         //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         // });
 
-        match TdxRTMR::new(index, algo_id, tdreport.td_info.rtmrs[index]) {
+        match TdxRTMR::new(index, algo_id, tdreport.td_info.rtmrs[index as usize]) {
             Ok(rtmr) => Ok(rtmr.get_tcg_digest(algo_id)),
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         }
