@@ -156,7 +156,7 @@ impl TdInfo {
         let mrconfigid = data[64..112].try_into().unwrap();
         let mrowner = data[112..160].try_into().unwrap();
         let mrownerconfig = data[160..208].try_into().unwrap();
-        let rtmrs = Vec::new();
+        let mut rtmrs = Vec::new();
         rtmrs.push(data[208..256].try_into().unwrap());
         rtmrs.push(data[256..304].try_into().unwrap());
         rtmrs.push(data[304..352].try_into().unwrap());
