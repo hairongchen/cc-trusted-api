@@ -152,8 +152,7 @@ pub struct TcgImrEvent {
 
 impl TcgImrEvent {
     pub fn show(&self) {
-        todo()!
-        // info!("-------------------------------Event Log Entry-----------------------------");
+        info!("-------------------------------Event Log Entry-----------------------------");
         // info!("IMR               : {}", self.imr_index);
         // info!("Type              : {02X} {}", self.event_type, EventType::get_event_type_string(self.event_type));
     }
@@ -182,7 +181,7 @@ pub struct TcgPcClientImrEvent {
 
 impl TcgPcClientImrEvent {
     pub fn show(&self) {
-        todo()!
+        todo()
     }
 }
 
