@@ -115,5 +115,10 @@ lazy_static! {
 pub struct TcgEventType {}
 
 impl TcgEventType {
-    //pub get_event_type_string
+    pub fn get_event_type_string(event_type: u32) -> Result<String, anyhow::Error>{
+        match TCG_EVENT_TYPE_NAME_MAP.get(&event_type) {
+            Some(str) => Ok(str),
+            None => return Err(anyhow!("[get_event_type_string] invalid event type: {}", event_type)),
+        }
+    }
 }
