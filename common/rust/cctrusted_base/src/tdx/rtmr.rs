@@ -9,12 +9,12 @@ pub struct TdxRTMR {
 impl TdxRTMR{
     pub fn new(index: u8, algo_id: u8, digest: [u8;48]) -> Result<TdxRTMR, anyhow::Error> {
 
-        match TdxRTMR::valid_index(index){
+        match TdxRTMR::is_valid_index(index){
             Ok(_) => (),
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
 
-        match TdxRTMR::valid_algo(algo_id){
+        match TdxRTMR::is_valid_algo(algo_id){
             Ok(_) => (),
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         };
@@ -30,24 +30,6 @@ impl TdxRTMR{
         })
     }
 
-    pub fn valid_index(index: u8) -> Result<bool, anyhow::Error> {
-        if index > TdxRTMR::max_index() {
-            return Err(anyhow!(
-                "[valid_algo_id] invalid RTMR index: {}",
-                index
-            ));
-        }
-
-        Ok(true)
-    }
-
-    pub fn valid_algo(algo_id: u8) -> Result<bool, anyhow::Error> {
-
-        match ALGO_NAME_MAP.get(&algo_id) {
-            Some(_) => Ok(true),
-            None => return Err(anyhow!("[valid_algo] invalid algo id: {}", algo_id)),
-        }
-    }
 }
 
 impl TcgIMR for TdxRTMR {
@@ -64,11 +46,22 @@ impl TcgIMR for TdxRTMR {
         self.digest.1.clone()
     }
 
-    fn get_hash(&self) -> Vec<&str> {
-        todo!()
+    fn is_valid_index(index: u8) -> Result<bool, anyhow::Error> {
+        if index > TdxRTMR::max_index() {
+            return Err(anyhow!(
+                "[valid_algo_id] invalid RTMR index: {}",
+                index
+            ));
+        }
+
+        Ok(true)
     }
 
-    fn is_valid(&self) -> bool {
-        todo!()
+    fn is_valid_algo(algo_id: u8) -> Result<bool, anyhow::Error> {
+
+        match ALGO_NAME_MAP.get(&algo_id) {
+            Some(_) => Ok(true),
+            None => return Err(anyhow!("[valid_algo] invalid algo id: {}", algo_id)),
+        }
     }
 }
