@@ -161,17 +161,12 @@ impl TdInfo {
         let mrowner = data[112..160].try_into().unwrap();
         let mrownerconfig = data[160..208].try_into().unwrap();
         let rtmr0 = data[208..256].try_into().unwrap();
-        let rtmr1 = data[304..352].try_into().unwrap();
-        let rtmr2 = data[352..400].try_into().unwrap();
-        let rtmr3 = data[400..448].try_into().unwrap();
+        let rtmr1 = data[256..304].try_into().unwrap();
+        let rtmr2 = data[304..352].try_into().unwrap();
+        let rtmr3 = data[352..400].try_into().unwrap();
 
-        info!("=========== data: {:?} ",data);
-        info!("=========== rtmr0: {:?} ",rtmr0);
-        info!("=========== rtmr1: {:?} ",rtmr1);
-        info!("=========== rtmr2: {:?} ",rtmr2);
-        info!("=========== rtmr3: {:?} ",rtmr3);
         if tdx_version == TdxVersion::TDX_1_0 {
-            let reserved = data[448..].try_into().unwrap();
+            let reserved = data[400..].try_into().unwrap();
             TdInfo{
                 attributes,
                 xfam,
@@ -187,7 +182,7 @@ impl TdInfo {
                 reserved
             }
         } else { // TDX 1.5
-            let reserved = data[496..].try_into().unwrap();
+            let reserved = data[448..].try_into().unwrap();
             TdInfo{
                 attributes,
                 xfam,
@@ -199,7 +194,7 @@ impl TdInfo {
                 rtmr1,
                 rtmr2,
                 rtmr3,
-                servtd_hash: Some(data[448..496].try_into().unwrap()),
+                servtd_hash: Some(data[400..448].try_into().unwrap()),
                 reserved
             }
         }
