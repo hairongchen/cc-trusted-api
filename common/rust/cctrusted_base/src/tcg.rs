@@ -1,4 +1,5 @@
 use hashbrown::HashMap;
+use anyhow::anyhow;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
 pub const TPM_ALG_RSA: u8 = 0x1;
@@ -117,7 +118,7 @@ pub struct TcgEventType {}
 impl TcgEventType {
     pub fn get_event_type_string(event_type: u32) -> Result<String, anyhow::Error>{
         match TCG_EVENT_TYPE_NAME_MAP.get(&event_type) {
-            Some(str) => Ok(str),
+            Some(str) => Ok(str.to_string()),
             None => return Err(anyhow!("[get_event_type_string] invalid event type: {}", event_type)),
         }
     }
