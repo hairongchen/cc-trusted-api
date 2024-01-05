@@ -50,11 +50,11 @@ impl TcgDigest {
 }
 
 impl TcgAlgorithmRegistry for TcgDigest {
-    pub fn get_algorithm_id(&self) -> u8 {
+    fn get_algorithm_id(&self) -> u8 {
         self.algo_id
     }
 
-    pub fn get_algorithm_str(&self) -> String{
+    fn get_algorithm_str(&self) -> String{
         ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 }
