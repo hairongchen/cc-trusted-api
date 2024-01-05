@@ -232,7 +232,7 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
 }
 
 // used for store multiple types into one Vec
-trait EventLogEntry{}
+pub trait EventLogEntry{}
 impl EventLogEntry for TcgPcClientImrEvent{}
 impl EventLogEntry for TcgEfiSpecIdEventAlgorithmSize{}
-type EventLogEntryType = Box<dyn EventLogEntry>;
+pub type EventLogEntryType = Box<dyn EventLogEntry>;

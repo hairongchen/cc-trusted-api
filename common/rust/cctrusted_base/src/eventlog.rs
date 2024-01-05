@@ -11,8 +11,8 @@ use crate::tcg::EventLogEntryType;
         count: total number of event logs
  */
 pub struct TcgEventLog {
-    data: Vec<u8>,
-    event_logs: Vec<EventLogEntryType>,
-    count: u32
+    pub data: Vec<u8>,
+    pub event_logs: Vec<EventLogEntryType>,
+    pub count: u32
 }
 
