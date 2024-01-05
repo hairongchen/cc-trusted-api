@@ -43,6 +43,10 @@ impl TcgDigest {
         info!("algo = {}", ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned());
         info!("hash = {:?}", self.hash);
     }
+
+    pub fn get_hash(&self) -> Vec<&str> {
+        self.hash
+    }
 }
 
 // traits a Tcg IMR should have
