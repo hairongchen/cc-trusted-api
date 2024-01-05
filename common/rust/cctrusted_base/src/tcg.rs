@@ -43,25 +43,25 @@ pub trait TcgIMR {
     fn is_valid(&self) -> bool;
 }
 
-pub const EV_PREBOOT_CERT: u8 = 0x0;
-pub const EV_POST_CODE: u8 = 0x1;
-pub const EV_UNUSED: u8 = 0x2;
-pub const EV_NO_ACTION: u8 = 0x3;
-pub const EV_SEPARATOR: u8 = 0x4;
-pub const EV_ACTION: u8 = 0x5;
-pub const EV_EVENT_TAG: u8 = 0x6;
-pub const EV_S_CRTM_CONTENTS: u8 = 0x7;
-pub const EV_S_CRTM_VERSION: u8 = 0x8;
-pub const EV_CPU_MICROCODE: u8 = 0x9;
-pub const EV_PLATFORM_CONFIG_FLAGS: u8 = 0xa;
-pub const EV_TABLE_OF_DEVICES: u8 = 0xb;
-pub const EV_COMPACT_HASH: u8 = 0xc;
-pub const EV_IPL: u8 = 0xd;
-pub const EV_IPL_PARTITION_DATA: u8 = 0xe;
-pub const EV_NONHOST_CODE: u8 = 0xf;
-pub const EV_NONHOST_CONFIG: u8 = 0x10;
-pub const EV_NONHOST_INFO: u8 = 0x11;
-pub const EV_OMIT_BOOT_DEVICE_EVENTS: u8 = 0x12;
+pub const EV_PREBOOT_CERT: u32 = 0x0;
+pub const EV_POST_CODE: u32 = 0x1;
+pub const EV_UNUSED: u32 = 0x2;
+pub const EV_NO_ACTION: u32 = 0x3;
+pub const EV_SEPARATOR: u32 = 0x4;
+pub const EV_ACTION: u32 = 0x5;
+pub const EV_EVENT_TAG: u32 = 0x6;
+pub const EV_S_CRTM_CONTENTS: u32 = 0x7;
+pub const EV_S_CRTM_VERSION: u32 = 0x8;
+pub const EV_CPU_MICROCODE: u32 = 0x9;
+pub const EV_PLATFORM_CONFIG_FLAGS: u32 = 0xa;
+pub const EV_TABLE_OF_DEVICES: u32 = 0xb;
+pub const EV_COMPACT_HASH: u32 = 0xc;
+pub const EV_IPL: u32 = 0xd;
+pub const EV_IPL_PARTITION_DATA: u32 = 0xe;
+pub const EV_NONHOST_CODE: u32 = 0xf;
+pub const EV_NONHOST_CONFIG: u32 = 0x10;
+pub const EV_NONHOST_INFO: u32 = 0x11;
+pub const EV_OMIT_BOOT_DEVICE_EVENTS: u32 = 0x12;
 
 pub const EV_EFI_EVENT_BASE: u32 = 0x80000000;
 pub const EV_EFI_VARIABLE_DRIVER_CONFIG: u32 = EV_EFI_EVENT_BASE + 0x1;
@@ -76,8 +76,8 @@ pub const EV_EFI_HANDOFF_TABLES: u32 = EV_EFI_EVENT_BASE + 0x9;
 pub const EV_EFI_VARIABLE_AUTHORITY: u32 = EV_EFI_EVENT_BASE + 0x10;
 
 lazy_static! {
-    pub static ref TCG_EVENT_TYPE_NAME_MAP: HashMap<u8, String> = {
-        let mut map: HashMap<u8, String> = HashMap::new();
+    pub static ref TCG_EVENT_TYPE_NAME_MAP: HashMap<u32, String> = {
+        let mut map: HashMap<u32, String> = HashMap::new();
         map.insert(EV_PREBOOT_CERT, "EV_PREBOOT_CERT".to_string());
         map.insert(EV_POST_CODE, "EV_POST_CODE".to_string());
         map.insert(EV_UNUSED, "EV_UNUSED".to_string());
@@ -97,13 +97,6 @@ lazy_static! {
         map.insert(EV_NONHOST_CONFIG, "EV_NONHOST_CONFIG".to_string());
         map.insert(EV_NONHOST_INFO, "EV_NONHOST_INFO".to_string());
         map.insert(EV_OMIT_BOOT_DEVICE_EVENTS, "EV_OMIT_BOOT_DEVICE_EVENTS".to_string());
-        map
-    };
-}
-
-lazy_static! {
-    pub static ref TCG_EFI_EVENT_TYPE_NAME_MAP: HashMap<u32, String> = {
-        let mut map: HashMap<u32, String> = HashMap::new();
         map.insert(EV_EFI_EVENT_BASE, "EV_EFI_EVENT_BASE".to_string());
         map.insert(EV_EFI_VARIABLE_DRIVER_CONFIG, "EV_EFI_VARIABLE_DRIVER_CONFIG".to_string());
         map.insert(EV_EFI_VARIABLE_BOOT, "EV_EFI_VARIABLE_BOOT".to_string());
@@ -119,6 +112,8 @@ lazy_static! {
     };
 }
 
-pub struct TcgEventType {
+pub struct TcgEventType {}
 
+impl TcgEventType {
+    //pub get_event_type_string
 }
