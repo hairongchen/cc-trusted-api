@@ -325,7 +325,7 @@ impl CVM for TdxVM {
     fn process_cc_measurement(&mut self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
 
         match TdxRTMR::is_valid_index(index){
-            Ok(r) => (),
+            Ok(_) => (),
             Err(e) => {
                 return Err(anyhow!(
                     "[process_cc_measurement] {:?}",
@@ -335,7 +335,7 @@ impl CVM for TdxVM {
         };
 
         match TdxRTMR::is_valid_algo(algo_id){
-            Ok(r) => (),
+            Ok(_) => (),
             Err(e) => {
                 return Err(anyhow!(
                     "[process_cc_measurement] {:?}",
