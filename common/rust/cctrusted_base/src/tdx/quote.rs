@@ -260,7 +260,7 @@ pub struct TdxQuoteBody {
 impl TdxQuoteBody {
     pub fn show(&self){
         info!("show the data of TdxQuoteBody");
-        info!("tee_tcb_svn = {:?}", self.tee_tcb_svn);
+        info!("tee_tcb_svn = {:x?}", self.tee_tcb_svn);
         info!("mrseam = {:x?}", self.mrseam);
         info!("mrseam_signer = {:x?}", self.mrseam_signer);
         info!("seam_attributes = {:x?}", self.seam_attributes);
@@ -355,7 +355,7 @@ impl TdxQuoteQeReportCert {
         info!("show the data of TdxQuoteQeReportCert");
         self.qe_report.show();
         info!("qe_report_sig = {:x?}", self.qe_report_sig);
-        info!("qe_auth_data = {:x?}", self.qe_auth_data);
+        info!("qe_auth_data = {:2x?}", self.qe_auth_data);
         self.qe_auth_cert.show();
     }
 }
