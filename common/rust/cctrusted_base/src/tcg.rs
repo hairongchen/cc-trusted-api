@@ -44,7 +44,7 @@ impl TcgDigest {
         info!("hash = {:?}", self.hash);
     }
 
-    pub fn get_hash(&self) -> Vec<&str> {
+    pub fn get_hash(&self) -> Vec<u8> {
         self.hash
     }
 }
