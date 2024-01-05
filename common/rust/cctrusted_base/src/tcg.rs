@@ -48,7 +48,7 @@ impl TcgDigest {
         self.hash.clone()
     }
 
-    pub fn get_algo(&self) -> Vec<u8> {
+    pub fn get_algo(&self) -> u8 {
         self.algo_id
     }
 
