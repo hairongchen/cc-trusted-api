@@ -1,7 +1,5 @@
 use cctrusted_base::api::*;
 use cctrusted_base::api_data::*;
-use cctrusted_base::cc_type::TeeType;
-use cctrusted_base::tdx::quote::TdxQuote;
 use cctrusted_vm::sdk::API;
 use log::*;
 
@@ -14,7 +12,7 @@ fn main() {
 
     // retrieve cc report with API "get_cc_report"
     info!("call cc trusted API [get_cc_report] to retrieve cc report!");
-    let report = match API::get_cc_report(nonce, data, ExtraArgs {}) {
+    let _report = match API::get_cc_report(nonce, data, ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
