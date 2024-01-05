@@ -55,14 +55,12 @@ impl TdxVM {
             device_path: TDX_DEVICE_NODE_MAP.get(&version).unwrap().to_owned(),
         };
         let algo_id = cctrusted_base::tcg::TPM_ALG_SHA384;
-        let rtmrs = Vec::new();
 
         TdxVM {
             cc_type,
             version,
             device_node,
             algo_id,
-            rtmrs
         }
     }
 
@@ -346,24 +344,29 @@ impl CVM for TdxVM {
             }        
         };
 
-        self.rtmrs.push(match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmrs[0]) {
-            Ok(r) => r,
-            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        });
-        self.rtmrs.push(match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmrs[1]) {
-            Ok(r) => r,
-            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        });
-        self.rtmrs.push(match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmrs[2] {
-            Ok(r) => r,
-            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        });
-        self.rtmrs.push(match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmrs[3]) {
-            Ok(r) => r,
-            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        });
+        // self.rtmrs.push(match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmrs[0]) {
+        //     Ok(r) => r,
+        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        // });
+        // self.rtmrs.push(match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmrs[1]) {
+        //     Ok(r) => r,
+        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        // });
+        // self.rtmrs.push(match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmrs[2] {
+        //     Ok(r) => r,
+        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        // });
+        // self.rtmrs.push(match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmrs[3]) {
+        //     Ok(r) => r,
+        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        // });
 
-        Ok(self.rtmrs[index as usize].get_tcg_digest(algo_id))
+        match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmrs[0]) {
+            Ok(rtmr) => Ok(rtmr.get_tcg_digest(algo_id)),
+            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        }
+
+        // Ok(self.rtmrs[index as usize].get_tcg_digest(algo_id))
 
     }
 
