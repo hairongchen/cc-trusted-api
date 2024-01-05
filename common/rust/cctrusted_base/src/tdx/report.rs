@@ -164,6 +164,7 @@ impl TdInfo {
         let rtmr2 = data[352..400].try_into().unwrap();
         let rtmr3 = data[400..448].try_into().unwrap();
 
+        info!("=========== data: {:?} ",data);
         if tdx_version == TdxVersion::TDX_1_0 {
             let reserved = data[448..].try_into().unwrap();
             TdInfo{

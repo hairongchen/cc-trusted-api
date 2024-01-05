@@ -336,8 +336,6 @@ impl CVM for TdxVM {
             }
         };
 
-        info!("report ========= {:?}",tdreport_raw);
-
         let tdreport = match Tdx::parse_td_report(&tdreport_raw, self.version.clone()) {
             Ok(r) => r,
             Err(e) => {
