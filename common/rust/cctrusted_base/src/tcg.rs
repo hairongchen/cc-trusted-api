@@ -234,5 +234,5 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
 // used for storing multiple types into event_logs Vector in TcgEventLog
 pub trait EventLogEntry{}
 impl EventLogEntry for TcgPcClientImrEvent{}
-impl EventLogEntry for TcgEfiSpecIdEventAlgorithmSize{}
+impl EventLogEntry for TcgEfiSpecIdEvent{}
 pub type EventLogEntryType = Box<dyn EventLogEntry>;
