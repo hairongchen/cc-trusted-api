@@ -323,6 +323,27 @@ impl CVM for TdxVM {
 
     // CVM trait function: retrieve TDX RTMR
     fn process_cc_measurement(&mut self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
+
+        match TdxRTMR::is_valid_index(index){
+            Ok(r) => (),
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] {:?}",
+                    e
+                ))
+            }
+        };
+
+        match TdxRTMR::is_valid_algo(algo_id){
+            Ok(r) => (),
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] {:?}",
+                    e
+                ))
+            }
+        };
+
         let tdreport_raw = match self.get_td_report("".to_string(), "".to_string()) {
             Ok(r) => r,
             Err(e) => {
