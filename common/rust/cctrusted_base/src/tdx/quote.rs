@@ -355,7 +355,7 @@ impl TdxQuoteQeReportCert {
         info!("show the data of TdxQuoteQeReportCert");
         self.qe_report.show();
         info!("qe_report_sig = {:?}", self.qe_report_sig);
-        info!("qe_report_sig = {:?}", self.qe_report_sig);
+        info!("qe_auth_data = {:?}", self.qe_auth_data);
         self.qe_auth_cert.show();
     }
 }
