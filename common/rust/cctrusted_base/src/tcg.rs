@@ -65,7 +65,7 @@ pub const EV_OMIT_BOOT_DEVICE_EVENTS: u8 = 0x12;
 
 pub const EV_EFI_EVENT_BASE: u32 = 0x80000000;
 pub const EV_EFI_VARIABLE_DRIVER_CONFIG: u32 = EV_EFI_EVENT_BASE + 0x1;
-pub const EV_EFI_VARIABLE_BOOT: u32 = EV_EFI_EVENT_BASE + 0x2
+pub const EV_EFI_VARIABLE_BOOT: u32 = EV_EFI_EVENT_BASE + 0x2;
 pub const EV_EFI_BOOT_SERVICES_APPLICATION: u32 = EV_EFI_EVENT_BASE + 0x3;
 pub const EV_EFI_BOOT_SERVICES_DRIVER: u32 = EV_EFI_EVENT_BASE + 0x4;
 pub const EV_EFI_RUNTIME_SERVICES_DRIVER: u32 = EV_EFI_EVENT_BASE + 0x5;
@@ -75,7 +75,6 @@ pub const EV_EFI_PLATFORM_FIRMWARE_BLOB: u32 = EV_EFI_EVENT_BASE + 0x8;
 pub const EV_EFI_HANDOFF_TABLES: u32 = EV_EFI_EVENT_BASE + 0x9;
 pub const EV_EFI_VARIABLE_AUTHORITY: u32 = EV_EFI_EVENT_BASE + 0x10;
 
-// hash algorithm ID to algorithm name string map
 lazy_static! {
     pub static ref TCG_EVENT_TYPE_NAME_MAP: HashMap<u8, String> = {
         let mut map: HashMap<u8, String> = HashMap::new();
@@ -98,6 +97,13 @@ lazy_static! {
         map.insert(EV_NONHOST_CONFIG, "EV_NONHOST_CONFIG".to_string());
         map.insert(EV_NONHOST_INFO, "EV_NONHOST_INFO".to_string());
         map.insert(EV_OMIT_BOOT_DEVICE_EVENTS, "EV_OMIT_BOOT_DEVICE_EVENTS".to_string());
+        map
+    };
+}
+
+lazy_static! {
+    pub static ref TCG_EFI_EVENT_TYPE_NAME_MAP: HashMap<u32, String> = {
+        let mut map: HashMap<u32, String> = HashMap::new();
         map.insert(EV_EFI_EVENT_BASE, "EV_EFI_EVENT_BASE".to_string());
         map.insert(EV_EFI_VARIABLE_DRIVER_CONFIG, "EV_EFI_VARIABLE_DRIVER_CONFIG".to_string());
         map.insert(EV_EFI_VARIABLE_BOOT, "EV_EFI_VARIABLE_BOOT".to_string());
