@@ -231,7 +231,7 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
     digest_sizes: u32
 }
 
-// used for store multiple types into one Vec
+// used for storing multiple types into event_logs Vector in TcgEventLog
 pub trait EventLogEntry{}
 impl EventLogEntry for TcgPcClientImrEvent{}
 impl EventLogEntry for TcgEfiSpecIdEventAlgorithmSize{}
