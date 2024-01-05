@@ -87,6 +87,6 @@ fn main() {
                 return;
             } 
         };
-        info!("show index = {}, hash = {:?}", index, tcg_digest.get_hash());
+        info!("show index = {}, algo = {:?}, hash = {:?}", index, tcg_digest.get_algorithm_str(), tcg_digest.get_hash());
     }
 }
