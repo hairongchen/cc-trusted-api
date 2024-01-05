@@ -45,7 +45,7 @@ impl TcgDigest {
     }
 
     pub fn get_hash(&self) -> Vec<u8> {
-        self.hash
+        self.hash.clone()
     }
 }
 
