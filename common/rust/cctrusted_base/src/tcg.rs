@@ -1,5 +1,6 @@
 use hashbrown::HashMap;
 use anyhow::anyhow;
+use log::info;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
 pub const TPM_ALG_RSA: u8 = 0x1;
@@ -44,6 +45,10 @@ pub trait TcgIMR {
     fn is_valid(&self) -> bool;
 }
 
+/***
+    TCG EventType defined at
+    https://trustedcomputinggroup.org/wp-content/uploads/TCG_EFI_Platform_1_22_Final_-v15.pdf
+ */
 pub const EV_PREBOOT_CERT: u32 = 0x0;
 pub const EV_POST_CODE: u32 = 0x1;
 pub const EV_UNUSED: u32 = 0x2;
@@ -122,4 +127,107 @@ impl TcgEventType {
             None => return Err(anyhow!("[get_event_type_string] invalid event type: {}", event_type)),
         }
     }
+}
+
+/***
+    TCG IMR Event struct defined at
+    https://trustedcomputinggroup.org/wp-content/uploads/TCG_EFI_Platform_1_22_Final_-v15.pdf.
+
+    Definition:
+    typedef struct tdTCG_PCR_EVENT2{
+        UINT32 pcrIndex;
+        UINT32 eventType;
+        TPML_DIGEST_VALUES digests;
+        UINT32 eventSize;
+        BYTE event[eventSize];
+    } TCG_PCR_EVENT2;
+ */
+pub struct TcgImrEvent {
+    pub imr_index: u32,
+    pub event_type: u32,
+    pub  digests: Vec<TcgDigest>,
+    pub event_size: u32,
+    pub event:  Vec<u8>
+}
+
+impl TcgImrEvent {
+    pub fn show(&self) {
+        todo()!
+        // info!("-------------------------------Event Log Entry-----------------------------");
+        // info!("IMR               : {}", self.imr_index);
+        // info!("Type              : {02X} {}", self.event_type, EventType::get_event_type_string(self.event_type));
+    }
+}
+
+/***
+    TCG TCG_PCClientPCREvent defined at
+    https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientSpecPlat_TPM_2p0_1p04_pub.pdf.
+
+    Definition:
+    typedef tdTCG_PCClientPCREvent {
+        UINT32 pcrIndex;
+        UINT32 eventType;
+        BYTE digest[20];
+        UINT32 eventDataSize;
+        BYTE event[eventDataSize]; //This is actually a TCG_EfiSpecIDEventStruct
+    } TCG_PCClientPCREvent;
+ */
+pub struct TcgPcClientImrEvent {
+    pub imr_index: u32,
+    pub event_type: u32,
+    pub  digest: [u8;20],
+    pub event_size: u32,
+    pub event:  Vec<u8>
+}
+
+impl TcgPcClientImrEvent {
+    pub fn show(&self) {
+        todo()!
+    }
+}
+
+/***
+    TCG TCG_EfiSpecIDEventStruct defined at
+    https://trustedcomputinggroup.org/wp-content/uploads/EFI-Protocol-Specification-rev13-160330final.pdf.
+
+    Definition:
+    typedef struct tdTCG_EfiSpecIdEventStruct {
+        BYTE[16] signature;
+        UINT32 platformClass;
+        UINT8 specVersionMinor;
+        UINT8 specVersionMajor;
+        UINT8 specErrata;
+        UINT8 uintnSize;
+        UINT32 numberOfAlgorithms;
+        TCG_EfiSpecIdEventAlgorithmSize[numberOfAlgorithms] digestSizes;
+        UINT8 vendorInfoSize;
+        BYTE[VendorInfoSize] vendorInfo;
+    } TCG_EfiSpecIDEventStruct;
+ */
+pub struct TcgEfiSpecIdEvent {
+    pub signature: [u8;16],
+    pub platform_class: u32,
+    pub spec_version_minor: u8,
+    pub spec_version_major: u8,
+    pub spec_errata: u8,
+    pub uintn_ize: u8,
+    pub number_of_algorithms: u32,
+    pub digest_sizes: Vec<TcgEfiSpecIdEventAlgorithmSize>,
+    pub vendor_info_size: u8,
+    pub vendor_info: Vec<u8>,
+}
+
+/***
+    TCG TCG_EfiSpecIdEventAlgorithmSize defined at
+    https://trustedcomputinggroup.org/wp-content/uploads/EFI-Protocol-Specification-rev13-160330final.pdf.
+
+    Definiton:
+    typedef struct tdTCG_EfiSpecIdEventAlgorithmSize {
+        UINT16 algorithmId;
+        UINT16 digestSize;
+    } TCG_EfiSpecIdEventAlgorithmSize;
+ */
+pub struct TcgEfiSpecIdEventAlgorithmSize {
+    algo_id: u8,
+    digest_sizes: u32
 }
