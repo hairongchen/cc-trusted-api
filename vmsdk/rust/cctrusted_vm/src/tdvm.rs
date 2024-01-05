@@ -343,30 +343,10 @@ impl CVM for TdxVM {
             }        
         };
 
-        // self.rtmrs.push(match TdxRTMR::new(0, algo_id, tdreport.td_info.rtmrs[0]) {
-        //     Ok(r) => r,
-        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        // });
-        // self.rtmrs.push(match TdxRTMR::new(1, algo_id, tdreport.td_info.rtmrs[1]) {
-        //     Ok(r) => r,
-        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        // });
-        // self.rtmrs.push(match TdxRTMR::new(2, algo_id, tdreport.td_info.rtmrs[2] {
-        //     Ok(r) => r,
-        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        // });
-        // self.rtmrs.push(match TdxRTMR::new(3, algo_id, tdreport.td_info.rtmrs[3]) {
-        //     Ok(r) => r,
-        //     Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
-        // });
-
         match TdxRTMR::new(index, algo_id, tdreport.td_info.rtmrs[index as usize]) {
             Ok(rtmr) => Ok(rtmr.get_tcg_digest(algo_id)),
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
         }
-
-        // Ok(self.rtmrs[index as usize].get_tcg_digest(algo_id))
-
     }
 
     // CVM trait function: retrieve TDX CCEL and IMA eventlog
