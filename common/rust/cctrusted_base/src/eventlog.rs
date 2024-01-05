@@ -27,7 +27,7 @@ impl TcgEventLog {
         todo!()
     }
 
-    pub fn select(&self) Result<Vec<EventLogEntryType>, anyhow::Error>{
+    pub fn select(&self) -> Result<Vec<EventLogEntryType>, anyhow::Error>{
         todo!()
     }
 
