@@ -45,11 +45,37 @@ impl TcgEventLog {
     /***
         Parse event log data into TCG compatible forms.
 
-        Run through all event log data and parse the contents accordingly
+        Go through all event log data and parse the contents accordingly
         Save the parsed event logs into TcgEventLog.
     */
-    fn parse(&self) {
-        todo!()
+    fn parse(&mut self) Result<(), anyhow::Error>{
+        if self.data.len() == 0 {
+            return Err(anyhow!("[parse] no eventlog data provided"));
+        }
+
+        let mut index = 0;
+        while index < self.data.len() {
+            let start = index;
+            let imr = self.data[index..index+4];
+            let event_type = self.data[index+4..index+8];
+            index = index + 8;
+
+            if imr == 0xFFFFFFFF {
+                break;
+            }
+
+            if event_type = EV_NO_ACTION {
+                let (spec_id_event, event_len) = parse_spec_id_event_log(self.data[start..]);
+                index = start + event_len;
+                self.eventlog.push(spec_id_event);
+                self.count = self.count + 1;
+            } else {
+                let (event_log, event_len) = parse_event_log(self.data[start..]);
+                index = start + event_len;
+                self.eventlog.push(event_log);
+                self.count = self.count + 1;
+            }
+        }
     }
 
     /***
@@ -72,7 +98,7 @@ impl TcgEventLog {
             A TcgPcClientImrEvent containing the Specification ID version event
             An int specifying the event size
     */
-    fn parse_spec_id_event_log(&self, data: Vec<u8>) {
+    fn parse_spec_id_event_log(&self, data: Vec<u8>) -> (spec_id_event: TcgPcClientImrEvent, event_len: u32) {
         todo!()
     }
 
@@ -95,7 +121,7 @@ impl TcgEventLog {
             A TcgImrEvent containing the event information
             An int specifying the event size
     */
-    fn parse_event_log(&self, data: Vec<u8>) {
+    fn parse_event_log(&self, data: Vec<u8>)-> (spec_id_event: TcgImrEvent, event_len: u32) {
         todo!()
     }
 }

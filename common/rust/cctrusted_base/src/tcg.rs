@@ -145,7 +145,7 @@ impl TcgEventType {
 pub struct TcgImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
-    pub  digests: Vec<TcgDigest>,
+    pub digests: Vec<TcgDigest>,
     pub event_size: u32,
     pub event:  Vec<u8>
 }
