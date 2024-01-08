@@ -1,4 +1,5 @@
 use log::info;
+use core::mem;
 
 /* dumnp raw cc report in following format:
     00000000 04 00 02 00 81 00 00 00 00 00 00 00 93 9A 72 33  ..............r3
@@ -56,4 +57,17 @@ pub fn dump_data(data: &Vec<u8>) {
     } else if usize::from(index) == data.len() {
         info!("{} {}", linestr, printstr);
     }
+}
+
+//TODO: error handling
+pub fn get_u8(data: &Vec<u8>) -> u8 {
+    unsafe { mem::transmute::<[u8; 1], u8>(data[0..1]) }
+}
+
+pub fn get_u16(data: &Vec<u8>) -> u16 {
+    unsafe { mem::transmute::<[u8; 2], u8>(data[0..2]) }
+}
+
+pub fn get_u32(data: &Vec<u8>) -> u32 {
+    unsafe { mem::transmute::<[u8; 4], u8>(data[0..4]) }
 }
