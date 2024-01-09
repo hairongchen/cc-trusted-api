@@ -330,6 +330,27 @@ impl CVM for TdxVM {
             return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL data file at {:?}",ACPI_TABLE_DATA_FILE));
         }
 
+        let ccel_file = File::open(ACPI_TABLE_FILE)?;
+        let mut ccel_reader = BufReader::new(ccel_file);
+        let mut ccel = Vec::new();
+        ccel_reader.read_to_end(&mut ccel)?;
+        if not (ccel.len() > 0) || (ccel[0..4] != 'CCEL') {
+            return Err(anyhow!("[process_cc_eventlog] Invalid CCEL table"));
+        }
+
+        let ccel_data_file = File::open(ACPI_TABLE_DATA_FILE)?;
+        let mut ccel_data_reader = BufReader::new(ccel_data_file);
+        let mut ccel_data = Vec::new();
+        ccel_data_reader.read_to_end(&mut ccel_data)?;
+
+        let raw_eventlogs = TcgEventLog {
+            spec_id_header_event: TcgEfiSpecIdEvent::new(),
+            data: ccel_data,
+            event_logs: Vec::new(),
+            count: 0
+        }
+
+        Ok(raw_eventlogs.select(start,count))
     }
 
     // CVM trait function: retrive CVM type

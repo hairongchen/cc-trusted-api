@@ -23,6 +23,7 @@ impl TcgEventLog {
 
     pub fn new(data: Vec<u8>) -> TcgEventLog {
         TcgEventLog{
+            spec_id_header_event: TcgEfiSpecIdEvent,
             data: data,
             event_logs: Vec::new(),
             count: 0

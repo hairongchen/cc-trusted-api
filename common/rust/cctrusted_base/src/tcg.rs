@@ -216,6 +216,21 @@ pub struct TcgEfiSpecIdEvent {
     pub vendor_info: Vec<u8>,
 }
 
+impl TcgEfiSpecIdEvent {
+    pub fn new() {
+        signature: [0;16],
+        platform_class: 0,
+        spec_version_minor: 0,
+        spec_version_major: 0
+        spec_errata: 0,
+        uintn_ize: 0,
+        number_of_algorithms: 0,
+        digest_sizes: Vec::new(),
+        vendor_info_size: 0,
+        vendor_info: Vec::new()
+    }
+}
+
 /***
     TCG TCG_EfiSpecIdEventAlgorithmSize defined at
     https://trustedcomputinggroup.org/wp-content/uploads/EFI-Protocol-Specification-rev13-160330final.pdf.
