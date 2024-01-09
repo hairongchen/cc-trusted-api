@@ -321,8 +321,15 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: retrieve TDX CCEL and IMA eventlog
-    fn process_cc_eventlog(&self) -> () {
-        todo!()
+    fn process_cc_eventlog(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntryType>, anyhow::Error> {
+        if not Path::new(ACPI_TABLE_FILE).exists(){
+            return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL table at {:?}",ACPI_TABLE_FILE));
+        }
+
+        if not Path::new(ACPI_TABLE_DATA_FILE).exists(){
+            return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL data file at {:?}",ACPI_TABLE_DATA_FILE));
+        }
+
     }
 
     // CVM trait function: retrive CVM type

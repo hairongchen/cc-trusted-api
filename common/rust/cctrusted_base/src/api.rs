@@ -72,7 +72,7 @@ pub trait CCTrustedApi {
         Returns:
             TcgEventLog struct
     */
-    fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog;
+    fn get_cc_eventlog(start: u32, count: u32) -> TcgEventLog;
 
     /***
         Get the default Digest algorithms supported by trusted foundation.

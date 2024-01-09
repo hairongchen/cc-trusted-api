@@ -48,8 +48,13 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM
-    fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
-        todo!()
+    fn get_cc_eventlog(start: Optin<u32>, count: Option<u32>) ->  Result<Vec<EventLogEntryType>, anyhow::Error> {
+        match build_cvm() {
+            Ok(mut cvm) => {
+                cvm.process_cc_eventlog(start, count)
+            }
+            Err(e) => return Err(anyhow!("[get_cc_eventlog] error create cvm: {:?}", e)),
+        }
     }
 
     // CCTrustedApi trait function: get default algorithm of a CVM

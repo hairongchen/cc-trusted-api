@@ -39,7 +39,7 @@ pub trait CVM {
         Returns:
             array of eventlogs
     */
-    fn process_cc_eventlog(&self);
+    fn process_cc_eventlog(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntryType>, anyhow::Error>;
 
     /***
         retrive CVM type
