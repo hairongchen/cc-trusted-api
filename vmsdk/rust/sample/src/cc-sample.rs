@@ -20,4 +20,12 @@ fn main() {
         }
     };
 
+    let el = match API::get_cc_eventlog() {
+        Ok(q) => q,
+        Err(e) => {
+            error!("error getting TDX report: {:?}", e);
+            return;
+        }
+    };
+
 }

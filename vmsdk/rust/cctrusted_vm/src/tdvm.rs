@@ -343,7 +343,7 @@ impl CVM for TdxVM {
         let mut ccel_data = Vec::new();
         ccel_data_reader.read_to_end(&mut ccel_data)?;
 
-        let raw_eventlogs = TcgEventLog {
+        let mut raw_eventlogs = TcgEventLog {
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             data: ccel_data,
             event_logs: Vec::new(),
