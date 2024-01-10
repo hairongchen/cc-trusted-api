@@ -60,14 +60,14 @@ pub fn dump_data(data: &Vec<u8>) {
 }
 
 //TODO: error handling
-pub fn get_u8(data: &Vec<u8>) -> u8 {
-    unsafe { mem::transmute::<<u8>, u8>(data[0]) }
+pub fn get_u8(data: Vec<u8>) -> u8 {
+    unsafe { mem::transmute::<u8, u8>(data) }
 }
 
-pub fn get_u16(data: &Vec<u8>) -> u16 {
-    unsafe { mem::transmute::<[u8; 2], u8>(data[0..2]).into() }
+pub fn get_u16(data: Vec<u8>) -> u16 {
+    unsafe { mem::transmute::<[u8; 2], u8>(data).into() }
 }
 
-pub fn get_u32(data: &Vec<u8>) -> u32 {
-    unsafe { mem::transmute::<[u8; 4], u8>(data[0..4]).into() }
+pub fn get_u32(data: Vec<u8>) -> u32 {
+    unsafe { mem::transmute::<[u8; 4], u8>(data).into() }
 }
