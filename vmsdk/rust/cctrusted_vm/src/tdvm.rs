@@ -356,7 +356,7 @@ impl CVM for TdxVM {
             count: 0
         };
 
-        Ok(raw_eventlogs.select(start,count))
+        raw_eventlogs.select(start,count)
     }
 
     // CVM trait function: retrive CVM type
