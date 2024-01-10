@@ -72,7 +72,7 @@ impl TcgEventLog {
             None => self.count
         };
 
-        Ok(self.event_logs[begin as usize..end as usize].to_vec())
+        Ok((&self.event_logs[begin as usize..end as usize]).to_vec())
     }
 
     /***
@@ -127,7 +127,7 @@ impl TcgEventLog {
             return Ok(true);
         }
 
-        Ok(())
+        Ok(true)
     }
 
     /***
@@ -166,7 +166,7 @@ impl TcgEventLog {
         let header_event = data[index..index+header_event_size as usize].try_into().unwrap();
         index = index + header_event_size as usize;
         let specification_id_header = TcgPcClientImrEvent {
-            header_imr: header_imr, 
+            imr_index: header_imr, 
             event_type: header_event_type, 
             digest: digest,
             event_size: header_event_size, 

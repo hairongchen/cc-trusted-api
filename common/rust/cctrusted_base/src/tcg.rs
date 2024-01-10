@@ -167,7 +167,7 @@ pub struct TcgImrEvent {
 pub struct TcgPcClientImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
-    pub digest: Vec<TcgDigest>,
+    pub digest: [u8;20],
     pub event_size: u32,
     pub event:  Vec<u8>
 }
