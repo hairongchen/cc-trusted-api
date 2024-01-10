@@ -250,6 +250,7 @@ impl TcgEventLog {
         let mut index = 0;
 
         let imr_index = get_u32(data[index..index+4].to_vec());
+        info!("==== imr_index = {}",imr_index);
         index = index + 4;
         let imr_index = imr_index - 1;
         let event_type = get_u32(data[index..index+4].to_vec());
