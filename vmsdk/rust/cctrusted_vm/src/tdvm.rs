@@ -36,7 +36,7 @@ pub struct TdxVM {
     pub cc_type: CcType,
     pub version: TdxVersion,
     pub device_node: DeviceNode,
-    pub algo_id: u8,
+    pub algo_id: u16,
 }
 
 // implement the structure method and associated function
@@ -322,11 +322,11 @@ impl CVM for TdxVM {
 
     // CVM trait function: retrieve TDX CCEL and IMA eventlog
     fn process_cc_eventlog(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error> {
-        if not Path::new(ACPI_TABLE_FILE).exists(){
+        if !Path::new(ACPI_TABLE_FILE).exists(){
             return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL table at {:?}",ACPI_TABLE_FILE));
         }
 
-        if not Path::new(ACPI_TABLE_DATA_FILE).exists(){
+        if !Path::new(ACPI_TABLE_DATA_FILE).exists(){
             return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL data file at {:?}",ACPI_TABLE_DATA_FILE));
         }
 
@@ -334,7 +334,7 @@ impl CVM for TdxVM {
         let mut ccel_reader = BufReader::new(ccel_file);
         let mut ccel = Vec::new();
         ccel_reader.read_to_end(&mut ccel)?;
-        if not (ccel.len() > 0) || (ccel[0..4] != 'CCEL') {
+        if not (ccel.len() > 0) || (ccel[0..4] != "CCEL") {
             return Err(anyhow!("[process_cc_eventlog] Invalid CCEL table"));
         }
 
@@ -348,7 +348,7 @@ impl CVM for TdxVM {
             data: ccel_data,
             event_logs: Vec::new(),
             count: 0
-        }
+        };
 
         Ok(raw_eventlogs.select(start,count))
     }
