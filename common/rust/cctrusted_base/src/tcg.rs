@@ -244,7 +244,7 @@ impl EventLogEntry for TcgImrEvent{
     fn show(&self) {
         info!("-------------------------------Event Log Entry-----------------------------");
         info!("IMR               : {}", self.imr_index);
-        info!("Type              : {:02X?} ({})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
+        info!("Type              : {:02X?} ({:?})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
     }
     let mut count = 0;
     for digest in self.digests {
@@ -262,7 +262,7 @@ impl EventLogEntry for TcgPcClientImrEvent{
     fn show(&self) {
         info!("--------------------Header Specification ID Event--------------------------");
         info!("IMR               : {}", self.imr_index);
-        info!("Type              : {:02X?} ({})", self.event_type,
+        info!("Type              : {:02X?} ({:?})", self.event_type,
         TcgEventType::get_event_type_string(self.event_type));
         info!("Event:");
         dump_data(&self.event);

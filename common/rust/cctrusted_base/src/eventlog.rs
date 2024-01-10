@@ -196,7 +196,7 @@ impl TcgEventLog {
             index = index + 2;
             let digest_size = get_u16(data[index..index+2].to_vec());
             index = index + 2;
-            spec_id_digest_sizes.push(TcgEfiSpecIdEventAlgorithmSize{algo_id, digest_size});
+            spec_id_digest_sizes.push(TcgEfiSpecIdEventAlgorithmSize{algo_id: algo_id.try_into().unwrap(), digest_size: digest_size.into()});
         }
 
         let spec_id_vendor_size = get_u8(data[index..index+1].to_vec());
@@ -261,7 +261,7 @@ impl TcgEventLog {
             let mut pos = 0;
             
             for pos in 0..self.spec_id_header_event.digest_sizes.len() {
-                if self.spec_id_header_event.digest_sizes[pos].algo_id == alg_id {
+                if u16::from(self.spec_id_header_event.digest_sizes[pos].algo_id) == alg_id {
                     break;
                 }
             }
@@ -273,7 +273,7 @@ impl TcgEventLog {
             let alg = self.spec_id_header_event.digest_sizes[pos];
             let digest_size = alg.digest_size;
             let digest_data = data[index..index+digest_size as usize].try_into().unwrap();
-            index = digest_size + digest_size as usize;
+            index = index + digest_size as usize;
             let digest = TcgDigest{
                 algo_id: alg_id,
                 hash: digest_data
