@@ -48,7 +48,7 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM
-    fn get_cc_eventlog(start: Optin<u32>, count: Option<u32>) ->  Result<Vec<EventLogEntryType>, anyhow::Error> {
+    fn get_cc_eventlog(start: Optin<u32>, count: Option<u32>) ->  Result<Vec<EventLogEntry>, anyhow::Error> {
         match build_cvm() {
             Ok(mut cvm) => {
                 cvm.process_cc_eventlog(start, count)

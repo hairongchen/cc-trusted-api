@@ -238,61 +238,36 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
     pub digest_size: u32
 }
 
-// used for storing multiple types into event_logs Vector in TcgEventLog
-pub trait EventLogEntry{
-    fn show(&self);
+enum EventLogEntry
+{
+    tcg_imr_event(TcgImrEvent),
+    tcg_pc_client_imr_event(TcgPcClientImrEvent),
 }
 
-impl EventLogEntry for TcgImrEvent{
-    // fn show(&self) {
-    //     info!("-------------------------------Event Log Entry-----------------------------");
-    //     info!("IMR               : {}", self.imr_index);
-    //     info!("Type              : {:02X?} ({:?})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
+impl TcgImrEvent{
+    fn show(&self) {
+        info!("-------------------------------Event Log Entry-----------------------------");
+        info!("IMR               : {}", self.imr_index);
+        info!("Type              : {:02X?} ({:?})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
     
-    //     for digest_index in 0..self.digests.len() {
-    //         info!("Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
-    //         info!("Digest{}:", digest_index);
-    //         dump_data(&self.digests[digest_index].hash);
-    //     }
-    //     info!("Event:");
-    //     dump_data(&self.event);
-    // }
-}
-
-impl Clone for TcgImrEvent {
-    fn clone(&self) -> TcgImrEvent {
-        TcgImrEvent{
-            imr_index: self.imr_index,
-            event_type: self.event_type,
-            digests: self.digests,
-            event_size: self.event_size,
-            event:  self.event
+        for digest_index in 0..self.digests.len() {
+            info!("Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
+            info!("Digest{}:", digest_index);
+            dump_data(&self.digests[digest_index].hash);
         }
+        info!("Event:");
+        dump_data(&self.event);
     }
 }
 
 
-impl EventLogEntry for TcgPcClientImrEvent{
-    // fn show(&self) {
-    //     info!("--------------------Header Specification ID Event--------------------------");
-    //     info!("IMR               : {}", self.imr_index);
-    //     info!("Type              : {:02X?} ({:?})", self.event_type,
-    //     TcgEventType::get_event_type_string(self.event_type));
-    //     info!("Event:");
-    //     dump_data(&self.event);
-    // }
-}
-
-impl Clone for TcgPcClientImrEvent {
-    fn clone(&self) -> TcgPcClientImrEvent {
-        TcgPcClientImrEvent{
-            imr_index: self.imr_index,
-            event_type: self.event_type,
-            digest: self.digest,
-            event_size: self.event_size,
-            event:  self.event
-        }
+impl TcgPcClientImrEvent{
+    fn show(&self) {
+        info!("--------------------Header Specification ID Event--------------------------");
+        info!("IMR               : {}", self.imr_index);
+        info!("Type              : {:02X?} ({:?})", self.event_type,
+        TcgEventType::get_event_type_string(self.event_type));
+        info!("Event:");
+        dump_data(&self.event);
     }
 }
-
-pub type EventLogEntryType = Box<dyn EventLogEntry>;

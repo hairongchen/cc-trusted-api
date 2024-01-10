@@ -22,7 +22,7 @@ use crate::tcg::TcgDigest;
 pub struct TcgEventLog {
     pub spec_id_header_event: TcgEfiSpecIdEvent,
     pub data: Vec<u8>,
-    pub event_logs: Vec<EventLogEntryType>,
+    pub event_logs: Vec<EventLogEntry>,
     pub count: u32
 }
 
@@ -44,7 +44,7 @@ impl TcgEventLog {
             start: index of the first event log to collect
             count: total number of event logs to collect
     */
-    pub fn select(&mut self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntryType>, anyhow::Error>{
+    pub fn select(&mut self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error>{
         match self.parse() {
             Ok(_) => (),
             Err(e) => {
@@ -108,7 +108,7 @@ impl TcgEventLog {
                 match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len as usize;
-                        self.event_logs.push(Box::new(spec_id_event));
+                        self.event_logs.push(EventLogEntry::TcgPcClientImrEvent(spec_id_event));
                         self.count = self.count + 1;
                     },
                     Err(e) => {
@@ -120,7 +120,7 @@ impl TcgEventLog {
                 match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
-                        self.event_logs.push(Box::new(event_log));
+                        self.event_logs.push(EventLogEntry::TcgImrEvent(event_log));
                         self.count = self.count + 1;
                     },
                     Err(e) => {
