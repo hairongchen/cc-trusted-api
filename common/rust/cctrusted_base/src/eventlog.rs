@@ -1,6 +1,14 @@
 use crate::binary_blob::*;
-use crate::tcg;
 use anyhow::anyhow;
+use crate::tcg::TcgEfiSpecIdEvent;
+use crate::tcg::EventLogEntryType;
+use crate::tcg::TcgEfiSpecIdEvent;
+use crate::tcg::EV_NO_ACTION;
+use crate::tcg::TcgPcClientImrEvent;
+use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
+use crate::tcg::TcgImrEvent;
+use crate::tcg::TcgDigest;
+
 
 /***
     TcgEventLog struct.
@@ -39,7 +47,7 @@ impl TcgEventLog {
     */
     pub fn select(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntryType>, anyhow::Error>{
         match self.parse() {
-            Ok(_) => (),
+            Ok(_) => _,
             Err(e) => {
                 return Err(anyhow!("[select] error in parse function {:?}", e));
             }
@@ -96,7 +104,7 @@ impl TcgEventLog {
                 // index = start + event_len;
                 // self.eventlog.push(spec_id_event);
                 // self.count = self.count + 1;
-                match parse_spec_id_event_log(self.data[start..]){
+                match self.parse_spec_id_event_log(self.data[start..]){
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len;
                         self.eventlog.push(spec_id_event);
@@ -112,7 +120,7 @@ impl TcgEventLog {
                 // index = start + event_len;
                 // self.eventlog.push(event_log);
                 // self.count = self.count + 1;
-                match parse_event_log(self.data[start..]){
+                match self.parse_spec_id_event_log(self.data[start..]){
                     Ok((event_log, event_len)) => {
                         index = start + event_len;
                         self.eventlog.push(event_log);
@@ -158,11 +166,11 @@ impl TcgEventLog {
         let header_event_type = get_u32(data[index..index+4]);
         index = index + 4;
 
-        let digest = data[index..index+20]; // 20 zero for digest
+        let digest = data[index..index+20].try_into().unwrap(); // 20 zero for digest
         index = index + 28;
         let header_event_size = get_u32(data[index..index+4]);
         index = index + 4;
-        let header_event = data[index..index+header_event_size];
+        let header_event = data[index..index+header_event_size].try_into().unwrap();
         index = index + header_event_size;
         let specification_id_header = TcgPcClientImrEvent {
             header_imr: header_imr, 
@@ -173,7 +181,7 @@ impl TcgEventLog {
         };
 
         // Parse EFI Spec Id Event structure
-        let spec_id_signature = data[index..index+16];
+        let spec_id_signature = data[index..index+16].try_into().unwrap();
         index = index + 16;
 
         let spec_id_platform_cls = get_u32(data[index..index+4]);
@@ -202,7 +210,7 @@ impl TcgEventLog {
         index = index + 1;
         let spec_id_vendor_info = Vec::new();
         if spec_id_vendor_size > 0 {
-            spec_id_vendor_info = data[index..index+spec_id_vendor_size];
+            spec_id_vendor_info = data[index..index+spec_id_vendor_size].try_into().unwrap();
         }
 
         self.spec_id_header_event = TcgEfiSpecIdEvent {
@@ -218,7 +226,7 @@ impl TcgEventLog {
             vendor_info: spec_id_vendor_info
         };
 
-        Ok((self.spec_id_header_event, index))
+        Ok((self.spec_id_header_event, index.try_into().unwrap()))
     }
 
     /***
@@ -268,7 +276,7 @@ impl TcgEventLog {
             }
 
             let digest_size = alg.digest_size;
-            let digest_data = data[index..index+digest_size];
+            let digest_data = data[index..index+digest_size].try_into().unwrap();
             index = digest_size + digest_size;
             let digest = TcgDigest{
                 algo_id: alg_id,
@@ -279,7 +287,7 @@ impl TcgEventLog {
 
         let event_size = get_u32(data[index..index+4]);
         index = index + 4;
-        let event = data[index..index+event_size];
+        let event = data[index..index+event_size].try_into().unwrap();
         index = index + event_size;
 
         Ok((TcgImrEvent{
@@ -287,7 +295,7 @@ impl TcgEventLog {
             event_type, 
             digests, 
             event_size,
-            event}, index
+            event}, index.try_into().unwrap()
         ))
     }
 }

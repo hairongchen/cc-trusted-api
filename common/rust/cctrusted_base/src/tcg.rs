@@ -265,7 +265,7 @@ impl EventLogEntry for TcgPcClientImrEvent{
         info!("Type              : {:02X?} ({})", self.event_type,
         TcgEventType::get_event_type_string(self.event_type));
         info!("Event:");
-        dump_data(self.event);
+        dump_data(&self.event);
     }
 }
 
