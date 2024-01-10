@@ -24,15 +24,11 @@ impl TcgEventLog {
 
     pub fn new(data: Vec<u8>) -> TcgEventLog {
         TcgEventLog{
-            spec_id_header_event: TcgEfiSpecIdEvent,
+            spec_id_header_event: TcgEfiSpecIdEvent::new(),
             data: data,
             event_logs: Vec::new(),
             count: 0
         }
-    }
-
-    pub fn show(&self) {
-        todo!()
     }
 
     /***
@@ -223,7 +219,7 @@ impl TcgEventLog {
             vendor_info: spec_id_vendor_info
         };
 
-        Ok(spec_id_header_event, index)
+        Ok((self.spec_id_header_event, index))
     }
 
     /***
@@ -287,13 +283,13 @@ impl TcgEventLog {
         let event = data[index..index+event_size];
         index = index + event_size;
 
-        Ok(TcgImrEvent{
+        Ok((TcgImrEvent{
             imr_index, 
             event_type, 
             digests, 
             event_size,
             event}, index
-        )
+        ))
     }
 }
 
