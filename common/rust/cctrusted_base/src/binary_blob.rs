@@ -61,13 +61,15 @@ pub fn dump_data(data: &Vec<u8>) {
 
 //TODO: error handling
 pub fn get_u8(data: Vec<u8>) -> u8 {
-    unsafe { mem::transmute::<u8, u8>(data) }
+    //unsafe { mem::transmute::<u8, u8>(data[0]) }
+    u8::from_be_bytes(data[0..1].try_into().unwrap());
 }
 
 pub fn get_u16(data: Vec<u8>) -> u16 {
-    unsafe { mem::transmute::<[u8; 2], u8>(data).into() }
+    //unsafe { mem::transmute::<[u8; 2], u8>(data).into() }
+    u16::from_be_bytes(data[0..2].try_into().unwrap());
 }
 
 pub fn get_u32(data: Vec<u8>) -> u32 {
-    unsafe { mem::transmute::<[u8; 4], u8>(data).into() }
+    u32::from_be_bytes(data[0..4].try_into().unwrap());
 }
