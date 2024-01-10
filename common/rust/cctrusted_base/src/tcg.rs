@@ -241,7 +241,7 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
 }
 
 // used for storing multiple types into event_logs Vector in TcgEventLog
-pub trait EventLogEntry{
+pub trait EventLogEntry: Clone{
     fn show(&self);
 }
 
