@@ -34,7 +34,7 @@ pub trait TcgAlgorithmRegistry {
 // digest format: (algo id, hash value)
 #[allow(dead_code)]
 pub struct TcgDigest {
-    algo_id: u8,
+    algo_id: u16,
     hash: Vec<u8>,
 }
 
@@ -232,7 +232,7 @@ impl TcgEfiSpecIdEvent {
 */
 pub struct TcgEfiSpecIdEventAlgorithmSize {
     algo_id: u8,
-    digest_sizes: u32
+    digest_size: u32
 }
 
 // used for storing multiple types into event_logs Vector in TcgEventLog
@@ -244,7 +244,7 @@ impl EventLogEntry for TcgImrEvent{
     fn show(&self) {
         info!("-------------------------------Event Log Entry-----------------------------");
         info!("IMR               : {}", self.imr_index);
-        info!("Type              : {:02X?} ({})", self.event_type, EventType::get_event_type_string(self.event_type));
+        info!("Type              : {:02X?} ({})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
     }
     let mut count = 0;
     for digest in self.digests {

@@ -72,7 +72,7 @@ impl TcgEventLog {
             None => self.count
         };
 
-        Ok((&self.event_logs[begin as usize..end as usize]).to_vec())
+        Ok(self.event_logs[begin as usize..end as usize].clone())
     }
 
     /***
@@ -220,7 +220,7 @@ impl TcgEventLog {
             vendor_info: spec_id_vendor_info
         };
 
-        Ok((self.spec_id_header_event, index.try_into().unwrap()))
+        Ok((self.specification_id_header, index.try_into().unwrap()))
     }
 
     /***
@@ -254,13 +254,13 @@ impl TcgEventLog {
         // Fetch digest count and get each digest and its algorithm
         let digest_count = get_u32(data[index..index+4].to_vec());
         index = index + 4;
-        let digests: TcgDigest = Vec::new();
+        let digests: Vec<TcgDigest> = Vec::new();
         for _ in 0..digest_count {
             let alg_id = get_u16(data[index..index+2].to_vec());
             index = index + 2;
             let mut pos = 0;
             
-            for pos in self.spec_id_header_event.digest_sizes.len() {
+            for pos in self.spec_id_header_event.digest_sizes.len() as u32 {
                 if self.spec_id_header_event.digest_sizes[pos].algo_id == alg_id {
                     break;
                 }
