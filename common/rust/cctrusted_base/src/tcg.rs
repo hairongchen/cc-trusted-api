@@ -264,7 +264,7 @@ impl Clone for TcgImrEvent {
         TcgImrEvent{
             imr_index: self.imr_index,
             event_type: self.event_type,
-            digest: self.digest,
+            digests: self.digests,
             event_size: self.event_size,
             event:  self.event
         }
@@ -288,7 +288,7 @@ impl Clone for TcgPcClientImrEvent {
         TcgPcClientImrEvent{
             imr_index: self.imr_index,
             event_type: self.event_type,
-            digests: self.digest,
+            digest: self.digest,
             event_size: self.event_size,
             event:  self.event
         }
