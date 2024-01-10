@@ -72,7 +72,7 @@ impl TcgEventLog {
             None => self.count
         };
 
-        Ok(self.event_logs[begin..end])
+        Ok(self.event_logs[begin as usize..end as usize])
     }
 
     /***
@@ -98,15 +98,11 @@ impl TcgEventLog {
                 break;
             }
 
-            if event_type = EV_NO_ACTION {
-                // let (spec_id_event, event_len) = parse_spec_id_event_log(self.data[start..]);
-                // index = start + event_len;
-                // self.eventlog.push(spec_id_event);
-                // self.count = self.count + 1;
-                match self.parse_spec_id_event_log(self.data[start..]){
+            if event_type == EV_NO_ACTION {
+                match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((spec_id_event, event_len)) => {
-                        index = start + event_len;
-                        self.eventlog.push(spec_id_event);
+                        index = start + event_len as usize;
+                        self.event_logs.push(spec_id_event);
                         self.count = self.count + 1;
                     },
                     Err(e) => {
@@ -115,14 +111,10 @@ impl TcgEventLog {
                     }
                 }
             } else {
-                // let (event_log, event_len) = parse_event_log(self.data[start..]);
-                // index = start + event_len;
-                // self.eventlog.push(event_log);
-                // self.count = self.count + 1;
-                match self.parse_spec_id_event_log(self.data[start..]){
+                match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((event_log, event_len)) => {
-                        index = start + event_len;
-                        self.eventlog.push(event_log);
+                        index = start + event_len as usize;
+                        self.event_logs.push(event_log);
                         self.count = self.count + 1;
                     },
                     Err(e) => {
