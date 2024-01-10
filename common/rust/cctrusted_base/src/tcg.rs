@@ -272,5 +272,4 @@ impl EventLogEntry for TcgPcClientImrEvent{
     }
 }
 
-trait EventLogEntryClone: EventLogEntry + Clone {}
-pub type EventLogEntryType = Box<dyn EventLogEntryClone>;
+pub type EventLogEntryType = Box<dyn EventLogEntry>;
