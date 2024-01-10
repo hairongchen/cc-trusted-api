@@ -44,7 +44,7 @@ impl TcgEventLog {
             start: index of the first event log to collect
             count: total number of event logs to collect
     */
-    pub fn select(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntryType>, anyhow::Error>{
+    pub fn select(&mut self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntryType>, anyhow::Error>{
         match self.parse() {
             Ok(_) => (),
             Err(e) => {
@@ -73,7 +73,7 @@ impl TcgEventLog {
         };
 
         //Ok(self.event_logs[begin as usize..end as usize].to_vec())
-        let return_event_logs: Vec<EventLogEntryType> = Vec::new();
+        let mut return_event_logs: Vec<EventLogEntryType> = Vec::new();
         for idx in begin..end {
             return_event_logs.push(self.event_logs[idx as usize]);
         }
@@ -155,7 +155,7 @@ impl TcgEventLog {
             A TcgPcClientImrEvent containing the Specification ID version event
             An int specifying the event size
     */
-    fn parse_spec_id_event_log(&self, data: Vec<u8>) -> Result<(TcgPcClientImrEvent, u32), anyhow::Error> {
+    fn parse_spec_id_event_log(&mut self, data: Vec<u8>) -> Result<(TcgPcClientImrEvent, u32), anyhow::Error> {
         let mut index = 0;
         
         let imr_index = get_u32(data[index..index+4].to_vec());
@@ -206,7 +206,7 @@ impl TcgEventLog {
 
         let spec_id_vendor_size = get_u8(data[index..index+1].to_vec());
         index = index + 1;
-        let spec_id_vendor_info = Vec::new();
+        let mut spec_id_vendor_info = Vec::new();
         if spec_id_vendor_size > 0 {
             spec_id_vendor_info = data[index..index+spec_id_vendor_size as usize].try_into().unwrap();
         }
@@ -252,30 +252,31 @@ impl TcgEventLog {
 
         let imr_index = get_u32(data[index..index+4].to_vec());
         index = index + 4;
-        let header_imr = imr_index - 1;
+        let imr_index = imr_index - 1;
         let event_type = get_u32(data[index..index+4].to_vec());
         index = index + 4;
 
         // Fetch digest count and get each digest and its algorithm
         let digest_count = get_u32(data[index..index+4].to_vec());
         index = index + 4;
-        let digests: Vec<TcgDigest> = Vec::new();
+        let mut digests: Vec<TcgDigest> = Vec::new();
         for _ in 0..digest_count {
             let alg_id = get_u16(data[index..index+2].to_vec());
             index = index + 2;
-            let mut pos = 0;
+            let pos = 0;
             
-            for pos in 0..self.spec_id_header_event.digest_sizes.len() {
+            while pos < self.spec_id_header_event.digest_sizes.len() {
                 if u16::from(self.spec_id_header_event.digest_sizes[pos].algo_id) == alg_id {
                     break;
                 }
+                pos = pos + 1;
             }
 
             if pos == self.spec_id_header_event.digest_sizes.len() {
                 return Err(anyhow!("[parse_event_log] No algorithm with such algo_id {}", alg_id));
             }
 
-            let alg = self.spec_id_header_event.digest_sizes[pos];
+            let alg = &self.spec_id_header_event.digest_sizes[pos];
             let digest_size = alg.digest_size;
             let digest_data = data[index..index+digest_size as usize].try_into().unwrap();
             index = index + digest_size as usize;
