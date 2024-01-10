@@ -285,9 +285,9 @@ impl EventLogEntry for TcgPcClientImrEvent{
     }
 }
 
-impl Clone for TcgImrEvent {
+impl Clone for TcgPcClientImrEvent {
     fn clone(&self) -> TcgPcClientImrEvent {
-        TcgImrEvent{
+        TcgPcClientImrEvent{
             imr_index: self.imr_index,
             event_type: self.event_type,
             digests: self.digest,
