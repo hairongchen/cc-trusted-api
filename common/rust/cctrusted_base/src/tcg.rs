@@ -261,6 +261,19 @@ impl EventLogEntry for TcgImrEvent{
     }
 }
 
+impl Clone for TcgImrEvent {
+    fn clone(&self) -> TcgImrEvent {
+        TcgImrEvent{
+            imr_index: self.imr_index,
+            event_type: self.event_type,
+            digest: self.digest,
+            event_size: self.event_size,
+            event:  self.event
+        }
+    }
+}
+
+
 impl EventLogEntry for TcgPcClientImrEvent{
     fn show(&self) {
         info!("--------------------Header Specification ID Event--------------------------");
@@ -269,6 +282,18 @@ impl EventLogEntry for TcgPcClientImrEvent{
         TcgEventType::get_event_type_string(self.event_type));
         info!("Event:");
         dump_data(&self.event);
+    }
+}
+
+impl Clone for TcgImrEvent {
+    fn clone(&self) -> TcgPcClientImrEvent {
+        TcgImrEvent{
+            imr_index: self.imr_index,
+            event_type: self.event_type,
+            digests: self.digest,
+            event_size: self.event_size,
+            event:  self.event
+        }
     }
 }
 
