@@ -75,7 +75,7 @@ impl TcgEventLog {
         //Ok(self.event_logs[begin as usize..end as usize].to_vec())
         let mut return_event_logs: Vec<EventLogEntryType> = Vec::new();
         for idx in begin..end {
-            return_event_logs.push(self.event_logs[idx as usize]);
+            return_event_logs.push(&self.event_logs[idx as usize]);
         }
         Ok(return_event_logs)
     }
@@ -263,7 +263,7 @@ impl TcgEventLog {
         for _ in 0..digest_count {
             let alg_id = get_u16(data[index..index+2].to_vec());
             index = index + 2;
-            let pos = 0;
+            let mut pos = 0;
             
             while pos < self.spec_id_header_event.digest_sizes.len() {
                 if u16::from(self.spec_id_header_event.digest_sizes[pos].algo_id) == alg_id {
