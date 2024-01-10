@@ -29,7 +29,6 @@ pub struct TcgEventLog {
 impl TcgEventLog {
 
     pub fn new(data: Vec<u8>) -> TcgEventLog {
-        //let event_logs: Vec<EventLogEntryType> = Vec::new();
         TcgEventLog{
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             data: data,
@@ -74,7 +73,11 @@ impl TcgEventLog {
         };
 
         //Ok(self.event_logs[begin as usize..end as usize].to_vec())
-        Ok(self.event_logs)
+        let return_event_logs: Vec<EventLogEntryType> = Vec::new();
+        for idx in begin..end {
+            return_event_logs.push(event_log[idx]);
+        }
+        Ok(return_event_logs)
     }
 
     /***
