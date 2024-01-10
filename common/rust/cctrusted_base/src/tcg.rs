@@ -1,7 +1,7 @@
 use hashbrown::HashMap;
 use anyhow::anyhow;
 use log::info;
-use BinaryBlob::dump_data;
+use crate::binary_blob::dump_data;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
 pub const TPM_ALG_RSA: u8 = 0x1;
@@ -209,7 +209,7 @@ impl TcgEfiSpecIdEvent {
             signature: [0;16],
             platform_class: 0,
             spec_version_minor: 0,
-            spec_version_major: 0
+            spec_version_major: 0,
             spec_errata: 0,
             uintn_ize: 0,
             number_of_algorithms: 0,
@@ -244,7 +244,7 @@ impl EventLogEntry for TcgImrEvent{
     fn show(&self) {
         info!("-------------------------------Event Log Entry-----------------------------");
         info!("IMR               : {}", self.imr_index);
-        info!("Type              : {02X} ({})", self.event_type, EventType::get_event_type_string(self.event_type));
+        info!("Type              : {:02X?} ({})", self.event_type, EventType::get_event_type_string(self.event_type));
     }
     let mut count = 0;
     for digest in self.digests {
@@ -262,7 +262,7 @@ impl EventLogEntry for TcgPcClientImrEvent{
     fn show(&self) {
         info!("--------------------Header Specification ID Event--------------------------");
         info!("IMR               : {}", self.imr_index);
-        info!("Type              : {02X} ({})", self.event_type,
+        info!("Type              : {:02X?} ({})", self.event_type,
         TcgEventType.get_event_type_string(self.event_type));
         info!("Event:");
         dump_data(self.event);

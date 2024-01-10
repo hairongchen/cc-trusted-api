@@ -1,5 +1,6 @@
-use crate::tcg::EventLogEntryType;
-use crate::BinaryBlob::*;
+use crate::tcg::*;
+use crate::binary_blob::*;
+use crate::tcg::*;
 use anyhow::anyhow;
 
 /***
@@ -45,7 +46,7 @@ impl TcgEventLog {
         match self.parse() {
             Ok(_) => (),
             Err(e) => {
-                return Err(anyhow!("[select] error in parse function {:?}"), e);
+                return Err(anyhow!("[select] error in parse function {:?}", e));
             }
         }
 
@@ -107,7 +108,7 @@ impl TcgEventLog {
                         self.count = self.count + 1;
                     },
                     Err(e) => {
-                        return Err(anyhow!("[parse] error in parse_spec_id_event_log function {:?}"), e);
+                        return Err(anyhow!("[parse] error in parse_spec_id_event_log function {:?}", e));
 
                     }
                 }
@@ -123,7 +124,7 @@ impl TcgEventLog {
                         self.count = self.count + 1;
                     },
                     Err(e) => {
-                        return Err(anyhow!("[parse] error in parse_event_log function {:?}"), e);
+                        return Err(anyhow!("[parse] error in parse_event_log function {:?}", e));
 
                     }
                 }
@@ -266,9 +267,9 @@ impl TcgEventLog {
                     find = 1;
                     alg
                 }
-            }
+            };
             if find == 0 {
-                return Err(anyhow!("[parse_event_log] No algorithm with such algo_id {}"), alg_id);
+                return Err(anyhow!("[parse_event_log] No algorithm with such algo_id {}", alg_id));
             }
 
             let digest_size = alg.digest_size;
@@ -277,7 +278,7 @@ impl TcgEventLog {
             let digest = TcgDigest{
                 algo_id: alg_id,
                 hash: digest_data
-            }
+            };
             digests.push(digest);
         }
 
