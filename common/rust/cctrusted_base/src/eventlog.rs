@@ -6,6 +6,7 @@ use crate::tcg::TcgPcClientImrEvent;
 use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
 use crate::tcg::TcgImrEvent;
 use crate::tcg::TcgDigest;
+use crate::tcg::EventLogEntry;
 
 
 /***
