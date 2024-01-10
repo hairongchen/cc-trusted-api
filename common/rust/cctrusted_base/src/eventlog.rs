@@ -52,7 +52,7 @@ impl TcgEventLog {
             }
         }
 
-        let begin = match start {
+        let _begin = match start {
             Some(s) => {
                 if s >= self.count {
                     return Err(anyhow!("[select] Invalid input start. Start must be number larger than 0 and smaller than total event log count."));
@@ -62,7 +62,7 @@ impl TcgEventLog {
             None => 0
         };
 
-        let end = match count {
+        let _end = match count {
             Some(c) => {
                 if c <= 0 || c >= self.count {
                     return Err(anyhow!("[select] Invalid input count. count must be number larger than 0 and smaller than total event log count."));
@@ -130,8 +130,6 @@ impl TcgEventLog {
                     }
                 }
             }
-
-            return Ok(true);
         }
 
         Ok(true)
