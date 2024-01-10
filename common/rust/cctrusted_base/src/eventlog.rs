@@ -260,9 +260,10 @@ impl TcgEventLog {
             index = index + 2;
             let mut find = 0;
             let alg = for alg in self.spec_id_header_event.digest_sizes {
-                if alg.id == alg_id {
+                if alg.algo_id == alg_id {
                     find = 1;
-                    alg
+                    break alg;
+
                 }
             };
             if find == 0 {
