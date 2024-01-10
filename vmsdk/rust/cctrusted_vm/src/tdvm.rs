@@ -341,7 +341,7 @@ impl CVM for TdxVM {
         let mut ccel_reader = BufReader::new(ccel_file);
         let mut ccel = Vec::new();
         ccel_reader.read_to_end(&mut ccel)?;
-        if (ccel.len() > 0).not() || (ccel[0..4].try_into().unwrap() != "CCEL") {
+        if (ccel.len() > 0).not() || (ccel[0..4].to_vec() != "CCEL") {
             return Err(anyhow!("[process_cc_eventlog] Invalid CCEL table"));
         }
 
