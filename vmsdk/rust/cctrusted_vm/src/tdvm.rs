@@ -21,6 +21,7 @@ use std::io::BufReader;
 use cctrusted_base::tcg::EventLogEntry;
 use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::TcgEfiSpecIdEvent;
+use std::io::Read;
 
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report

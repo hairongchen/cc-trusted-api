@@ -3,7 +3,6 @@ use core::result::Result;
 use core::result::Result::Ok;
 
 use cctrusted_base::binary_blob::dump_data;
-use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 
 use crate::cvm::build_cvm;
@@ -49,7 +48,7 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM
-    fn get_cc_eventlog(start: Option<u32>, count: Option<u32>) ->  Result<Vec<EventLogEntry>, anyhow::Error> {
+    fn get_cc_eventlog(start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error> {
         match build_cvm() {
             Ok(mut cvm) => {
                 cvm.process_cc_eventlog(start, count)

@@ -4,9 +4,7 @@ use cctrusted_base::cc_type::*;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use std::path::Path;
 use cctrusted_base::tcg::EventLogEntry;
-use std::io::BufReader;
-use cctrusted_base::eventlog::TcgEventLog;
-use cctrusted_base::tcg::TcgEfiSpecIdEvent;
+
 
 
 
