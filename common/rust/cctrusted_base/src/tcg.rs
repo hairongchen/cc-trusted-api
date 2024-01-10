@@ -34,7 +34,7 @@ pub trait TcgAlgorithmRegistry {
 // digest format: (algo id, hash value)
 #[allow(dead_code)]
 pub struct TcgDigest {
-    algo_id: u16,
+    algo_id: u8,
     hash: Vec<u8>,
 }
 
