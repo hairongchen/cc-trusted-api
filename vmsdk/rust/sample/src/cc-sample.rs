@@ -21,12 +21,16 @@ fn main() {
     };
 
     // retrieve cc eventlog with API "get_cc_eventlog"    
-    let el = match API::get_cc_eventlog() {
+    let event_logs = match API::get_cc_eventlog() {
         Ok(q) => q,
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
             return;
         }
     };
+
+    for event_log in event_logs {
+        event_log.show();
+    }
 
 }
