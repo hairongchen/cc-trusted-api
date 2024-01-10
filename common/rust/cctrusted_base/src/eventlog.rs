@@ -1,7 +1,6 @@
 use crate::binary_blob::*;
 use anyhow::anyhow;
 use crate::tcg::TcgEfiSpecIdEvent;
-use crate::tcg::EventLogEntryType;
 use crate::tcg::EV_NO_ACTION;
 use crate::tcg::TcgPcClientImrEvent;
 use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
