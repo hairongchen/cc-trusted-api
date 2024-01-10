@@ -258,18 +258,19 @@ impl TcgEventLog {
         for _ in 0..digest_count {
             let alg_id = get_u16(data[index..index+2].to_vec());
             index = index + 2;
-            let mut find = 0;
-            let alg = for alg in self.spec_id_header_event.digest_sizes {
-                if alg.algo_id == alg_id {
-                    find = 1;
-                    break alg;
-
+            let mut pos = 0;
+            
+            for pos in self.spec_id_header_event.digest_sizes.len() {
+                if self.spec_id_header_event.digest_sizes[pos].algo_id == alg_id {
+                    break;
                 }
-            };
-            if find == 0 {
+            }
+
+            if pos == self.spec_id_header_event.digest_sizes.len() {
                 return Err(anyhow!("[parse_event_log] No algorithm with such algo_id {}", alg_id));
             }
 
+            let alg = self.spec_id_header_event.digest_sizes[pos];
             let digest_size = alg.digest_size;
             let digest_data = data[index..index+digest_size as usize].try_into().unwrap();
             index = digest_size + digest_size as usize;
