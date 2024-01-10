@@ -32,7 +32,7 @@ impl TcgEventLog {
         TcgEventLog{
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             data: data,
-            event_logs: Vec::new(),
+            event_logs Vec<EventLogEntryType>: Vec::new(),
             count: 0
         }
     }
