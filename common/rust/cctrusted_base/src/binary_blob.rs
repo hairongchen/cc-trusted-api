@@ -65,9 +65,9 @@ pub fn get_u8(data: &Vec<u8>) -> u8 {
 }
 
 pub fn get_u16(data: &Vec<u8>) -> u16 {
-    unsafe { mem::transmute::<[u8; 2], u8>(data[0..2]) }
+    unsafe { mem::transmute::<[u8; 2], u8>(data[0..2]).into() }
 }
 
 pub fn get_u32(data: &Vec<u8>) -> u32 {
-    unsafe { mem::transmute::<[u8; 4], u8>(data[0..4]) }
+    unsafe { mem::transmute::<[u8; 4], u8>(data[0..4]).into() }
 }
