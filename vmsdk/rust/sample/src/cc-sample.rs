@@ -20,6 +20,7 @@ fn main() {
         }
     };
 
+    // retrieve cc eventlog with API "get_cc_eventlog"    
     let el = match API::get_cc_eventlog() {
         Ok(q) => q,
         Err(e) => {

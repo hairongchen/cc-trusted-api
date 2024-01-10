@@ -1,6 +1,7 @@
 use hashbrown::HashMap;
 use anyhow::anyhow;
 use log::info;
+use BinaryBlob::dump_data;
 
 pub const TPM_ALG_ERROR: u8 = 0x0;
 pub const TPM_ALG_RSA: u8 = 0x1;
@@ -150,14 +151,6 @@ pub struct TcgImrEvent {
     pub event:  Vec<u8>
 }
 
-impl TcgImrEvent {
-    pub fn show(&self) {
-        info!("-------------------------------Event Log Entry-----------------------------");
-        // info!("IMR               : {}", self.imr_index);
-        // info!("Type              : {02X} {}", self.event_type, EventType::get_event_type_string(self.event_type));
-    }
-}
-
 /***
     TCG TCG_PCClientPCREvent defined at
     https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClientSpecPlat_TPM_2p0_1p04_pub.pdf.
@@ -177,12 +170,6 @@ pub struct TcgPcClientImrEvent {
     pub digest: Vec<TcgDigest>,
     pub event_size: u32,
     pub event:  Vec<u8>
-}
-
-impl TcgPcClientImrEvent {
-    pub fn show(&self) {
-        todo!()
-    }
 }
 
 /***
@@ -247,7 +234,37 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
 }
 
 // used for storing multiple types into event_logs Vector in TcgEventLog
-pub trait EventLogEntry{}
-impl EventLogEntry for TcgPcClientImrEvent{}
-impl EventLogEntry for TcgEfiSpecIdEvent{}
+pub trait EventLogEntry{
+    fn show(&self);
+}
+
+impl EventLogEntry for TcgImrEvent{
+    fn show(&Self) {
+        info!("-------------------------------Event Log Entry-----------------------------");
+        info!("IMR               : {}", self.imr_index);
+        info!("Type              : {02X} ({})", self.event_type, EventType::get_event_type_string(self.event_type));
+    }
+    let mut count = 0;
+    for digest in self.digests {
+        info!("Algorithm_id{}   : {} {}", count, digest.alg.alg_id, ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned());
+        info!("Digest{}:", count);
+        dump_data(self.digest.hash);
+        count = count + 1;
+
+    }
+    info!("Event:");
+    dump_data(self.event);
+}
+
+impl EventLogEntry for TcgPcClientImrEvent{
+    fn show(&Self) {
+        info!("--------------------Header Specification ID Event--------------------------");
+        info!("IMR               : {}", self.imr_index);
+        info!("Type              : {02X} ({})", self.event_type,
+        TcgEventType.get_event_type_string(self.event_type));
+        info!("Event:");
+        dump_data(self.event);
+    }
+}
+
 pub type EventLogEntryType = Box<dyn EventLogEntry>;
