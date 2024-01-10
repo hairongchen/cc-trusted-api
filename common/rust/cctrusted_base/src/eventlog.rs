@@ -72,7 +72,7 @@ impl TcgEventLog {
             None => self.count
         };
 
-        Ok(self.event_logs[begin as usize..end as usize].clone())
+        Ok(self.event_logs[begin as usize..end as usize])
     }
 
     /***
