@@ -119,7 +119,7 @@ lazy_static! {
     };
 }
 
-#[derive(Copy)]
+#[derive(Clone)]
 pub struct TcgEventType {}
 
 impl TcgEventType {
@@ -144,7 +144,7 @@ impl TcgEventType {
         BYTE event[eventSize];
     } TCG_PCR_EVENT2;
 */
-#[derive(Copy)]
+#[derive(Clone)]
 pub struct TcgImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
@@ -166,7 +166,7 @@ pub struct TcgImrEvent {
         BYTE event[eventDataSize]; //This is actually a TCG_EfiSpecIDEventStruct
     } TCG_PCClientPCREvent;
 */
-#[derive(Copy)]
+#[derive(Clone)]
 pub struct TcgPcClientImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
@@ -193,7 +193,7 @@ pub struct TcgPcClientImrEvent {
         BYTE[VendorInfoSize] vendorInfo;
     } TCG_EfiSpecIDEventStruct;
 */
-#[derive(Copy)]
+#[derive(Clone)]
 pub struct TcgEfiSpecIdEvent {
     pub signature: [u8;16],
     pub platform_class: u32,
@@ -207,7 +207,6 @@ pub struct TcgEfiSpecIdEvent {
     pub vendor_info: Vec<u8>,
 }
 
-#[derive(Copy)]
 impl TcgEfiSpecIdEvent {
     pub fn new() -> TcgEfiSpecIdEvent {
         TcgEfiSpecIdEvent{
@@ -235,7 +234,7 @@ impl TcgEfiSpecIdEvent {
         UINT16 digestSize;
     } TCG_EfiSpecIdEventAlgorithmSize;
 */
-#[derive(Copy)]
+#[derive(Clone)]
 pub struct TcgEfiSpecIdEventAlgorithmSize {
     pub algo_id: u16,
     pub digest_size: u32
