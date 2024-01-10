@@ -73,7 +73,8 @@ impl TcgEventLog {
             None => self.count
         };
 
-        Ok(self.event_logs[begin as usize..end as usize].to_vec())
+        //Ok(self.event_logs[begin as usize..end as usize].to_vec())
+        Ok(self.event_logs)
     }
 
     /***
