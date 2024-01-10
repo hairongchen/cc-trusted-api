@@ -144,7 +144,6 @@ impl TcgEventType {
         BYTE event[eventSize];
     } TCG_PCR_EVENT2;
 */
-#[derive(Clone)]
 pub struct TcgImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
@@ -166,7 +165,6 @@ pub struct TcgImrEvent {
         BYTE event[eventDataSize]; //This is actually a TCG_EfiSpecIDEventStruct
     } TCG_PCClientPCREvent;
 */
-#[derive(Clone)]
 pub struct TcgPcClientImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
