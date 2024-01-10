@@ -32,7 +32,7 @@ pub trait TcgAlgorithmRegistry {
 }
 
 // digest format: (algo id, hash value)
-#[allow(dead_code)]
+#[derive(Clone)]
 pub struct TcgDigest {
     algo_id: u16,
     hash: Vec<u8>,
