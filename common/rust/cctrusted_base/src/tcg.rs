@@ -119,6 +119,7 @@ lazy_static! {
     };
 }
 
+#[derive(Copy)]
 pub struct TcgEventType {}
 
 impl TcgEventType {
@@ -143,6 +144,7 @@ impl TcgEventType {
         BYTE event[eventSize];
     } TCG_PCR_EVENT2;
 */
+#[derive(Copy)]
 pub struct TcgImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
@@ -164,6 +166,7 @@ pub struct TcgImrEvent {
         BYTE event[eventDataSize]; //This is actually a TCG_EfiSpecIDEventStruct
     } TCG_PCClientPCREvent;
 */
+#[derive(Copy)]
 pub struct TcgPcClientImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
@@ -190,6 +193,7 @@ pub struct TcgPcClientImrEvent {
         BYTE[VendorInfoSize] vendorInfo;
     } TCG_EfiSpecIDEventStruct;
 */
+#[derive(Copy)]
 pub struct TcgEfiSpecIdEvent {
     pub signature: [u8;16],
     pub platform_class: u32,
@@ -203,6 +207,7 @@ pub struct TcgEfiSpecIdEvent {
     pub vendor_info: Vec<u8>,
 }
 
+#[derive(Copy)]
 impl TcgEfiSpecIdEvent {
     pub fn new() -> TcgEfiSpecIdEvent {
         TcgEfiSpecIdEvent{
@@ -230,13 +235,13 @@ impl TcgEfiSpecIdEvent {
         UINT16 digestSize;
     } TCG_EfiSpecIdEventAlgorithmSize;
 */
+#[derive(Copy)]
 pub struct TcgEfiSpecIdEventAlgorithmSize {
     pub algo_id: u16,
     pub digest_size: u32
 }
 
 // used for storing multiple types into event_logs Vector in TcgEventLog
-#[derive(Clone)]
 pub trait EventLogEntry{
     fn show(&self);
 }
