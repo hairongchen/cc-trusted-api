@@ -2,7 +2,6 @@ use crate::binary_blob::*;
 use anyhow::anyhow;
 use crate::tcg::TcgEfiSpecIdEvent;
 use crate::tcg::EventLogEntryType;
-use crate::tcg::TcgEfiSpecIdEvent;
 use crate::tcg::EV_NO_ACTION;
 use crate::tcg::TcgPcClientImrEvent;
 use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
@@ -47,7 +46,7 @@ impl TcgEventLog {
     */
     pub fn select(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntryType>, anyhow::Error>{
         match self.parse() {
-            Ok(_) => _,
+            Ok(_) => (),
             Err(e) => {
                 return Err(anyhow!("[select] error in parse function {:?}", e));
             }

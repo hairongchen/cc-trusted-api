@@ -1,5 +1,4 @@
 use log::info;
-use core::mem;
 
 /* dumnp raw cc report in following format:
     00000000 04 00 02 00 81 00 00 00 00 00 00 00 93 9A 72 33  ..............r3
@@ -62,14 +61,14 @@ pub fn dump_data(data: &Vec<u8>) {
 //TODO: error handling
 pub fn get_u8(data: Vec<u8>) -> u8 {
     //unsafe { mem::transmute::<u8, u8>(data[0]) }
-    u8::from_be_bytes(data[0..1].try_into().unwrap());
+    u8::from_be_bytes(data[0..1].try_into().unwrap())
 }
 
 pub fn get_u16(data: Vec<u8>) -> u16 {
     //unsafe { mem::transmute::<[u8; 2], u8>(data).into() }
-    u16::from_be_bytes(data[0..2].try_into().unwrap());
+    u16::from_be_bytes(data[0..2].try_into().unwrap())
 }
 
 pub fn get_u32(data: Vec<u8>) -> u32 {
-    u32::from_be_bytes(data[0..4].try_into().unwrap());
+    u32::from_be_bytes(data[0..4].try_into().unwrap())
 }
