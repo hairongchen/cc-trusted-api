@@ -34,8 +34,8 @@ pub trait TcgAlgorithmRegistry {
 // digest format: (algo id, hash value)
 #[derive(Clone)]
 pub struct TcgDigest {
-    algo_id: u16,
-    hash: Vec<u8>,
+    pub algo_id: u16,
+    pub hash: Vec<u8>,
 }
 
 // this trait retrieve IMR's max index of a CVM and hash value
@@ -248,7 +248,7 @@ pub enum EventLogEntry
 }
 
 impl TcgImrEvent{
-    fn show(&self) {
+    pub fn show(&self) {
         info!("-------------------------------Event Log Entry-----------------------------");
         info!("IMR               : {}", self.imr_index);
         info!("Type              : {:02X?} ({:?})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
@@ -265,7 +265,7 @@ impl TcgImrEvent{
 
 
 impl TcgPcClientImrEvent{
-    fn show(&self) {
+    pub fn show(&self) {
         info!("--------------------Header Specification ID Event--------------------------");
         info!("IMR               : {}", self.imr_index);
         info!("Type              : {:02X?} ({:?})", self.event_type,
