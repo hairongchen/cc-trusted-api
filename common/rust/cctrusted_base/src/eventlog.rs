@@ -29,11 +29,11 @@ pub struct TcgEventLog {
 impl TcgEventLog {
 
     pub fn new(data: Vec<u8>) -> TcgEventLog {
-        let mut event_logs: Vec<EventLogEntryType> = Vec::new();
+        //let event_logs: Vec<EventLogEntryType> = Vec::new();
         TcgEventLog{
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             data: data,
-            event_logs: event_logs,
+            event_logs: Vec::new(),
             count: 0
         }
     }
