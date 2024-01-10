@@ -61,7 +61,7 @@ pub fn dump_data(data: &Vec<u8>) {
 
 //TODO: error handling
 pub fn get_u8(data: &Vec<u8>) -> u8 {
-    unsafe { mem::transmute::<[u8; 1], u8>(data[0..1]) }
+    unsafe { mem::transmute::<<u8>, u8>(data[0]) }
 }
 
 pub fn get_u16(data: &Vec<u8>) -> u16 {

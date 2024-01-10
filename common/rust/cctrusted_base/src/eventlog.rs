@@ -1,6 +1,6 @@
 use crate::tcg::*;
 use crate::binary_blob::*;
-use crate::tcg::*;
+use crate::tcg;
 use anyhow::anyhow;
 
 /***
