@@ -3,18 +3,18 @@ use anyhow::anyhow;
 use log::info;
 use crate::binary_blob::dump_data;
 
-pub const TPM_ALG_ERROR: u8 = 0x0;
-pub const TPM_ALG_RSA: u8 = 0x1;
-pub const TPM_ALG_SHA1: u8 = 0x4;
-pub const TPM_ALG_SHA256: u8 = 0xB;
-pub const TPM_ALG_SHA384: u8 = 0xC;
-pub const TPM_ALG_SHA512: u8 = 0xD;
-pub const TPM_ALG_ECDSA: u8 = 0x18;
+pub const TPM_ALG_ERROR: u16 = 0x0;
+pub const TPM_ALG_RSA: u16 = 0x1;
+pub const TPM_ALG_SHA1: u16 = 0x4;
+pub const TPM_ALG_SHA256: u16 = 0xB;
+pub const TPM_ALG_SHA384: u16 = 0xC;
+pub const TPM_ALG_SHA512: u16 = 0xD;
+pub const TPM_ALG_ECDSA: u16 = 0x18;
 
 // hash algorithm ID to algorithm name string map
 lazy_static! {
-    pub static ref ALGO_NAME_MAP: HashMap<u8, String> = {
-        let mut map: HashMap<u8, String> = HashMap::new();
+    pub static ref ALGO_NAME_MAP: HashMap<u16, String> = {
+        let mut map: HashMap<u16, String> = HashMap::new();
         map.insert(TPM_ALG_ERROR, "TPM_ALG_ERROR".to_string());
         map.insert(TPM_ALG_RSA, "TPM_ALG_RSA".to_string());
         map.insert(TPM_ALG_SHA1, "TPM_ALG_SHA1".to_string());
@@ -28,13 +28,13 @@ lazy_static! {
 
 // this trait retrieve tcg standard algorithm name in string
 pub trait TcgAlgorithmRegistry {
-    fn get_algorithm_id(&self) -> u8;
+    fn get_algorithm_id(&self) -> u16;
 }
 
 // digest format: (algo id, hash value)
 #[allow(dead_code)]
 pub struct TcgDigest {
-    algo_id: u8,
+    algo_id: u16,
     hash: Vec<u8>,
 }
 
@@ -231,7 +231,7 @@ impl TcgEfiSpecIdEvent {
     } TCG_EfiSpecIdEventAlgorithmSize;
 */
 pub struct TcgEfiSpecIdEventAlgorithmSize {
-    pub algo_id: u8,
+    pub algo_id: u16,
     pub digest_size: u32
 }
 
