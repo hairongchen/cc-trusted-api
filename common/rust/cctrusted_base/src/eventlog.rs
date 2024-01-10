@@ -117,7 +117,7 @@ impl TcgEventLog {
                     }
                 }
             } else {
-                match self.parse_spec_id_event_log(self.data[start..].to_vec()){
+                match self.parse_event_log(self.data[start..].to_vec()){
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
                         self.event_logs.push(EventLogEntry::TcgImrEvent(event_log));
