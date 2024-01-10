@@ -196,7 +196,7 @@ impl TcgEventLog {
             index = index + 2;
             let digest_size = get_u16(data[index..index+2].to_vec());
             index = index + 2;
-            spec_id_digest_sizes.push(digest_size);
+            spec_id_digest_sizes.push(TcgEfiSpecIdEventAlgorithmSize{algo_id, digest_size});
         }
 
         let spec_id_vendor_size = get_u8(data[index..index+1].to_vec());
@@ -220,7 +220,7 @@ impl TcgEventLog {
             vendor_info: spec_id_vendor_info
         };
 
-        Ok((self.specification_id_header, index.try_into().unwrap()))
+        Ok((specification_id_header, index.try_into().unwrap()))
     }
 
     /***
@@ -260,7 +260,7 @@ impl TcgEventLog {
             index = index + 2;
             let mut pos = 0;
             
-            for pos in self.spec_id_header_event.digest_sizes.len() as u32 {
+            for pos in 0..self.spec_id_header_event.digest_sizes.len() {
                 if self.spec_id_header_event.digest_sizes[pos].algo_id == alg_id {
                     break;
                 }

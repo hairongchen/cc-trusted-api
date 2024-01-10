@@ -231,8 +231,8 @@ impl TcgEfiSpecIdEvent {
     } TCG_EfiSpecIdEventAlgorithmSize;
 */
 pub struct TcgEfiSpecIdEventAlgorithmSize {
-    algo_id: u8,
-    digest_size: u32
+    pub algo_id: u8,
+    pub digest_size: u32
 }
 
 // used for storing multiple types into event_logs Vector in TcgEventLog
