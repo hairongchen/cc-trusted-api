@@ -244,19 +244,19 @@ pub trait EventLogEntry{
 }
 
 impl EventLogEntry for TcgImrEvent{
-    fn show(&self) {
-        info!("-------------------------------Event Log Entry-----------------------------");
-        info!("IMR               : {}", self.imr_index);
-        info!("Type              : {:02X?} ({:?})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
+    // fn show(&self) {
+    //     info!("-------------------------------Event Log Entry-----------------------------");
+    //     info!("IMR               : {}", self.imr_index);
+    //     info!("Type              : {:02X?} ({:?})", self.event_type, TcgEventType::get_event_type_string(self.event_type));
     
-        for digest_index in 0..self.digests.len() {
-            info!("Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
-            info!("Digest{}:", digest_index);
-            dump_data(&self.digests[digest_index].hash);
-        }
-        info!("Event:");
-        dump_data(&self.event);
-    }
+    //     for digest_index in 0..self.digests.len() {
+    //         info!("Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
+    //         info!("Digest{}:", digest_index);
+    //         dump_data(&self.digests[digest_index].hash);
+    //     }
+    //     info!("Event:");
+    //     dump_data(&self.event);
+    // }
 }
 
 impl Clone for TcgImrEvent {
@@ -273,14 +273,14 @@ impl Clone for TcgImrEvent {
 
 
 impl EventLogEntry for TcgPcClientImrEvent{
-    fn show(&self) {
-        info!("--------------------Header Specification ID Event--------------------------");
-        info!("IMR               : {}", self.imr_index);
-        info!("Type              : {:02X?} ({:?})", self.event_type,
-        TcgEventType::get_event_type_string(self.event_type));
-        info!("Event:");
-        dump_data(&self.event);
-    }
+    // fn show(&self) {
+    //     info!("--------------------Header Specification ID Event--------------------------");
+    //     info!("IMR               : {}", self.imr_index);
+    //     info!("Type              : {:02X?} ({:?})", self.event_type,
+    //     TcgEventType::get_event_type_string(self.event_type));
+    //     info!("Event:");
+    //     dump_data(&self.event);
+    // }
 }
 
 impl Clone for TcgPcClientImrEvent {
