@@ -17,6 +17,11 @@ use nix::*;
 use std::fs::File;
 use std::os::fd::AsRawFd;
 use std::path::Path;
+use std::io::BufReader;
+use cctrusted_base::tcg::EventLogEntry;
+use cctrusted_base::eventlog::TcgEventLog;
+use cctrusted_base::tcg::TcgEfiSpecIdEvent;
+
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
 pub enum TdxOperation {
@@ -372,7 +377,7 @@ impl CVM for TdxVM {
 
 impl TcgAlgorithmRegistry for TdxVM {
     // TcgAlgorithmRegistry trait function: return CVM default algorithm ID
-    fn get_algorithm_id(&self) -> u8 {
+    fn get_algorithm_id(&self) -> u16 {
         self.algo_id
     }
 }

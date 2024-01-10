@@ -9,6 +9,7 @@ use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
 use crate::cvm::build_cvm;
 use cctrusted_base::api::*;
 use cctrusted_base::api_data::*;
+use cctrusted_base::tcg::EventLogEntry;
 
 pub struct API {}
 
@@ -48,7 +49,7 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM
-    fn get_cc_eventlog(start: Optin<u32>, count: Option<u32>) ->  Result<Vec<EventLogEntry>, anyhow::Error> {
+    fn get_cc_eventlog(start: Option<u32>, count: Option<u32>) ->  Result<Vec<EventLogEntry>, anyhow::Error> {
         match build_cvm() {
             Ok(mut cvm) => {
                 cvm.process_cc_eventlog(start, count)
