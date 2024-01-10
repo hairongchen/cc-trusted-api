@@ -57,7 +57,7 @@ impl TcgEventLog {
                 s-1
             },
             None => 0
-        }
+        };
 
         let end = match count {
             Some(c) => {
@@ -67,9 +67,9 @@ impl TcgEventLog {
                 c
             },
             None => self.count
-        }
+        };
 
-        Ok(self.event_logs[begin:end])
+        Ok(self.event_logs[begin..end])
     }
 
     /***
@@ -78,7 +78,7 @@ impl TcgEventLog {
         Go through all event log data and parse the contents accordingly
         Save the parsed event logs into TcgEventLog.
     */
-    fn parse(&mut self) Result<bool, anyhow::Error>{
+    fn parse(&mut self) -> Result<bool, anyhow::Error>{
         if self.data.len() == 0 {
             return Err(anyhow!("[parse] no eventlog data provided"));
         }

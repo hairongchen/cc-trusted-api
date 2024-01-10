@@ -204,17 +204,19 @@ pub struct TcgEfiSpecIdEvent {
 }
 
 impl TcgEfiSpecIdEvent {
-    pub fn new() {
-        signature: [0;16],
-        platform_class: 0,
-        spec_version_minor: 0,
-        spec_version_major: 0
-        spec_errata: 0,
-        uintn_ize: 0,
-        number_of_algorithms: 0,
-        digest_sizes: Vec::new(),
-        vendor_info_size: 0,
-        vendor_info: Vec::new()
+    pub fn new() -> TcgEfiSpecIdEvent {
+        TcgEfiSpecIdEvent{
+            signature: [0;16],
+            platform_class: 0,
+            spec_version_minor: 0,
+            spec_version_major: 0
+            spec_errata: 0,
+            uintn_ize: 0,
+            number_of_algorithms: 0,
+            digest_sizes: Vec::new(),
+            vendor_info_size: 0,
+            vendor_info: Vec::new()
+        }
     }
 }
 
@@ -239,7 +241,7 @@ pub trait EventLogEntry{
 }
 
 impl EventLogEntry for TcgImrEvent{
-    fn show(&Self) {
+    fn show(&self) {
         info!("-------------------------------Event Log Entry-----------------------------");
         info!("IMR               : {}", self.imr_index);
         info!("Type              : {02X} ({})", self.event_type, EventType::get_event_type_string(self.event_type));
@@ -257,7 +259,7 @@ impl EventLogEntry for TcgImrEvent{
 }
 
 impl EventLogEntry for TcgPcClientImrEvent{
-    fn show(&Self) {
+    fn show(&self) {
         info!("--------------------Header Specification ID Event--------------------------");
         info!("IMR               : {}", self.imr_index);
         info!("Type              : {02X} ({})", self.event_type,
