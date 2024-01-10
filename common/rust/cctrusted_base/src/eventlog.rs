@@ -108,7 +108,7 @@ impl TcgEventLog {
                 match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len as usize;
-                        self.event_logs.push(EventLogEntry::TcgPcClientImrEventEntry(spec_id_event));
+                        self.event_logs.push(EventLogEntry::TcgPcClientImrEvent(spec_id_event));
                         self.count = self.count + 1;
                     },
                     Err(e) => {
@@ -120,7 +120,7 @@ impl TcgEventLog {
                 match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
-                        self.event_logs.push(EventLogEntry::TcgImrEventEntry(event_log));
+                        self.event_logs.push(EventLogEntry::TcgImrEvent(event_log));
                         self.count = self.count + 1;
                     },
                     Err(e) => {

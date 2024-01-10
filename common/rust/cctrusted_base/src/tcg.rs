@@ -243,8 +243,8 @@ pub struct TcgEfiSpecIdEventAlgorithmSize {
 #[derive(Clone)]
 pub enum EventLogEntry
 {
-    TcgImrEventEntry(TcgImrEvent),
-    TcgPcClientImrEventEntry(TcgPcClientImrEvent),
+    TcgImrEvent(TcgImrEvent),
+    TcgPcClientImrEvent(TcgPcClientImrEvent),
 }
 
 impl TcgImrEvent{
