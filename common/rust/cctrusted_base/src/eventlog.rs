@@ -200,6 +200,7 @@ impl TcgEventLog {
         let mut spec_id_digest_sizes: Vec<TcgEfiSpecIdEventAlgorithmSize> = Vec::new();
 
         for _ in 0..spec_id_num_of_algo {
+            info!("loop");
             let algo_id = get_u16(data[index..index+2].to_vec());
             index = index + 2;
             let digest_size = get_u16(data[index..index+2].to_vec());
