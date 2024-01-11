@@ -167,7 +167,8 @@ impl TcgEventLog {
         let header_event_type = get_u32(data[index..index+4].to_vec());
         index = index + 4;
 
-        let digest = data[index..index+20].try_into().unwrap(); // 20 zero for digest
+        let digest = data[index..index+20].try_into().unwrap();
+        info!("digest = {:?}",digest);
         index = index + 20;
         let header_event_size = get_u32(data[index..index+4].to_vec());
         index = index + 4;
@@ -189,6 +190,7 @@ impl TcgEventLog {
         // Parse EFI Spec Id Event structure
         let spec_id_signature = data[index..index+16].try_into().unwrap();
         index = index + 16;
+        info!("spec_id_signature = {:?}",spec_id_signature);
 
         let spec_id_platform_cls = get_u32(data[index..index+4].to_vec());
         index = index + 4;
