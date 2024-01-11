@@ -62,7 +62,7 @@ pub fn dump_data(data: &Vec<u8>) {
 pub fn get_u8(data: Vec<u8>) -> u8 {
     //unsafe { mem::transmute::<u8, u8>(data[0]) }
     info!("vec {:?}", data);
-    info!("==== u8 = {}",u8::from_be_bytes(data[0..1].try_into().unwrap()));
+    info!("==== u8 = {}",u8::from_le_bytes(data[0..1].try_into().unwrap()));
     u8::from_be_bytes(data[0..1].try_into().unwrap())
     
 }
@@ -70,12 +70,12 @@ pub fn get_u8(data: Vec<u8>) -> u8 {
 pub fn get_u16(data: Vec<u8>) -> u16 {
     info!("vec {:?}", data);
     //unsafe { mem::transmute::<[u8; 2], u8>(data).into() }
-    info!("==== u16 = {}",u16::from_be_bytes(data[0..2].try_into().unwrap()));
+    info!("==== u16 = {}",u16::from_le_bytes(data[0..2].try_into().unwrap()));
     u16::from_be_bytes(data[0..2].try_into().unwrap())
 }
 
 pub fn get_u32(data: Vec<u8>) -> u32 {
     info!("vec {:?}", data);
-    info!("==== u32 = {}",u32::from_be_bytes(data[0..4].try_into().unwrap()));
+    info!("==== u32 = {}",u32::from_le_bytes(data[0..4].try_into().unwrap()));
     u32::from_be_bytes(data[0..4].try_into().unwrap())
 }
