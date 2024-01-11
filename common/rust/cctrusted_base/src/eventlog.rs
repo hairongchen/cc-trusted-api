@@ -106,6 +106,7 @@ impl TcgEventLog {
             }
 
             if event_type == EV_NO_ACTION {
+                info!("in parse_spec_id_event_log");
                 match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len as usize;
@@ -118,6 +119,7 @@ impl TcgEventLog {
                     }
                 }
             } else {
+                info!("in parse_event_log");
                 match self.parse_event_log(self.data[start..].to_vec()){
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
