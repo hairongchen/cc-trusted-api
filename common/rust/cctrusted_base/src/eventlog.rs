@@ -98,6 +98,7 @@ impl TcgEventLog {
         while index < self.data.len() {
             let start = index;
             let imr = get_u32(self.data[index..index+4].to_vec());
+            info!("imr = {}", imr);
             index = index + 4;
             let event_type = get_u32(self.data[index..index+4].to_vec());
             info!("event_type = {}, get_u32 = {}", event_type, get_u32(self.data[index..index+4].to_vec()));
