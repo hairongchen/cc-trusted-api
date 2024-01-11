@@ -250,10 +250,10 @@ impl TcgEventLog {
     fn parse_event_log(&self, data: Vec<u8>)-> Result<(TcgImrEvent, u32), anyhow::Error>{
         let mut index = 0;
 
-        let imr_index = get_u32(data[index..index+4].to_vec());
+        let mut imr_index = get_u32(data[index..index+4].to_vec());
         info!("==== imr_index = {}",imr_index);
         index = index + 4;
-        let imr_index = imr_index - 1;
+        imr_index = imr_index - 1;
         let event_type = get_u32(data[index..index+4].to_vec());
         index = index + 4;
 
