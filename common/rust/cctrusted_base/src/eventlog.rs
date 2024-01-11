@@ -180,6 +180,11 @@ impl TcgEventLog {
             event_size: header_event_size, 
             event: header_event
         };
+        info!("imr_index = {}",imr_index);
+        info!("header_imr = {}",header_imr);
+        info!("header_event_type = {}",header_event_type);
+        info!("header_event_size = {}",header_event_size);
+        info!("index = {}",index);
 
         // Parse EFI Spec Id Event structure
         let spec_id_signature = data[index..index+16].try_into().unwrap();
