@@ -99,8 +99,8 @@ impl TcgEventLog {
             let start = index;
             let imr = get_u32(self.data[index..index+4].to_vec());
             index = index + 4;
-            let event_type = get_u32(self.data[index..index+4].to_vec());
-            info!("event_type = {}",event_type);
+            let event_type:u32 = get_u32(self.data[index..index+4].to_vec());
+            info!("event_type = {}", event_type);
             if imr == 0xFFFFFFFF {
                 break;
             }
