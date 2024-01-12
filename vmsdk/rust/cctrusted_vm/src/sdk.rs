@@ -92,7 +92,7 @@ mod sdk_api_tests {
     use log::*;
     use rand::Rng;
     use cctrusted_base::cc_type::TeeType;
-    use cctrusted_base::tcg::{TPM_ALG_SHA256,TPM_ALG_SHA384,TcgAlgorithmRegistry};
+    use cctrusted_base::tcg::{TPM_ALG_SHA256,TPM_ALG_SHA384};
     use cctrusted_base::tdx::common::Tdx;
     use cctrusted_base::tdx::quote::TdxQuote;
     use crate::cvm::get_cvm_type;
@@ -138,7 +138,7 @@ mod sdk_api_tests {
     fn test_get_cc_report_none_data() {
         let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
 
-        let expected_report_data = match Tdx::generate_tdx_report_data(nonce.clone(), None) {
+        let expected_report_data = match Tdx::generate_tdx_report_data(Some(nonce.clone()), None) {
             Ok(r) => r,
             Err(e) => {
                 error!("[test_get_cc_report] error generating TDX report data: {:?}", e);
