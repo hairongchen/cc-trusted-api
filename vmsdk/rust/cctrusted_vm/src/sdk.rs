@@ -212,6 +212,18 @@ mod sdk_api_tests {
     }
 
     #[test]
+    fn test_get_cc_report_data_not_base64_encoded() {
+        let data = "XD^%*!x".to_string();
+        match API::get_cc_report(None, Some(nonce), ExtraArgs {}) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).contains("data is not base64 encoded"));
+                return;
+            }
+        };
+    }
+
+    #[test]
     fn test_get_default_algorithm() {
         let defalt_algo = match API::get_default_algorithm() {
             Ok(algorithm) => {
