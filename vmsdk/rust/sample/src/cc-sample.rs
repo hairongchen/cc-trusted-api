@@ -27,6 +27,38 @@ fn main() {
     };
 
     // dump the cc report with API "dump_cc_report"
-    info!("call cc trusted API [dump_cc_report] to dump cc report!");
-    API::dump_cc_report(&report.cc_report);
+    //info!("call cc trusted API [dump_cc_report] to dump cc report!");
+    //API::dump_cc_report(&report.cc_report);
+
+    // parse the cc report with API "parse_cc_report"
+    if report.cc_type == TeeType::TDX {
+        let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
+            Ok(q) => q,
+            Err(e) => {
+                error!("error parse tdx quote: {:?}", e);
+                return;
+            }
+        };
+        info!(
+            "version = {}, report_data = {}",
+            tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
+        );
+
+        // show data of the struct TdxQuoteHeader
+        info!("call struct show function to show data of the struct TdxQuoteHeader!");
+        tdx_quote.header.show();
+
+        // show data of the struct TdxQuoteBody
+        info!("call struct show function to show data of the struct TdxQuoteBody!");
+        tdx_quote.body.show();
+
+        // show data of the struct tdx_quote_ecdsa256_sigature
+        match tdx_quote.tdx_quote_ecdsa256_sigature{
+            None =>  {
+                error!("no tdx_quote.tdx_quote_ecdsa256_sigature!");
+                return;
+            }
+            Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.show()
+        }
+    }
 }
