@@ -173,6 +173,31 @@ mod sdk_api_tests {
 
     #[test]
     fn test_get_cc_measurement() {
+        let count = match API::get_measurement_count(){
+            Ok(count) => {
+                info!("measurement registers count: {}", count);
+                count
+            }
+            Err(e) => {
+                error!("error get measurement count: {:?}", e);
+                return;
+            }
+        };
+
+        if get_cvm_type().tee_type == TeeType::TDX {
+            for index in 0..count {
+                let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
+                    Ok(tcg_digest) => tcg_digest,
+                    Err(e) => {
+                        error!("error get measurement: {:?}", e);
+                        return;
+                    } 
+                };
+
+                assert_eq!(tcg_digest.algo_id, TPM_ALG_SHA384);
+                assert_eq!(tcg_digest.hash.len(), 384);
+            }
+        }
 
     }
 
