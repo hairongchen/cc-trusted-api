@@ -344,10 +344,10 @@ mod test_generate_tdx_report_data {
 
     #[test]
     //generate_tdx_report check result as expected
-    //original nonce = "abcdefgh", orginal report_data = "12345678"
+    //orginal nonce = "12345678", original data = "abcdefgh"
     fn test_generate_tdx_report_data_report_data_nonce_base64_encoded_as_expected() {
         let result =
-            Tdx::generate_tdx_data(Some("YWJjZGVmZw==".to_string()), Some("MTIzNDU2Nzg=".to_string()))
+            Tdx::generate_tdx_data(Some("MTIzNDU2Nzg=".to_string()), Some("YWJjZGVmZw==".to_string()))
                 .unwrap();
         let expected_hash = [
             93, 71, 28, 83, 115, 189, 166, 130, 87, 137, 126, 119, 140, 209, 163, 215, 13, 175,
