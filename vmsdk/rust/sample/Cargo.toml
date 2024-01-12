@@ -9,7 +9,7 @@ name = "cc-sample-quote"
 path = "src/cc-sample-quote.rs"
 
 [[bin]]
-name = "cc-sample-quote"
+name = "cc-sample-measurement"
 path = "src/cc-sample-measurement.rs"
 
 [dependencies]
