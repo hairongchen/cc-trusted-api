@@ -64,8 +64,8 @@ impl TdxVM {
     }
 
     // TdxVM struct method: get tdreport
-    pub fn get_td_report(&self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
-        let report_data = match Tdx::generate_tdx_report_data(nonce, Some(data)) {
+    pub fn get_td_report(&self, nonce: Option<String>, data: Option<String>) -> Result<Vec<u8>, anyhow::Error> {
+        let report_data = match Tdx::generate_tdx_report_data(nonce, data) {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!(
@@ -189,7 +189,7 @@ impl TdxVM {
 // TdxVM implements the interfaces defined in CVM trait
 impl CVM for TdxVM {
     // CVM trait function: get tdx quote
-    fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error> {
+    fn process_cc_report(&mut self, nonce: Option<String>, data: Option<String>) -> Result<Vec<u8>, anyhow::Error> {
         let tdreport = match self.get_td_report(nonce, data) {
             Ok(r) => r,
             Err(e) => {

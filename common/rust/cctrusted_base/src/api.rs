@@ -28,8 +28,8 @@ pub trait CCTrustedApi {
             The cc report byte array or error information
     */
     fn get_cc_report(
-        nonce: String,
-        data: String,
+        nonce: Option<String>,
+        data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error>;
 

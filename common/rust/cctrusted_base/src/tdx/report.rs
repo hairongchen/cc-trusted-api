@@ -207,21 +207,32 @@ impl Tdx {
             The tdreport byte array
     */
     pub fn generate_tdx_report_data(
-        nonce: String,
+        nonce: Option<String>,
         data: Option<String>,
     ) -> Result<String, anyhow::Error> {
-        let nonce_decoded = match base64::decode(nonce) {
-            Ok(v) => v,
-            Err(e) => {
-                return Err(anyhow!(
-                    "[generate_tdx_report_data] nonce is not base64 encoded: {:?}",
-                    e
-                ))
-            }
-        };
         let mut hasher = Sha512::new();
-        hasher.update(nonce_decoded);
-        let _ret = match data {
+
+        match nonce {
+            Some(_encoded_nonce) => {
+                if _encoded_nonce.is_empty() {
+                    hasher.update("")
+                } else {
+                    let decoded_nonce = match base64::decode(_encoded_nonce) {
+                        Ok(v) => v,
+                        Err(e) => {
+                            return Err(anyhow!(
+                                "[generate_tdx_report_data] nonce is not base64 encoded: {:?}",
+                                e
+                            ))
+                        }
+                    };
+                    hasher.update(decoded_nonce)
+                }
+            }
+            None => hasher.update(""),
+        };
+        
+        match data {
             Some(_encoded_data) => {
                 if _encoded_data.is_empty() {
                     hasher.update("")

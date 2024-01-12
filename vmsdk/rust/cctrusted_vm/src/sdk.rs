@@ -15,8 +15,8 @@ pub struct API {}
 impl CCTrustedApi for API {
     // CCTrustedApi trait function: get report of a CVM
     fn get_cc_report(
-        nonce: String,
-        data: String,
+        nonce: Option<String>,
+        data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error> {
         match build_cvm() {
@@ -121,6 +121,38 @@ mod sdk_api_tests {
 
         let expected_cvm_type = get_cvm_type().tee_type;
         assert_eq!(report.cc_type, expected_cvm_type);
+
+        if report.cc_type == TeeType::TDX {
+            let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
+                Ok(q) => q,
+                Err(e) => {
+                    error!("[test_get_cc_report] error parse tdx quote: {:?}", e);
+                    return;
+                }
+            };
+
+            assert_eq!(base64::encode(&tdx_quote.body.report_data), expected_report_data);
+        }
+    }
+
+    fn test_get_cc_report_none_data() {
+        let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
+
+        let expected_report_data = match Tdx::generate_tdx_report_data(nonce.clone(), None) {
+            Ok(r) => r,
+            Err(e) => {
+                error!("[test_get_cc_report] error generating TDX report data: {:?}", e);
+                return;
+            }
+        };
+
+        let report = match API::get_cc_report(nonce, data, ExtraArgs {}) {
+            Ok(q) => q,
+            Err(e) => {
+                error!("[test_get_cc_report] error getting TDX report: {:?}", e);
+                return;
+            }
+        };
 
         if report.cc_type == TeeType::TDX {
             let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
