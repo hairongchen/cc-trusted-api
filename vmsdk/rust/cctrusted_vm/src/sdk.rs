@@ -135,13 +135,14 @@ mod sdk_api_tests {
         }
     }
 
+    #[test]
     fn test_get_cc_report_none_data() {
         let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
 
         let expected_report_data = match Tdx::generate_tdx_report_data(Some(nonce.clone()), None) {
             Ok(r) => r,
             Err(e) => {
-                error!("[test_get_cc_report] error generating TDX report data: {:?}", e);
+                error!("[test_get_cc_report_none_data] error generating TDX report data: {:?}", e);
                 return;
             }
         };
@@ -149,7 +150,7 @@ mod sdk_api_tests {
         let report = match API::get_cc_report(Some(nonce.clone()), None, ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
-                error!("[test_get_cc_report] error getting TDX report: {:?}", e);
+                error!("[test_get_cc_report_none_data] error getting TDX report: {:?}", e);
                 return;
             }
         };
@@ -158,7 +159,7 @@ mod sdk_api_tests {
             let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
                 Ok(q) => q,
                 Err(e) => {
-                    error!("[test_get_cc_report] error parse tdx quote: {:?}", e);
+                    error!("[test_get_cc_report_none_data] error parse tdx quote: {:?}", e);
                     return;
                 }
             };
