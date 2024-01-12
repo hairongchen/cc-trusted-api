@@ -146,7 +146,7 @@ mod sdk_api_tests {
         };
 
         if get_cvm_type().tee_type == TeeType::TDX {
-            assert_eq!(defalt_algo.algo_id), TPM_ALG_SHA384);
+            assert_eq!(defalt_algo.algo_id, TPM_ALG_SHA384);
         }
 
     }
