@@ -1,8 +1,8 @@
 #![allow(non_camel_case_types)]
+use anyhow::anyhow;
+use core::mem::transmute;
 use core::result::Result;
 use core::result::Result::Ok;
-use core::mem::transmute;
-use anyhow::anyhow;
 use log::*;
 
 use crate::tdx::common::*;
@@ -102,7 +102,7 @@ pub struct TdxQuoteHeader {
     Version                 2       Integer     Version of the Quote data structure.
                                                     Value: 4
     Attestation Key Type    2       Integer     Type of the Attestation Key used by the
-                                                Quoting Enclave. Supported values: 
+                                                Quoting Enclave. Supported values:
                                                         2 (ECDSA-256-with-P-256 curve)
                                                         3 (ECDSA-384-with-P-384 curve) (Note:
                                                             currently not supported)
@@ -114,8 +114,8 @@ pub struct TdxQuoteHeader {
     RESERVED                2       Byte Array  Zero
     RESERVED                2       Byte Array  Zero
     QE Vendor ID            16      UUID        Unique identifier of the QE Vendor.
-                                                    Value: 
-                                                    939A7233F79C4CA9940A0DB3957F0607 
+                                                    Value:
+                                                    939A7233F79C4CA9940A0DB3957F0607
                                                     (Intel® SGX QE Vendor)
                                                 Note: Each vendor that decides to provide a
                                                 customized Quote data structure should have
@@ -128,18 +128,17 @@ pub struct TdxQuoteHeader {
                                                 every quote generated with this QE on this
                                                 platform
     */
-
     pub version: u16,
     pub ak_type: AttestationKeyType,
     pub tee_type: IntelTeeType,
-    pub reserved_1: [u8;2],
-    pub reserved_2: [u8;2],
-    pub qe_vendor: [u8;16],
-    pub user_data: [u8;20] 
+    pub reserved_1: [u8; 2],
+    pub reserved_2: [u8; 2],
+    pub qe_vendor: [u8; 16],
+    pub user_data: [u8; 20],
 }
 
 impl TdxQuoteHeader {
-    pub fn show(&self){
+    pub fn show(&self) {
         info!("show the data of TdxQuoteHeader");
         info!("version = {}", self.version);
         info!("ak_type = {:?}", self.ak_type);
@@ -188,8 +187,8 @@ pub struct TdxQuoteBody {
     MRSIGNERSEAM    48              SHA384          Zero for the Intel® TDX Module.
     SEAMATTRIBUTES  8               Byte Array      Must be zero for TDX 1.0
     TDATTRIBUTES    8               Byte Array      TD Attributes
-    XFAM            8               Byte Array      XFAM (eXtended Features Available Mask) is 
-                                                    defined as a 64b bitmap, which has the same 
+    XFAM            8               Byte Array      XFAM (eXtended Features Available Mask) is
+                                                    defined as a 64b bitmap, which has the same
                                                     format as XCR0 or IA32_XSS MSR.
     MRTD            48              SHA384          Measurement of the initial contents of the TD.
                                                     See TDX Module definitions here: TDX Module
@@ -231,25 +230,25 @@ pub struct TdxQuoteBody {
     MRSERVICETD     48              SHA384      Measurement of the initial contents of the
                                                 Migration TD
     */
-    pub tee_tcb_svn:      [u8; 16],  // Array of TEE TCB SVNs
-    pub mrseam:         [u8; 48],  // Measurement of the SEAM module (SHA384 hash)
-    pub mrseam_signer:   [u8; 48],  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
-    pub seam_attributes: [u8; 8],   // ATTRIBUTES of SEAM
-    pub td_attributes:   [u8; 8],   // ATTRIBUTES of TD
-    pub xfam:           [u8; 8],   // XFAM of TD
-    pub mrtd:           [u8; 48],  // Measurement of the initial contents of the TD (SHA384 hash)
-    pub mrconfigid:     [u8; 48],  // Software defined ID for non-owner-defined configuration of the TD
-    pub mrowner:        [u8; 48],  // Software defined ID for the guest TD’s owner
-    pub mrownerconfig:  [u8; 48],  // Software defined ID for owner-defined configuration of the TD
-    pub rtmr0:          [u8; 48], // data in RTMR0(SHA384 hash)
-    pub rtmr1:          [u8; 48], // data in RTMR1(SHA384 hash)
-    pub rtmr2:          [u8; 48], // data in RTMR2(SHA384 hash)
-    pub rtmr3:          [u8; 48], // data in RTMR3(SHA384 hash)
-    pub report_data:     [u8; 64],  // Additional Report Data
+    pub tee_tcb_svn: [u8; 16],    // Array of TEE TCB SVNs
+    pub mrseam: [u8; 48],         // Measurement of the SEAM module (SHA384 hash)
+    pub mrseam_signer: [u8; 48],  // Measurement of a 3rd party SEAM module’s signer (SHA384 hash)
+    pub seam_attributes: [u8; 8], // ATTRIBUTES of SEAM
+    pub td_attributes: [u8; 8],   // ATTRIBUTES of TD
+    pub xfam: [u8; 8],            // XFAM of TD
+    pub mrtd: [u8; 48],           // Measurement of the initial contents of the TD (SHA384 hash)
+    pub mrconfigid: [u8; 48], // Software defined ID for non-owner-defined configuration of the TD
+    pub mrowner: [u8; 48],    // Software defined ID for the guest TD’s owner
+    pub mrownerconfig: [u8; 48], // Software defined ID for owner-defined configuration of the TD
+    pub rtmr0: [u8; 48],      // data in RTMR0(SHA384 hash)
+    pub rtmr1: [u8; 48],      // data in RTMR1(SHA384 hash)
+    pub rtmr2: [u8; 48],      // data in RTMR2(SHA384 hash)
+    pub rtmr3: [u8; 48],      // data in RTMR3(SHA384 hash)
+    pub report_data: [u8; 64], // Additional Report Data
 }
 
 impl TdxQuoteBody {
-    pub fn show(&self){
+    pub fn show(&self) {
         info!("show the data of TdxQuoteBody");
         info!("tee_tcb_svn = {:02X?}", self.tee_tcb_svn);
         info!("mrseam = {:02X?}", self.mrseam);
@@ -272,22 +271,22 @@ impl TdxQuoteBody {
 #[repr(C)]
 #[derive(Clone)]
 pub struct TdxEnclaveReportBody {
-    pub cpu_svn: [u8;16],
-    pub miscselect: [u8;4],
-    pub reserved_1: [u8;28],
-    pub attributes: [u8;16],
-    pub mrenclave: [u8;32],
-    pub reserved_2: [u8;32],
-    pub mrsigner: [u8;32],
-    pub reserved_3: [u8;96],
+    pub cpu_svn: [u8; 16],
+    pub miscselect: [u8; 4],
+    pub reserved_1: [u8; 28],
+    pub attributes: [u8; 16],
+    pub mrenclave: [u8; 32],
+    pub reserved_2: [u8; 32],
+    pub mrsigner: [u8; 32],
+    pub reserved_3: [u8; 96],
     pub isv_prodid: i16,
     pub isv_svn: i16,
-    pub reserved_4: [u8;60],
-    pub report_data: [u8;64]
+    pub reserved_4: [u8; 60],
+    pub report_data: [u8; 64],
 }
 
 impl TdxEnclaveReportBody {
-    pub fn show(&self){
+    pub fn show(&self) {
         info!("show the data of TdxEnclaveReportBody");
         info!("cpu_svn = {:02X?}", self.cpu_svn);
         info!("miscselect = {:02X?}", self.miscselect);
@@ -318,29 +317,42 @@ pub struct TdxQuoteQeReportCert {
     pub qe_report: TdxEnclaveReportBody,
     pub qe_report_sig: [u8; 64],
     pub qe_auth_data: Vec<u8>,
-    pub qe_auth_cert: Box<TdxQuoteQeCert>
+    pub qe_auth_cert: Box<TdxQuoteQeCert>,
 }
 
 impl TdxQuoteQeReportCert {
-    pub fn new(data: Vec<u8>) -> TdxQuoteQeReportCert{
-        let tdx_enclave_report_body: TdxEnclaveReportBody = unsafe { transmute::<[u8; 384], TdxEnclaveReportBody>(data[0..384].try_into().expect("slice with incorrect length")) };
+    pub fn new(data: Vec<u8>) -> TdxQuoteQeReportCert {
+        let tdx_enclave_report_body: TdxEnclaveReportBody = unsafe {
+            transmute::<[u8; 384], TdxEnclaveReportBody>(
+                data[0..384]
+                    .try_into()
+                    .expect("slice with incorrect length"),
+            )
+        };
         let qe_report_sig = data[384..448].try_into().unwrap();
-        let auth_data_size = unsafe { transmute::<[u8; 2], u16>(data[448..450].try_into().expect("slice with incorrect length")) }.to_le();
+        let auth_data_size = unsafe {
+            transmute::<[u8; 2], u16>(
+                data[448..450]
+                    .try_into()
+                    .expect("slice with incorrect length"),
+            )
+        }
+        .to_le();
         let auth_data_end = 450 + auth_data_size;
         let mut qe_auth_data = Vec::new();
         if auth_data_size > 0 {
             qe_auth_data = data[450..auth_data_end as usize].to_vec();
         }
 
-        TdxQuoteQeReportCert{
+        TdxQuoteQeReportCert {
             qe_report: tdx_enclave_report_body,
             qe_report_sig: qe_report_sig,
             qe_auth_data: qe_auth_data,
-            qe_auth_cert: Box::new(TdxQuoteQeCert::new(data[auth_data_end as usize ..].to_vec()))
+            qe_auth_cert: Box::new(TdxQuoteQeCert::new(data[auth_data_end as usize..].to_vec())),
         }
     }
 
-    pub fn show(&self){
+    pub fn show(&self) {
         info!("show the data of TdxQuoteQeReportCert");
         self.qe_report.show();
         info!("qe_report_sig = {:02X?}", self.qe_report_sig);
@@ -364,28 +376,35 @@ pub struct TdxQuoteQeCert {
     */
     pub cert_type: QeCertDataType,
     pub cert_data_struct: Option<Box<TdxQuoteQeReportCert>>,
-    pub cert_data_vec: Option<Vec<u8>>
+    pub cert_data_vec: Option<Vec<u8>>,
 }
 
 impl TdxQuoteQeCert {
-    pub fn new(data: Vec<u8>) -> TdxQuoteQeCert{
-        let cert_type:QeCertDataType = unsafe { transmute::<[u8; 2], QeCertDataType>(data[0..2].try_into().expect("slice with incorrect length"))};
-        let cert_size = unsafe { transmute::<[u8; 4], u32>(data[2..6].try_into().expect("slice with incorrect length")) }.to_le();
+    pub fn new(data: Vec<u8>) -> TdxQuoteQeCert {
+        let cert_type: QeCertDataType = unsafe {
+            transmute::<[u8; 2], QeCertDataType>(
+                data[0..2].try_into().expect("slice with incorrect length"),
+            )
+        };
+        let cert_size = unsafe {
+            transmute::<[u8; 4], u32>(data[2..6].try_into().expect("slice with incorrect length"))
+        }
+        .to_le();
         let cert_data_end = 6 + cert_size;
 
         if cert_type == QeCertDataType::QE_REPORT_CERT {
             let cert_data = TdxQuoteQeReportCert::new(data[6..cert_data_end as usize].to_vec());
-            TdxQuoteQeCert{
+            TdxQuoteQeCert {
                 cert_type: cert_type as QeCertDataType,
                 cert_data_struct: Some(Box::new(cert_data)),
-                cert_data_vec: None
+                cert_data_vec: None,
             }
         } else {
             let cert_data = data[6..cert_data_end as usize].to_vec();
-            TdxQuoteQeCert{
+            TdxQuoteQeCert {
                 cert_type: cert_type as QeCertDataType,
                 cert_data_struct: None,
-                cert_data_vec: Some(cert_data)
+                cert_data_vec: Some(cert_data),
             }
         }
     }
@@ -393,13 +412,11 @@ impl TdxQuoteQeCert {
     pub fn show(&self) {
         info!("show the data of TdxQuoteQeCert");
         info!("cert_type = {:?}", self.cert_type);
-        match &self.cert_data_struct{
-            None =>  {
-                match &self.cert_data_vec{
-                    None => return,
-                    Some(cert_data_vec) => info!("cert_data_vec = {:2X?}", cert_data_vec),
-                }
-            }
+        match &self.cert_data_struct {
+            None => match &self.cert_data_vec {
+                None => return,
+                Some(cert_data_vec) => info!("cert_data_vec = {:2X?}", cert_data_vec),
+            },
             Some(cert_data_struct) => cert_data_struct.show(),
         }
     }
@@ -423,7 +440,7 @@ pub struct TdxQuoteEcdsa256Sigature {
     */
     pub sig: [u8; 64],
     pub ak: [u8; 64],
-    pub qe_cert: TdxQuoteQeCert
+    pub qe_cert: TdxQuoteQeCert,
 }
 
 impl TdxQuoteEcdsa256Sigature {
@@ -435,11 +452,11 @@ impl TdxQuoteEcdsa256Sigature {
         TdxQuoteEcdsa256Sigature {
             sig: sig,
             ak: ak,
-            qe_cert: qe_cert
+            qe_cert: qe_cert,
         }
     }
 
-    pub fn show(&self){
+    pub fn show(&self) {
         info!("show the data of TdxQuoteEcdsa256Sigature");
         info!("sig = {:02X?}", self.sig);
         info!("ak = {:02X?}", self.ak);
@@ -450,7 +467,7 @@ impl TdxQuoteEcdsa256Sigature {
 #[repr(C)]
 #[derive(Clone)]
 pub struct TdxQuoteSignature {
-    pub data: Vec<u8>
+    pub data: Vec<u8>,
 }
 
 #[derive(Clone)]
@@ -482,7 +499,6 @@ pub struct TdxQuote {
     For Version 5
     TODO: implement version 5 according to A.4. Version 5 Quote Format.
     */
-
     pub header: TdxQuoteHeader,
     pub body: TdxQuoteBody,
     pub tdx_quote_ecdsa256_sigature: Option<TdxQuoteEcdsa256Sigature>, // for AttestationKeyType.ECDSA_P256
@@ -491,42 +507,58 @@ pub struct TdxQuote {
 
 impl TdxQuote {
     pub fn parse_tdx_quote(quote: Vec<u8>) -> Result<TdxQuote, anyhow::Error> {
-        let tdx_quote_header: TdxQuoteHeader = unsafe { transmute::<[u8; 48], TdxQuoteHeader>(quote[0..48].try_into().expect("slice with incorrect length")) };
+        let tdx_quote_header: TdxQuoteHeader = unsafe {
+            transmute::<[u8; 48], TdxQuoteHeader>(
+                quote[0..48]
+                    .try_into()
+                    .expect("slice with incorrect length"),
+            )
+        };
         if tdx_quote_header.version == TDX_QUOTE_VERSION_4 {
-            let tdx_quote_body: TdxQuoteBody = unsafe { transmute::<[u8; 584], TdxQuoteBody>(quote[48..632].try_into().expect("slice with incorrect length")) };
-            let sig_len = unsafe { transmute::<[u8; 4], i32>(quote[632..636].try_into().expect("slice with incorrect length")) }.to_le();
+            let tdx_quote_body: TdxQuoteBody = unsafe {
+                transmute::<[u8; 584], TdxQuoteBody>(
+                    quote[48..632]
+                        .try_into()
+                        .expect("slice with incorrect length"),
+                )
+            };
+            let sig_len = unsafe {
+                transmute::<[u8; 4], i32>(
+                    quote[632..636]
+                        .try_into()
+                        .expect("slice with incorrect length"),
+                )
+            }
+            .to_le();
             let sig_idx_end = 636 + sig_len;
 
-            if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256{
-                let tdx_quote_ecdsa256_sigature = TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end as usize].to_vec());
+            if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P256 {
+                let tdx_quote_ecdsa256_sigature =
+                    TdxQuoteEcdsa256Sigature::new(quote[636..sig_idx_end as usize].to_vec());
 
-                Ok(TdxQuote{
+                Ok(TdxQuote {
                     header: tdx_quote_header,
                     body: tdx_quote_body,
                     tdx_quote_signature: None,
-                    tdx_quote_ecdsa256_sigature: Some(tdx_quote_ecdsa256_sigature)              
+                    tdx_quote_ecdsa256_sigature: Some(tdx_quote_ecdsa256_sigature),
                 })
-
-            } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384{
-                let tdx_quote_signature = TdxQuoteSignature{
+            } else if tdx_quote_header.ak_type == AttestationKeyType::ECDSA_P384 {
+                let tdx_quote_signature = TdxQuoteSignature {
                     data: quote[636..sig_idx_end as usize].to_vec(),
                 };
 
-                Ok(TdxQuote{
+                Ok(TdxQuote {
                     header: tdx_quote_header,
                     body: tdx_quote_body,
                     tdx_quote_signature: Some(tdx_quote_signature),
-                    tdx_quote_ecdsa256_sigature: None              
+                    tdx_quote_ecdsa256_sigature: None,
                 })
-
             } else {
-                return Err(anyhow!("[parse_tdx_quote] unknown ak_type!"));                    
+                return Err(anyhow!("[parse_tdx_quote] unknown ak_type!"));
             }
-
-        }
-        else if tdx_quote_header.version == TDX_QUOTE_VERSION_5 {
-                // TODO: implement version 5
-                todo!()   
+        } else if tdx_quote_header.version == TDX_QUOTE_VERSION_5 {
+            // TODO: implement version 5
+            todo!()
         } else {
             return Err(anyhow!(
                 "[parse_tdx_quote] unknown quote header version: {:}",

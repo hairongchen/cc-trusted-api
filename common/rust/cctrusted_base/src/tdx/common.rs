@@ -37,22 +37,22 @@ pub const TDX_REPORT_LEN: u32 = 1024;
 pub const TDX_QUOTE_LEN: usize = 4 * 4096;
 
 #[repr(u16)]
-#[derive(Clone,PartialEq,Debug)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum AttestationKeyType {
     ECDSA_P256 = 2,
-    ECDSA_P384 = 3
+    ECDSA_P384 = 3,
 }
 
 #[repr(u32)]
 #[derive(Clone)]
 pub enum IntelTeeType {
     TEE_SGX = 0x00000000,
-    TEE_TDX = 0x00000081
+    TEE_TDX = 0x00000081,
 }
 
 pub const QE_VENDOR_INTEL_SGX: &str = "939a7233f79c4ca9940a0db3957f0607";
 
-#[derive(Clone,PartialEq,Debug)]
+#[derive(Clone, PartialEq, Debug)]
 #[repr(i16)]
 pub enum QeCertDataType {
     /*** QE Certification Data Type.
@@ -60,14 +60,13 @@ pub enum QeCertDataType {
     https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
     A.3.9. QE Certification Data - Version 4
     */
-    PCK_ID_PLAIN            = 1,
-    PCK_ID_RSA_2048_OAEP    = 2,
-    PCK_ID_RSA_3072_OAEP    = 3,
-    PCK_LEAF_CERT_PLAIN     = 4, // Currently not supported
-    PCK_CERT_CHAIN          = 5,
-    QE_REPORT_CERT          = 6,
-    PLATFORM_MANIFEST       = 7, // Currently not supported
+    PCK_ID_PLAIN = 1,
+    PCK_ID_RSA_2048_OAEP = 2,
+    PCK_ID_RSA_3072_OAEP = 3,
+    PCK_LEAF_CERT_PLAIN = 4, // Currently not supported
+    PCK_CERT_CHAIN = 5,
+    QE_REPORT_CERT = 6,
+    PLATFORM_MANIFEST = 7, // Currently not supported
 }
-pub const TDX_QUOTE_VERSION_4:u16 = 4;
-pub const TDX_QUOTE_VERSION_5:u16 = 5;
-
+pub const TDX_QUOTE_VERSION_4: u16 = 4;
+pub const TDX_QUOTE_VERSION_5: u16 = 5;

@@ -38,9 +38,12 @@ pub struct TcgDigest {
 }
 
 impl TcgDigest {
-    pub fn show(&self){
+    pub fn show(&self) {
         info!("show data in struct TcgDigest");
-        info!("algo = {}", ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned());
+        info!(
+            "algo = {}",
+            ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
+        );
         info!("hash = {:02X?}", self.hash);
     }
 
@@ -54,7 +57,7 @@ impl TcgAlgorithmRegistry for TcgDigest {
         self.algo_id
     }
 
-    fn get_algorithm_id_str(&self) -> String{
+    fn get_algorithm_id_str(&self) -> String {
         ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 }
