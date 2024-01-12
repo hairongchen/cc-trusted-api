@@ -92,7 +92,7 @@ mod sdk_api_tests {
     use log::*;
     use rand::Rng;
     use cctrusted_base::cc_type::TeeType;
-    use cctrusted_base::tcg::{TPM_ALG_SHA256, TPM_ALG_SHA384};
+    use cctrusted_base::tcg::{TPM_ALG_SHA256,TPM_ALG_SHA384,TcgAlgorithmRegistry};
     use cctrusted_base::tdx::common::Tdx;
     use cctrusted_base::tdx::quote::TdxQuote;
     use crate::cvm::get_cvm_type;
