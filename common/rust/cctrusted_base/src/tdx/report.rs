@@ -21,12 +21,6 @@ pub struct tdx_1_5_report_req {
     pub tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
 }
 
-#[repr(C)]
-pub struct tdx_1_5_report_req {
-    pub reportdata: [u8; REPORT_DATA_LEN as usize], // User buffer with REPORTDATA to be included into TDREPORT
-    pub tdreport: [u8; TDX_REPORT_LEN as usize], // User buffer to store TDREPORT output from TDCALL[TDG.MR.REPORT]
-}
-
 /***
     Struct REPORTMACSTRUCT's layout:
         offset, len
