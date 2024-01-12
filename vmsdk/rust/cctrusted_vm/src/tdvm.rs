@@ -344,7 +344,7 @@ impl CVM for TdxVM {
             }
         };
 
-        let tdreport_raw = match self.get_td_report("".to_string(), "".to_string()) {
+        let tdreport_raw = match self.get_td_report(None, None) {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!(
