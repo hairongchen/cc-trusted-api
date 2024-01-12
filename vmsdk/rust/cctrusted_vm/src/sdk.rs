@@ -135,6 +135,7 @@ mod sdk_api_tests {
         }
     }
 
+    #[test]
     fn test_get_default_algorithm() {
         let defalt_algo = match API::get_default_algorithm() {
             Ok(algorithm) => {
@@ -152,10 +153,12 @@ mod sdk_api_tests {
 
     }
 
+    #[test]
     fn test_get_measurement_count() {
 
     }
 
+    #[test]
     fn test_get_cc_measurement() {
 
     }
