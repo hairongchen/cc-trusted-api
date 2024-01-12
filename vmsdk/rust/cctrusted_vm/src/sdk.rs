@@ -220,7 +220,7 @@ mod sdk_api_tests {
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
                         println!("==== {:?}", e);
-                        assert_eq!(true, e.unwrap().contains(invalid algo id));
+                        assert_eq!(true, e.try_into().unwrap().contains("invalid algo id"));
                         return;
                     } 
                 };
