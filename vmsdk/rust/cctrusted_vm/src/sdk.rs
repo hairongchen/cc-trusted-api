@@ -195,7 +195,7 @@ mod sdk_api_tests {
                 };
 
                 assert_eq!(tcg_digest.algo_id, TPM_ALG_SHA384);
-                assert_eq!(tcg_digest.hash.len(), 384);
+                assert_eq!(tcg_digest.hash.len(), 48);
             }
         }
 
