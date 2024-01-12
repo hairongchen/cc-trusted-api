@@ -207,7 +207,7 @@ impl Tdx {
         Returns:
             The tdreport byte array
     */
-    pub fn generate_tdx_data(
+    pub fn generate_tdx_report_data(
         nonce: Option<String>,
         data: Option<String>,
     ) -> Result<String, anyhow::Error> {
@@ -291,21 +291,21 @@ mod test_generate_tdx_report_data {
     #[test]
     //generate_tdx_report allow optional nonce
     fn test_generate_tdx_report_data_no_nonce() {
-        let result = Tdx::generate_tdx_data(None, Some("YWJjZGVmZw==".to_string()));
+        let result = Tdx::generate_tdx_report_data(None, Some("YWJjZGVmZw==".to_string()));
         assert!(result.is_ok());
     }
 
     #[test]
     //generate_tdx_report allow optional data
     fn tdx_get_quote_report_data_no_data() {
-        let result = Tdx::generate_tdx_data(Some("IXUKoBO1XEFBPwopN4sY".to_string()), None);
+        let result = Tdx::generate_tdx_report_data(Some("IXUKoBO1XEFBPwopN4sY".to_string()), None);
         assert!(result.is_ok());
     }
 
     #[test]
     //generate_tdx_report allow empty data
     fn test_generate_tdx_report_data_data_size_0() {
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
             Some("".to_string()),
         );
@@ -316,7 +316,7 @@ mod test_generate_tdx_report_data {
     //generate_tdx_report require data string is base64 encoded
     fn test_generate_tdx_report_data_data_not_base64_encoded() {
         //coming in data should always be base64 encoded
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
             Some("XD^%*!x".to_string()),
         );
@@ -327,7 +327,7 @@ mod test_generate_tdx_report_data {
     //generate_tdx_report require nonce string is base64 encoded
     fn test_generate_tdx_report_data_nonce_not_base64_encoded() {
         //coming in nonce should always be base64 encoded
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some("XD^%*!x".to_string()),
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
         );
@@ -338,7 +338,7 @@ mod test_generate_tdx_report_data {
     //generate_tdx_report require nonce string is base64 encoded
     fn test_generate_tdx_report_data_nonce_too_short_not_base64_encoded() {
         //coming in nonce should always be base64 encoded
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some("123".to_string()),
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
         );
@@ -349,7 +349,7 @@ mod test_generate_tdx_report_data {
     //generate_tdx_report require data string is base64 encoded
     fn test_generate_tdx_report_data_report_data_too_short_not_base64_encoded() {
         //coming in data should always be base64 encoded
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
             Some("123".to_string()),
         );
@@ -360,7 +360,7 @@ mod test_generate_tdx_report_data {
     //generate_tdx_report check result as expected
     //orginal nonce = "12345678", original data = "abcdefgh"
     fn test_generate_tdx_report_data_report_data_nonce_base64_encoded_as_expected() {
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some("MTIzNDU2Nzg=".to_string()),
             Some("YWJjZGVmZw==".to_string()),
         )
@@ -378,7 +378,7 @@ mod test_generate_tdx_report_data {
     #[test]
     //generate_tdx_report allow long data string
     fn test_generate_tdx_report_data_long_tdx_data() {
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
             Some(
                 "MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2Nzgx\
@@ -397,7 +397,7 @@ mod test_generate_tdx_report_data {
     #[test]
     //generate_tdx_report allow long nonce string
     fn test_generate_tdx_report_data_long_nonce() {
-        let result = Tdx::generate_tdx_data(
+        let result = Tdx::generate_tdx_report_data(
             Some(
                 "MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2Nzgx\
             MjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEy\
@@ -416,7 +416,7 @@ mod test_generate_tdx_report_data {
     #[test]
     //generate_tdx_report_data generated data is 64 bytes
     fn test_generate_tdx_report_data_report_data_is_64_bytes() {
-        let report_data_hashed = match Tdx::generate_tdx_data(
+        let report_data_hashed = match Tdx::generate_tdx_report_data(
             Some("MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4".to_string()),
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
         ) {
