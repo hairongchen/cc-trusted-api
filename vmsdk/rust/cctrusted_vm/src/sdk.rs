@@ -214,7 +214,7 @@ mod sdk_api_tests {
     #[test]
     fn test_get_cc_report_data_not_base64_encoded() {
         let data = "XD^%*!x".to_string();
-        match API::get_cc_report(None, Some(nonce), ExtraArgs {}) {
+        match API::get_cc_report(None, Some(data), ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).contains("data is not base64 encoded"));
