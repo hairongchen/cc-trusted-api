@@ -278,7 +278,8 @@ impl Tdx {
 #[cfg(test)]
 mod test_generate_tdx_report_data {
     use super::*;
-
+    use crate::tdx::common::Tdx;
+ 
     #[test]
     //generate_tdx_report allow optional nonce
     fn test_generate_tdx_report_data_no_nonce() {
@@ -328,7 +329,7 @@ mod test_generate_tdx_report_data {
     fn test_generate_tdx_report_data_nonce_too_short_not_base64_encoded() {
         //coming in nonce should always be base64 encoded
         let result =
-            generate_tdx_data(Some(Some("123".to_string()), "IXUKoBO1XEFBPwopN4sY".to_string()));
+            generate_tdx_data(Some("123".to_string()), Some("IXUKoBO1XEFBPwopN4sY".to_string()));
         assert!(result.is_err());
     }
 
