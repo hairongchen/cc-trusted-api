@@ -97,8 +97,8 @@ mod sdk_api_tests {
     use cctrusted_base::tdx::quote::TdxQuote;
     use crate::cvm::get_cvm_type;
 
-    #[test]
     // test on cc trusted API [get_cc_report]
+    #[test]
     fn test_get_cc_report() {
         let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
         let data = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
@@ -106,7 +106,7 @@ mod sdk_api_tests {
         let expected_report_data = match Tdx::generate_tdx_report_data(Some(nonce.clone()), Some(data.clone())) {
             Ok(r) => r,
             Err(e) => {
-                error!("[test_get_cc_report] error generating TDX report data: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -114,7 +114,7 @@ mod sdk_api_tests {
         let report = match API::get_cc_report(Some(nonce.clone()), Some(data.clone()), ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
-                error!("[test_get_cc_report] error getting TDX report: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -142,7 +142,7 @@ mod sdk_api_tests {
         let expected_report_data = match Tdx::generate_tdx_report_data(Some(nonce.clone()), None) {
             Ok(r) => r,
             Err(e) => {
-                error!("[test_get_cc_report_without_data] error generating TDX report data: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -150,7 +150,7 @@ mod sdk_api_tests {
         let report = match API::get_cc_report(Some(nonce.clone()), None, ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
-                error!("[test_get_cc_report_without_data] error getting TDX report: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -159,7 +159,7 @@ mod sdk_api_tests {
             let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
                 Ok(q) => q,
                 Err(e) => {
-                    error!("[test_get_cc_report_without_data] error parse tdx quote: {:?}", e);
+                    assert_eq!(true, format!("{:?}", e).is_empty());
                     return;
                 }
             };
@@ -173,7 +173,7 @@ mod sdk_api_tests {
         let expected_report_data = match Tdx::generate_tdx_report_data(None, None) {
             Ok(r) => r,
             Err(e) => {
-                error!("[test_get_cc_report_without_nonce_and_data] error generating TDX report data: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -181,7 +181,7 @@ mod sdk_api_tests {
         let report = match API::get_cc_report(None, None, ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
-                error!("[test_get_cc_report_without_nonce_and_data] error getting TDX report: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -190,7 +190,7 @@ mod sdk_api_tests {
             let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
                 Ok(q) => q,
                 Err(e) => {
-                    error!("[test_get_cc_report_without_nonce_and_data] error parse tdx quote: {:?}", e);
+                    assert_eq!(true, format!("{:?}", e).is_empty());
                     return;
                 }
             };
@@ -223,6 +223,7 @@ mod sdk_api_tests {
         };
     }
 
+    // test on cc trusted API [get_default_algorithm]
     #[test]
     fn test_get_default_algorithm() {
         let defalt_algo = match API::get_default_algorithm() {
@@ -230,7 +231,7 @@ mod sdk_api_tests {
                 algorithm
             }
             Err(e) => {
-                error!("error get algorithm: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -241,15 +242,16 @@ mod sdk_api_tests {
 
     }
 
+    // test on cc trusted API [get_measurement_count]
     #[test]
     fn test_get_measurement_count() {
         let count = match API::get_measurement_count(){
             Ok(count) => {
-                info!("measurement registers count: {}", count);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 count
             }
             Err(e) => {
-                error!("error get measurement count: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -259,15 +261,16 @@ mod sdk_api_tests {
         }
     }
 
+    // test on cc trusted API [get_cc_measurement]
     #[test]
     fn test_get_cc_measurement() {
         let count = match API::get_measurement_count(){
             Ok(count) => {
-                info!("measurement registers count: {}", count);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 count
             }
             Err(e) => {
-                error!("error get measurement count: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -277,7 +280,7 @@ mod sdk_api_tests {
                 let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
-                        error!("error get measurement: {:?}", e);
+                        assert_eq!(true, format!("{:?}", e).is_empty());
                         return;
                     } 
                 };
@@ -290,14 +293,13 @@ mod sdk_api_tests {
     }
 
     #[test]
-    fn test_get_cc_measurement_wrong_algo_id() {
+    fn test_get_cc_measurement_with_wrong_algo_id() {
         let count = match API::get_measurement_count(){
             Ok(count) => {
-                info!("measurement registers count: {}", count);
                 count
             }
             Err(e) => {
-                error!("error get measurement count: {:?}", e);
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
