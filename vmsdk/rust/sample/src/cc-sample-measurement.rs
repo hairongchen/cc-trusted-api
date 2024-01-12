@@ -22,6 +22,7 @@ fn main() {
     };
 
     // get number of measurement registers in CVM
+    info!("call cc trusted API [get_measurement_count] to get number of measurement registers in CVM!");
     let count = match API::get_measurement_count(){
         Ok(count) => {
             info!("measurement registers count: {}", count);
@@ -33,6 +34,8 @@ fn main() {
         }
     };
 
+    // retrive and show measurement registers in CVM
+    info!("call cc trusted API [get_cc_measurement] to get measurement register content in CVM!");
     for index in 0..count {
         let tcg_digest = match API::get_cc_measurement(index, defalt_algo.algo_id){
             Ok(tcg_digest) => tcg_digest,
