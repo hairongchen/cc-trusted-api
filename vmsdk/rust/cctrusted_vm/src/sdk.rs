@@ -135,4 +135,16 @@ mod sdk_api_tests {
         }
     }
 
+    fn test_get_default_algorithm() {
+
+    }
+    
+    fn test_get_measurement_count() {
+
+    }
+
+    fn test_get_cc_measurement() {
+
+    }
+
 }
