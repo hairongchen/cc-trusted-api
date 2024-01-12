@@ -346,8 +346,8 @@ impl TdxQuoteQeReportCert {
 
         TdxQuoteQeReportCert {
             qe_report: tdx_enclave_report_body,
-            qe_report_sig: qe_report_sig,
-            qe_auth_data: qe_auth_data,
+            qe_report_sig,
+            qe_auth_data,
             qe_auth_cert: Box::new(TdxQuoteQeCert::new(data[auth_data_end as usize..].to_vec())),
         }
     }
@@ -414,7 +414,7 @@ impl TdxQuoteQeCert {
         info!("cert_type = {:?}", self.cert_type);
         match &self.cert_data_struct {
             None => match &self.cert_data_vec {
-                None => return,
+                None => (),
                 Some(cert_data_vec) => info!("cert_data_vec = {:2X?}", cert_data_vec),
             },
             Some(cert_data_struct) => cert_data_struct.show(),
@@ -450,9 +450,9 @@ impl TdxQuoteEcdsa256Sigature {
         let qe_cert = TdxQuoteQeCert::new(data[128..data.len()].to_vec());
 
         TdxQuoteEcdsa256Sigature {
-            sig: sig,
-            ak: ak,
-            qe_cert: qe_cert,
+            sig,
+            ak,
+            qe_cert,
         }
     }
 

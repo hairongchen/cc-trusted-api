@@ -19,12 +19,12 @@ impl TdxRTMR {
         };
 
         let tcg_digest = TcgDigest {
-            algo_id: algo_id,
+            algo_id,
             hash: digest.to_vec(),
         };
 
         Ok(TdxRTMR {
-            index: index,
+            index,
             digest: (algo_id, tcg_digest),
         })
     }
@@ -32,11 +32,11 @@ impl TdxRTMR {
 
 impl TcgIMR for TdxRTMR {
     fn max_index() -> u8 {
-        return 3;
+        3
     }
 
     fn get_index(&self) -> u8 {
-        return self.index;
+        self.index
     }
 
     fn get_tcg_digest(&self, _algo_id: u8) -> TcgDigest {
