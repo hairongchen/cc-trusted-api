@@ -169,6 +169,37 @@ mod sdk_api_tests {
     }
 
     #[test]
+    fn test_get_cc_report_none_nonce_and_data() {
+        let expected_report_data = match Tdx::generate_tdx_report_data(None, None) {
+            Ok(r) => r,
+            Err(e) => {
+                error!("[test_get_cc_report_none_nonce_and_data] error generating TDX report data: {:?}", e);
+                return;
+            }
+        };
+
+        let report = match API::get_cc_report(None, None, ExtraArgs {}) {
+            Ok(q) => q,
+            Err(e) => {
+                error!("[test_get_cc_report_none_nonce_and_data] error getting TDX report: {:?}", e);
+                return;
+            }
+        };
+
+        if report.cc_type == TeeType::TDX {
+            let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
+                Ok(q) => q,
+                Err(e) => {
+                    error!("[test_get_cc_report_none_nonce_and_data] error parse tdx quote: {:?}", e);
+                    return;
+                }
+            };
+
+            assert_eq!(base64::encode(&tdx_quote.body.report_data), expected_report_data);
+        }
+    }
+
+    #[test]
     fn test_get_default_algorithm() {
         let defalt_algo = match API::get_default_algorithm() {
             Ok(algorithm) => {
@@ -249,7 +280,7 @@ mod sdk_api_tests {
 
         if get_cvm_type().tee_type == TeeType::TDX {
             for index in 0..count {
-                let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA256){
+                match API::get_cc_measurement(index, TPM_ALG_SHA256){
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
                         assert_eq!(true, format!("{:?}", e).contains("invalid algo id"));
