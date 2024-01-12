@@ -120,7 +120,7 @@ mod sdk_api_tests {
         };
 
         let expected_cvm_type = get_cvm_type().tee_type;
-        assert_eq!(report.cc_type.tee_type, expected_cvm_type);
+        assert_eq!(report.cc_type, expected_cvm_type);
 
         if report.cc_type == TeeType::TDX {
             let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
