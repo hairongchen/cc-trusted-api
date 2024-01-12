@@ -56,7 +56,7 @@ impl CCTrustedApi for API {
     fn get_cc_measurement(index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
         match build_cvm() {
             Ok(mut cvm) => {
-                cvm.process_cc_measurement(index, algo_id)
+                Ok(cvm.process_cc_measurement(index, algo_id))
             }
             Err(e) => return Err(anyhow!("[get_cc_measurement] error create cvm: {:?}", e)),
         }
@@ -71,8 +71,10 @@ impl CCTrustedApi for API {
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
         match build_cvm() {
             Ok(cvm) => {
+                // call CVM trait defined methods
+                let algo_id = cvm.get_algorithm_id();
                 Ok(Algorithm {
-                    algo_id: cvm.get_algorithm_id(),
+                    algo_id,
                     algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
                 })
             }

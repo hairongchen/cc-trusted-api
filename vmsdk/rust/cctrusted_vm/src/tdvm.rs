@@ -3,7 +3,7 @@
 use crate::cvm::*;
 use anyhow::*;
 use cctrusted_base::cc_type::*;
-use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
+use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest, TcgIMR};
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
 use cctrusted_base::tdx::report::*;
@@ -322,7 +322,7 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: retrieve TDX RTMR
-    fn process_cc_measurement(&mut self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
+    fn process_cc_measurement(&self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
 
         match TdxRTMR::is_valid_index(index){
             Ok(_) => (),
@@ -396,6 +396,10 @@ impl TcgAlgorithmRegistry for TdxVM {
     // TcgAlgorithmRegistry trait function: return CVM default algorithm ID
     fn get_algorithm_id(&self) -> u8 {
         self.algo_id
+    }
+
+    fn get_algorithm_id_str(&self) -> String {
+        ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 }
 
