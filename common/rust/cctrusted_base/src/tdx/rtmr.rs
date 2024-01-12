@@ -61,5 +61,7 @@ impl TcgIMR for TdxRTMR {
         if algo_id != TPM_ALG_SHA384 {
             return Err(anyhow!("[is_valid_algo] invalid algo id: {}", algo_id));
         }
+
+        Ok(true)
     }
 }
