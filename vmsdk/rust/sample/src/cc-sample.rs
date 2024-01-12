@@ -1,6 +1,9 @@
 use cctrusted_base::api::*;
 use cctrusted_base::api_data::*;
+use cctrusted_base::cc_type::TeeType;
+use cctrusted_base::tdx::quote::TdxQuote;
 use cctrusted_vm::sdk::API;
+
 use log::*;
 use rand::Rng;
 
