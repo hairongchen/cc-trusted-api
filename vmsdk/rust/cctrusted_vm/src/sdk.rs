@@ -219,7 +219,7 @@ mod sdk_api_tests {
                 let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA256){
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
-                        assert_eq!(true, e.unwrap_err().contains("invalid algo id"));
+                        assert_eq!(true, format!("{:?}", e).contains("invalid algo id"));
                         return;
                     } 
                 };
