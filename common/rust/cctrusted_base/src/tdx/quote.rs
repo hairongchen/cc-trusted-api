@@ -449,11 +449,7 @@ impl TdxQuoteEcdsa256Sigature {
         let ak = data[64..128].try_into().unwrap();
         let qe_cert = TdxQuoteQeCert::new(data[128..data.len()].to_vec());
 
-        TdxQuoteEcdsa256Sigature {
-            sig,
-            ak,
-            qe_cert,
-        }
+        TdxQuoteEcdsa256Sigature { sig, ak, qe_cert }
     }
 
     pub fn show(&self) {
