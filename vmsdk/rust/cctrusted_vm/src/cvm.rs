@@ -19,6 +19,17 @@ pub trait CVM {
     fn process_cc_report(&mut self, nonce: String, data: String) -> Result<Vec<u8>, anyhow::Error>;
 
     /***
+        retrive CVM max number of measurement registers
+
+        Args:
+            None
+
+        Returns:
+            max index of register of CVM
+    */
+    fn get_max_index(&self) -> u8;
+
+    /***
         retrive CVM measurement registers, e.g.: RTMRs, vTPM PCRs, etc.
 
         Args:

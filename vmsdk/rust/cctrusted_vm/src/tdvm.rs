@@ -7,6 +7,7 @@ use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
 use cctrusted_base::tdx::report::*;
+use cctrusted_base::tdx::rtmr::TdxRTMR;
 use core::convert::TryInto;
 use core::mem;
 use core::ptr;
@@ -315,9 +316,58 @@ impl CVM for TdxVM {
         Ok(qgs_msg_resp.id_quote[0..(qgs_msg_resp.quote_size as usize)].to_vec())
     }
 
+    // CVM trait function: get tdx rtmr max index
+    fn get_max_index(&self) -> u8 {
+        TdxRTMR::max_index()
+    }
+
     // CVM trait function: retrieve TDX RTMR
-    fn process_cc_measurement(&self, _index: u8, _algo_id: u8) -> TcgDigest {
-        todo!()
+    fn process_cc_measurement(&mut self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
+
+        match TdxRTMR::is_valid_index(index){
+            Ok(_) => (),
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] {:?}",
+                    e
+                ))
+            }
+        };
+
+        match TdxRTMR::is_valid_algo(algo_id){
+            Ok(_) => (),
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] {:?}",
+                    e
+                ))
+            }
+        };
+
+        let tdreport_raw = match self.get_td_report("".to_string(), "".to_string()) {
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] error getting TD report: {:?}",
+                    e
+                ))
+            }
+        };
+
+        let tdreport = match Tdx::parse_td_report(&tdreport_raw, self.version.clone()) {
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!(
+                    "[process_cc_measurement] error parsing TD report: {:?}",
+                    e
+                ))
+            }        
+        };
+
+        match TdxRTMR::new(index, algo_id, tdreport.td_info.rtmrs[index as usize]) {
+            Ok(rtmr) => Ok(rtmr.get_tcg_digest(algo_id)),
+            Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
+        }
     }
 
     // CVM trait function: retrieve TDX CCEL and IMA eventlog

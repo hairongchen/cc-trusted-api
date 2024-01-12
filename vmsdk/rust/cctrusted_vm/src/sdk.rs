@@ -42,9 +42,24 @@ impl CCTrustedApi for API {
         dump_data(report)
     }
 
+    // CCTrustedApi trait function: get max number of CVM IMRs
+    fn get_measurement_count() -> Result<u8, anyhow::Error> {
+        match build_cvm() {
+            Ok(cvm) => {
+                Ok(cvm.get_max_index()+1)
+            }
+            Err(e) => return Err(anyhow!("[get_measurement_count] error create cvm: {:?}", e)),
+        } 
+    }
+
     // CCTrustedApi trait function: get measurements of a CVM
-    fn get_cc_measurement(_index: u8, _algo_id: u8) -> TcgDigest {
-        todo!()
+    fn get_cc_measurement(index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
+        match build_cvm() {
+            Ok(mut cvm) => {
+                cvm.process_cc_measurement(index, algo_id)
+            }
+            Err(e) => return Err(anyhow!("[get_cc_measurement] error create cvm: {:?}", e)),
+        }
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM
@@ -56,10 +71,8 @@ impl CCTrustedApi for API {
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
         match build_cvm() {
             Ok(cvm) => {
-                // call CVM trait defined methods
-                let algo_id = cvm.get_algorithm_id();
                 Ok(Algorithm {
-                    algo_id,
+                    algo_id: cvm.get_algorithm_id(),
                     algo_id_str: ALGO_NAME_MAP.get(&algo_id).unwrap().to_owned(),
                 })
             }
