@@ -223,6 +223,7 @@ mod sdk_api_tests {
                         return;
                     } 
                 };
+                println!("show index = {}, algo = {:?}, hash = {:02X?}", index, tcg_digest.get_algorithm_id_str(), tcg_digest.get_hash());
             }
         }
 
