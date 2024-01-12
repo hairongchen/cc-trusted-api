@@ -205,8 +205,7 @@ mod sdk_api_tests {
         match API::get_cc_report(Some(nonce), None, ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
-                println!("=== {:}",e);
-                assert_eq!(true, format!("{:?}", e).contains("invalid algo id"));
+                assert_eq!(true, format!("{:?}", e).contains("nonce is not base64 encoded"));
                 return;
             }
         };
