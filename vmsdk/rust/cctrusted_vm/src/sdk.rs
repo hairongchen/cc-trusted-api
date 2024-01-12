@@ -200,7 +200,7 @@ mod sdk_api_tests {
     }
 
     #[test]
-    fn test_get_cc_report_nonce_not_base64_encoded{
+    fn test_get_cc_report_nonce_not_base64_encoded() {
         let nonce = "XD^%*!x".to_string();
         match API::get_cc_report(None, None, ExtraArgs {}) {
             Ok(q) => q,
