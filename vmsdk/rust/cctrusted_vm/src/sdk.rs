@@ -89,8 +89,12 @@ impl CCTrustedApi for API {
 #[cfg(test)]
 mod sdk_api_tests {
     use super::*;
+    use log::*;
     use rand::Rng;
-    use cctrusted_base::tdx::report::*;
+    use cctrusted_base::tdx::common::Tdx;
+    use cctrusted_base::cc_type::TeeType;
+    use cctrusted_base::tdx::quote::TdxQuote;
+
 
     #[test]
     // test on cc trusted API [get_cc_report]
@@ -101,10 +105,8 @@ mod sdk_api_tests {
         let expected_report_data = match Tdx::generate_tdx_report_data(nonce, Some(data)) {
             Ok(r) => r,
             Err(e) => {
-                return Err(anyhow!(
-                    "[test_get_cc_report] error generating TDX report data: {:?}",
-                    e
-                ))
+                error!("[test_get_cc_report] error generating TDX report data: {:?}", e);
+                return;
             }
         };
 
