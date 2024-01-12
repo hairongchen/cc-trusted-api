@@ -94,7 +94,7 @@ mod sdk_api_tests {
     use cctrusted_base::tdx::common::Tdx;
     use cctrusted_base::cc_type::TeeType;
     use cctrusted_base::tdx::quote::TdxQuote;
-    use cctrusted_base::cc_type::*;
+    use cctrusted_base::cc_type::TeeType;
     use crate::cvm::get_cvm_type;
 
 
@@ -121,7 +121,7 @@ mod sdk_api_tests {
         };
 
         let expected_cvm_type = get_cvm_type().tee_type;
-        assert_eq!(base64::encode(&report.cc_type.tee_type), expected_cvm_type);
+        assert_eq!(report.cc_type.tee_type, expected_cvm_type);
 
         if report.cc_type == TeeType::TDX {
             let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
