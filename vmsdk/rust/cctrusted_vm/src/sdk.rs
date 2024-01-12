@@ -92,7 +92,6 @@ mod sdk_api_tests {
     use log::*;
     use rand::Rng;
     use cctrusted_base::tdx::common::Tdx;
-    use cctrusted_base::cc_type::TeeType;
     use cctrusted_base::tdx::quote::TdxQuote;
     use cctrusted_base::cc_type::TeeType;
     use crate::cvm::get_cvm_type;
