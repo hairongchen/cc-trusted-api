@@ -56,7 +56,7 @@ impl CCTrustedApi for API {
     fn get_cc_measurement(index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
         match build_cvm() {
             Ok(mut cvm) => {
-                Ok(cvm.process_cc_measurement(index, algo_id))
+                cvm.process_cc_measurement(index, algo_id)
             }
             Err(e) => return Err(anyhow!("[get_cc_measurement] error create cvm: {:?}", e)),
         }
