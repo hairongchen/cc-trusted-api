@@ -155,7 +155,20 @@ mod sdk_api_tests {
 
     #[test]
     fn test_get_measurement_count() {
+        let count = match API::get_measurement_count(){
+            Ok(count) => {
+                info!("measurement registers count: {}", count);
+                count
+            }
+            Err(e) => {
+                error!("error get measurement count: {:?}", e);
+                return;
+            }
+        };
 
+        if get_cvm_type().tee_type == TeeType::TDX {
+            assert_eq!(count, 4);
+        }
     }
 
     #[test]
