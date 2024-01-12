@@ -96,7 +96,6 @@ mod sdk_api_tests {
     use cctrusted_base::cc_type::TeeType;
     use crate::cvm::get_cvm_type;
 
-
     #[test]
     // test on cc trusted API [get_cc_report]
     fn test_get_cc_report() {
@@ -136,9 +135,22 @@ mod sdk_api_tests {
     }
 
     fn test_get_default_algorithm() {
+        let defalt_algo = match API::get_default_algorithm() {
+            Ok(algorithm) => {
+                algorithm
+            }
+            Err(e) => {
+                error!("error get algorithm: {:?}", e);
+                return;
+            }
+        };
+
+        if get_cvm_type().tee_type == TeeType::TDX {
+            assert_eq!(defalt_algo.algo_id), TPM_ALG_SHA384);
+        }
 
     }
-    
+
     fn test_get_measurement_count() {
 
     }
