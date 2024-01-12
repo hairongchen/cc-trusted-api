@@ -247,7 +247,6 @@ mod sdk_api_tests {
     fn test_get_measurement_count() {
         let count = match API::get_measurement_count(){
             Ok(count) => {
-                assert_eq!(true, format!("{:?}", e).is_empty());
                 count
             }
             Err(e) => {
@@ -266,7 +265,6 @@ mod sdk_api_tests {
     fn test_get_cc_measurement() {
         let count = match API::get_measurement_count(){
             Ok(count) => {
-                assert_eq!(true, format!("{:?}", e).is_empty());
                 count
             }
             Err(e) => {
