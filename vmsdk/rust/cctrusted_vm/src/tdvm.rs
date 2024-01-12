@@ -3,7 +3,7 @@
 use crate::cvm::*;
 use anyhow::*;
 use cctrusted_base::cc_type::*;
-use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest, TcgIMR};
+use cctrusted_base::tcg::*;
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
 use cctrusted_base::tdx::report::*;
