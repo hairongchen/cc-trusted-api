@@ -197,7 +197,7 @@ pub struct TDReport {
 
 impl Tdx {
     /***
-        generate tdx report data with nonce and data
+        generate tdx data with nonce and data
 
         Args:
             nonce (String): against replay attacks
@@ -206,7 +206,7 @@ impl Tdx {
         Returns:
             The tdreport byte array
     */
-    pub fn generate_tdx_report_data(
+    pub fn generate_tdx_data(
         nonce: Option<String>,
         data: Option<String>,
     ) -> Result<String, anyhow::Error> {
@@ -255,7 +255,7 @@ impl Tdx {
             .finalize()
             .as_slice()
             .try_into()
-            .expect("[generate_tdx_report_data] Wrong length of report data");
+            .expect("[generate_tdx_report_data] Wrong length of data");
         Ok(base64::encode(hash_array))
     }
 
@@ -272,5 +272,139 @@ impl Tdx {
                 td_info
             }
         )
+    }
+}
+
+#[cfg(test)]
+mod test_generate_tdx_report_data {
+    use super::*;
+
+    #[test]
+    //generate_tdx_report allow optional nonce
+    fn test_generate_tdx_report_data_no_nonce() {
+        let result = generate_tdx_data(None, Some("YWJjZGVmZw==".to_string()));
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    //generate_tdx_report allow optional data
+    fn tdx_get_quote_report_data_no_data() {
+        let result = generate_tdx_data(Some("IXUKoBO1XEFBPwopN4sY".to_string()), None);
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    //generate_tdx_report allow empty data
+    fn test_generate_tdx_report_data_data_size_0() {
+        let result =
+            generate_tdx_data(Some("IXUKoBO1XEFBPwopN4sY".to_string()), Some("".to_string()));
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    //generate_tdx_report require data string is base64 encoded
+    fn test_generate_tdx_report_data_data_not_base64_encoded() {
+        //coming in data should always be base64 encoded
+        let result = generate_tdx_data(
+            Some("IXUKoBO1XEFBPwopN4sY".to_string()),
+            Some("XD^%*!x".to_string())
+        );
+        assert!(result.is_err());
+    }
+
+    #[test]
+    //generate_tdx_report require nonce string is base64 encoded
+    fn test_generate_tdx_report_data_nonce_not_base64_encoded() {
+        //coming in nonce should always be base64 encoded
+        let result = generate_tdx_data(
+            Some("XD^%*!x".to_string()),
+            Some("IXUKoBO1XEFBPwopN4sY".to_string()),
+        );
+        assert!(result.is_err());
+    }
+
+    #[test]
+    //generate_tdx_report require nonce string is base64 encoded
+    fn test_generate_tdx_report_data_nonce_too_short_not_base64_encoded() {
+        //coming in nonce should always be base64 encoded
+        let result =
+            generate_tdx_data(Some(Some("123".to_string()), "IXUKoBO1XEFBPwopN4sY".to_string()));
+        assert!(result.is_err());
+    }
+
+    #[test]
+    //generate_tdx_report require data string is base64 encoded
+    fn test_generate_tdx_report_data_report_data_too_short_not_base64_encoded() {
+        //coming in data should always be base64 encoded
+        let result =
+            generate_tdx_data(Some("IXUKoBO1XEFBPwopN4sY".to_string()), Some("123".to_string()));
+        assert!(result.is_err());
+    }
+
+    #[test]
+    //generate_tdx_report check result as expected
+    //original nonce = "abcdefgh", orginal report_data = "12345678"
+    fn test_generate_tdx_report_data_report_data_nonce_base64_encoded_as_expected() {
+        let result =
+            generate_tdx_data(Some("YWJjZGVmZw==".to_string()), Some("MTIzNDU2Nzg=".to_string()))
+                .unwrap();
+        let expected_hash = [
+            93, 71, 28, 83, 115, 189, 166, 130, 87, 137, 126, 119, 140, 209, 163, 215, 13, 175,
+            225, 101, 64, 195, 196, 202, 15, 37, 166, 241, 141, 49, 128, 157, 164, 132, 67, 50, 9,
+            32, 162, 89, 243, 191, 177, 131, 4, 159, 156, 104, 11, 193, 18, 217, 92, 215, 194, 98,
+            145, 191, 211, 85, 187, 118, 39, 80,
+        ];
+        let generated_hash = base64::decode(result).unwrap();
+        assert_eq!(generated_hash, expected_hash);
+    }
+
+    #[test]
+    //generate_tdx_report allow long data string
+    fn test_generate_tdx_report_data_long_tdx_data() {
+        let result = generate_tdx_data(
+            Some("IXUKoBO1XEFBPwopN4sY".to_string()),
+            Some(
+                "MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2Nzgx\
+                MjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEy\
+                MzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIz\
+                NDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0\
+                NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1\
+                Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2\
+                NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4Cg=="
+                    .to_string(),
+            )
+        );
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    //generate_tdx_report allow long nonce string
+    fn test_generate_tdx_report_data_long_nonce() {
+        let result = generate_tdx_data(
+            Some("MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2Nzgx\
+            MjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEy\
+            MzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIz\
+            NDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0\
+            NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1\
+            Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2\
+            NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4Cg=="
+                .to_string()),
+            Some("MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4".to_string()),
+        );
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    //generate_tdx_report_data generated data is 64 bytes
+    fn test_generate_tdx_report_data_report_data_is_64_bytes() {
+        let report_data_hashed = match generate_tdx_data(
+            Some("MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4MTIzNDU2NzgxMjM0NTY3ODEyMzQ1Njc4".to_string()),
+            Some("IXUKoBO1XEFBPwopN4sY".to_string()),
+        ) {
+            Ok(r) => r,
+            Err(_) => todo!(),
+        };
+        let generated_hash_len = base64::decode(report_data_hashed).unwrap().len();
+        assert_eq!(generated_hash_len, 64);
     }
 }

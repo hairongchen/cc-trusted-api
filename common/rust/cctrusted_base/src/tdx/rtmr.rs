@@ -62,6 +62,5 @@ impl TcgIMR for TdxRTMR {
             return Err(anyhow!("[is_valid_algo] invalid algo id: {}", algo_id));
         }
 
-        Ok(true)
     }
 }
