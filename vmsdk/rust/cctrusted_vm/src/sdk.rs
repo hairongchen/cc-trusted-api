@@ -102,7 +102,7 @@ mod sdk_api_tests {
         let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
         let data = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
 
-        let expected_report_data = match Tdx::generate_tdx_report_data(nonce, Some(data)) {
+        let expected_report_data = match Tdx::generate_tdx_report_data(nonce.clone(), Some(data.clone())) {
             Ok(r) => r,
             Err(e) => {
                 error!("[test_get_cc_report] error generating TDX report data: {:?}", e);
