@@ -16,7 +16,11 @@ pub trait CVM {
         Returns:
             the cc report byte array or error information
     */
-    fn process_cc_report(&mut self, nonce: Option<String>, data: Option<String>) -> Result<Vec<u8>, anyhow::Error>;
+    fn process_cc_report(
+        &mut self,
+        nonce: Option<String>,
+        data: Option<String>,
+    ) -> Result<Vec<u8>, anyhow::Error>;
 
     /***
         retrive CVM max number of measurement registers

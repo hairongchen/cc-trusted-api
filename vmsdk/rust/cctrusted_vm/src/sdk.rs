@@ -45,19 +45,15 @@ impl CCTrustedApi for API {
     // CCTrustedApi trait function: get max number of CVM IMRs
     fn get_measurement_count() -> Result<u8, anyhow::Error> {
         match build_cvm() {
-            Ok(cvm) => {
-                Ok(cvm.get_max_index()+1)
-            }
+            Ok(cvm) => Ok(cvm.get_max_index() + 1),
             Err(e) => return Err(anyhow!("[get_measurement_count] error create cvm: {:?}", e)),
-        } 
+        }
     }
 
     // CCTrustedApi trait function: get measurements of a CVM
     fn get_cc_measurement(index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
         match build_cvm() {
-            Ok(cvm) => {
-                cvm.process_cc_measurement(index, algo_id)
-            }
+            Ok(cvm) => cvm.process_cc_measurement(index, algo_id),
             Err(e) => return Err(anyhow!("[get_cc_measurement] error create cvm: {:?}", e)),
         }
     }
@@ -89,13 +85,13 @@ impl CCTrustedApi for API {
 #[cfg(test)]
 mod sdk_api_tests {
     use super::*;
-    use log::*;
-    use rand::Rng;
+    use crate::cvm::get_cvm_type;
     use cctrusted_base::cc_type::TeeType;
-    use cctrusted_base::tcg::{TPM_ALG_SHA256,TPM_ALG_SHA384};
+    use cctrusted_base::tcg::{TPM_ALG_SHA256, TPM_ALG_SHA384};
     use cctrusted_base::tdx::common::Tdx;
     use cctrusted_base::tdx::quote::TdxQuote;
-    use crate::cvm::get_cvm_type;
+    use log::*;
+    use rand::Rng;
 
     // test on cc trusted API [get_cc_report]
     #[test]
@@ -103,15 +99,17 @@ mod sdk_api_tests {
         let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
         let data = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
 
-        let expected_report_data = match Tdx::generate_tdx_report_data(Some(nonce.clone()), Some(data.clone())) {
-            Ok(r) => r,
-            Err(e) => {
-                assert_eq!(true, format!("{:?}", e).is_empty());
-                return;
-            }
-        };
+        let expected_report_data =
+            match Tdx::generate_tdx_report_data(Some(nonce.clone()), Some(data.clone())) {
+                Ok(r) => r,
+                Err(e) => {
+                    assert_eq!(true, format!("{:?}", e).is_empty());
+                    return;
+                }
+            };
 
-        let report = match API::get_cc_report(Some(nonce.clone()), Some(data.clone()), ExtraArgs {}) {
+        let report = match API::get_cc_report(Some(nonce.clone()), Some(data.clone()), ExtraArgs {})
+        {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
@@ -131,7 +129,10 @@ mod sdk_api_tests {
                 }
             };
 
-            assert_eq!(base64::encode(&tdx_quote.body.report_data), expected_report_data);
+            assert_eq!(
+                base64::encode(&tdx_quote.body.report_data),
+                expected_report_data
+            );
         }
     }
 
@@ -164,7 +165,10 @@ mod sdk_api_tests {
                 }
             };
 
-            assert_eq!(base64::encode(&tdx_quote.body.report_data), expected_report_data);
+            assert_eq!(
+                base64::encode(&tdx_quote.body.report_data),
+                expected_report_data
+            );
         }
     }
 
@@ -195,7 +199,10 @@ mod sdk_api_tests {
                 }
             };
 
-            assert_eq!(base64::encode(&tdx_quote.body.report_data), expected_report_data);
+            assert_eq!(
+                base64::encode(&tdx_quote.body.report_data),
+                expected_report_data
+            );
         }
     }
 
@@ -205,7 +212,10 @@ mod sdk_api_tests {
         match API::get_cc_report(Some(nonce), None, ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
-                assert_eq!(true, format!("{:?}", e).contains("nonce is not base64 encoded"));
+                assert_eq!(
+                    true,
+                    format!("{:?}", e).contains("nonce is not base64 encoded")
+                );
                 return;
             }
         };
@@ -217,7 +227,10 @@ mod sdk_api_tests {
         match API::get_cc_report(None, Some(data), ExtraArgs {}) {
             Ok(q) => q,
             Err(e) => {
-                assert_eq!(true, format!("{:?}", e).contains("data is not base64 encoded"));
+                assert_eq!(
+                    true,
+                    format!("{:?}", e).contains("data is not base64 encoded")
+                );
                 return;
             }
         };
@@ -227,9 +240,7 @@ mod sdk_api_tests {
     #[test]
     fn test_get_default_algorithm() {
         let defalt_algo = match API::get_default_algorithm() {
-            Ok(algorithm) => {
-                algorithm
-            }
+            Ok(algorithm) => algorithm,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
@@ -239,16 +250,13 @@ mod sdk_api_tests {
         if get_cvm_type().tee_type == TeeType::TDX {
             assert_eq!(defalt_algo.algo_id, TPM_ALG_SHA384);
         }
-
     }
 
     // test on cc trusted API [get_measurement_count]
     #[test]
     fn test_get_measurement_count() {
-        let count = match API::get_measurement_count(){
-            Ok(count) => {
-                count
-            }
+        let count = match API::get_measurement_count() {
+            Ok(count) => count,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
@@ -263,10 +271,8 @@ mod sdk_api_tests {
     // test on cc trusted API [get_cc_measurement]
     #[test]
     fn test_get_cc_measurement() {
-        let count = match API::get_measurement_count(){
-            Ok(count) => {
-                count
-            }
+        let count = match API::get_measurement_count() {
+            Ok(count) => count,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
@@ -275,27 +281,24 @@ mod sdk_api_tests {
 
         if get_cvm_type().tee_type == TeeType::TDX {
             for index in 0..count {
-                let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384){
+                let tcg_digest = match API::get_cc_measurement(index, TPM_ALG_SHA384) {
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
                         assert_eq!(true, format!("{:?}", e).is_empty());
                         return;
-                    } 
+                    }
                 };
 
                 assert_eq!(tcg_digest.algo_id, TPM_ALG_SHA384);
                 assert_eq!(tcg_digest.hash.len(), 48);
             }
         }
-
     }
 
     #[test]
     fn test_get_cc_measurement_with_wrong_algo_id() {
-        let count = match API::get_measurement_count(){
-            Ok(count) => {
-                count
-            }
+        let count = match API::get_measurement_count() {
+            Ok(count) => count,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
@@ -304,16 +307,14 @@ mod sdk_api_tests {
 
         if get_cvm_type().tee_type == TeeType::TDX {
             for index in 0..count {
-                match API::get_cc_measurement(index, TPM_ALG_SHA256){
+                match API::get_cc_measurement(index, TPM_ALG_SHA256) {
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
                         assert_eq!(true, format!("{:?}", e).contains("invalid algo id"));
                         return;
-                    } 
+                    }
                 };
             }
         }
-
     }
-
 }

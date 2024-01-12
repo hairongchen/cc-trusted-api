@@ -64,7 +64,11 @@ impl TdxVM {
     }
 
     // TdxVM struct method: get tdreport
-    pub fn get_td_report(&self, nonce: Option<String>, data: Option<String>) -> Result<Vec<u8>, anyhow::Error> {
+    pub fn get_td_report(
+        &self,
+        nonce: Option<String>,
+        data: Option<String>,
+    ) -> Result<Vec<u8>, anyhow::Error> {
         let report_data = match Tdx::generate_tdx_report_data(nonce, data) {
             Ok(r) => r,
             Err(e) => {
@@ -189,7 +193,11 @@ impl TdxVM {
 // TdxVM implements the interfaces defined in CVM trait
 impl CVM for TdxVM {
     // CVM trait function: get tdx quote
-    fn process_cc_report(&mut self, nonce: Option<String>, data: Option<String>) -> Result<Vec<u8>, anyhow::Error> {
+    fn process_cc_report(
+        &mut self,
+        nonce: Option<String>,
+        data: Option<String>,
+    ) -> Result<Vec<u8>, anyhow::Error> {
         let tdreport = match self.get_td_report(nonce, data) {
             Ok(r) => r,
             Err(e) => {
@@ -323,25 +331,14 @@ impl CVM for TdxVM {
 
     // CVM trait function: retrieve TDX RTMR
     fn process_cc_measurement(&self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
-
-        match TdxRTMR::is_valid_index(index){
+        match TdxRTMR::is_valid_index(index) {
             Ok(_) => (),
-            Err(e) => {
-                return Err(anyhow!(
-                    "[process_cc_measurement] {:?}",
-                    e
-                ))
-            }
+            Err(e) => return Err(anyhow!("[process_cc_measurement] {:?}", e)),
         };
 
-        match TdxRTMR::is_valid_algo(algo_id){
+        match TdxRTMR::is_valid_algo(algo_id) {
             Ok(_) => (),
-            Err(e) => {
-                return Err(anyhow!(
-                    "[process_cc_measurement] {:?}",
-                    e
-                ))
-            }
+            Err(e) => return Err(anyhow!("[process_cc_measurement] {:?}", e)),
         };
 
         let tdreport_raw = match self.get_td_report(None, None) {
@@ -361,7 +358,7 @@ impl CVM for TdxVM {
                     "[process_cc_measurement] error parsing TD report: {:?}",
                     e
                 ))
-            }        
+            }
         };
 
         match TdxRTMR::new(index, algo_id, tdreport.td_info.rtmrs[index as usize]) {
