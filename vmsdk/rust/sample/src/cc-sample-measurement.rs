@@ -1,6 +1,6 @@
 use cctrusted_base::api::*;
-use cctrusted_vm::sdk::API;
 use cctrusted_base::tcg::TcgAlgorithmRegistry;
+use cctrusted_vm::sdk::API;
 
 use log::*;
 
@@ -23,7 +23,7 @@ fn main() {
 
     // get number of measurement registers in CVM
     info!("call cc trusted API [get_measurement_count] to get number of measurement registers in CVM!");
-    let count = match API::get_measurement_count(){
+    let count = match API::get_measurement_count() {
         Ok(count) => {
             info!("measurement registers count: {}", count);
             count
@@ -37,13 +37,18 @@ fn main() {
     // retrive and show measurement registers in CVM
     info!("call cc trusted API [get_cc_measurement] to get measurement register content in CVM!");
     for index in 0..count {
-        let tcg_digest = match API::get_cc_measurement(index, defalt_algo.algo_id){
+        let tcg_digest = match API::get_cc_measurement(index, defalt_algo.algo_id) {
             Ok(tcg_digest) => tcg_digest,
             Err(e) => {
                 error!("error get measurement: {:?}", e);
                 return;
-            } 
+            }
         };
-        info!("show index = {}, algo = {:?}, hash = {:02X?}", index, tcg_digest.get_algorithm_id_str(), tcg_digest.get_hash());
+        info!(
+            "show index = {}, algo = {:?}, hash = {:02X?}",
+            index,
+            tcg_digest.get_algorithm_id_str(),
+            tcg_digest.get_hash()
+        );
     }
 }

@@ -44,7 +44,8 @@ fn main() {
         };
         info!(
             "version = {}, report_data = {}",
-            tdx_quote.header.version, base64::encode(&tdx_quote.body.report_data)
+            tdx_quote.header.version,
+            base64::encode(tdx_quote.body.report_data)
         );
 
         // show data of the struct TdxQuoteHeader
