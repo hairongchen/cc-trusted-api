@@ -220,11 +220,10 @@ mod sdk_api_tests {
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
                         error!("error get measurement: {:?}", e);
-                        println!("here");
+                        println!("==== {:?}", e);
                         return;
                     } 
                 };
-                println!("show index = {}, algo = {:?}, hash = {:02X?}", index, tcg_digest.get_algorithm_id_str(), tcg_digest.get_hash());
             }
         }
 
