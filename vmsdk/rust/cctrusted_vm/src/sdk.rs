@@ -55,7 +55,7 @@ impl CCTrustedApi for API {
     // CCTrustedApi trait function: get measurements of a CVM
     fn get_cc_measurement(index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
         match build_cvm() {
-            Ok(mut cvm) => {
+            Ok(cvm) => {
                 cvm.process_cc_measurement(index, algo_id)
             }
             Err(e) => return Err(anyhow!("[get_cc_measurement] error create cvm: {:?}", e)),
