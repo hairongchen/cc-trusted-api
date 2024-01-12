@@ -49,7 +49,7 @@ impl TcgIMR for TdxRTMR {
     fn is_valid_index(index: u8) -> Result<bool, anyhow::Error> {
         if index > TdxRTMR::max_index() {
             return Err(anyhow!(
-                "[valid_algo_id] invalid RTMR index: {}",
+                "[is_valid_index] invalid RTMR index: {}",
                 index
             ));
         }
@@ -58,10 +58,8 @@ impl TcgIMR for TdxRTMR {
     }
 
     fn is_valid_algo(algo_id: u8) -> Result<bool, anyhow::Error> {
-
-        match ALGO_NAME_MAP.get(&algo_id) {
-            Some(_) => Ok(true),
-            None => return Err(anyhow!("[valid_algo] invalid algo id: {}", algo_id)),
+        if algo_id != TPM_ALG_SHA384 {
+            return Err(anyhow!("[is_valid_algo] invalid algo id: {}", algo_id));
         }
     }
 }
