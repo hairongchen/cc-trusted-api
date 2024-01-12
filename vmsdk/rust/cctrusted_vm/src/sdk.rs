@@ -220,6 +220,7 @@ mod sdk_api_tests {
                     Ok(tcg_digest) => tcg_digest,
                     Err(e) => {
                         error!("error get measurement: {:?}", e);
+                        println!("here");
                         return;
                     } 
                 };
