@@ -142,6 +142,7 @@ impl TdxQuoteHeader {
         info!("show the data of TdxQuoteHeader");
         info!("version = {}", self.version);
         info!("ak_type = {:?}", self.ak_type);
+        info!("tee_type = {:?}", self.tee_type);
         info!("qe_vendor = {:02X?}", self.qe_vendor);
         info!("user_data = {:02X?}", self.user_data);
     }
