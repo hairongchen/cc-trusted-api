@@ -344,7 +344,7 @@ mod sdk_api_tests {
                 expected_report_data
             );
 
-            assert_eq!(tdx_quote.header.ak_type, tdx_quote.header.ak_type);
+            assert_eq!(tdx_quote.header.ak_type, AttestationKeyType::ECDSA_P256);
 
             if tdx_quote.header.ak_type == tdx_quote.header.ak_type {
                 match tdx_quote.tdx_quote_ecdsa256_sigature {
