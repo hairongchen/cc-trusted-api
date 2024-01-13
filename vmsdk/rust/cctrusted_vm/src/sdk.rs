@@ -341,7 +341,7 @@ fn test_parse_cc_report() {
 
         assert_eq!(&tdx_quote.header.version, 4);
         assert_eq!(&tdx_quote.header.tee_type, IntelTeeType::TEE_TDX);
-        assert_eq!(&tdx_quote.header.qe_vendor, QE_VENDOR_INTEL_SGX);
+        assert_eq!(&tdx_quote.header.qe_vendor, "QE_VENDOR_INTEL_SGX");
 
         assert_eq!(
             base64::encode(&tdx_quote.body.report_data),
