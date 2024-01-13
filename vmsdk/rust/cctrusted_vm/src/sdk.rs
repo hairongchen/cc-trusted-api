@@ -88,7 +88,7 @@ mod sdk_api_tests {
     use crate::cvm::get_cvm_type;
     use cctrusted_base::cc_type::TeeType;
     use cctrusted_base::tcg::{TPM_ALG_SHA256, TPM_ALG_SHA384};
-    use cctrusted_base::tdx::common::{Tdx,IntelTeeType,QE_VENDOR_INTEL_SGX,AttestationKeyType};
+    use cctrusted_base::tdx::common::{Tdx,IntelTeeType,QE_VENDOR_INTEL_SGX,AttestationKeyType,QeCertDataType};
     use cctrusted_base::tdx::quote::TdxQuote;
     use rand::Rng;
 
