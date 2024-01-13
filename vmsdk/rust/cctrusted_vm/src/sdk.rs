@@ -99,14 +99,13 @@ mod sdk_api_tests {
         let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
         let data = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
 
-        let expected_report_data =
-            match Tdx::generate_tdx_report_data(Some(nonce.clone()), Some(data.clone())) {
-                Ok(r) => r,
-                Err(e) => {
-                    assert_eq!(true, format!("{:?}", e).is_empty());
-                    return;
-                }
-            };
+        match Tdx::generate_tdx_report_data(Some(nonce.clone()), Some(data.clone())) {
+            Ok(r) => r,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
 
         let report = match API::get_cc_report(Some(nonce.clone()), Some(data.clone()), ExtraArgs {})
         {
