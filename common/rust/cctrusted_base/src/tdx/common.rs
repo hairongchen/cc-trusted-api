@@ -44,7 +44,7 @@ pub enum AttestationKeyType {
 }
 
 #[repr(u32)]
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug,PartialEq)]
 pub enum IntelTeeType {
     TEE_SGX = 0x00000000,
     TEE_TDX = 0x00000081,
