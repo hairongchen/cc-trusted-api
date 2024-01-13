@@ -346,13 +346,14 @@ mod sdk_api_tests {
             );
 
             if tdx_quote.header.ak_type == AttestationKeyType::ECDSA_P256 {
-                match tdx_quote.tdx_quote_ecdsa256_sigature =
+                match tdx_quote.tdx_quote_ecdsa256_sigature {
                     Some(tdx_quote_ecdsa256_sigature) => {
                         assert!("tdx_quote_ecdsa256_sigature is Some");
                     },
                     None => {
                         assert!("tdx_quote_ecdsa256_sigature is None");
                     },
+                }
             }
                
         }
