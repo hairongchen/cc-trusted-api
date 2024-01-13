@@ -349,10 +349,10 @@ mod sdk_api_tests {
             if tdx_quote.header.ak_type == tdx_quote.header.ak_type {
                 match tdx_quote.tdx_quote_ecdsa256_sigature {
                     Some(tdx_quote_ecdsa256_sigature) => {
-                        assert!(true, "tdx_quote_ecdsa256_sigature is Some");
+                        assert!(false, "tdx_quote_ecdsa256_sigature is Some");
                     },
                     None => {
-                        assert!(true, "tdx_quote_ecdsa256_sigature is None");
+                        assert!(false, "tdx_quote_ecdsa256_sigature is None");
                     },
                 }
             }
