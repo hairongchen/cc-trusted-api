@@ -304,49 +304,49 @@ mod sdk_api_tests {
             }
         }
     }
-}
 
-// test on cc trusted API [parse_cc_report]
-#[test]
-fn test_parse_cc_report() {
-    let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
-    let data = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
+    // test on cc trusted API [parse_cc_report]
+    #[test]
+    fn test_parse_cc_report() {
+        let nonce = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
+        let data = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
 
-    let expected_report_data =
-        match Tdx::generate_tdx_report_data(Some(nonce.clone()), Some(data.clone())) {
-            Ok(r) => r,
+        let expected_report_data =
+            match Tdx::generate_tdx_report_data(Some(nonce.clone()), Some(data.clone())) {
+                Ok(r) => r,
+                Err(e) => {
+                    assert_eq!(true, format!("{:?}", e).is_empty());
+                    return;
+                }
+            };
+
+        let report = match API::get_cc_report(Some(nonce.clone()), Some(data.clone()), ExtraArgs {})
+        {
+            Ok(q) => q,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
 
-    let report = match API::get_cc_report(Some(nonce.clone()), Some(data.clone()), ExtraArgs {})
-    {
-        Ok(q) => q,
-        Err(e) => {
-            assert_eq!(true, format!("{:?}", e).is_empty());
-            return;
+        if report.cc_type == TeeType::TDX {
+            let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
+                Ok(q) => q,
+                Err(e) => {
+                    error!("[test_get_cc_report] error parse tdx quote: {:?}", e);
+                    return;
+                }
+            };
+
+            assert_eq!(&tdx_quote.header.version, 4);
+            assert_eq!(&tdx_quote.header.tee_type, IntelTeeType::TEE_TDX);
+            assert_eq!(&tdx_quote.header.qe_vendor, QE_VENDOR_INTEL_SGX);
+
+            assert_eq!(
+                base64::encode(&tdx_quote.body.report_data),
+                expected_report_data
+            );
+
         }
-    };
-
-    if report.cc_type == TeeType::TDX {
-        let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
-            Ok(q) => q,
-            Err(e) => {
-                error!("[test_get_cc_report] error parse tdx quote: {:?}", e);
-                return;
-            }
-        };
-
-        assert_eq!(&tdx_quote.header.version, 4);
-        assert_eq!(&tdx_quote.header.tee_type, IntelTeeType::TEE_TDX);
-        assert_eq!(&tdx_quote.header.qe_vendor, "QE_VENDOR_INTEL_SGX");
-
-        assert_eq!(
-            base64::encode(&tdx_quote.body.report_data),
-            expected_report_data
-        );
-
     }
 }
