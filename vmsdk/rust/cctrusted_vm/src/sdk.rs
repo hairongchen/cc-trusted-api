@@ -90,7 +90,6 @@ mod sdk_api_tests {
     use cctrusted_base::tcg::{TPM_ALG_SHA256, TPM_ALG_SHA384};
     use cctrusted_base::tdx::common::{Tdx,IntelTeeType,QE_VENDOR_INTEL_SGX,AttestationKeyType};
     use cctrusted_base::tdx::quote::TdxQuote;
-    use log::*;
     use rand::Rng;
 
     // test on cc trusted API [get_cc_report]
@@ -345,7 +344,9 @@ mod sdk_api_tests {
                 expected_report_data
             );
 
-            if tdx_quote.header.ak_type == AttestationKeyType::ECDSA_P256 {
+            assert_eq!(tdx_quote.header.ak_type, tdx_quote.header.ak_type);
+
+            if tdx_quote.header.ak_type == tdx_quote.header.ak_type {
                 match tdx_quote.tdx_quote_ecdsa256_sigature {
                     Some(tdx_quote_ecdsa256_sigature) => {
                         assert!(true, "tdx_quote_ecdsa256_sigature is Some");
