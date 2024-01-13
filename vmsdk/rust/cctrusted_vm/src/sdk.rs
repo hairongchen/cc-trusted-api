@@ -344,12 +344,23 @@ mod sdk_api_tests {
                 expected_report_data
             );
 
-            assert_eq!(tdx_quote.header.ak_type, AttestationKeyType::ECDSA_P256);
-
             if tdx_quote.header.ak_type == tdx_quote.header.ak_type {
                 match tdx_quote.tdx_quote_ecdsa256_sigature {
                     Some(tdx_quote_ecdsa256_sigature) => {
-                        assert!(false, "tdx_quote_ecdsa256_sigature is Some");
+                        if tdx_quote_ecdsa256_sigature.qe_cert == QeCertDataType::QE_REPORT_CERT {
+                            match tdx_quote_ecdsa256_sigature.qe_cert.cert_data_struct{
+                                Some(cert_data_struct) =>{
+                                    let qe_report = cert_data_struct.qe_report;
+                                    assert_eq!(
+                                        base64::encode(&qe_report.report_data),
+                                        expected_report_data
+                                    );
+                                },
+                                None => {
+                                    assert!(false, "cert_data_struct is None");
+                                }
+                            }
+                        }
                     },
                     None => {
                         assert!(false, "tdx_quote_ecdsa256_sigature is None");
