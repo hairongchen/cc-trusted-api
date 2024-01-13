@@ -51,13 +51,5 @@ fn main() {
         // show data of the struct TdxQuoteHeader
         info!("call struct show function to show data of the struct TdxQuoteHeader!");
         tdx_quote.header.show();
-
-        // show data of the struct TdxQuoteBody
-        info!("call struct show function to show data of the struct TdxQuoteBody!");
-        tdx_quote.body.show();
-        match tdx_quote.tdx_quote_ecdsa256_sigature {
-            Some(tdx_quote_ecdsa256_sigature) => tdx_quote_ecdsa256_sigature.show(),
-            None => (),
-        };
     }
 }
