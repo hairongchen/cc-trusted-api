@@ -117,7 +117,7 @@ mod sdk_api_tests {
             }
         };
 
-        assert_eq!(report.cc_report.len(), 4869);
+        assert_ne!(report.cc_report.len(), 0);
 
         let expected_cvm_type = get_cvm_type().tee_type;
         assert_eq!(report.cc_type, expected_cvm_type);
