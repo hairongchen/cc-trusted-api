@@ -349,10 +349,10 @@ mod sdk_api_tests {
                 match tdx_quote.tdx_quote_ecdsa256_sigature =
                     Some(tdx_quote_ecdsa256_sigature) => {
                         assert!("tdx_quote_ecdsa256_sigature is Some");
-                    }
+                    },
                     None => {
                         assert!("tdx_quote_ecdsa256_sigature is None");
-                    }
+                    },
             }
                
         }
