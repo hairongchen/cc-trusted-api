@@ -88,7 +88,7 @@ mod sdk_api_tests {
     use crate::cvm::get_cvm_type;
     use cctrusted_base::cc_type::TeeType;
     use cctrusted_base::tcg::{TPM_ALG_SHA256, TPM_ALG_SHA384};
-    use cctrusted_base::tdx::common::{Tdx,IntelTeeType,QE_VENDOR_INTEL_SGX};
+    use cctrusted_base::tdx::common::{Tdx,IntelTeeType,QE_VENDOR_INTEL_SGX,AttestationKeyType};
     use cctrusted_base::tdx::quote::TdxQuote;
     use log::*;
     use rand::Rng;
@@ -332,7 +332,7 @@ mod sdk_api_tests {
             let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
                 Ok(q) => q,
                 Err(e) => {
-                    error!("[test_get_cc_report] error parse tdx quote: {:?}", e);
+                    assert_eq!(true, format!("{:?}", e).is_empty());
                     return;
                 }
             };
@@ -340,12 +340,21 @@ mod sdk_api_tests {
             assert_eq!(tdx_quote.header.version, 4);
             assert_eq!(tdx_quote.header.tee_type, IntelTeeType::TEE_TDX);
             assert_eq!(tdx_quote.header.qe_vendor, QE_VENDOR_INTEL_SGX);
-
             assert_eq!(
                 base64::encode(&tdx_quote.body.report_data),
                 expected_report_data
             );
 
+            if tdx_quote.header.ak_type == AttestationKeyType::ECDSA_P256 {
+                match tdx_quote.tdx_quote_ecdsa256_sigature =
+                    Some(tdx_quote_ecdsa256_sigature) => {
+                        assert!("tdx_quote_ecdsa256_sigature is Some");
+                    }
+                    None => {
+                        assert!("tdx_quote_ecdsa256_sigature is None");
+                    }
+            }
+               
         }
     }
 }
