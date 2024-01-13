@@ -359,7 +359,7 @@ mod sdk_api_tests {
             } else if tdx_quote.header.ak_type == AttestationKeyType::ECDSA_P384 {
                 match tdx_quote.tdx_quote_signature {
                     Some() => (),
-                    None => assert!(false, "tdx_quote_signature is None");
+                    None => assert!(false, "tdx_quote_signature is None"),
                 }
             } else {
                 assert!(false, "unknown ak type");
