@@ -44,12 +44,13 @@ pub enum AttestationKeyType {
 }
 
 #[repr(u32)]
-#[derive(Clone, Debug,PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum IntelTeeType {
     TEE_SGX = 0x00000000,
     TEE_TDX = 0x00000081,
 }
 
+#[derive(PartialEq)]
 pub const QE_VENDOR_INTEL_SGX: &str = "939a7233f79c4ca9940a0db3957f0607";
 
 #[derive(Clone, PartialEq, Debug)]
