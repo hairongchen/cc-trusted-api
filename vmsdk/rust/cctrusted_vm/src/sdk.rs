@@ -349,7 +349,7 @@ mod sdk_api_tests {
                     Some(tdx_quote_ecdsa256_sigature) => {
                         if tdx_quote_ecdsa256_sigature.qe_cert.cert_type == QeCertDataType::QE_REPORT_CERT {
                             match tdx_quote_ecdsa256_sigature.qe_cert.cert_data_struct{
-                                Some(cert_data_struct) => (),
+                                Some(_) => (),
                                 None => assert!(false, "cert_data_struct is None"),
                             }
                         }
@@ -358,7 +358,7 @@ mod sdk_api_tests {
                 }
             } else if tdx_quote.header.ak_type == AttestationKeyType::ECDSA_P384 {
                 match tdx_quote.tdx_quote_signature {
-                    Some(tdx_quote_signature) => (),
+                    Some(_) => (),
                     None => assert!(false, "tdx_quote_signature is None"),
                 }
             } else {
