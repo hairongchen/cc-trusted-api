@@ -88,7 +88,7 @@ mod sdk_api_tests {
     use crate::cvm::get_cvm_type;
     use cctrusted_base::cc_type::TeeType;
     use cctrusted_base::tcg::{TPM_ALG_SHA256, TPM_ALG_SHA384};
-    use cctrusted_base::tdx::common::Tdx;
+    use cctrusted_base::tdx::common::{Tdx,IntelTeeType};
     use cctrusted_base::tdx::quote::TdxQuote;
     use log::*;
     use rand::Rng;
@@ -340,6 +340,8 @@ fn test_parse_cc_report() {
         };
 
         assert_eq!(&tdx_quote.header.version, 4);
+        assert_eq!(&tdx_quote.header.tee_type, IntelTeeType::TEE_TDX);
+        assert_eq!(&tdx_quote.header.qe_vendor, QE_VENDOR_INTEL_SGX);
 
         assert_eq!(
             base64::encode(&tdx_quote.body.report_data),
