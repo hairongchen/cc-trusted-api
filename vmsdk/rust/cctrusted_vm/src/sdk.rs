@@ -347,7 +347,7 @@ mod sdk_api_tests {
             if tdx_quote.header.ak_type == AttestationKeyType::ECDSA_P256 {
                 match tdx_quote.tdx_quote_ecdsa256_sigature {
                     Some(tdx_quote_ecdsa256_sigature) => {
-                        if tdx_quote_ecdsa256_sigature.qe_cert == QeCertDataType::QE_REPORT_CERT {
+                        if tdx_quote_ecdsa256_sigature.qe_cert.cert_type == QeCertDataType::QE_REPORT_CERT {
                             match tdx_quote_ecdsa256_sigature.qe_cert.cert_data_struct{
                                 Some(cert_data_struct) =>{
                                     let qe_report = cert_data_struct.qe_report;
