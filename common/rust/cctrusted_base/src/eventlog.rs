@@ -72,11 +72,6 @@ impl TcgEventLog {
         };
 
         Ok((&(self.event_logs[begin as usize..end as usize])).to_vec())
-        // let mut return_event_logs: Vec<EventLogEntry> = Vec::new();
-        // for idx in begin..end as u32 {
-        //     return_event_logs.push(self.event_logs[idx as usize].clone());
-        // }
-        // Ok(return_event_logs)
     }
 
     /***
