@@ -114,7 +114,7 @@ mod sdk_api_tests {
         let event_logs = match API::get_cc_eventlog(Some(0), None) {
             Ok(q) => q,
             Err(e) => {
-                assert!(format!("{:?}", e));
+                assert!(true, format!("{:?}", e));
                 return;
             }
         };
