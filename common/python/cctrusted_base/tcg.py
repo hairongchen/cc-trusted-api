@@ -229,7 +229,7 @@ class TcgImrEvent:
                                  TcgEventType.get_event_type_string(self._event_type))
         count = 0
         for digest in self._digests:
-            LOG.info("Algorithm_id      : %d (%s)",digest.alg.alg_id,
+            LOG.info("Algorithm_id[%d]      : %d (%s)",count, digest.alg.alg_id,
                     TcgAlgorithmRegistry.get_algorithm_string(digest.alg.alg_id))
             LOG.info("Digest[%d]:", count)
             digest_blob = BinaryBlob(digest.hash)

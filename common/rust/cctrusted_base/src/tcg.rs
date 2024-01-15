@@ -263,7 +263,7 @@ impl TcgImrEvent{
     
         for digest_index in 0..self.digests.len() {
             info!("         Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
-            info!("         Digest{}:", digest_index);
+            info!("         Digest[{}]:", digest_index);
             dump_data(&self.digests[digest_index].hash);
         }
         info!("         Event:");
