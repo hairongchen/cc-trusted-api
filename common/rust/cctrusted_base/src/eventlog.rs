@@ -98,16 +98,13 @@ impl TcgEventLog {
         while index < self.data.len() {
             let start = index;
             let imr = get_u32(self.data[index..index+4].to_vec());
-            info!("imr = {}", imr);
             index = index + 4;
             let event_type = get_u32(self.data[index..index+4].to_vec());
-            info!("event_type = {}, get_u32 = {}", event_type, get_u32(self.data[index..index+4].to_vec()));
             if imr == 0xFFFFFFFF {
                 break;
             }
 
             if event_type == EV_NO_ACTION {
-                info!("in parse_spec_id_event_log");
                 match self.parse_spec_id_event_log(self.data[start..].to_vec()){
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len as usize;
@@ -120,7 +117,6 @@ impl TcgEventLog {
                     }
                 }
             } else {
-                info!("in parse_event_log");
                 match self.parse_event_log(self.data[start..].to_vec()){
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
@@ -168,8 +164,7 @@ impl TcgEventLog {
         index = index + 4;
 
         let digest = data[index..index+20].try_into().unwrap();
-        info!("digest = {:?}",digest);
-        index = index + 20;
+        index = index + 20;m
         let header_event_size = get_u32(data[index..index+4].to_vec());
         index = index + 4;
         let header_event = data[index..index+header_event_size as usize].try_into().unwrap();
@@ -180,11 +175,6 @@ impl TcgEventLog {
             event_size: header_event_size, 
             event: header_event
         };
-        info!("imr_index = {}",imr_index);
-        info!("header_imr = {}",header_imr);
-        info!("header_event_type = {}",header_event_type);
-        info!("header_event_size = {}",header_event_size);
-        info!("index = {}",index);
 
         // Parse EFI Spec Id Event structure
         let spec_id_signature = data[index..index+16].try_into().unwrap();
@@ -202,17 +192,8 @@ impl TcgEventLog {
         let spec_id_num_of_algo = get_u32(data[index..index+4].to_vec());
         index = index + 4;
         let mut spec_id_digest_sizes: Vec<TcgEfiSpecIdEventAlgorithmSize> = Vec::new();
-        info!("spec_id_signature = {:?}",spec_id_signature);
-        info!("spec_id_platform_cls = {}",spec_id_platform_cls);
-        info!("spec_id_version_minor = {}",spec_id_version_minor);
-        info!("spec_id_version_major = {}",spec_id_version_major);
-        info!("spec_id_errata = {}",spec_id_errata);
-        info!("spec_id_uint_size = {}",spec_id_uint_size);
-        info!("spec_id_num_of_algo = {}",spec_id_num_of_algo);
-        info!("index = {}",index);
 
         for _ in 0..spec_id_num_of_algo {
-            info!("loop");
             let algo_id = get_u16(data[index..index+2].to_vec());
             index = index + 2;
             let digest_size = get_u16(data[index..index+2].to_vec());
@@ -267,7 +248,6 @@ impl TcgEventLog {
         let mut index = 0;
 
         let mut imr_index = get_u32(data[index..index+4].to_vec());
-        info!("==== imr_index = {}",imr_index);
         index = index + 4;
         imr_index = imr_index - 1;
         let event_type = get_u32(data[index..index+4].to_vec());
