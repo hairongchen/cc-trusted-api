@@ -257,28 +257,28 @@ impl EventLogEntry {
 
 impl TcgImrEvent{
     pub fn show(&self) {
-        info!("         -------------------------------Event Log Entry-----------------------------");
-        info!("         IMR               : {}", self.imr_index);
-        info!("         Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
+        info!("        -------------------------------Event Log Entry-----------------------------");
+        info!("        IMR               : {}", self.imr_index);
+        info!("        Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
     
         for digest_index in 0..self.digests.len() {
-            info!("         Algorithm_id[{}]   : {} {}",digest_index, self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
-            info!("         Digest[{}]:", digest_index);
+            info!("        Algorithm_id[{}]   : {} {}",digest_index, self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
+            info!("        Digest[{}]:", digest_index);
             dump_data(&self.digests[digest_index].hash);
         }
-        info!("         Event:");
+        info!("        Event:");
         dump_data(&self.event);
     }
 }
 
 impl TcgPcClientImrEvent{
     pub fn show(&self) {
-        info!("         --------------------Header Specification ID Event--------------------------");
-        info!("         IMR               : {}", self.imr_index);
-        info!("         Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
-        info!("         Digest:");
+        info!("        --------------------Header Specification ID Event--------------------------");
+        info!("        IMR               : {}", self.imr_index);
+        info!("        Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
+        info!("        Digest:");
         dump_data(&self.digest.to_vec());
-        info!("         Event:");
+        info!("        Event:");
         dump_data(&self.event);
     }
 }
