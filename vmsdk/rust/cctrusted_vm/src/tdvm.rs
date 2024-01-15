@@ -64,7 +64,7 @@ impl TdxVM {
     }
 
     // TdxVM struct method: get tdreport
-    pub fn get_td_report(
+    fn get_td_report(
         &self,
         nonce: Option<String>,
         data: Option<String>,
