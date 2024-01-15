@@ -61,7 +61,7 @@ impl TcgEventLog {
             None => 0
         };
 
-        let end:- usize = match count {
+        let end: usize = match count {
             Some(c) => {
                 if c <= 0 || c >= self.count {
                     return Err(anyhow!("[select] Invalid input count. count must be number larger than 0 and smaller than total event log count."));
