@@ -6,3 +6,10 @@ impl TpmQuote {
         todo!()
     }
 }
+
+// API function parses raw cc report to TpmQuote struct
+impl ParseCcReport<TpmQuote> for CcReport {
+    fn parse_cc_report(_report: Vec<u8>) -> Result<TpmQuote, anyhow::Error> {
+        todo!()
+    }
+}
