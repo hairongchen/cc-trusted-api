@@ -141,10 +141,12 @@ mod sdk_api_tests {
             }
         };
 
-        match eventlog {
-            EventLogEntry::TcgImrEvent(tcg_imr_event) => _,
-            EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => _,
-            _ => assert_eq!(true, false),
+        for event_log in event_logs {
+            match eventlog {
+                EventLogEntry::TcgImrEvent(tcg_imr_event) => _,
+                EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => _,
+                _ => assert_eq!(true, false),
+            }
         }
     }
 }
