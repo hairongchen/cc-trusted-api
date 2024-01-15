@@ -264,15 +264,15 @@ impl TcgImrEvent{
         };
 
         info!("-------------------------------Event Log Entry-----------------------------");
-        info!("     IMR               : {}", self.imr_index);
-        info!("     Type              : {:02X?} ({:?})", self.event_type, event_type_str);
+        info!("         IMR               : {}", self.imr_index);
+        info!("         Type              : {:02X?} ({:?})", self.event_type, event_type_str);
     
         for digest_index in 0..self.digests.len() {
-            info!("     Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
-            info!("     Digest{}:", digest_index);
+            info!("         Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
+            info!("         Digest{}:", digest_index);
             dump_data(&self.digests[digest_index].hash);
         }
-        info!("     Event:");
+        info!("         Event:");
         dump_data(&self.event);
     }
 }
@@ -285,9 +285,9 @@ impl TcgPcClientImrEvent{
         };
 
         info!("--------------------Header Specification ID Event--------------------------");
-        info!("     IMR               : {}", self.imr_index);
-        info!("     Type              : {:02X?} ({:?})", self.event_type, event_type_str);
-        info!("     Event:");
+        info!("         IMR               : {}", self.imr_index);
+        info!("         Type              : {:02X?} ({:?})", self.event_type, event_type_str);
+        info!("         Event:");
         dump_data(&self.event);
     }
 }
