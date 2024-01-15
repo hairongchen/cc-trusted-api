@@ -71,7 +71,7 @@ impl TcgEventLog {
             None => self.count
         };
 
-        Ok(self.event_logs.clone())
+        Ok(self.event_logs[begin..count].clone())
         //Ok(self.event_logs[begin as usize..end as usize].to_vec())
         // let mut return_event_logs: Vec<EventLogEntryType> = Vec::new();
         // for idx in begin..end {
