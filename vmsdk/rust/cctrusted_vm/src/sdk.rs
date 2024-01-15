@@ -77,3 +77,22 @@ impl CCTrustedApi for API {
         }
     }
 }
+
+#[cfg(test)]
+mod sdk_api_tests {
+    use super::*;
+
+    // test on cc trusted API [get_cc_eventlog]
+    fn test_get_cc_eventlog() {
+        let event_logs = match API::get_cc_eventlog(Some(1), Some(10)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+    }
+
+    assert_eq!(event_logs.len(), 10);
+
+}
