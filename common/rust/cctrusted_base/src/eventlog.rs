@@ -7,8 +7,6 @@ use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
 use crate::tcg::TcgImrEvent;
 use crate::tcg::TcgDigest;
 use crate::tcg::EventLogEntry;
-use log::info;
-
 
 /***
     TcgEventLog struct.
@@ -164,7 +162,7 @@ impl TcgEventLog {
         index = index + 4;
 
         let digest = data[index..index+20].try_into().unwrap();
-        index = index + 20;m
+        index = index + 20;
         let header_event_size = get_u32(data[index..index+4].to_vec());
         index = index + 4;
         let header_event = data[index..index+header_event_size as usize].try_into().unwrap();
