@@ -247,6 +247,14 @@ pub enum EventLogEntry
     TcgPcClientImrEvent(TcgPcClientImrEvent),
 }
 
+impl EventLogEntry {
+    pub fn show(&self) {
+        match *self {
+            TcgImrEvent => 
+        }
+    }
+}
+
 impl TcgImrEvent{
     pub fn show(&self) {
         info!("-------------------------------Event Log Entry-----------------------------");
