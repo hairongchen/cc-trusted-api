@@ -190,8 +190,6 @@ impl TcgEventLog {
         // Parse EFI Spec Id Event structure
         let spec_id_signature = data[index..index+16].try_into().unwrap();
         index = index + 16;
-        info!("spec_id_signature = {:?}",spec_id_signature);
-
         let spec_id_platform_cls = get_u32(data[index..index+4].to_vec());
         index = index + 4;
         let spec_id_version_minor = get_u8(data[index..index+1].to_vec());
@@ -205,8 +203,15 @@ impl TcgEventLog {
         let spec_id_num_of_algo = get_u32(data[index..index+4].to_vec());
         index = index + 4;
         let mut spec_id_digest_sizes: Vec<TcgEfiSpecIdEventAlgorithmSize> = Vec::new();
-
+        info!("spec_id_signature = {:?}",spec_id_signature);
+        info!("spec_id_platform_cls = {}",spec_id_platform_cls);
+        info!("spec_id_version_minor = {}",spec_id_version_minor);
+        info!("spec_id_version_major = {}",spec_id_version_major);
+        info!("spec_id_errata = {}",spec_id_errata);
+        info!("spec_id_uint_size = {}",spec_id_uint_size);
         info!("spec_id_num_of_algo = {}",spec_id_num_of_algo);
+        info!("index = {}",index);
+        
         for _ in 0..spec_id_num_of_algo {
             info!("loop");
             let algo_id = get_u16(data[index..index+2].to_vec());
