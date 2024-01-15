@@ -1,3 +1,6 @@
+use crate::api::ParseCcReport;
+use crate::api_data::CcReport;
+
 // return of API parse_cc_report()
 pub struct TpmQuote {}
 
