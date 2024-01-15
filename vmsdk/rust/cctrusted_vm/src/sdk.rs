@@ -144,10 +144,10 @@ mod sdk_api_tests {
         for event_log in event_logs {
             match event_log {
                 EventLogEntry::TcgImrEvent(tcg_imr_event) => {
-                    assert_eq!(tcg_imr_event.event_size, tcg_imr_event.event.len());
+                    assert_eq!(tcg_imr_event.event_size, tcg_imr_event.event.len().try_into().unwrap()));
                 },
                 EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => {
-                    assert_eq!(tcg_pc_client_imr_event.event_size, tcg_pc_client_imr_event.event.len());
+                    assert_eq!(tcg_pc_client_imr_event.event_size, tcg_pc_client_imr_event.event.len().try_into().unwrap()));
                 },
             }
         }
