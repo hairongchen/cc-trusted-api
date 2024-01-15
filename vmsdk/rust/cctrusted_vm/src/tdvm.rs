@@ -9,6 +9,7 @@ use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
 use cctrusted_base::tdx::report::*;
 use cctrusted_base::tdx::rtmr::TdxRTMR;
+use cctrusted_base::tpm::quote::{TdxQuote,TpmQuote};
 use core::convert::TryInto;
 use core::mem;
 use core::ptr;
