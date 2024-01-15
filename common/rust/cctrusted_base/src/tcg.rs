@@ -252,7 +252,7 @@ impl EventLogEntry {
         match *self {
             EventLogEntry::TcgImrEvent => TcgImrEvent.show(),
             EventLogEntry::TcgPcClientImrEvent => TcgPcClientImrEvent.show(),
-        }
+        };
     }
 }
 
