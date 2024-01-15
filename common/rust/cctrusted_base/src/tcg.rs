@@ -258,9 +258,13 @@ impl EventLogEntry {
 
 impl TcgImrEvent{
     pub fn show(&self) {
+        let event_type_str = match TcgEventType::get_event_type_string(self.event_type) {
+            Ok(str) => str,
+            Err(e) => format!("{:?}", e),
+        }
         info!("-------------------------------Event Log Entry-----------------------------");
         info!("IMR               : {}", self.imr_index);
-        info!("Type              : {:02X?} ({:?})", self.event_type, TcgEventType::get_event_type_string(self.event_type).try_into().unwrap());
+        info!("Type              : {:02X?} ({:?})", self.event_type, event_type_str);
     
         for digest_index in 0..self.digests.len() {
             info!("Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
