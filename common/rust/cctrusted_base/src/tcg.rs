@@ -262,7 +262,7 @@ impl TcgImrEvent{
         info!("         Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
     
         for digest_index in 0..self.digests.len() {
-            info!("         Algorithm_id   : {} {}", self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
+            info!("         Algorithm_id[{}]   : {} {}",digest_index, self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
             info!("         Digest[{}]:", digest_index);
             dump_data(&self.digests[digest_index].hash);
         }
