@@ -144,7 +144,7 @@ mod sdk_api_tests {
         match eventlog {
             EventLogEntry::TcgImrEvent(tcg_imr_event) => _,
             EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => _,
-            _ => assert_eq!(true, false);
+            _ => assert_eq!(true, false),
         }
     }
 }
