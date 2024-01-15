@@ -122,7 +122,7 @@ mod sdk_api_tests {
 
     #[test]
     fn test_get_cc_eventlog_invalid_count() {
-        match API::get_cc_eventlog(Some(1), Some(-1)) {
+        match API::get_cc_eventlog(Some(1), Some(0)) {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(false, format!("{:?}", e).is_empty());
