@@ -73,7 +73,7 @@ impl TcgEventLog {
 
         // Ok(self.event_logs[begin..end])
         let mut return_event_logs: Vec<EventLogEntry> = Vec::new();
-        for idx in begin..end {
+        for idx in begin..end as usize {
             return_event_logs.push(self.event_logs[idx as usize]);
         }
         Ok(return_event_logs)
