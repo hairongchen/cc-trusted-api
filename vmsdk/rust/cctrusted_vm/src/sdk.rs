@@ -91,8 +91,8 @@ mod sdk_api_tests {
                 return;
             }
         };
+
+        assert_eq!(event_logs.len(), 10);
+
     }
-
-    assert_eq!(event_logs.len(), 10);
-
 }
