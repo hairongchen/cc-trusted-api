@@ -263,7 +263,6 @@ impl TcgImrEvent{
     }
 }
 
-
 impl TcgPcClientImrEvent{
     pub fn show(&self) {
         info!("--------------------Header Specification ID Event--------------------------");
