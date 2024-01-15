@@ -56,7 +56,7 @@ impl TcgEventLog {
                 if s >= self.count {
                     return Err(anyhow!("[select] Invalid input start. Start must be number larger than 0 and smaller than total event log count."));
                 }
-                s-1
+                (s-1).try_into().unwrap()
             },
             None => 0
         };
@@ -68,7 +68,7 @@ impl TcgEventLog {
                 }
                 c+begin
             },
-            None => self.event_logs.len()
+            None => (c+begin).try_into().unwrap()
         };
 
         Ok(self.event_logs[begin..end].clone())
