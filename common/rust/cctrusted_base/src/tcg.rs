@@ -250,8 +250,8 @@ pub enum EventLogEntry
 impl EventLogEntry {
     pub fn show(&self) {
         match *self {
-            EventLogEntry::TcgImrEvent => TcgImrEvent::show(),
-            EventLogEntry::TcgPcClientImrEvent => TcgPcClientImrEvent::show(),
+            EventLogEntry::TcgImrEvent(tcg_imr_event) => tcg_imr_event.show(),
+            EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => tcg_pc_client_imr_event.show(),
         };
     }
 }
