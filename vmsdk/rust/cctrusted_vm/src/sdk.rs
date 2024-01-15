@@ -83,6 +83,7 @@ mod sdk_api_tests {
     use super::*;
 
     // test on cc trusted API [get_cc_eventlog]
+    #[test]
     fn test_get_cc_eventlog() {
         let event_logs = match API::get_cc_eventlog(Some(1), Some(10)) {
             Ok(q) => q,
