@@ -259,7 +259,7 @@ impl EventLogEntry {
 impl TcgImrEvent{
     pub fn show(&self) {
         let event_type_str = match TcgEventType::get_event_type_string(self.event_type) {
-            Ok(str) => str.replace("\"", "");,
+            Ok(str) => str.replace("\"", ""),
             Err(e) => format!("{:?}", e),
         };
 
@@ -280,7 +280,7 @@ impl TcgImrEvent{
 impl TcgPcClientImrEvent{
     pub fn show(&self) {
         let event_type_str = match TcgEventType::get_event_type_string(self.event_type) {
-            Ok(str) => str.replace("\"", "");,
+            Ok(str) => str.replace("\"", ""),
             Err(e) => format!("{:?}", e),
         };
 
