@@ -2,6 +2,7 @@
 
 use crate::cvm::*;
 use anyhow::*;
+use cctrusted_base::api::ParseCcReport;
 use cctrusted_base::cc_type::*;
 use cctrusted_base::tcg::*;
 use cctrusted_base::tdx::common::*;
