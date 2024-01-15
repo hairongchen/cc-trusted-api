@@ -3,13 +3,14 @@
 use crate::cvm::*;
 use anyhow::*;
 use cctrusted_base::api::ParseCcReport;
+use cctrusted_base::api_data::CcReport;
 use cctrusted_base::cc_type::*;
 use cctrusted_base::tcg::*;
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
 use cctrusted_base::tdx::report::*;
 use cctrusted_base::tdx::rtmr::TdxRTMR;
-use cctrusted_base::tpm::quote::{TdxQuote,TpmQuote};
+use cctrusted_base::tpm::quote::TpmQuote;
 use core::convert::TryInto;
 use core::mem;
 use core::ptr;
