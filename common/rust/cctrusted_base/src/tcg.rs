@@ -287,6 +287,8 @@ impl TcgPcClientImrEvent{
         info!("--------------------Header Specification ID Event--------------------------");
         info!("         IMR               : {}", self.imr_index);
         info!("         Type              : {:02X?} ({})", self.event_type, &event_type_str);
+        info!("         Digest:");
+        dump_data(&self.digest);
         info!("         Event:");
         dump_data(&self.event);
     }
