@@ -101,7 +101,7 @@ mod sdk_api_tests {
         let event_logs = match API::get_cc_eventlog(None, None) {
             Ok(q) => q,
             Err(e) => {
-                assert_eq!(true, format!("{:?}", e).is_empty());
+                assert_eq!(false, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -111,10 +111,10 @@ mod sdk_api_tests {
     
     #[test]
     fn test_get_cc_eventlog_invalid_index() {
-        let event_logs = match API::get_cc_eventlog(Some(0), None) {
+        match API::get_cc_eventlog(Some(0), None) {
             Ok(q) => q,
             Err(e) => {
-                assert!(true, "{}", format!("{:?}", e));
+                assert_eq!(false, format!("{:?}", e).is_empty());
                 return;
             }
         };
