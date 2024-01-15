@@ -130,4 +130,21 @@ mod sdk_api_tests {
             }
         };
     }
+
+    #[test]
+    fn test_get_cc_eventlog() {
+        let event_logs = match API::get_cc_eventlog(Some(1), Some(10)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        match eventlog {
+            EventLogEntry::TcgImrEvent(tcg_imr_event) => _,
+            EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => _,
+            _ => assert_eq!(true, false);
+        }
+    }
 }
