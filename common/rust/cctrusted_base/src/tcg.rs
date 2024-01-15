@@ -126,7 +126,7 @@ impl TcgEventType {
     pub fn get_event_type_string(event_type: u32) -> Result<String, anyhow::Error>{
         match TCG_EVENT_TYPE_NAME_MAP.get(&event_type) {
             Some(str) => Ok(str.to_string()),
-            None => return Err(anyhow!("UNKNOWN"),
+            None => return Err(anyhow!("UNKNOWN")),
         }
     }
 }
