@@ -257,7 +257,7 @@ impl EventLogEntry {
 
 impl TcgImrEvent{
     pub fn show(&self) {
-        info!("-------------------------------Event Log Entry-----------------------------");
+        info!("         -------------------------------Event Log Entry-----------------------------");
         info!("         IMR               : {}", self.imr_index);
         info!("         Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
     
@@ -273,7 +273,7 @@ impl TcgImrEvent{
 
 impl TcgPcClientImrEvent{
     pub fn show(&self) {
-        info!("--------------------Header Specification ID Event--------------------------");
+        info!("         --------------------Header Specification ID Event--------------------------");
         info!("         IMR               : {}", self.imr_index);
         info!("         Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
         info!("         Digest:");
