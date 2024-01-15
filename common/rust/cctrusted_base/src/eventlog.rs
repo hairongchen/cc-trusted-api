@@ -173,7 +173,6 @@ impl TcgEventLog {
         let header_event_size = get_u32(data[index..index+4].to_vec());
         index = index + 4;
         let header_event = data[index..index+header_event_size as usize].try_into().unwrap();
-        index = index + header_event_size as usize;
         let specification_id_header = TcgPcClientImrEvent {
             imr_index: header_imr, 
             event_type: header_event_type, 
@@ -211,7 +210,7 @@ impl TcgEventLog {
         info!("spec_id_uint_size = {}",spec_id_uint_size);
         info!("spec_id_num_of_algo = {}",spec_id_num_of_algo);
         info!("index = {}",index);
-        
+
         for _ in 0..spec_id_num_of_algo {
             info!("loop");
             let algo_id = get_u16(data[index..index+2].to_vec());
