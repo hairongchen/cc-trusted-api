@@ -261,7 +261,8 @@ impl TcgImrEvent{
         let event_type_str = match TcgEventType::get_event_type_string(self.event_type) {
             Ok(str) => str,
             Err(e) => format!("{:?}", e),
-        }
+        };
+
         info!("-------------------------------Event Log Entry-----------------------------");
         info!("IMR               : {}", self.imr_index);
         info!("Type              : {:02X?} ({:?})", self.event_type, event_type_str);
