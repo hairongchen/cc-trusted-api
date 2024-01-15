@@ -53,7 +53,7 @@ impl TcgEventLog {
 
         let begin = match start {
             Some(s) => {
-                if s > 0 && s >= self.count {
+                if s <= 0 || s >= self.count {
                     return Err(anyhow!("[select] Invalid input start. Start must be number larger than 0 and smaller than total event log count."));
                 }
                 (s-1).try_into().unwrap()
