@@ -279,10 +279,14 @@ impl TcgImrEvent{
 
 impl TcgPcClientImrEvent{
     pub fn show(&self) {
+        let event_type_str = match TcgEventType::get_event_type_string(self.event_type) {
+            Ok(str) => str,
+            Err(e) => format!("{:?}", e),
+        };
+
         info!("--------------------Header Specification ID Event--------------------------");
         info!("IMR               : {}", self.imr_index);
-        info!("Type              : {:02X?} ({:?})", self.event_type,
-        TcgEventType::get_event_type_string(self.event_type));
+        info!("Type              : {:02X?} ({:?})", self.event_type, event_type_str);
         info!("Event:");
         dump_data(&self.event);
     }
