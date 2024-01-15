@@ -126,7 +126,7 @@ impl TcgEventType {
     pub fn get_event_type_string(event_type: u32) -> String {
         match TCG_EVENT_TYPE_NAME_MAP.get(&event_type) {
             Some(str) => str.to_string(),
-            None => "UNKNOWN",
+            None => "UNKNOWN".to_string(),
         }
     }
 }
