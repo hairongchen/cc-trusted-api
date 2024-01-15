@@ -71,13 +71,12 @@ impl TcgEventLog {
             None => self.event_logs.len()
         };
 
-        Ok(self.event_logs[begin..end])
-        //Ok(self.event_logs[begin as usize..end as usize].to_vec())
-        // let mut return_event_logs: Vec<EventLogEntryType> = Vec::new();
-        // for idx in begin..end {
-        //     return_event_logs.push(self.event_logs[idx as usize]);
-        // }
-        // Ok(return_event_logs)
+        // Ok(self.event_logs[begin..end])
+        let mut return_event_logs: Vec<EventLogEntryType> = Vec::new();
+        for idx in begin..end {
+            return_event_logs.push(self.event_logs[idx as usize]);
+        }
+        Ok(return_event_logs)
         
     }
 
