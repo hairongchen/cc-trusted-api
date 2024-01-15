@@ -1,5 +1,4 @@
 use cctrusted_base::api::*;
-use cctrusted_base::api_data::*;
 use cctrusted_vm::sdk::API;
 use log::*;
 
