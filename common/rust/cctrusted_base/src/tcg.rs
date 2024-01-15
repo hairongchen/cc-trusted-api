@@ -288,7 +288,7 @@ impl TcgPcClientImrEvent{
         info!("         IMR               : {}", self.imr_index);
         info!("         Type              : {:02X?} ({})", self.event_type, &event_type_str);
         info!("         Digest:");
-        dump_data(&self.digest);
+        dump_data(&self.digest.to_vec());
         info!("         Event:");
         dump_data(&self.event);
     }
