@@ -30,8 +30,8 @@ fn main() {
     };
 
     info!("event log count: {}", event_logs.len());
-    // for event_log in event_logs {
-    //     event_log.show();
-    // }
+    for event_log in event_logs {
+        event_log.show();
+    }
 
 }
