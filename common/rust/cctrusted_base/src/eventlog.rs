@@ -61,17 +61,17 @@ impl TcgEventLog {
             None => 0
         };
 
-        match count {
+        let end = match count {
             Some(c) => {
                 if c <= 0 || c >= self.count {
                     return Err(anyhow!("[select] Invalid input count. count must be number larger than 0 and smaller than total event log count."));
                 }
-                c
+                c+begin
             },
-            None => self.count
+            None => self.event_logs.len()
         };
 
-        Ok(self.event_logs[begin..self.count].clone())
+        Ok(self.event_logs[begin..end].clone())
         //Ok(self.event_logs[begin as usize..end as usize].to_vec())
         // let mut return_event_logs: Vec<EventLogEntryType> = Vec::new();
         // for idx in begin..end {
