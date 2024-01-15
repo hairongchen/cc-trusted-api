@@ -94,6 +94,18 @@ mod sdk_api_tests {
         };
 
         assert_eq!(event_logs.len(), 10);
-
     }
+
+    fn test_get_cc_eventlog_none() {
+        let event_logs = match API::get_cc_eventlog(None, None) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        assert_ne!(event_logs.len(), 0);
+    }
+    
 }
