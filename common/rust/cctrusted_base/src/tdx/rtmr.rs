@@ -7,7 +7,7 @@ pub struct TdxRTMR {
 }
 
 impl TdxRTMR {
-    pub fn new(index: u8, algo_id: u16, digest: [u16; 48]) -> Result<TdxRTMR, anyhow::Error> {
+    pub fn new(index: u8, algo_id: u16, digest: [u8; 48]) -> Result<TdxRTMR, anyhow::Error> {
         match TdxRTMR::is_valid_index(index) {
             Ok(_) => (),
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
