@@ -3,7 +3,6 @@ use core::result::Result;
 use core::result::Result::Ok;
 
 use cctrusted_base::binary_blob::dump_data;
-use cctrusted_base::eventlog::TcgEventLog;
 use cctrusted_base::tcg::{EventLogEntry, TcgDigest, ALGO_NAME_MAP};
 
 use crate::cvm::build_cvm;
