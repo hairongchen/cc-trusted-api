@@ -336,7 +336,7 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: retrieve TDX RTMR
-    fn process_cc_measurement(&self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error> {
+    fn process_cc_measurement(&self, index: u8, algo_id: u16) -> Result<TcgDigest, anyhow::Error> {
         match TdxRTMR::is_valid_index(index) {
             Ok(_) => (),
             Err(e) => return Err(anyhow!("[process_cc_measurement] {:?}", e)),
