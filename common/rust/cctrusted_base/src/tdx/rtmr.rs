@@ -3,11 +3,11 @@ use anyhow::anyhow;
 
 pub struct TdxRTMR {
     index: u8,
-    digest: (u8, TcgDigest),
+    digest: (u16, TcgDigest),
 }
 
 impl TdxRTMR {
-    pub fn new(index: u8, algo_id: u8, digest: [u8; 48]) -> Result<TdxRTMR, anyhow::Error> {
+    pub fn new(index: u8, algo_id: u16, digest: [u16; 48]) -> Result<TdxRTMR, anyhow::Error> {
         match TdxRTMR::is_valid_index(index) {
             Ok(_) => (),
             Err(e) => return Err(anyhow!("error creating TdxRTMR {:?}", e)),
@@ -51,7 +51,7 @@ impl TcgIMR for TdxRTMR {
         Ok(true)
     }
 
-    fn is_valid_algo(algo_id: u8) -> Result<bool, anyhow::Error> {
+    fn is_valid_algo(algo_id: u16) -> Result<bool, anyhow::Error> {
         if algo_id != TPM_ALG_SHA384 {
             return Err(anyhow!("[is_valid_algo] invalid algo id: {}", algo_id));
         }

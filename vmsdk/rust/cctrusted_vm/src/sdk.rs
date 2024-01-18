@@ -4,7 +4,7 @@ use core::result::Result::Ok;
 
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::eventlog::TcgEventLog;
-use cctrusted_base::tcg::{TcgDigest, ALGO_NAME_MAP};
+use cctrusted_base::tcg::{EventLogEntry, TcgDigest, ALGO_NAME_MAP};
 
 use crate::cvm::build_cvm;
 use cctrusted_base::api::*;
@@ -59,8 +59,13 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM
-    fn get_cc_eventlog(_start: u16, _count: u16) -> TcgEventLog {
-        todo!()
+    fn get_cc_eventlog(start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error> {
+        match build_cvm() {
+            Ok(cvm) => {
+                cvm.process_cc_eventlog(start, count)
+            }
+            Err(e) => return Err(anyhow!("[get_cc_eventlog] error create cvm: {:?}", e)),
+        }
     }
 
     // CCTrustedApi trait function: get default algorithm of a CVM
@@ -367,6 +372,147 @@ mod sdk_api_tests {
                 }
             } else {
                 assert!(false, "unknown ak type");
+            }
+        }
+    }
+
+    // test on cc trusted API [get_cc_eventlog]
+    #[test]
+    fn test_get_cc_eventlog() {
+        let event_logs = match API::get_cc_eventlog(Some(1), Some(10)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        assert_eq!(event_logs.len(), 10);
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_none() {
+        let event_logs = match API::get_cc_eventlog(None, None) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        assert_ne!(event_logs.len(), 0);
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_invalid_start() {
+        match API::get_cc_eventlog(Some(0), None) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_invalid_count() {
+        match API::get_cc_eventlog(Some(1), Some(0)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_check_return_type() {
+        let event_logs = match API::get_cc_eventlog(Some(1), Some(5)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        for event_log in event_logs {
+            match event_log {
+                EventLogEntry::TcgImrEvent(tcg_imr_event) => {
+                    assert_eq!(tcg_imr_event.event_size, tcg_imr_event.event.len().try_into().unwrap());
+                },
+                EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => {
+                    assert_eq!(tcg_pc_client_imr_event.event_size, tcg_pc_client_imr_event.event.len().try_into().unwrap());
+                },
+            }
+        }
+    }
+
+    #[test]
+    fn test_get_cc_eventlog() {
+        let event_logs = match API::get_cc_eventlog(Some(1), Some(10)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        assert_eq!(event_logs.len(), 10);
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_none() {
+        let event_logs = match API::get_cc_eventlog(None, None) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        assert_ne!(event_logs.len(), 0);
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_invalid_start() {
+        match API::get_cc_eventlog(Some(0), None) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_invalid_count() {
+        match API::get_cc_eventlog(Some(1), Some(0)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_check_return_type() {
+        let event_logs = match API::get_cc_eventlog(Some(1), Some(5)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        for event_log in event_logs {
+            match event_log {
+                EventLogEntry::TcgImrEvent(tcg_imr_event) => {
+                    assert_eq!(tcg_imr_event.event_size, tcg_imr_event.event.len().try_into().unwrap());
+                },
+                EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => {
+                    assert_eq!(tcg_pc_client_imr_event.event_size, tcg_pc_client_imr_event.event.len().try_into().unwrap());
+                },
             }
         }
     }

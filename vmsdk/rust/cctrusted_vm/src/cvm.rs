@@ -3,6 +3,7 @@ use anyhow::*;
 use cctrusted_base::cc_type::*;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
 use std::path::Path;
+use cctrusted_base::tcg::EventLogEntry;
 
 // the interfaces a CVM should implement
 pub trait CVM {
@@ -43,7 +44,7 @@ pub trait CVM {
         Returns:
             TcgDigest struct
     */
-    fn process_cc_measurement(&self, index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error>;
+    fn process_cc_measurement(&self, index: u8, algo_id: u16) -> Result<TcgDigest, anyhow::Error>;
 
     /***
         retrive CVM eventlogs
@@ -54,7 +55,7 @@ pub trait CVM {
         Returns:
             array of eventlogs
     */
-    fn process_cc_eventlog(&self);
+    fn process_cc_eventlog(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error>;
 
     /***
         retrive CVM type

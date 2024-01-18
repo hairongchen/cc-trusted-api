@@ -18,6 +18,12 @@ use nix::*;
 use std::fs::File;
 use std::os::fd::AsRawFd;
 use std::path::Path;
+use std::io::BufReader;
+use cctrusted_base::tcg::EventLogEntry;
+use cctrusted_base::eventlog::TcgEventLog;
+use cctrusted_base::tcg::TcgEfiSpecIdEvent;
+use std::io::Read;
+use std::ops::Not;
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
 pub enum TdxOperation {
@@ -37,7 +43,7 @@ pub struct TdxVM {
     pub cc_type: CcType,
     pub version: TdxVersion,
     pub device_node: DeviceNode,
-    pub algo_id: u8,
+    pub algo_id: u16,
 }
 
 // implement the structure method and associated function
@@ -368,8 +374,38 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: retrieve TDX CCEL and IMA eventlog
-    fn process_cc_eventlog(&self) {
-        todo!()
+    fn process_cc_eventlog(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error> {
+        if !Path::new(ACPI_TABLE_FILE).exists(){
+            return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL table at {:?}",ACPI_TABLE_FILE));
+        }
+
+        if !Path::new(ACPI_TABLE_DATA_FILE).exists(){
+            return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL data file at {:?}",ACPI_TABLE_DATA_FILE));
+        }
+
+        let ccel_file = File::open(ACPI_TABLE_FILE)?;
+        let mut ccel_reader = BufReader::new(ccel_file);
+        let mut ccel = Vec::new();
+        ccel_reader.read_to_end(&mut ccel)?;
+        let ccel_char_vec = vec!['C', 'C', 'E', 'L'];
+        let ccel_u8_vec: Vec<u8> = ccel_char_vec.iter().map(|c| *c as u8).collect::<Vec<_>>();
+        if (ccel.len() > 0).not() || (ccel[0..4].to_vec() != ccel_u8_vec) {
+            return Err(anyhow!("[process_cc_eventlog] Invalid CCEL table"));
+        }
+
+        let ccel_data_file = File::open(ACPI_TABLE_DATA_FILE)?;
+        let mut ccel_data_reader = BufReader::new(ccel_data_file);
+        let mut ccel_data = Vec::new();
+        ccel_data_reader.read_to_end(&mut ccel_data)?;
+
+        let mut raw_eventlogs = TcgEventLog {
+            spec_id_header_event: TcgEfiSpecIdEvent::new(),
+            data: ccel_data,
+            event_logs: Vec::new(),
+            count: 0
+        };
+
+        raw_eventlogs.select(start,count)
     }
 
     // CVM trait function: retrive CVM type
@@ -391,7 +427,7 @@ impl CVM for TdxVM {
 
 impl TcgAlgorithmRegistry for TdxVM {
     // TcgAlgorithmRegistry trait function: return CVM default algorithm ID
-    fn get_algorithm_id(&self) -> u8 {
+    fn get_algorithm_id(&self) -> u16 {
         self.algo_id
     }
 
