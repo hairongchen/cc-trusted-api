@@ -64,7 +64,7 @@ pub trait CCTrustedApi {
         Returns:
             TcgDigest struct
     */
-    fn get_cc_measurement(index: u8, algo_id: u8) -> Result<TcgDigest, anyhow::Error>;
+    fn get_cc_measurement(index: u8, algo_id: 16) -> Result<TcgDigest, anyhow::Error>;
 
     /***
         Get eventlog for given index and count.
