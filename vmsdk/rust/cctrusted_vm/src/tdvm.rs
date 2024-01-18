@@ -47,6 +47,12 @@ pub struct TdxVM {
 }
 
 // implement the structure method and associated function
+impl Default for TdxVM {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl TdxVM {
     // TdxVM struct associated function: to build a TdxVM sturcture instance
     pub fn new() -> TdxVM {
