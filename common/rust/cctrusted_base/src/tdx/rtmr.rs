@@ -39,7 +39,7 @@ impl TcgIMR for TdxRTMR {
         self.index
     }
 
-    fn get_tcg_digest(&self, _algo_id: u8) -> TcgDigest {
+    fn get_tcg_digest(&self, _algo_id: u16) -> TcgDigest {
         self.digest.1.clone()
     }
 
