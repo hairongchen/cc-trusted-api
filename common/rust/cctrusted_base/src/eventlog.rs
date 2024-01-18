@@ -1,5 +1,4 @@
 // struct for standard TCG eventlog
-pub struct TcgEventLog {}
 use crate::binary_blob::*;
 use anyhow::anyhow;
 use crate::tcg::TcgEfiSpecIdEvent;

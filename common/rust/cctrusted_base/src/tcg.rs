@@ -54,7 +54,7 @@ impl TcgDigest {
 }
 
 impl TcgAlgorithmRegistry for TcgDigest {
-    fn get_algorithm_id(&self) -> u8 {
+    fn get_algorithm_id(&self) -> u16 {
         self.algo_id
     }
 
@@ -67,9 +67,9 @@ impl TcgAlgorithmRegistry for TcgDigest {
 pub trait TcgIMR {
     fn max_index() -> u8;
     fn get_index(&self) -> u8;
-    fn get_tcg_digest(&self, algo_id: u8) -> TcgDigest;
+    fn get_tcg_digest(&self, algo_id: u16) -> TcgDigest;
     fn is_valid_index(index: u8) -> Result<bool, anyhow::Error>;
-    fn is_valid_algo(algo_id: u8) -> Result<bool, anyhow::Error>;
+    fn is_valid_algo(algo_id: u16) -> Result<bool, anyhow::Error>;
 }
 
 /***
