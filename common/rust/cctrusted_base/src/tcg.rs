@@ -1,6 +1,6 @@
+use crate::binary_blob::dump_data;
 use hashbrown::HashMap;
 use log::info;
-use crate::binary_blob::dump_data;
 
 pub const TPM_ALG_ERROR: u16 = 0x0;
 pub const TPM_ALG_RSA: u16 = 0x1;
@@ -121,7 +121,10 @@ lazy_static! {
         map.insert(EV_S_CRTM_CONTENTS, "EV_S_CRTM_CONTENTS".to_string());
         map.insert(EV_S_CRTM_VERSION, "EV_S_CRTM_VERSION".to_string());
         map.insert(EV_CPU_MICROCODE, "EV_CPU_MICROCODE".to_string());
-        map.insert(EV_PLATFORM_CONFIG_FLAGS, "EV_PLATFORM_CONFIG_FLAGS".to_string());
+        map.insert(
+            EV_PLATFORM_CONFIG_FLAGS,
+            "EV_PLATFORM_CONFIG_FLAGS".to_string(),
+        );
         map.insert(EV_TABLE_OF_DEVICES, "EV_TABLE_OF_DEVICES".to_string());
         map.insert(EV_COMPACT_HASH, "EV_COMPACT_HASH".to_string());
         map.insert(EV_IPL, "EV_IPL".to_string());
@@ -129,18 +132,39 @@ lazy_static! {
         map.insert(EV_NONHOST_CODE, "EV_NONHOST_CODE".to_string());
         map.insert(EV_NONHOST_CONFIG, "EV_NONHOST_CONFIG".to_string());
         map.insert(EV_NONHOST_INFO, "EV_NONHOST_INFO".to_string());
-        map.insert(EV_OMIT_BOOT_DEVICE_EVENTS, "EV_OMIT_BOOT_DEVICE_EVENTS".to_string());
+        map.insert(
+            EV_OMIT_BOOT_DEVICE_EVENTS,
+            "EV_OMIT_BOOT_DEVICE_EVENTS".to_string(),
+        );
         map.insert(EV_EFI_EVENT_BASE, "EV_EFI_EVENT_BASE".to_string());
-        map.insert(EV_EFI_VARIABLE_DRIVER_CONFIG, "EV_EFI_VARIABLE_DRIVER_CONFIG".to_string());
+        map.insert(
+            EV_EFI_VARIABLE_DRIVER_CONFIG,
+            "EV_EFI_VARIABLE_DRIVER_CONFIG".to_string(),
+        );
         map.insert(EV_EFI_VARIABLE_BOOT, "EV_EFI_VARIABLE_BOOT".to_string());
-        map.insert(EV_EFI_BOOT_SERVICES_APPLICATION, "EV_EFI_BOOT_SERVICES_APPLICATION".to_string());
-        map.insert(EV_EFI_BOOT_SERVICES_DRIVER, "EV_EFI_BOOT_SERVICES_DRIVER".to_string());
-        map.insert(EV_EFI_RUNTIME_SERVICES_DRIVER, "EV_EFI_RUNTIME_SERVICES_DRIVER".to_string());
+        map.insert(
+            EV_EFI_BOOT_SERVICES_APPLICATION,
+            "EV_EFI_BOOT_SERVICES_APPLICATION".to_string(),
+        );
+        map.insert(
+            EV_EFI_BOOT_SERVICES_DRIVER,
+            "EV_EFI_BOOT_SERVICES_DRIVER".to_string(),
+        );
+        map.insert(
+            EV_EFI_RUNTIME_SERVICES_DRIVER,
+            "EV_EFI_RUNTIME_SERVICES_DRIVER".to_string(),
+        );
         map.insert(EV_EFI_GPT_EVENT, "EV_EFI_GPT_EVENT".to_string());
         map.insert(EV_EFI_ACTION, "EV_EFI_ACTION".to_string());
-        map.insert(EV_EFI_PLATFORM_FIRMWARE_BLOB, "EV_EFI_PLATFORM_FIRMWARE_BLOB".to_string());
+        map.insert(
+            EV_EFI_PLATFORM_FIRMWARE_BLOB,
+            "EV_EFI_PLATFORM_FIRMWARE_BLOB".to_string(),
+        );
         map.insert(EV_EFI_HANDOFF_TABLES, "EV_EFI_HANDOFF_TABLES".to_string());
-        map.insert(EV_EFI_VARIABLE_AUTHORITY, "EV_EFI_VARIABLE_AUTHORITY".to_string());
+        map.insert(
+            EV_EFI_VARIABLE_AUTHORITY,
+            "EV_EFI_VARIABLE_AUTHORITY".to_string(),
+        );
         map
     };
 }
@@ -175,7 +199,7 @@ pub struct TcgImrEvent {
     pub event_type: u32,
     pub digests: Vec<TcgDigest>,
     pub event_size: u32,
-    pub event:  Vec<u8>
+    pub event: Vec<u8>,
 }
 
 /***
@@ -194,9 +218,9 @@ pub struct TcgImrEvent {
 pub struct TcgPcClientImrEvent {
     pub imr_index: u32,
     pub event_type: u32,
-    pub digest: [u8;20],
+    pub digest: [u8; 20],
     pub event_size: u32,
-    pub event:  Vec<u8>
+    pub event: Vec<u8>,
 }
 
 /***
@@ -218,7 +242,7 @@ pub struct TcgPcClientImrEvent {
 */
 #[derive(Clone)]
 pub struct TcgEfiSpecIdEvent {
-    pub signature: [u8;16],
+    pub signature: [u8; 16],
     pub platform_class: u32,
     pub spec_version_minor: u8,
     pub spec_version_major: u8,
@@ -232,8 +256,8 @@ pub struct TcgEfiSpecIdEvent {
 
 impl TcgEfiSpecIdEvent {
     pub fn new() -> TcgEfiSpecIdEvent {
-        TcgEfiSpecIdEvent{
-            signature: [0;16],
+        TcgEfiSpecIdEvent {
+            signature: [0; 16],
             platform_class: 0,
             spec_version_minor: 0,
             spec_version_major: 0,
@@ -242,7 +266,7 @@ impl TcgEfiSpecIdEvent {
             number_of_algorithms: 0,
             digest_sizes: Vec::new(),
             vendor_info_size: 0,
-            vendor_info: Vec::new()
+            vendor_info: Vec::new(),
         }
     }
 }
@@ -259,12 +283,11 @@ impl TcgEfiSpecIdEvent {
 #[derive(Clone)]
 pub struct TcgEfiSpecIdEventAlgorithmSize {
     pub algo_id: u16,
-    pub digest_size: u32
+    pub digest_size: u32,
 }
 
 #[derive(Clone)]
-pub enum EventLogEntry
-{
+pub enum EventLogEntry {
     TcgImrEvent(TcgImrEvent),
     TcgPcClientImrEvent(TcgPcClientImrEvent),
 }
@@ -273,19 +296,35 @@ impl EventLogEntry {
     pub fn show(&self) {
         match self {
             EventLogEntry::TcgImrEvent(tcg_imr_event) => &tcg_imr_event.show(),
-            EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => &tcg_pc_client_imr_event.show(),
+            EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => {
+                &tcg_pc_client_imr_event.show()
+            }
         };
     }
 }
 
-impl TcgImrEvent{
+impl TcgImrEvent {
     pub fn show(&self) {
-        info!("        -------------------------------Event Log Entry-----------------------------");
+        info!(
+            "        -------------------------------Event Log Entry-----------------------------"
+        );
         info!("        IMR               : {}", self.imr_index);
-        info!("        Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
+        info!(
+            "        Type              : {:02X?} ({})",
+            self.event_type,
+            &TcgEventType::get_event_type_string(self.event_type)
+        );
 
         for digest_index in 0..self.digests.len() {
-            info!("        Algorithm_id[{}]   : {} {}",digest_index, self.digests[digest_index].algo_id, ALGO_NAME_MAP.get(&self.digests[digest_index].algo_id).unwrap().to_owned());
+            info!(
+                "        Algorithm_id[{}]   : {} {}",
+                digest_index,
+                self.digests[digest_index].algo_id,
+                ALGO_NAME_MAP
+                    .get(&self.digests[digest_index].algo_id)
+                    .unwrap()
+                    .to_owned()
+            );
             info!("        Digest[{}]:", digest_index);
             dump_data(&self.digests[digest_index].hash);
         }
@@ -294,11 +333,17 @@ impl TcgImrEvent{
     }
 }
 
-impl TcgPcClientImrEvent{
+impl TcgPcClientImrEvent {
     pub fn show(&self) {
-        info!("        --------------------Header Specification ID Event--------------------------");
+        info!(
+            "        --------------------Header Specification ID Event--------------------------"
+        );
         info!("        IMR               : {}", self.imr_index);
-        info!("        Type              : {:02X?} ({})", self.event_type, &TcgEventType::get_event_type_string(self.event_type));
+        info!(
+            "        Type              : {:02X?} ({})",
+            self.event_type,
+            &TcgEventType::get_event_type_string(self.event_type)
+        );
         info!("        Digest:");
         dump_data(&self.digest.to_vec());
         info!("        Event:");

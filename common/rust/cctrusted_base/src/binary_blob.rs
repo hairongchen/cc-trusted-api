@@ -58,7 +58,6 @@ pub fn dump_data(data: &Vec<u8>) {
     }
 }
 
-
 pub fn get_u8(data: Vec<u8>) -> u8 {
     u8::from_le_bytes(data[0..1].try_into().unwrap())
 }

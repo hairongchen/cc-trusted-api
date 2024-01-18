@@ -3,6 +3,9 @@
 use crate::cvm::*;
 use anyhow::*;
 use cctrusted_base::cc_type::*;
+use cctrusted_base::eventlog::TcgEventLog;
+use cctrusted_base::tcg::EventLogEntry;
+use cctrusted_base::tcg::TcgEfiSpecIdEvent;
 use cctrusted_base::tcg::*;
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
@@ -16,14 +19,11 @@ use core::result::Result::Ok;
 use log::info;
 use nix::*;
 use std::fs::File;
-use std::os::fd::AsRawFd;
-use std::path::Path;
 use std::io::BufReader;
-use cctrusted_base::tcg::EventLogEntry;
-use cctrusted_base::eventlog::TcgEventLog;
-use cctrusted_base::tcg::TcgEfiSpecIdEvent;
 use std::io::Read;
 use std::ops::Not;
+use std::os::fd::AsRawFd;
+use std::path::Path;
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
 pub enum TdxOperation {
@@ -374,13 +374,23 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: retrieve TDX CCEL and IMA eventlog
-    fn process_cc_eventlog(&self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error> {
-        if !Path::new(ACPI_TABLE_FILE).exists(){
-            return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL table at {:?}",ACPI_TABLE_FILE));
+    fn process_cc_eventlog(
+        &self,
+        start: Option<u32>,
+        count: Option<u32>,
+    ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
+        if !Path::new(ACPI_TABLE_FILE).exists() {
+            return Err(anyhow!(
+                "[process_cc_eventlog] Failed to find TDX CCEL table at {:?}",
+                ACPI_TABLE_FILE
+            ));
         }
 
-        if !Path::new(ACPI_TABLE_DATA_FILE).exists(){
-            return Err(anyhow!("[process_cc_eventlog] Failed to find TDX CCEL data file at {:?}",ACPI_TABLE_DATA_FILE));
+        if !Path::new(ACPI_TABLE_DATA_FILE).exists() {
+            return Err(anyhow!(
+                "[process_cc_eventlog] Failed to find TDX CCEL data file at {:?}",
+                ACPI_TABLE_DATA_FILE
+            ));
         }
 
         let ccel_file = File::open(ACPI_TABLE_FILE)?;
@@ -402,10 +412,10 @@ impl CVM for TdxVM {
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             data: ccel_data,
             event_logs: Vec::new(),
-            count: 0
+            count: 0,
         };
 
-        raw_eventlogs.select(start,count)
+        raw_eventlogs.select(start, count)
     }
 
     // CVM trait function: retrive CVM type

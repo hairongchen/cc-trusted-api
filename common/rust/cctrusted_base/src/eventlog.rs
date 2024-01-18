@@ -1,13 +1,12 @@
-// struct for standard TCG eventlog
 use crate::binary_blob::*;
-use anyhow::anyhow;
+use crate::tcg::EventLogEntry;
+use crate::tcg::TcgDigest;
 use crate::tcg::TcgEfiSpecIdEvent;
-use crate::tcg::EV_NO_ACTION;
-use crate::tcg::TcgPcClientImrEvent;
 use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
 use crate::tcg::TcgImrEvent;
-use crate::tcg::TcgDigest;
-use crate::tcg::EventLogEntry;
+use crate::tcg::TcgPcClientImrEvent;
+use crate::tcg::EV_NO_ACTION;
+use anyhow::anyhow;
 
 /***
     TcgEventLog struct.
@@ -21,17 +20,16 @@ pub struct TcgEventLog {
     pub spec_id_header_event: TcgEfiSpecIdEvent,
     pub data: Vec<u8>,
     pub event_logs: Vec<EventLogEntry>,
-    pub count: u32
+    pub count: u32,
 }
 
 impl TcgEventLog {
-
     pub fn new(data: Vec<u8>) -> TcgEventLog {
-        TcgEventLog{
+        TcgEventLog {
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             data: data,
             event_logs: Vec::new(),
-            count: 0
+            count: 0,
         }
     }
 
@@ -41,7 +39,11 @@ impl TcgEventLog {
             start: index of the first event log to collect
             count: total number of event logs to collect
     */
-    pub fn select(&mut self, start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error>{
+    pub fn select(
+        &mut self,
+        start: Option<u32>,
+        count: Option<u32>,
+    ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
         match self.parse() {
             Ok(_) => (),
             Err(e) => {
@@ -54,9 +56,9 @@ impl TcgEventLog {
                 if s <= 0 || s >= self.count {
                     return Err(anyhow!("[select] Invalid input start. Start must be number larger than 0 and smaller than total event log count."));
                 }
-                (s-1).try_into().unwrap()
-            },
-            None => 0
+                (s - 1).try_into().unwrap()
+            }
+            None => 0,
         };
 
         let end = match count {
@@ -64,9 +66,9 @@ impl TcgEventLog {
                 if c <= 0 || c >= self.count {
                     return Err(anyhow!("[select] Invalid input count. count must be number larger than 0 and smaller than total event log count."));
                 }
-                (c+begin).try_into().unwrap()
-            },
-            None => self.event_logs.len()
+                (c + begin).try_into().unwrap()
+            }
+            None => self.event_logs.len(),
         };
 
         Ok((&(self.event_logs[begin as usize..end as usize])).to_vec())
@@ -77,7 +79,7 @@ impl TcgEventLog {
         Go through all event log data and parse the contents accordingly
         Save the parsed event logs into TcgEventLog.
     */
-    fn parse(&mut self) -> Result<bool, anyhow::Error>{
+    fn parse(&mut self) -> Result<bool, anyhow::Error> {
         if self.data.len() == 0 {
             return Err(anyhow!("[parse] no eventlog data provided"));
         }
@@ -85,35 +87,37 @@ impl TcgEventLog {
         let mut index = 0;
         while index < self.data.len() {
             let start = index;
-            let imr = get_u32(self.data[index..index+4].to_vec());
+            let imr = get_u32(self.data[index..index + 4].to_vec());
             index = index + 4;
-            let event_type = get_u32(self.data[index..index+4].to_vec());
+            let event_type = get_u32(self.data[index..index + 4].to_vec());
             if imr == 0xFFFFFFFF {
                 break;
             }
 
             if event_type == EV_NO_ACTION {
-                match self.parse_spec_id_event_log(self.data[start..].to_vec()){
+                match self.parse_spec_id_event_log(self.data[start..].to_vec()) {
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len as usize;
-                        self.event_logs.push(EventLogEntry::TcgPcClientImrEvent(spec_id_event));
+                        self.event_logs
+                            .push(EventLogEntry::TcgPcClientImrEvent(spec_id_event));
                         self.count = self.count + 1;
-                    },
+                    }
                     Err(e) => {
-                        return Err(anyhow!("[parse] error in parse_spec_id_event_log function {:?}", e));
-
+                        return Err(anyhow!(
+                            "[parse] error in parse_spec_id_event_log function {:?}",
+                            e
+                        ));
                     }
                 }
             } else {
-                match self.parse_event_log(self.data[start..].to_vec()){
+                match self.parse_event_log(self.data[start..].to_vec()) {
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
                         self.event_logs.push(EventLogEntry::TcgImrEvent(event_log));
                         self.count = self.count + 1;
-                    },
+                    }
                     Err(e) => {
                         return Err(anyhow!("[parse] error in parse_event_log function {:?}", e));
-
                     }
                 }
             }
@@ -139,58 +143,68 @@ impl TcgEventLog {
             A TcgPcClientImrEvent containing the Specification ID version event
             An int specifying the event size
     */
-    fn parse_spec_id_event_log(&mut self, data: Vec<u8>) -> Result<(TcgPcClientImrEvent, u32), anyhow::Error> {
+    fn parse_spec_id_event_log(
+        &mut self,
+        data: Vec<u8>,
+    ) -> Result<(TcgPcClientImrEvent, u32), anyhow::Error> {
         let mut index = 0;
 
-        let imr_index = get_u32(data[index..index+4].to_vec());
+        let imr_index = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
         let header_imr = imr_index - 1;
-        let header_event_type = get_u32(data[index..index+4].to_vec());
+        let header_event_type = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
 
-        let digest = data[index..index+20].try_into().unwrap();
+        let digest = data[index..index + 20].try_into().unwrap();
         index = index + 20;
-        let header_event_size = get_u32(data[index..index+4].to_vec());
+        let header_event_size = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
-        let header_event = data[index..index+header_event_size as usize].try_into().unwrap();
+        let header_event = data[index..index + header_event_size as usize]
+            .try_into()
+            .unwrap();
         let specification_id_header = TcgPcClientImrEvent {
-            imr_index: header_imr, 
-            event_type: header_event_type, 
+            imr_index: header_imr,
+            event_type: header_event_type,
             digest: digest,
-            event_size: header_event_size, 
-            event: header_event
+            event_size: header_event_size,
+            event: header_event,
         };
 
         // Parse EFI Spec Id Event structure
-        let spec_id_signature = data[index..index+16].try_into().unwrap();
+        let spec_id_signature = data[index..index + 16].try_into().unwrap();
         index = index + 16;
-        let spec_id_platform_cls = get_u32(data[index..index+4].to_vec());
+        let spec_id_platform_cls = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
-        let spec_id_version_minor = get_u8(data[index..index+1].to_vec());
+        let spec_id_version_minor = get_u8(data[index..index + 1].to_vec());
         index = index + 1;
-        let spec_id_version_major = get_u8(data[index..index+1].to_vec());
+        let spec_id_version_major = get_u8(data[index..index + 1].to_vec());
         index = index + 1;
-        let spec_id_errata = get_u8(data[index..index+1].to_vec());
+        let spec_id_errata = get_u8(data[index..index + 1].to_vec());
         index = index + 1;
-        let spec_id_uint_size = get_u8(data[index..index+1].to_vec());
+        let spec_id_uint_size = get_u8(data[index..index + 1].to_vec());
         index = index + 1;
-        let spec_id_num_of_algo = get_u32(data[index..index+4].to_vec());
+        let spec_id_num_of_algo = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
         let mut spec_id_digest_sizes: Vec<TcgEfiSpecIdEventAlgorithmSize> = Vec::new();
 
         for _ in 0..spec_id_num_of_algo {
-            let algo_id = get_u16(data[index..index+2].to_vec());
+            let algo_id = get_u16(data[index..index + 2].to_vec());
             index = index + 2;
-            let digest_size = get_u16(data[index..index+2].to_vec());
+            let digest_size = get_u16(data[index..index + 2].to_vec());
             index = index + 2;
-            spec_id_digest_sizes.push(TcgEfiSpecIdEventAlgorithmSize{algo_id: algo_id.try_into().unwrap(), digest_size: digest_size.into()});
+            spec_id_digest_sizes.push(TcgEfiSpecIdEventAlgorithmSize {
+                algo_id: algo_id.try_into().unwrap(),
+                digest_size: digest_size.into(),
+            });
         }
 
-        let spec_id_vendor_size = get_u8(data[index..index+1].to_vec());
+        let spec_id_vendor_size = get_u8(data[index..index + 1].to_vec());
         index = index + 1;
         let mut spec_id_vendor_info = Vec::new();
         if spec_id_vendor_size > 0 {
-            spec_id_vendor_info = data[index..index+spec_id_vendor_size as usize].try_into().unwrap();
+            spec_id_vendor_info = data[index..index + spec_id_vendor_size as usize]
+                .try_into()
+                .unwrap();
         }
         index = index + spec_id_vendor_size as usize;
 
@@ -204,7 +218,7 @@ impl TcgEventLog {
             number_of_algorithms: spec_id_num_of_algo,
             digest_sizes: spec_id_digest_sizes,
             vendor_info_size: spec_id_vendor_size,
-            vendor_info: spec_id_vendor_info
+            vendor_info: spec_id_vendor_info,
         };
 
         Ok((specification_id_header, index.try_into().unwrap()))
@@ -226,21 +240,21 @@ impl TcgEventLog {
             A TcgImrEvent containing the event information
             An int specifying the event size
     */
-    fn parse_event_log(&self, data: Vec<u8>)-> Result<(TcgImrEvent, u32), anyhow::Error>{
+    fn parse_event_log(&self, data: Vec<u8>) -> Result<(TcgImrEvent, u32), anyhow::Error> {
         let mut index = 0;
 
-        let mut imr_index = get_u32(data[index..index+4].to_vec());
+        let mut imr_index = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
         imr_index = imr_index - 1;
-        let event_type = get_u32(data[index..index+4].to_vec());
+        let event_type = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
 
         // Fetch digest count and get each digest and its algorithm
-        let digest_count = get_u32(data[index..index+4].to_vec());
+        let digest_count = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
         let mut digests: Vec<TcgDigest> = Vec::new();
         for _ in 0..digest_count {
-            let alg_id = get_u16(data[index..index+2].to_vec());
+            let alg_id = get_u16(data[index..index + 2].to_vec());
             index = index + 2;
             let mut pos = 0;
 
@@ -252,31 +266,39 @@ impl TcgEventLog {
             }
 
             if pos == self.spec_id_header_event.digest_sizes.len() {
-                return Err(anyhow!("[parse_event_log] No algorithm with such algo_id {}", alg_id));
+                return Err(anyhow!(
+                    "[parse_event_log] No algorithm with such algo_id {}",
+                    alg_id
+                ));
             }
 
             let alg = &self.spec_id_header_event.digest_sizes[pos];
             let digest_size = alg.digest_size;
-            let digest_data = data[index..index+digest_size as usize].try_into().unwrap();
+            let digest_data = data[index..index + digest_size as usize]
+                .try_into()
+                .unwrap();
             index = index + digest_size as usize;
-            let digest = TcgDigest{
+            let digest = TcgDigest {
                 algo_id: alg_id,
-                hash: digest_data
+                hash: digest_data,
             };
             digests.push(digest);
         }
 
-        let event_size = get_u32(data[index..index+4].to_vec());
+        let event_size = get_u32(data[index..index + 4].to_vec());
         index = index + 4;
-        let event = data[index..index+event_size as usize].try_into().unwrap();
+        let event = data[index..index + event_size as usize].try_into().unwrap();
         index = index + event_size as usize;
 
-        Ok((TcgImrEvent{
-            imr_index, 
-            event_type, 
-            digests, 
-            event_size,
-            event}, index.try_into().unwrap()
+        Ok((
+            TcgImrEvent {
+                imr_index,
+                event_type,
+                digests,
+                event_size,
+                event,
+            },
+            index.try_into().unwrap(),
         ))
     }
 }

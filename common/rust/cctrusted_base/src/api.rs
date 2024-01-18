@@ -1,8 +1,8 @@
 use crate::api_data::Algorithm;
 use crate::api_data::*;
+use crate::tcg::EventLogEntry;
 use crate::tcg::TcgDigest;
 use core::result::Result;
-use crate::tcg::EventLogEntry;
 
 pub trait CCTrustedApi {
     /***
@@ -78,7 +78,10 @@ pub trait CCTrustedApi {
         Returns:
             EventLogEntry struct
     */
-    fn get_cc_eventlog(start: Option<u32>, count: Option<u32>) -> Result<Vec<EventLogEntry>, anyhow::Error>;
+    fn get_cc_eventlog(
+        start: Option<u32>,
+        count: Option<u32>,
+    ) -> Result<Vec<EventLogEntry>, anyhow::Error>;
 
     /***
         Get the default Digest algorithms supported by trusted foundation.
