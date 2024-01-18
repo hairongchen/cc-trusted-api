@@ -64,7 +64,7 @@ impl CCTrustedApi for API {
     ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
         match build_cvm() {
             Ok(cvm) => cvm.process_cc_eventlog(start, count),
-            Err(e) => return Err(anyhow!("[get_cc_eventlog] error create cvm: {:?}", e)),
+            Err(e) => Err(anyhow!("[get_cc_eventlog] error create cvm: {:?}", e)),
         }
     }
 

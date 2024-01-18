@@ -131,16 +131,13 @@ impl TdxVM {
                 );
 
                 //apply the ioctl command
-                match unsafe {
+                if let Err(e) = unsafe {
                     get_report_1_0_ioctl(
                         device_node.as_raw_fd(),
                         ptr::addr_of!(request) as *mut u64,
                     )
                 } {
-                    Err(e) => {
-                        return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
-                    }
-                    Ok(_) => (),
+                    return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
                 };
 
                 Ok(td_report.to_vec())
@@ -167,16 +164,13 @@ impl TdxVM {
                 );
 
                 //apply the ioctl command
-                match unsafe {
+                if let Err(e) = unsafe {
                     get_report_1_5_ioctl(
                         device_node.as_raw_fd(),
                         ptr::addr_of!(request) as *mut tdx_1_5_report_req,
                     )
                 } {
-                    Err(e) => {
-                        return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
-                    }
-                    Ok(_) => (),
+                    return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
                 };
 
                 Ok(request.tdreport.to_vec())
