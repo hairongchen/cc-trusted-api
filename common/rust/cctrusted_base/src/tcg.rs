@@ -254,6 +254,12 @@ pub struct TcgEfiSpecIdEvent {
     pub vendor_info: Vec<u8>,
 }
 
+impl Default for TcgEfiSpecIdEvent {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl TcgEfiSpecIdEvent {
     pub fn new() -> TcgEfiSpecIdEvent {
         TcgEfiSpecIdEvent {
