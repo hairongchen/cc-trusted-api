@@ -56,7 +56,7 @@ impl TcgEventLog {
                 if s == 0 || s >= self.count {
                     return Err(anyhow!("[select] Invalid input start. Start must be number larger than 0 and smaller than total event log count."));
                 }
-                (s - 1)
+                s - 1
             }
             None => 0,
         };
@@ -193,7 +193,7 @@ impl TcgEventLog {
             let digest_size = get_u16(data[index..index + 2].to_vec());
             index += 2;
             spec_id_digest_sizes.push(TcgEfiSpecIdEventAlgorithmSize {
-                algo_id: algo_id,
+                algo_id,
                 digest_size: digest_size.into(),
             });
         }
@@ -206,7 +206,7 @@ impl TcgEventLog {
                 .try_into()
                 .unwrap();
         }
-        index = index + spec_id_vendor_size as usize;
+        index += spec_id_vendor_size as usize;
 
         self.spec_id_header_event = TcgEfiSpecIdEvent {
             signature: spec_id_signature,
@@ -245,7 +245,7 @@ impl TcgEventLog {
 
         let mut imr_index = get_u32(data[index..index + 4].to_vec());
         index += 4;
-        imr_index = imr_index - 1;
+        imr_index -= 1;
         let event_type = get_u32(data[index..index + 4].to_vec());
         index += 4;
 
@@ -262,7 +262,7 @@ impl TcgEventLog {
                 if u16::from(self.spec_id_header_event.digest_sizes[pos].algo_id) == alg_id {
                     break;
                 }
-                pos = pos + 1;
+                pos += 1;
             }
 
             if pos == self.spec_id_header_event.digest_sizes.len() {
@@ -277,7 +277,7 @@ impl TcgEventLog {
             let digest_data = data[index..index + digest_size as usize]
                 .try_into()
                 .unwrap();
-            index = index + digest_size as usize;
+            index += digest_size as usize;
             let digest = TcgDigest {
                 algo_id: alg_id,
                 hash: digest_data,
@@ -288,7 +288,7 @@ impl TcgEventLog {
         let event_size = get_u32(data[index..index + 4].to_vec());
         index += 4;
         let event = data[index..index + event_size as usize].try_into().unwrap();
-        index = index + event_size as usize;
+        index += event_size as usize;
 
         Ok((
             TcgImrEvent {
