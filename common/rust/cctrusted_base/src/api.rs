@@ -37,7 +37,7 @@ pub trait CCTrustedApi {
         Returns:
             None
     */
-    fn dump_cc_report(report: &Vec<u8>);
+    fn dump_cc_report(report: Vec<u8>);
 
     /***
         Get the count of measurement register.
