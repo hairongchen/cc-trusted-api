@@ -137,7 +137,7 @@ impl TdxVM {
                         ptr::addr_of!(request) as *mut u64,
                     )
                 } {
-                    return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
+                    return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e));
                 };
 
                 Ok(td_report.to_vec())
@@ -170,7 +170,7 @@ impl TdxVM {
                         ptr::addr_of!(request) as *mut tdx_1_5_report_req,
                     )
                 } {
-                    return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e))
+                    return Err(anyhow!("[get_td_report] Fail to get TDX report: {:?}", e));
                 };
 
                 Ok(request.tdreport.to_vec())
