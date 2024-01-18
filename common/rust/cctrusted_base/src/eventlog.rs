@@ -259,7 +259,7 @@ impl TcgEventLog {
             let mut pos = 0;
 
             while pos < self.spec_id_header_event.digest_sizes.len() {
-                if u16::from(self.spec_id_header_event.digest_sizes[pos].algo_id) == alg_id {
+                if self.spec_id_header_event.digest_sizes[pos].algo_id == alg_id {
                     break;
                 }
                 pos += 1;
