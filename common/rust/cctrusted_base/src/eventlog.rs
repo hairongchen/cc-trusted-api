@@ -53,17 +53,17 @@ impl TcgEventLog {
 
         let begin = match start {
             Some(s) => {
-                if s = 0 || s >= self.count {
+                if s == 0 || s >= self.count {
                     return Err(anyhow!("[select] Invalid input start. Start must be number larger than 0 and smaller than total event log count."));
                 }
-                (s - 1).unwrap()
+                (s - 1)
             }
             None => 0,
         };
 
         let end = match count {
             Some(c) => {
-                if c = 0 || c >= self.count {
+                if c == 0 || c >= self.count {
                     return Err(anyhow!("[select] Invalid input count. count must be number larger than 0 and smaller than total event log count."));
                 }
                 (c + begin).try_into().unwrap()
@@ -193,7 +193,7 @@ impl TcgEventLog {
             let digest_size = get_u16(data[index..index + 2].to_vec());
             index += 2;
             spec_id_digest_sizes.push(TcgEfiSpecIdEventAlgorithmSize {
-                algo_id: algo_id.unwrap(),
+                algo_id: algo_id,
                 digest_size: digest_size.into(),
             });
         }
