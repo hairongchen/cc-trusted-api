@@ -51,10 +51,26 @@ impl TcgEventLog {
 
     fn to_tcg_pcclient_format(&self) -> EventLogEntry {
         if self.event_type == EV_NO_ACTION {
-            EventLogEntry::TcgPcClientImrEvent(TcgPcClientImrEvent{self.imr_index, self.event_size, self.digests[0].hash,self.event_size, self.event})
+            EventLogEntry::TcgPcClientImrEvent(
+                TcgPcClientImrEvent{
+                    imr_index: self.imr_index,
+                    event_type: self.event_type,
+                    digest: self.digests[0].hash,
+                    event_size: self.event_size, 
+                    event: self.event
+                }
+            )
         }
 
-        EventLogEntry::TcgImrEvent(TcgImrEvent{self.imr_index, self.event_type, self.digests, self.event_size, self.event})
+        EventLogEntry::TcgImrEvent(
+            TcgImrEvent{
+                imr_index: self.imr_index,
+                event_type: self.event_type,
+                digests: self.digests,
+                event_size: self.event_size,
+                event: self.event
+            }
+        )
     }
 
     fn to_tcg_canonical_format(&self) -> EventLogEntry {
