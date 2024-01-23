@@ -437,7 +437,7 @@ impl EventLogs {
 
         let mut digests: Vec<TcgDigest> = Vec::new();
         let digest_size = elements[1].len()/2;
-        let algo_id = TcgDigest::get_algorithm_id_from_digest_size(digest_size);
+        let algo_id = TcgDigest::get_algorithm_id_from_digest_size(digest_size.try_into().unwrap());
         let digest = TcgDigest {
             algo_id,
             hash: elements[1].as_bytes().to_vec(),

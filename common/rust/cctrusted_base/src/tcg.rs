@@ -77,7 +77,7 @@ impl TcgAlgorithmRegistry for TcgDigest {
         ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
     }
 
-    fn get_algorithm_id_from_digest_size(digest_size:u8) -> u32 {
+    fn get_algorithm_id_from_digest_size(digest_size:u8) -> u16 {
         match TPM_DIGEST_SIZE_ALG_HASH_MAP.get(&digest_size) {
             Some(algo_id) => *algo_id,
             None => TPM_ALG_ERROR.into(),
