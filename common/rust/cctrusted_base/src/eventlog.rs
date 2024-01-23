@@ -214,8 +214,8 @@ impl EventLogs {
         }
 
         if self.run_time_data.len() != 0 {
-            for line in self.run_time_data { 
-                match self.parse_ima_event_log(&line) {
+            for index in 0..self.run_time_data.len() { 
+                match self.parse_ima_event_log(self.run_time_data[index]) {
                     Ok(event_log) => {
                         self.event_logs.push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
