@@ -51,7 +51,7 @@ impl TcgEventLog {
                     event_type: self.event_type,
                     digest: self.digests[0].hash[0..4].try_into().unwrap(),
                     event_size: self.event_size, 
-                    event: self.event
+                    event: self.event.clone()
                 }
             );
         }
@@ -60,9 +60,9 @@ impl TcgEventLog {
             TcgImrEvent{
                 imr_index: self.imr_index,
                 event_type: self.event_type,
-                digests: self.digests,
+                digests: self.digests.clone(),
                 event_size: self.event_size,
-                event: self.event
+                event: self.event.clone()
             }
         )
     }
