@@ -262,7 +262,7 @@ impl EventLogs {
         index += 20;
         let mut digests: Vec<TcgDigest> = Vec::new();
         let digest = TcgDigest {
-            TPM_ALG_ERROR,
+            algo_id: TPM_ALG_ERROR,
             hash: digest_hash,
         };
         digests.push(digest);
