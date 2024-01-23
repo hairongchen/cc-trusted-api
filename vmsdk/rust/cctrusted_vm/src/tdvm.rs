@@ -17,13 +17,13 @@ use core::result::Result;
 use core::result::Result::Ok;
 use log::info;
 use nix::*;
+use std::fs::read_to_string;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::Read;
 use std::ops::Not;
 use std::os::fd::AsRawFd;
 use std::path::Path;
-use std::fs::read_to_string;
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
 pub enum TdxOperation {
@@ -400,7 +400,7 @@ impl CVM for TdxVM {
         ccel_reader.read_to_end(&mut ccel)?;
         let ccel_char_vec = vec!['C', 'C', 'E', 'L'];
         let ccel_u8_vec: Vec<u8> = ccel_char_vec.iter().map(|c| *c as u8).collect::<Vec<_>>();
-        if (ccel.len() > 0).not() || (ccel[0..4].to_vec() != ccel_u8_vec) {
+        if ccel.is_empty() || (ccel[0..4].to_vec() != ccel_u8_vec) {
             return Err(anyhow!("[process_cc_eventlog] Invalid CCEL table"));
         }
 
@@ -423,7 +423,7 @@ impl CVM for TdxVM {
         let mut cmdline_string = String::new();
         let _ = cmdline_reader.read_to_string(&mut cmdline_string);
         if cmdline_string.contains("ima_hash=sha384") {
-            run_time_data = read_to_string(IMA_DATA_FILE) 
+            run_time_data = read_to_string(IMA_DATA_FILE)
                 .unwrap()
                 .lines()
                 .map(String::from)
