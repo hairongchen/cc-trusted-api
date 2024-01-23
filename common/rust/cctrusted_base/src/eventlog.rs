@@ -1,12 +1,15 @@
-use crate::binary_blob::*;
-use crate::tcg::EventLogEntry;
-use crate::tcg::TcgDigest;
-use crate::tcg::TcgEfiSpecIdEvent;
-use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
-use crate::tcg::TcgImrEvent;
-use crate::tcg::TcgPcClientImrEvent;
-use crate::tcg::EV_NO_ACTION;
 use anyhow::anyhow;
+use hashbrown::HashMap;
+use crate::binary_blob::*;
+use crate::tcg::*;
+// use crate::tcg::EventLogEntry;
+// use crate::tcg::TcgDigest;
+// use crate::tcg::TcgEfiSpecIdEvent;
+// use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
+// use crate::tcg::TcgImrEvent;
+// use crate::tcg::TcgPcClientImrEvent;
+// use crate::tcg::TcgEventType;
+// use crate::tcg::EV_NO_ACTION;
 
 /***
  *  This is the common struct for tcg event logs to be delivered in different formats.
@@ -25,7 +28,7 @@ use anyhow::anyhow;
         extra_info: extra information in the event
  */
 pub struct TcgEventLog{
-    pub rec_num: uint32,
+    pub rec_num: u32,
     pub imr_index: u32,
     pub event_type: TcgEventType,
     pub digests: Vec<TcgDigest>,
@@ -46,15 +49,15 @@ impl TcgEventLog {
         }
     }
 
-    fn to_tcg_pcclient_format(&self) -> Result<EventLogEntry, anyhow::Error>{
+    fn to_tcg_pcclient_format(&self) -> EventLogEntry {
         if self.event_type == EV_NO_ACTION {
-            TcgPcClientImrEvent(self.imr_index, self.event_size, self.digests[0].hash,self.event_size, self.event)
+            EventLogEntry::TcgPcClientImrEvent(self.imr_index, self.event_size, self.digests[0].hash,self.event_size, self.event)
         }
 
-        TcgImrEvent(self.imr_index, self.event_type, self.digests, self.event_size, self.event)
+        EventLogEntry::TcgImrEvent(self.imr_index, self.event_type, self.digests, self.event_size, self.event)
     }
 
-    fn to_tcg_canonical_format(&self) -> Result<EventLogEntry, anyhow::Error>{
+    fn to_tcg_canonical_format(&self) -> EventLogEntry {
         todo!()
     }
 }
@@ -76,7 +79,7 @@ pub struct EventLogs {
     pub run_time_data: Vec<String>,
     pub event_logs: Vec<EventLogEntry>,
     pub count: u32,
-    pub parse_format: String
+    pub parse_format: String,
     pub event_logs_record_number_list: [u32;24]
 }
 
@@ -145,8 +148,8 @@ impl EventLogs {
             The record number
      */
     fn get_record_number(&mut self, imr_index: u32) -> u32 {
-        let rec_num = self.event_logs_record_number_list[imr_index];
-        self.event_logs_record_number_list[imr_index] += 1;
+        let rec_num = self.event_logs_record_number_list[imr_index as usize];
+        self.event_logs_record_number_list[imr_index as usize] += 1;
         rec_num
     }
 
@@ -175,7 +178,7 @@ impl EventLogs {
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len as usize;
                         self.event_logs
-                            .push(spec_id_event.format_event_log(&self.parse_format));
+                            .push(spec_id_event.format_event_log(self.parse_format));
                         self.count += 1;
                     }
                     Err(e) => {
@@ -189,7 +192,7 @@ impl EventLogs {
                 match self.parse_event_log(self.boot_time_data[start..].to_vec()) {
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
-                        self.event_logs.push(event_log.format_event_log(&self.parse_format));
+                        self.event_logs.push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
                     }
                     Err(e) => {
@@ -200,11 +203,10 @@ impl EventLogs {
         }
 
         if self.run_time_data.len() != 0 {
-            for line in run_time_data.iter() { 
-                event_log = self.parse_ima_event_log(&line);
-                match self.parse_ima_event_log(&line) {
+            for line in self.run_time_data.iter() { 
+                match self.parse_ima_event_log(line) {
                     Ok(event_log) => {
-                        self.event_logs.push(event_log.format_event_log(&self.parse_format));
+                        self.event_logs.push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
                     }
                     Err(e) => {
@@ -259,7 +261,7 @@ impl EventLogs {
             rec_num,
             imr_index: header_imr,
             event_type: header_event_type,
-            digest,
+            digests,
             event_size: header_event_size,
             event: header_event,
         };
@@ -394,6 +396,7 @@ impl EventLogs {
                 digests,
                 event_size,
                 event,
+                extra_info: HashMap::new()
             },
             index.try_into().unwrap(),
         ))
@@ -413,35 +416,37 @@ impl EventLogs {
         Returns:
             A TcgEventLog object containing the ima event log
      */
-    fn parse_ima_event_log (&self, data: String) -> Result<(TcgEventLog, u32), anyhow::Error> {
+    fn parse_ima_event_log (&self, data: String) -> Result<TcgEventLog, anyhow::Error> {
     
         let elements: Vec<&str> = data.trim_matches(' ').split(' ').collect();
 
-        let imr_index: u3 = elements[0].parse().unwrap();
-        let rec_num = get_record_number(imr_index);
+        let imr_index: u32 = elements[0].parse().unwrap();
+        let rec_num = self.get_record_number(imr_index);
 
-        let event = elements[3..].join(' ').as_bytes().to_vec();
-        let event_size = event.len();
+        let event = elements[3..].join(" ").as_bytes().to_vec();
+        let event_size = event.len() as u32;
 
         let mut digests: Vec<TcgDigest> = Vec::new();
         let digest_size = elements[1].len()/2;
-        let alg_id = get_algorithm_id_from_digest_size(digest_size);
+        let algo_id = get_algorithm_id_from_digest_size(digest_size);
         let digest = TcgDigest {
-            alg_id,
+            algo_id,
             hash: elements[1].as_bytes().to_vec(),
         };
         digests.push(digest);
 
+        let mut extra_info = HashMap::new();
         extra_info.insert("template_name".to_string(), elements[2]);
 
         Ok(
             TcgEventLog {
                 rec_num,
                 imr_index,
-                IMA_MEASUREMENT_EVENT,
+                event_type: IMA_MEASUREMENT_EVENT,
                 digests,
                 event_size,
                 event,
+                extra_info
             }
         )
     }
