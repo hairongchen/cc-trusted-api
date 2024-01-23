@@ -3,7 +3,7 @@
 use crate::cvm::*;
 use anyhow::*;
 use cctrusted_base::cc_type::*;
-use cctrusted_base::eventlog::TcgEventLog;
+use cctrusted_base::eventlog::EventLogs;
 use cctrusted_base::tcg::EventLogEntry;
 use cctrusted_base::tcg::TcgEfiSpecIdEvent;
 use cctrusted_base::tcg::*;
@@ -393,6 +393,7 @@ impl CVM for TdxVM {
             ));
         }
 
+        // read ACPI data
         let ccel_file = File::open(ACPI_TABLE_FILE)?;
         let mut ccel_reader = BufReader::new(ccel_file);
         let mut ccel = Vec::new();
@@ -403,19 +404,34 @@ impl CVM for TdxVM {
             return Err(anyhow!("[process_cc_eventlog] Invalid CCEL table"));
         }
 
-        let ccel_data_file = File::open(ACPI_TABLE_DATA_FILE)?;
-        let mut ccel_data_reader = BufReader::new(ccel_data_file);
-        let mut ccel_data = Vec::new();
-        ccel_data_reader.read_to_end(&mut ccel_data)?;
+        let boot_time_data_file = File::open(ACPI_TABLE_DATA_FILE)?;
+        let mut boot_time_data_reader = BufReader::new(boot_time_data_file);
+        let mut boot_time_data = Vec::new();
+        boot_time_data_reader.read_to_end(&mut boot_time_data)?;
 
-        let mut raw_eventlogs = TcgEventLog {
-            spec_id_header_event: TcgEfiSpecIdEvent::new(),
-            data: ccel_data,
-            event_logs: Vec::new(),
-            count: 0,
-        };
+        // read IMA data
+        /**
+          First check if the identifier 'ima_hash=sha384' exists on kernel cmdline
+          If yes, suppose IMA over RTMR enabled in kernel (IMA over RTMR patch included in
+          https://github.com/intel/tdx-tools/blob/tdx-1.5/build/common/patches-tdx-kernel-MVP-KERNEL-6.2.16-v5.0.tar.gz)
+          If not, suppose IMA over RTMR not enabled in kernel
+        */
+        let mut run_time_data = String::new();
 
-        raw_eventlogs.select(start, count)
+        let cmdline_file = File::open("/proc/cmdline")?;
+        let mut cmdline_reader = BufReader::new(cmdline_file);
+        let mut cmdline_string = String::new();
+        cmdline_reader.read_to_string(&mut cmdline_string);
+        if cmdline_string.contains("ima_hash=sha384") {
+            run_time_data = read_to_string(IMA_DATA_FILE) 
+                .unwrap()
+                .lines()
+                .map(String::from)
+                .collect();
+        }
+
+        let mut eventlogs = EventLogs::new(boot_time_data, run_time_data, TCG_PCCLIENT_FORMAT);
+        eventlogs.select(start, count)
     }
 
     // CVM trait function: retrive CVM type
