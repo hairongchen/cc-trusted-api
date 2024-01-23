@@ -34,7 +34,7 @@ pub struct tdx_quote_hdr {
     pub in_len: u32,                        // Length of TDREPORT, filled by TD
     pub out_len: u32,                       // Length of Quote, filled by VMM
     pub data_len_be_bytes: [u8; 4], // big-endian 4 bytes indicate the size of data following
-    pub data: [u8; TDX_QUOTE_LEN as usize], // Actual Quote data or TDREPORT on input
+    pub data: [u8; TDX_QUOTE_LEN], // Actual Quote data or TDREPORT on input
 }
 
 #[repr(C)]
