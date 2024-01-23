@@ -216,7 +216,7 @@ impl EventLogs {
         if self.run_time_data.len() != 0 {
             for index in 0..self.run_time_data.len() {
                 let ima_entry = self.run_time_data[index];
-                match self.parse_ima_event_log(ima_entry) {
+                match self.parse_ima_event_log(&ima_entry) {
                     Ok(event_log) => {
                         self.event_logs.push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
