@@ -30,7 +30,7 @@ use crate::tcg::*;
 pub struct TcgEventLog{
     pub rec_num: u32,
     pub imr_index: u32,
-    pub event_type: TcgEventType,
+    pub event_type: u32,
     pub digests: Vec<TcgDigest>,
     pub event_size: u32,
     pub event: Vec<u8>,
@@ -38,8 +38,8 @@ pub struct TcgEventLog{
 }
 
 impl TcgEventLog {
-    fn format_event_log(&self, parse_format: String) -> EventLogEntry {
-        match parse_format{
+    fn format_event_log(&self, parse_format: u8) -> EventLogEntry {
+        match parse_format {
             TCG_PCCLIENT_FORMAT => {
                 self.to_tcg_pcclient_format()
             },
@@ -51,10 +51,10 @@ impl TcgEventLog {
 
     fn to_tcg_pcclient_format(&self) -> EventLogEntry {
         if self.event_type == EV_NO_ACTION {
-            EventLogEntry::TcgPcClientImrEvent(self.imr_index, self.event_size, self.digests[0].hash,self.event_size, self.event)
+            EventLogEntry::TcgPcClientImrEvent(TcgPcClientImrEvent{self.imr_index, self.event_size, self.digests[0].hash,self.event_size, self.event})
         }
 
-        EventLogEntry::TcgImrEvent(self.imr_index, self.event_type, self.digests, self.event_size, self.event)
+        EventLogEntry::TcgImrEvent(TcgImrEvent{self.imr_index, self.event_type, self.digests, self.event_size, self.event})
     }
 
     fn to_tcg_canonical_format(&self) -> EventLogEntry {
@@ -79,12 +79,12 @@ pub struct EventLogs {
     pub run_time_data: Vec<String>,
     pub event_logs: Vec<EventLogEntry>,
     pub count: u32,
-    pub parse_format: String,
+    pub parse_format: u8,
     pub event_logs_record_number_list: [u32;24]
 }
 
 impl EventLogs {
-    pub fn new(boot_time_data: Vec<u8>, run_time_data: Vec<String>, parse_format: String) -> EventLogs {
+    pub fn new(boot_time_data: Vec<u8>, run_time_data: Vec<String>, parse_format: u8) -> EventLogs {
         EventLogs {
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             boot_time_data,
@@ -261,9 +261,10 @@ impl EventLogs {
             rec_num,
             imr_index: header_imr,
             event_type: header_event_type,
-            digests,
+            digest,
             event_size: header_event_size,
             event: header_event,
+            extra_info: HashMap::new()
         };
 
         // Parse EFI Spec Id Event structure
@@ -416,7 +417,7 @@ impl EventLogs {
         Returns:
             A TcgEventLog object containing the ima event log
      */
-    fn parse_ima_event_log (&self, data: String) -> Result<TcgEventLog, anyhow::Error> {
+    fn parse_ima_event_log (&self, data: &String) -> Result<TcgEventLog, anyhow::Error> {
     
         let elements: Vec<&str> = data.trim_matches(' ').split(' ').collect();
 
@@ -428,7 +429,7 @@ impl EventLogs {
 
         let mut digests: Vec<TcgDigest> = Vec::new();
         let digest_size = elements[1].len()/2;
-        let algo_id = get_algorithm_id_from_digest_size(digest_size);
+        let algo_id = TcgDigest::get_algorithm_id_from_digest_size(digest_size);
         let digest = TcgDigest {
             algo_id,
             hash: elements[1].as_bytes().to_vec(),
@@ -436,7 +437,7 @@ impl EventLogs {
         digests.push(digest);
 
         let mut extra_info = HashMap::new();
-        extra_info.insert("template_name".to_string(), elements[2]);
+        extra_info.insert("template_name".to_string(), elements[2].to_string());
 
         Ok(
             TcgEventLog {

@@ -10,8 +10,8 @@ pub const TPM_ALG_SHA384: u16 = 0xC;
 pub const TPM_ALG_SHA512: u16 = 0xD;
 pub const TPM_ALG_ECDSA: u16 = 0x18;
 
-pub const TCG_PCCLIENT_FORMAT: &str = "tcg_pcclient";
-pub const TCG_CANONICAL_FORMAT: &str = "tcg_canonical";
+pub const TCG_PCCLIENT_FORMAT: u8 = 1;
+pub const TCG_CANONICAL_FORMAT: u8 = 2;
 
 // hash algorithm ID to algorithm name string map
 lazy_static! {
@@ -30,6 +30,7 @@ lazy_static! {
 
 lazy_static! {
     pub static ref TPM_DIGEST_SIZE_ALG_HASH_MAP: HashMap<u8, u32> = {
+        let mut map: HashMap<u8, u32> = HashMap::new();
         map.insert(20, TPM_ALG_SHA1);
         map.insert(32, TPM_ALG_SHA256);
         map.insert(48, TPM_ALG_SHA384);
@@ -77,8 +78,8 @@ impl TcgAlgorithmRegistry for TcgDigest {
     }
 
     fn get_algorithm_id_from_digest_size(digest_size:u8) -> u32 {
-        match TPM_DIGEST_SIZE_ALG_HASH_MAP.get(digest_size) {
-            Some(algo_id) => algo_id,
+        match TPM_DIGEST_SIZE_ALG_HASH_MAP.get(&digest_size) {
+            Some(algo_id) => *algo_id,
             None => TPM_ALG_ERROR.into(),
         }
     }
@@ -192,7 +193,7 @@ lazy_static! {
     };
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub struct TcgEventType {}
 
 impl TcgEventType {
