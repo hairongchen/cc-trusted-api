@@ -66,6 +66,13 @@ impl TcgDigest {
     pub fn get_hash(&self) -> Vec<u8> {
         self.hash.clone()
     }
+
+    pub fn get_algorithm_id_from_digest_size(digest_size:u8) -> u16 {
+        match TPM_DIGEST_SIZE_ALG_HASH_MAP.get(&digest_size) {
+            Some(algo_id) => *algo_id,
+            None => TPM_ALG_ERROR.into(),
+        }
+    }
 }
 
 impl TcgAlgorithmRegistry for TcgDigest {
@@ -75,13 +82,6 @@ impl TcgAlgorithmRegistry for TcgDigest {
 
     fn get_algorithm_id_str(&self) -> String {
         ALGO_NAME_MAP.get(&self.algo_id).unwrap().to_owned()
-    }
-
-    fn get_algorithm_id_from_digest_size(digest_size:u8) -> u16 {
-        match TPM_DIGEST_SIZE_ALG_HASH_MAP.get(&digest_size) {
-            Some(algo_id) => *algo_id,
-            None => TPM_ALG_ERROR.into(),
-        }
     }
 }
 

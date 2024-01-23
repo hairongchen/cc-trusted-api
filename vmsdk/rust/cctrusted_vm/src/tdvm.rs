@@ -5,7 +5,6 @@ use anyhow::*;
 use cctrusted_base::cc_type::*;
 use cctrusted_base::eventlog::EventLogs;
 use cctrusted_base::tcg::EventLogEntry;
-use cctrusted_base::tcg::TcgEfiSpecIdEvent;
 use cctrusted_base::tcg::*;
 use cctrusted_base::tdx::common::*;
 use cctrusted_base::tdx::quote::*;
@@ -24,6 +23,7 @@ use std::io::Read;
 use std::ops::Not;
 use std::os::fd::AsRawFd;
 use std::path::Path;
+use std::fs::read_to_string;
 
 // TDX ioctl operation code to be used for get TDX quote and TD Report
 pub enum TdxOperation {
@@ -410,7 +410,7 @@ impl CVM for TdxVM {
         boot_time_data_reader.read_to_end(&mut boot_time_data)?;
 
         // read IMA data
-        /**
+        /*
           First check if the identifier 'ima_hash=sha384' exists on kernel cmdline
           If yes, suppose IMA over RTMR enabled in kernel (IMA over RTMR patch included in
           https://github.com/intel/tdx-tools/blob/tdx-1.5/build/common/patches-tdx-kernel-MVP-KERNEL-6.2.16-v5.0.tar.gz)
