@@ -19,6 +19,7 @@ use crate::tcg::*;
         event: raw event information
         extra_info: extra information in the event
  */
+#[derive(Clone)]
 pub struct TcgEventLog{
     pub rec_num: u32,
     pub imr_index: u32,
@@ -82,6 +83,7 @@ impl TcgEventLog {
         count: total number of event logs
         special_flag: flag to identify if there're customized runtime
 */
+#[derive(Clone)]
 pub struct EventLogs {
     pub spec_id_header_event: TcgEfiSpecIdEvent,
     pub boot_time_data: Vec<u8>,
