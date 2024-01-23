@@ -21,7 +21,6 @@ use std::fs::read_to_string;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::Read;
-use std::ops::Not;
 use std::os::fd::AsRawFd;
 use std::path::Path;
 
@@ -398,7 +397,7 @@ impl CVM for TdxVM {
         let mut ccel_reader = BufReader::new(ccel_file);
         let mut ccel = Vec::new();
         ccel_reader.read_to_end(&mut ccel)?;
-        let ccel_char_vec = vec!['C', 'C', 'E', 'L'];
+        let ccel_char_vec = ['C', 'C', 'E', 'L'];
         let ccel_u8_vec: Vec<u8> = ccel_char_vec.iter().map(|c| *c as u8).collect::<Vec<_>>();
         if ccel.is_empty() || (ccel[0..4].to_vec() != ccel_u8_vec) {
             return Err(anyhow!("[process_cc_eventlog] Invalid CCEL table"));
