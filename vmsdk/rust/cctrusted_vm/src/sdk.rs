@@ -37,7 +37,7 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: dump report of a CVM in hex and char format
-    fn dump_cc_report(report: &Vec<u8>) {
+    fn dump_cc_report(report: &[u8]) {
         dump_data(report)
     }
 
