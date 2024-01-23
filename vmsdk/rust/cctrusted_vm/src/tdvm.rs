@@ -421,7 +421,7 @@ impl CVM for TdxVM {
         let cmdline_file = File::open("/proc/cmdline")?;
         let mut cmdline_reader = BufReader::new(cmdline_file);
         let mut cmdline_string = String::new();
-        cmdline_reader.read_to_string(&mut cmdline_string);
+        let _ = cmdline_reader.read_to_string(&mut cmdline_string);
         if cmdline_string.contains("ima_hash=sha384") {
             run_time_data = read_to_string(IMA_DATA_FILE) 
                 .unwrap()
