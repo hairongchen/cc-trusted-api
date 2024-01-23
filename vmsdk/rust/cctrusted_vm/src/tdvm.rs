@@ -416,7 +416,7 @@ impl CVM for TdxVM {
           https://github.com/intel/tdx-tools/blob/tdx-1.5/build/common/patches-tdx-kernel-MVP-KERNEL-6.2.16-v5.0.tar.gz)
           If not, suppose IMA over RTMR not enabled in kernel
         */
-        let mut run_time_data = String::new();
+        let mut run_time_data = Vec::new();
 
         let cmdline_file = File::open("/proc/cmdline")?;
         let mut cmdline_reader = BufReader::new(cmdline_file);
