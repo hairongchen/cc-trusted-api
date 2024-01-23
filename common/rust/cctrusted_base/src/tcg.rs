@@ -332,7 +332,8 @@ impl EventLogEntry {
             EventLogEntry::TcgImrEvent(tcg_imr_event) => &tcg_imr_event.show(),
             EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => {
                 &tcg_pc_client_imr_event.show()
-            }
+            },
+            EventLogEntry::TcgCanonicalEvent(_) => todo!()
         };
     }
 }

@@ -37,7 +37,8 @@ impl TcgEventLog {
             },
             TCG_CANONICAL_FORMAT => {
                 self.to_tcg_canonical_format()
-            }
+            },
+            0_u8 | 3_u8..=u8::MAX => todo!()
         }
     }
 
@@ -352,7 +353,7 @@ impl EventLogs {
             A TcgImrEvent containing the event information
             An int specifying the event size
     */
-    fn parse_event_log(&self, data: Vec<u8>) -> Result<(TcgEventLog, u32), anyhow::Error> {
+    fn parse_event_log(&mut self, data: Vec<u8>) -> Result<(TcgEventLog, u32), anyhow::Error> {
         let mut index = 0;
 
         let mut imr_index = get_u32(data[index..index + 4].to_vec());
@@ -432,7 +433,7 @@ impl EventLogs {
         Returns:
             A TcgEventLog object containing the ima event log
      */
-    fn parse_ima_event_log (&self, data: &String) -> Result<TcgEventLog, anyhow::Error> {
+    fn parse_ima_event_log (&mut self, data: &String) -> Result<TcgEventLog, anyhow::Error> {
     
         let elements: Vec<&str> = data.trim_matches(' ').split(' ').collect();
 
