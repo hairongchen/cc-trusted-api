@@ -2,14 +2,6 @@ use anyhow::anyhow;
 use hashbrown::HashMap;
 use crate::binary_blob::*;
 use crate::tcg::*;
-// use crate::tcg::EventLogEntry;
-// use crate::tcg::TcgDigest;
-// use crate::tcg::TcgEfiSpecIdEvent;
-// use crate::tcg::TcgEfiSpecIdEventAlgorithmSize;
-// use crate::tcg::TcgImrEvent;
-// use crate::tcg::TcgPcClientImrEvent;
-// use crate::tcg::TcgEventType;
-// use crate::tcg::EV_NO_ACTION;
 
 /***
  *  This is the common struct for tcg event logs to be delivered in different formats.
@@ -51,15 +43,15 @@ impl TcgEventLog {
 
     fn to_tcg_pcclient_format(&self) -> EventLogEntry {
         if self.event_type == EV_NO_ACTION {
-            EventLogEntry::TcgPcClientImrEvent(
+            return EventLogEntry::TcgPcClientImrEvent(
                 TcgPcClientImrEvent{
                     imr_index: self.imr_index,
                     event_type: self.event_type,
-                    digest: self.digests[0].hash,
+                    digest: self.digests[0].hash[0..4].try_into().unwrap(),
                     event_size: self.event_size, 
                     event: self.event
                 }
-            )
+            );
         }
 
         EventLogEntry::TcgImrEvent(

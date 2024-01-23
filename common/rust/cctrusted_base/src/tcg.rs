@@ -29,8 +29,8 @@ lazy_static! {
 }
 
 lazy_static! {
-    pub static ref TPM_DIGEST_SIZE_ALG_HASH_MAP: HashMap<u8, u32> = {
-        let mut map: HashMap<u8, u32> = HashMap::new();
+    pub static ref TPM_DIGEST_SIZE_ALG_HASH_MAP: HashMap<u8, u16> = {
+        let mut map: HashMap<u8, u16> = HashMap::new();
         map.insert(20, TPM_ALG_SHA1);
         map.insert(32, TPM_ALG_SHA256);
         map.insert(48, TPM_ALG_SHA384);
@@ -43,7 +43,7 @@ lazy_static! {
 pub trait TcgAlgorithmRegistry {
     fn get_algorithm_id(&self) -> u16;
     fn get_algorithm_id_str(&self) -> String;
-    fn get_algorithm_id_from_digest_size(digest_size:u8) -> u32;
+    fn get_algorithm_id_from_digest_size(digest_size:u8) -> u16;
 }
 
 // digest format: (algo id, hash value)
