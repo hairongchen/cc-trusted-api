@@ -1,70 +1,62 @@
-use anyhow::anyhow;
-use hashbrown::HashMap;
 use crate::binary_blob::*;
 use crate::tcg::*;
+use anyhow::anyhow;
+use hashbrown::HashMap;
 
 /***
- *  This is the common struct for tcg event logs to be delivered in different formats.
-    Currently TCG supports several event log formats defined in TCG_PCClient Spec,
-    Canonical Eventlog Spec, etc.
-    This struct provides the functionality to convey event logs in different format
-    according to request.
+*  This is the common struct for tcg event logs to be delivered in different formats.
+   Currently TCG supports several event log formats defined in TCG_PCClient Spec,
+   Canonical Eventlog Spec, etc.
+   This struct provides the functionality to convey event logs in different format
+   according to request.
 
-    Attributes:
-        rec_num: contains the record number of the event log within the imr index
-        imr_index: the index of the register that the event log belongs to
-        event_type: event type of the event log
-        digests: a list of TcgDigest objects
-        event_size: size of the event
-        event: raw event information
-        extra_info: extra information in the event
- */
+   Attributes:
+       rec_num: contains the record number of the event log within the imr index
+       imr_index: the index of the register that the event log belongs to
+       event_type: event type of the event log
+       digests: a list of TcgDigest objects
+       event_size: size of the event
+       event: raw event information
+       extra_info: extra information in the event
+*/
 #[derive(Clone)]
-pub struct TcgEventLog{
+pub struct TcgEventLog {
     pub rec_num: u32,
     pub imr_index: u32,
     pub event_type: u32,
     pub digests: Vec<TcgDigest>,
     pub event_size: u32,
     pub event: Vec<u8>,
-    pub extra_info: HashMap<String, String>
+    pub extra_info: HashMap<String, String>,
 }
 
 impl TcgEventLog {
     fn format_event_log(&self, parse_format: u8) -> EventLogEntry {
         match parse_format {
-            TCG_PCCLIENT_FORMAT => {
-                self.to_tcg_pcclient_format()
-            },
-            TCG_CANONICAL_FORMAT => {
-                self.to_tcg_canonical_format()
-            },
-            0_u8 | 3_u8..=u8::MAX => todo!()
+            TCG_PCCLIENT_FORMAT => self.to_tcg_pcclient_format(),
+            TCG_CANONICAL_FORMAT => self.to_tcg_canonical_format(),
+            0_u8 | 3_u8..=u8::MAX => todo!(),
         }
     }
 
     fn to_tcg_pcclient_format(&self) -> EventLogEntry {
         if self.event_type == EV_NO_ACTION {
-            return EventLogEntry::TcgPcClientImrEvent(
-                TcgPcClientImrEvent{
-                    imr_index: self.imr_index,
-                    event_type: self.event_type,
-                    digest: self.digests[0].hash[0..20].try_into().unwrap(),
-                    event_size: self.event_size, 
-                    event: self.event.clone()
-                }
-            );
-        }
-
-        EventLogEntry::TcgImrEvent(
-            TcgImrEvent{
+            return EventLogEntry::TcgPcClientImrEvent(TcgPcClientImrEvent {
                 imr_index: self.imr_index,
                 event_type: self.event_type,
-                digests: self.digests.clone(),
+                digest: self.digests[0].hash[0..20].try_into().unwrap(),
                 event_size: self.event_size,
-                event: self.event.clone()
-            }
-        )
+                event: self.event.clone(),
+            });
+        }
+
+        EventLogEntry::TcgImrEvent(TcgImrEvent {
+            imr_index: self.imr_index,
+            event_type: self.event_type,
+            digests: self.digests.clone(),
+            event_size: self.event_size,
+            event: self.event.clone(),
+        })
     }
 
     fn to_tcg_canonical_format(&self) -> EventLogEntry {
@@ -91,7 +83,7 @@ pub struct EventLogs {
     pub event_logs: Vec<EventLogEntry>,
     pub count: u32,
     pub parse_format: u8,
-    pub event_logs_record_number_list: [u32;24]
+    pub event_logs_record_number_list: [u32; 24],
 }
 
 impl EventLogs {
@@ -99,11 +91,11 @@ impl EventLogs {
         EventLogs {
             spec_id_header_event: TcgEfiSpecIdEvent::new(),
             boot_time_data,
-            run_time_data, 
+            run_time_data,
             event_logs: Vec::new(),
             count: 0,
             parse_format,
-            event_logs_record_number_list: [0;24]
+            event_logs_record_number_list: [0; 24],
         }
     }
 
@@ -149,15 +141,15 @@ impl EventLogs {
     }
 
     /***
-        Fetch the record number maintained separately by index.
-        Increment the number to be prepared for next measurement.
+       Fetch the record number maintained separately by index.
+       Increment the number to be prepared for next measurement.
 
-        Args:
-            imr_index: the imr index used to fetch certain record number
+       Args:
+           imr_index: the imr index used to fetch certain record number
 
-        Returns:
-            The record number
-     */
+       Returns:
+           The record number
+    */
     fn get_record_number(&mut self, imr_index: u32) -> u32 {
         let rec_num = self.event_logs_record_number_list[imr_index as usize];
         self.event_logs_record_number_list[imr_index as usize] += 1;
@@ -203,7 +195,8 @@ impl EventLogs {
                 match self.parse_event_log(self.boot_time_data[start..].to_vec()) {
                     Ok((event_log, event_len)) => {
                         index = start + event_len as usize;
-                        self.event_logs.push(event_log.format_event_log(self.parse_format));
+                        self.event_logs
+                            .push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
                     }
                     Err(e) => {
@@ -213,15 +206,19 @@ impl EventLogs {
             }
         }
 
-        if self.run_time_data.len() != 0 {
+        if !self.run_time_data.is_empty() {
             for index in 0..self.run_time_data.len() {
                 match self.parse_ima_event_log(&self.run_time_data[index].clone()) {
                     Ok(event_log) => {
-                        self.event_logs.push(event_log.format_event_log(self.parse_format));
+                        self.event_logs
+                            .push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
                     }
                     Err(e) => {
-                        return Err(anyhow!("[parse] error in parse_ima_event_log function {:?}", e));
+                        return Err(anyhow!(
+                            "[parse] error in parse_ima_event_log function {:?}",
+                            e
+                        ));
                     }
                 };
             }
@@ -282,7 +279,7 @@ impl EventLogs {
             digests,
             event_size: header_event_size,
             event: header_event,
-            extra_info: HashMap::new()
+            extra_info: HashMap::new(),
         };
 
         // Parse EFI Spec Id Event structure
@@ -415,28 +412,26 @@ impl EventLogs {
                 digests,
                 event_size,
                 event,
-                extra_info: HashMap::new()
+                extra_info: HashMap::new(),
             },
             index.try_into().unwrap(),
         ))
     }
 
     /***
-        Parse ascii IMA events gathered during runtime.
-        
-        Sample event and format:
-        IMR index | Template hash | Template name | Event data according to template
-         2 1e762ca412a3ef388ddcab416e2eb382d9d1e356 ima-ng sha384:74ccc46104f42db070375e6876a23aeaa3c2ae458888475baaa171c3fb7001b0fc385ed08420d5f60620924fc64d0b80 /etc/lsb-release
-        10 1e762ca412a3ef388ddcab416e2eb382d9d1e356 ima-ng sha384:74ccc46104f42db070375e6876a23aeaa3c2ae458888475baaa171c3fb7001b0fc385ed08420d5f60620924fc64d0b80 /etc/lsb-release
+       Parse ascii IMA events gathered during runtime.
 
-        Args:
-            event: IMA ascii raw event
+       Sample event and format:
+       IMR index | Template hash | Template name | Event data according to template
+       10 1e762ca412a3ef388ddcab416e2eb382d9d1e356 ima-ng sha384:74ccc46104f42db070375e6876a23aeaa3c2ae458888475baaa171c3fb7001b0fc385ed08420d5f60620924fc64d0b80 /etc/lsb-release
 
-        Returns:
-            A TcgEventLog object containing the ima event log
-     */
-    fn parse_ima_event_log (&mut self, data: &String) -> Result<TcgEventLog, anyhow::Error> {
-    
+       Args:
+           event: IMA ascii raw event
+
+       Returns:
+           A TcgEventLog object containing the ima event log
+    */
+    fn parse_ima_event_log(&mut self, data: &str) -> Result<TcgEventLog, anyhow::Error> {
         let elements: Vec<&str> = data.trim_matches(' ').split(' ').collect();
 
         let imr_index: u32 = elements[0].parse().unwrap();
@@ -446,7 +441,7 @@ impl EventLogs {
         let event_size = event.len() as u32;
 
         let mut digests: Vec<TcgDigest> = Vec::new();
-        let digest_size = elements[1].len()/2;
+        let digest_size = elements[1].len() / 2;
         let algo_id = TcgDigest::get_algorithm_id_from_digest_size(digest_size.try_into().unwrap());
         let digest = TcgDigest {
             algo_id,
@@ -457,16 +452,14 @@ impl EventLogs {
         let mut extra_info = HashMap::new();
         extra_info.insert("template_name".to_string(), elements[2].to_string());
 
-        Ok(
-            TcgEventLog {
-                rec_num,
-                imr_index,
-                event_type: IMA_MEASUREMENT_EVENT,
-                digests,
-                event_size,
-                event,
-                extra_info
-            }
-        )
+        Ok(TcgEventLog {
+            rec_num,
+            imr_index,
+            event_type: IMA_MEASUREMENT_EVENT,
+            digests,
+            event_size,
+            event,
+            extra_info,
+        })
     }
 }

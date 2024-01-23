@@ -66,10 +66,10 @@ impl TcgDigest {
         self.hash.clone()
     }
 
-    pub fn get_algorithm_id_from_digest_size(digest_size:u8) -> u16 {
+    pub fn get_algorithm_id_from_digest_size(digest_size: u8) -> u16 {
         match TPM_DIGEST_SIZE_ALG_HASH_MAP.get(&digest_size) {
             Some(algo_id) => *algo_id,
-            None => TPM_ALG_ERROR.into(),
+            None => TPM_ALG_ERROR,
         }
     }
 }
@@ -331,8 +331,8 @@ impl EventLogEntry {
             EventLogEntry::TcgImrEvent(tcg_imr_event) => &tcg_imr_event.show(),
             EventLogEntry::TcgPcClientImrEvent(tcg_pc_client_imr_event) => {
                 &tcg_pc_client_imr_event.show()
-            },
-            EventLogEntry::TcgCanonicalEvent(_) => todo!()
+            }
+            EventLogEntry::TcgCanonicalEvent(_) => todo!(),
         };
     }
 }
