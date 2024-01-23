@@ -435,7 +435,7 @@ impl EventLogs {
         Returns:
             A TcgEventLog object containing the ima event log
      */
-    fn parse_ima_event_log (&mut self, data: &String) -> Result<TcgEventLog, anyhow::Error> {
+    fn parse_ima_event_log (&self, data: &String) -> Result<TcgEventLog, anyhow::Error> {
     
         let elements: Vec<&str> = data.trim_matches(' ').split(' ').collect();
 
