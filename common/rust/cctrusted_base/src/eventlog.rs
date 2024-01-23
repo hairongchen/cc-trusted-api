@@ -49,7 +49,7 @@ impl TcgEventLog {
                 TcgPcClientImrEvent{
                     imr_index: self.imr_index,
                     event_type: self.event_type,
-                    digest: self.digests[0].hash[0..4].try_into().unwrap(),
+                    digest: self.digests[0].hash[0..20],
                     event_size: self.event_size, 
                     event: self.event.clone()
                 }
