@@ -43,7 +43,6 @@ lazy_static! {
 pub trait TcgAlgorithmRegistry {
     fn get_algorithm_id(&self) -> u16;
     fn get_algorithm_id_str(&self) -> String;
-    fn get_algorithm_id_from_digest_size(digest_size:u8) -> u16;
 }
 
 // digest format: (algo id, hash value)
