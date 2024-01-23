@@ -258,8 +258,15 @@ impl EventLogs {
 
         let rec_num = self.get_record_number(header_imr);
 
-        let digest = data[index..index + 20].try_into().unwrap();
+        let digest_hash = data[index..index + 20].try_into().unwrap();
         index += 20;
+        let mut digests: Vec<TcgDigest> = Vec::new();
+        let digest = TcgDigest {
+            TPM_ALG_ERROR,
+            hash: digest_hash,
+        };
+        digests.push(digest);
+
         let header_event_size = get_u32(data[index..index + 4].to_vec());
         index += 4;
         let header_event = data[index..index + header_event_size as usize]
@@ -269,7 +276,7 @@ impl EventLogs {
             rec_num,
             imr_index: header_imr,
             event_type: header_event_type,
-            digest,
+            digests,
             event_size: header_event_size,
             event: header_event,
             extra_info: HashMap::new()
