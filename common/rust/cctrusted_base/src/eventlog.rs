@@ -507,7 +507,7 @@ impl EventLogs {
                             );
                             imr_pos = replay_results.len()-1;
                         } else {
-                            for index2 in 0..replay_results[imr_pos].len() {
+                            for index2 in 0..replay_results[imr_pos].digests.len() {
                                 if digest.algo_id == algo_id {
                                     algo_pos = index2;
                                 }
@@ -521,7 +521,7 @@ impl EventLogs {
                                     digests: vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]
                                 }
                             );
-                            algo_pos = replay_results[imr_pos].len()-1;
+                            algo_pos = replay_results[imr_pos].digests.len()-1;
                         }
     
                         let hash_input_data = [replay_results[imr_pos][algo_pos].hash, hash].concat();
