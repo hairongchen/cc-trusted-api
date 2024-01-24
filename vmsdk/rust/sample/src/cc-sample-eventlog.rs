@@ -16,8 +16,8 @@ fn main() {
     };
 
     info!("event log count: {}", eventlogs.len());
-    // for event_log in event_logs {
-    //     event_log.show();
+    // for eventlog in eventlogs {
+    //     eventlog.show();
     // }
 
     let replay_results = match API::replay_cc_eventlog(eventlogs) {
