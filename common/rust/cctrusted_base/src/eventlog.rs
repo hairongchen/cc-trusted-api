@@ -5,6 +5,7 @@ use crate::binary_blob::*;
 use crate::tcg::*;
 use sha2::{Digest, Sha256, Sha384, Sha512};
 use sha1::Sha1;
+use log::info;
 
 /***
 *  This is the common struct for tcg event logs to be delivered in different formats.
