@@ -472,11 +472,12 @@ impl EventLogs {
             Sample value:
                 { 
                     0: { 12: <measurement_replayed>},
+                    0: { 0: <measurement_replayed>},
                     1: { 12: <measurement_replayed>},
                 }
      */
     pub fn replay(eventlogs: Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error> {
-        let replay_results = Vec::new();
+        let mut replay_results = Vec::new();
 
         for event_log in eventlogs{
             match event_log {
@@ -510,20 +511,34 @@ impl EventLogs {
                         }
                     }
 
-                    let mut find = false;
+                    let mut find_imr = false;
+                    let mut find_algo = false;
                     for replay_result in replay_results {
                         if replay_result.imr_index == imr_index {
-                            find = true;
+                            find_imr = true;
                         }
                     }
 
-                    if !find {
-                        replay_results[imr_index] = Digest{algo_id, hash: vec![0; digest_size]};
+                    if !find_imr {
+                        replay_results[imr_index] = vec![Digest{algo_id, hash: vec![0; digest_size]}];
+                    } else {
+                        for digest in replay_results[imr_index] {
+                            if digest.algo_id == algo_id {
+                                find_algo = true;
+                        }
                     }
 
-                    let hash_input_data = [replay_results[imr_index].hash, hash];
-                    algo_hasher.update(hash_input_data);
-                    replay_results[imr_index]
+                    if !find_algo {
+                        replay_results[imr_index] = vec![Digest{algo_id, hash: vec![0; digest_size]}];
+                    }
+
+                    for digest in replay_results[imr_index] {
+                        if digest.algo_id == algo_id {
+                            let hash_input_data = [replay_results[imr_index].hash, hash];
+                            algo_hasher.update(hash_input_data);
+                            digest.hash = algo_hasher.finalize();
+                        }
+                    }
 
                 }
                 EventLogEntry::TcgPcClientImrEvent(_) => {
