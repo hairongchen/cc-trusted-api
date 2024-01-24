@@ -231,7 +231,7 @@ impl EventLogs {
                         self.event_logs
                             .push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
-                        self.event_logs[(self.count-1) as usize].show();
+                        self.event_logs.show();
                     }
                     Err(e) => {
                         return Err(anyhow!(
