@@ -69,7 +69,9 @@ impl CCTrustedApi for API {
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
-    fn replay_cc_eventlog(eventlogs:Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error>{
+    fn replay_cc_eventlog(
+        eventlogs: Vec<EventLogEntry>,
+    ) -> Result<Vec<ReplayResult>, anyhow::Error> {
         match build_cvm() {
             Ok(cvm) => cvm.replay_eventlog(eventlogs),
             Err(e) => Err(anyhow!("[replay_cc_eventlog] error create cvm: {:?}", e)),

@@ -69,7 +69,7 @@ pub trait CVM {
             array of eventlogs
 
         Returns:
-            A struct containing the replay result arranged by IMR index and hash algorithm. 
+            A struct containing the replay result arranged by IMR index and hash algorithm.
             Layer 1 key of the struct is the IMR index, the value is another dict which using the
             hash algorithm as the key and the replayed measurement as value.
             Sample value:
@@ -78,7 +78,10 @@ pub trait CVM {
                     1: { 12: <measurement_replayed>},
                 ]
     */
-    fn replay_eventlog(&self, eventlogs:Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error>;
+    fn replay_eventlog(
+        &self,
+        eventlogs: Vec<EventLogEntry>,
+    ) -> Result<Vec<ReplayResult>, anyhow::Error>;
 
     /***
         retrive CVM type
