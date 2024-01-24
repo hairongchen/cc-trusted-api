@@ -1,5 +1,6 @@
 use crate::tdvm::TdxVM;
 use anyhow::*;
+use cctrusted_base::api_data::ReplayResult;
 use cctrusted_base::cc_type::*;
 use cctrusted_base::tcg::EventLogEntry;
 use cctrusted_base::tcg::{TcgAlgorithmRegistry, TcgDigest};
@@ -77,7 +78,7 @@ pub trait CVM {
                     1: { 12: <measurement_replayed>},
                 ]
     */
-    fn replay_eventlog(&self,eventlogs:Vec<EventLogEntry) -> Result<Vec<ReplayResult>, anyhow::Error>;
+    fn replay_eventlog(&self,eventlogs:Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error>;
 
     /***
         retrive CVM type

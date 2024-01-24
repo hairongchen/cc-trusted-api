@@ -2,6 +2,7 @@
 
 use crate::cvm::*;
 use anyhow::*;
+use cctrusted_base::api_data::ReplayResult;
 use cctrusted_base::cc_type::*;
 use cctrusted_base::eventlog::EventLogs;
 use cctrusted_base::tcg::EventLogEntry;
@@ -434,7 +435,7 @@ impl CVM for TdxVM {
     }
 
     // CVM trait function: replay retrieved TDX CCEL and IMA eventlog
-    fn replay_eventlog(&self, eventlogs:Vec<EventLogEntry) -> Result<Vec<ReplayResult>, anyhow::Error>{
+    fn replay_eventlog(&self, eventlogs:Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error>{
         EventLogs::replay(eventlogs);
     }
 
