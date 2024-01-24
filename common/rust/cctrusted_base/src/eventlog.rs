@@ -514,14 +514,14 @@ impl EventLogs {
                             }
                         }
     
-                        if index2 == -1 {
-                            replay_results[index1].push(
+                        if algo_pos == -1 {
+                            replay_results[imr_pos].push(
                                 ReplayResult {
                                     imr_index,
                                     digests: vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]
                                 }
                             );
-                            algo_pos = replay_results[index1].len()-1;
+                            algo_pos = replay_results[imr_pos].len()-1;
                         }
     
                         let hash_input_data = [replay_results[imr_pos][algo_pos].hash, hash].concat();
