@@ -16,7 +16,7 @@ fn main() {
     };
 
     info!("event log count: {}", eventlogs.len());
-    // for eventlog in eventlogs {
+    // for eventlog in &eventlogs {
     //     eventlog.show();
     // }
 
