@@ -515,12 +515,7 @@ impl EventLogs {
                         }
     
                         if algo_pos == usize::MAX {
-                            replay_results[imr_pos].push(
-                                ReplayResult {
-                                    imr_index,
-                                    digests: vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]
-                                }
-                            );
+                            replay_results[imr_pos].digests = vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
                             algo_pos = replay_results[imr_pos].digests.len()-1;
                         }
     
