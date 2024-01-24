@@ -458,7 +458,7 @@ impl EventLogs {
         let algo_id = TcgDigest::get_algorithm_id_from_digest_size(digest_size.try_into().unwrap());
         let digest = TcgDigest {
             algo_id,
-            hash: <[u8; 48]>::from_hex(elements[1]).expect("Decoding failed"),
+            hash: hex::decode(elements[1]).expect("Decoding failed"),
         };
         digests.push(digest);
 
