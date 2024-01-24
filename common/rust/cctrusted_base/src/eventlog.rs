@@ -66,6 +66,20 @@ impl TcgEventLog {
     fn to_tcg_canonical_format(&self) -> EventLogEntry {
         todo!()
     }
+
+    pub fn show(&self) {
+        info!(
+            "        --------------------TcgEventLog--------------------------"
+        );
+        info!("rec_num = {}", rec_num);
+        info!("imr_index = {}", imr_index);
+        info!("event_type = {}", event_type);
+        for index in 0..digests.len() {
+            info!("digest[{}] = {:?}", index, digests[index]);
+        }
+        info!("event_size = {}", event_size);
+        info!("event = {:?}", event);
+    }
 }
 
 /***
