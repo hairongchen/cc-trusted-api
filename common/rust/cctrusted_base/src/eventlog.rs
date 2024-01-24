@@ -515,7 +515,7 @@ impl EventLogs {
                         }
     
                         if !find_imr {
-                            replay_results[imr_index] = vec![Digest{algo_id, hash: vec![0; digest_size]}];
+                            replay_results[imr_index] = vec![TcgDigest{algo_id, hash: vec![0; digest_size]}];
                         } else {
                             for digest in replay_results[imr_index] {
                                 if digest.algo_id == algo_id {
@@ -525,7 +525,7 @@ impl EventLogs {
                         }
     
                         if !find_algo {
-                            replay_results[imr_index].push([Digest{algo_id, hash: vec![0; digest_size]}]);
+                            replay_results[imr_index].push([TcgDigest{algo_id, hash: vec![0; digest_size]}]);
                         }
     
                         for digest in replay_results[imr_index] {
