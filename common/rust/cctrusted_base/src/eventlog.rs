@@ -490,53 +490,58 @@ impl EventLogs {
                         let hash = digest.hash;
                         let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id.try_into().unwrap());
 
-                        let mut find_imr = false;
-                        let mut find_algo = false;
-                        for replay_result in replay_results {
-                            if replay_result.imr_index == imr_index {
-                                find_imr = true;
+                        let mut imr_pos = -1;
+                        let mut algo_pos = -1;
+                        for index1 in 0..replay_results.len() {
+                            if replay_results[index].imr_index == imr_index {
+                                imr_pos = index1;
                             }
                         }
     
-                        if !find_imr {
-                            replay_results[imr_index as usize] = vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
+                        if imr_pos == -1 {
+                            replay_results.push{
+                                imr_index,
+                                vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
+                            };
+                            imr_pos = replay_results.len()-1;
                         } else {
-                            for digest in replay_results[imr_index as usize] {
+                            for index2 in 0..replay_results[index1].len() {
                                 if digest.algo_id == algo_id {
-                                    find_algo = true;
+                                    algo_pos = index2;
                                 }
                             }
                         }
     
-                        if !find_algo {
-                            replay_results[imr_index as usize].push([TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]);
+                        if index2 == -1 {
+                            replay_results[index1].push{
+                                imr_index,
+                                vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
+                            };
+                            algo_pos = replay_results[index1].len()-1;
                         }
     
-                        for digest in replay_results[imr_index as usize] {
-                            if digest.algo_id == algo_id {
-                                let hash_input_data = [replay_results[imr_index as usize].hash, hash];
-                                match algo_id {
-                                    TPM_ALG_SHA1 => {
-                                        let algo_hasher = Sha1::new();
-                                        algo_hasher.update(hash_input_data);
-                                        digest.hash = algo_hasher.finalize();
-                                    }
-                                    TPM_ALG_SHA256 => {
-                                        let algo_hasher = Sha256::new();
-                                        algo_hasher.update(hash_input_data);
-                                        digest.hash = algo_hasher.finalize();
-                                    }
-                                    TPM_ALG_SHA384 => {
-                                        let algo_hasher = Sha384::new();
-                                        algo_hasher.update(hash_input_data);
-                                        digest.hash = algo_hasher.finalize();
-                                    }
-                                    TPM_ALG_SHA512 => {
-                                        let algo_hasher = Sha512::new();
-                                        algo_hasher.update(hash_input_data);
-                                        digest.hash = algo_hasher.finalize();
-                                    }
-                                }
+                        let hash_input_data = [replay_results[imr_pos][algo_pos].hash, hash].concat();
+
+                        match algo_id {
+                            TPM_ALG_SHA1 => {
+                                let algo_hasher = Sha1::new();
+                                algo_hasher.update(hash_input_data);
+                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
+                            }
+                            TPM_ALG_SHA256 => {
+                                let algo_hasher = Sha256::new();
+                                algo_hasher.update(hash_input_data);
+                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
+                            }
+                            TPM_ALG_SHA384 => {
+                                let algo_hasher = Sha384::new();
+                                algo_hasher.update(hash_input_data);
+                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
+                            }
+                            TPM_ALG_SHA512 => {
+                                let algo_hasher = Sha512::new();
+                                algo_hasher.update(hash_input_data);
+                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
                             }
                         }
                     }
