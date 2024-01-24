@@ -75,10 +75,10 @@ impl TcgEventLog {
         info!("imr_index = {}", self.imr_index);
         info!("event_type = {}", self.event_type);
         for index in 0..self.digests.len() {
-            info!("digest[{}] = {}", self.digests[index].algo_id, self.digests[index].hash);
+            info!("digest[{}] = {:#?}", self.digests[index].algo_id, self.digests[index].hash);
         }
         info!("event_size = {}", self.event_size);
-        info!("event = {}", self.event);
+        info!("event = {:#?}", self.event);
     }
 }
 
