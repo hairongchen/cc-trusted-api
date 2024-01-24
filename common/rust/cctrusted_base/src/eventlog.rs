@@ -3,7 +3,7 @@ use hashbrown::HashMap;
 use crate::api_data::ReplayResult;
 use crate::binary_blob::*;
 use crate::tcg::*;
-use sha2::{Sha256, Sha384, Sha512};
+use sha2::{Digest, Sha256, Sha384, Sha512};
 use sha1::Sha1;
 
 /***
