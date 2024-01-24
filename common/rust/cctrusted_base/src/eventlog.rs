@@ -476,32 +476,55 @@ impl EventLogs {
                 }
      */
     pub fn replay(eventlogs: Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error> {
-        let replay_result = Vec::new();
+        let replay_results = Vec::new();
 
         for event_log in eventlogs{
             match event_log {
                 EventLogEntry::TcgImrEvent(tcg_imr_event) => {
+                    let imr_index = tcg_imr_event.imr_index;
                     for digest in tcg_imr_event.digests {
                         let algo_id = digest.algo_id;
                         let hash = digest.hash;
+                        let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id.try_into().unwrap());
 
-                        let mut hash_algo;
+                        let mut algo_hasher;
                         match algo_id {
                             TPM_ALG_SHA1 => {
-                                hash_algo = Sha1::new();
+                                algo_hasher = Sha1::new();
                             }
                             TPM_ALG_SHA256 => {
-                                hash_algo = Sha256::new();
+                                algo_hasher = Sha256::new();
                             }
                             TPM_ALG_SHA384 => {
-                                hash_algo = Sha384::new();
+                                algo_hasher = Sha384::new();
                             }
                             TPM_ALG_SHA512 {
-                                hash_algo = Sha512::new();
+                                algo_hasher = Sha512::new();
                             }
-                            _ => ();
+                            _ => {
+                                return Err(anyhow!(
+                                    "[replay] Unsupported hash algorithm {}",
+                                    algo_id
+                                ));
+                            }
                         }
                     }
+
+                    let mut find = false;
+                    for replay_result in replay_results {
+                        if replay_result.imr_index == imr_index {
+                            find = true;
+                        }
+                    }
+
+                    if !find {
+                        replay_results[imr_index] = Digest{algo_id, hash: vec![0; digest_size]};
+                    }
+
+                    let hash_input_data = [replay_results[imr_index].hash, hash];
+                    algo_hasher.update(hash_input_data);
+                    replay_results[imr_index]
+
                 }
                 EventLogEntry::TcgPcClientImrEvent(_) => {
                     ();

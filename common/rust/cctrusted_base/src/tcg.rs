@@ -29,12 +29,23 @@ lazy_static! {
 }
 
 lazy_static! {
-    pub static ref TPM_DIGEST_SIZE_ALG_HASH_MAP: HashMap<u8, u16> = {
+    pub static ref TPM_DIGEST_SIZE_HASH_ALG_MAP: HashMap<u8, u16> = {
         let mut map: HashMap<u8, u16> = HashMap::new();
         map.insert(20, TPM_ALG_SHA1);
         map.insert(32, TPM_ALG_SHA256);
         map.insert(48, TPM_ALG_SHA384);
         map.insert(64, TPM_ALG_SHA512);
+        map
+    };
+}
+
+lazy_static! {
+    pub static ref TPM_HASH_ALG_DIGEST_SIZE_MAP: HashMap<u8, u16> = {
+        let mut map: HashMap<u16, u8> = HashMap::new();
+        map.insert(TPM_ALG_SHA1, 20);
+        map.insert(TPM_ALG_SHA256, 32);
+        map.insert(TPM_ALG_SHA384, 48);
+        map.insert(TPM_ALG_SHA512, 64);
         map
     };
 }
@@ -67,9 +78,16 @@ impl TcgDigest {
     }
 
     pub fn get_algorithm_id_from_digest_size(digest_size: u8) -> u16 {
-        match TPM_DIGEST_SIZE_ALG_HASH_MAP.get(&digest_size) {
+        match TPM_DIGEST_SIZE_HASH_ALG_MAP.get(&digest_size) {
             Some(algo_id) => *algo_id,
             None => TPM_ALG_ERROR,
+        }
+    }
+
+    pub fn get_digest_size_from_algorithm_id(algo_id: u16) -> u8 {
+        match TPM_HASH_ALG_DIGEST_SIZE_MAP.get(&algo_id) {
+            Some(digest_size) => *digest_size,
+            None => 0,
         }
     }
 }
