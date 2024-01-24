@@ -490,15 +490,15 @@ impl EventLogs {
                         let hash = digest.hash;
                         let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id.try_into().unwrap());
 
-                        let mut imr_pos = -1;
-                        let mut algo_pos = -1;
+                        let mut imr_pos = usize::MAX;
+                        let mut algo_pos = usize::MAX;
                         for index1 in 0..replay_results.len() {
-                            if replay_results[index].imr_index == imr_index {
+                            if replay_results[index1].imr_index == imr_index {
                                 imr_pos = index1;
                             }
                         }
     
-                        if imr_pos == -1 {
+                        if imr_pos == usize::MAX {
                             replay_results.push(
                                 ReplayResult {
                                     imr_index,
@@ -514,7 +514,7 @@ impl EventLogs {
                             }
                         }
     
-                        if algo_pos == -1 {
+                        if algo_pos == usize::MAX {
                             replay_results[imr_pos].push(
                                 ReplayResult {
                                     imr_index,
