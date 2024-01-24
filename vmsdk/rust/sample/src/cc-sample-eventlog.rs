@@ -27,4 +27,8 @@ fn main() {
             return;
         }
     };
+
+    for replay_result in replay_results {
+        replay_result.show();
+    }
 }
