@@ -6,6 +6,7 @@ use hashbrown::HashMap;
 use log::info;
 use sha1::Sha1;
 use sha2::{Digest, Sha256, Sha384, Sha512};
+use hex;
 
 /***
 *  This is the common struct for tcg event logs to be delivered in different formats.
