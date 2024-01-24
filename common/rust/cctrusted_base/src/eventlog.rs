@@ -545,9 +545,6 @@ impl EventLogs {
                             }
                             0_u16..=3_u16 | 5_u16..=10_u16 | 14_u16..=u16::MAX => todo!()
                         }
-                        if imr_index == 2 {
-                            replay_results[imr_pos].show();
-                        }
                     }
                     ();
                 }
