@@ -550,7 +550,7 @@ impl EventLogs {
                 EventLogEntry::TcgCanonicalEvent(_) => todo!(),
             }
         }
-        Ok(())
+        Ok(replay_results)
     }
 
 }
