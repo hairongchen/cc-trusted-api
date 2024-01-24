@@ -399,7 +399,7 @@ mod test_generate_tdx_report_data {
             Some("IXUKoBO1XEFBPwopN4sY".to_string()),
         ) {
             Ok(r) => r,
-            Err(_) => (),
+            Err(_) => todo!(),
         };
         let generated_hash_len = base64::decode(report_data_hashed).unwrap().len();
         assert_eq!(generated_hash_len, 64);
