@@ -35,7 +35,7 @@ impl TcgEventLog {
         match parse_format {
             TCG_PCCLIENT_FORMAT => self.to_tcg_pcclient_format(),
             TCG_CANONICAL_FORMAT => self.to_tcg_canonical_format(),
-            0_u8 | 3_u8..=u8::MAX => todo!(),
+            0_u8 | 3_u8..=u8::MAX => (),
         }
     }
 
@@ -461,5 +461,53 @@ impl EventLogs {
             event,
             extra_info,
         })
+    }
+
+    /***
+        Replay event logs by IMR index.
+        Returns:
+            A struct containing the replay result arranged by IMR index and hash algorithm. 
+            Layer 1 key of the struct is the IMR index, the value is another dict which using the
+            hash algorithm as the key and the replayed measurement as value.
+            Sample value:
+                { 
+                    0: { 12: <measurement_replayed>},
+                    1: { 12: <measurement_replayed>},
+                }
+     */
+    pub fn replay(eventlogs: Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error> {
+        let replay_result = Vec::new();
+
+        for event_log in eventlogs{
+            match event_log {
+                EventLogEntry::TcgImrEvent(tcg_imr_event) => {
+                    for digest in tcg_imr_event.digests {
+                        let algo_id = digest.algo_id;
+                        let hash = digest.hash;
+
+                        let mut hash_algo;
+                        match algo_id {
+                            TPM_ALG_SHA1 => {
+                                hash_algo = Sha1::new();
+                            }
+                            TPM_ALG_SHA256 => {
+                                hash_algo = Sha256::new();
+                            }
+                            TPM_ALG_SHA384 => {
+                                hash_algo = Sha384::new();
+                            }
+                            TPM_ALG_SHA512 {
+                                hash_algo = Sha512::new();
+                            }
+                            _ => ();
+                        }
+                    }
+                }
+                EventLogEntry::TcgPcClientImrEvent(_) => {
+                    ();
+                 }
+                EventLogEntry::TcgCanonicalEvent(_) => todo!(),
+            }
+        }
     }
 }
