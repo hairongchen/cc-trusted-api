@@ -1,4 +1,5 @@
 use crate::cc_type::TeeType;
+use crate::tcg::TcgDigest;
 
 /***
  ************************************

@@ -1,7 +1,9 @@
-use crate::binary_blob::*;
-use crate::tcg::*;
 use anyhow::anyhow;
 use hashbrown::HashMap;
+use crate::api_data::ReplayResult;
+use crate::binary_blob::*;
+use crate::tcg::*;
+use sha2::{Sha1, Sha256, Sha384, Sha512};
 
 /***
 *  This is the common struct for tcg event logs to be delivered in different formats.
@@ -500,12 +502,6 @@ impl EventLogs {
                             }
                             TPM_ALG_SHA512 {
                                 algo_hasher = Sha512::new();
-                            }
-                            _ => {
-                                return Err(anyhow!(
-                                    "[replay] Unsupported hash algorithm {}",
-                                    algo_id
-                                ));
                             }
                         }
                     }
