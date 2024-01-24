@@ -114,7 +114,7 @@ pub trait CCTrustedApi {
                     1: { 12: <measurement_replayed>},
                 ]
      */
-    fn replay_cc_eventlog(&self,eventlogs:Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error>;
+    fn replay_cc_eventlog(eventlogs:Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error>;
 
 }
 
