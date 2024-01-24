@@ -69,6 +69,6 @@ pub struct Algorithm {
  ********************************************
  */
 pub struct ReplayResult{
-    imr_index: u32,
-    digest: TcgDigest
+    pub imr_index: u32,
+    pub digest: TcgDigest
 }
