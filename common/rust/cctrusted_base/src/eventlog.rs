@@ -503,7 +503,7 @@ impl EventLogs {
                             replay_results.push(
                                 ReplayResult {
                                     imr_index,
-                                    digests: vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]
+                                    digests: Vec::new()
                                 }
                             );
                             imr_pos = replay_results.len()-1;
