@@ -458,7 +458,7 @@ impl EventLogs {
         let algo_id = TcgDigest::get_algorithm_id_from_digest_size(digest_size.try_into().unwrap());
         let digest = TcgDigest {
             algo_id,
-            hash: elements[1].as_bytes().to_vec(),
+            hash: <[u8; 48]>::from_hex(elements[1]).expect("Decoding failed"),
         };
         digests.push(digest);
 
@@ -537,25 +537,25 @@ impl EventLogs {
                             [replay_results[imr_pos].digests[algo_pos].hash.clone(), hash].concat();
 
                         match algo_id {
-                            TPM_ALG_SHA1 => {info!("============= [1]");
+                            TPM_ALG_SHA1 => {
                                 let mut algo_hasher = Sha1::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash =
                                     algo_hasher.finalize().to_vec();
                             }
-                            TPM_ALG_SHA256 => {info!("============= [2]");
+                            TPM_ALG_SHA256 => {
                                 let mut algo_hasher = Sha256::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash =
                                     algo_hasher.finalize().to_vec();
                             }
-                            TPM_ALG_SHA384 => {info!("============= [3]");
+                            TPM_ALG_SHA384 => {
                                 let mut algo_hasher = Sha384::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash =
                                     algo_hasher.finalize().to_vec();
                             }
-                            TPM_ALG_SHA512 => {info!("============= [4]");
+                            TPM_ALG_SHA512 => {
                                 let mut algo_hasher = Sha512::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash =
