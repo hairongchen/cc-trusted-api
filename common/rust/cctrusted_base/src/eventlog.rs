@@ -540,9 +540,7 @@ impl EventLogs {
                     }
 
                 }
-                EventLogEntry::TcgPcClientImrEvent(_) => {
-                    ();
-                 }
+                EventLogEntry::TcgPcClientImrEvent(_) => (),
                 EventLogEntry::TcgCanonicalEvent(_) => todo!(),
             }
         }
