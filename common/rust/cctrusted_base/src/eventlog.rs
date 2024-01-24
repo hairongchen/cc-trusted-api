@@ -38,7 +38,7 @@ impl TcgEventLog {
         match parse_format {
             TCG_PCCLIENT_FORMAT => self.to_tcg_pcclient_format(),
             TCG_CANONICAL_FORMAT => self.to_tcg_canonical_format(),
-            0_u8 | 3_u8..=u8::MAX => (),
+            0_u8 | 3_u8..=u8::MAX => todo!(),
         }
     }
 
@@ -490,19 +490,18 @@ impl EventLogs {
                         let hash = digest.hash;
                         let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id.try_into().unwrap());
 
-                        let mut algo_hasher;
                         match algo_id {
                             TPM_ALG_SHA1 => {
-                                algo_hasher = Sha1::new();
+                                let algo_hasher = Sha1::new();
                             }
                             TPM_ALG_SHA256 => {
-                                algo_hasher = Sha256::new();
+                                let algo_hasher = Sha256::new();
                             }
                             TPM_ALG_SHA384 => {
-                                algo_hasher = Sha384::new();
+                                let algo_hasher = Sha384::new();
                             }
                             TPM_ALG_SHA512 => {
-                                algo_hasher = Sha512::new();
+                                let algo_hasher = Sha512::new();
                             }
                         }
 
