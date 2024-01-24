@@ -490,21 +490,6 @@ impl EventLogs {
                         let hash = digest.hash;
                         let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id.try_into().unwrap());
 
-                        match algo_id {
-                            TPM_ALG_SHA1 => {
-                                let algo_hasher = Sha1::new();
-                            }
-                            TPM_ALG_SHA256 => {
-                                let algo_hasher = Sha256::new();
-                            }
-                            TPM_ALG_SHA384 => {
-                                let algo_hasher = Sha384::new();
-                            }
-                            TPM_ALG_SHA512 => {
-                                let algo_hasher = Sha512::new();
-                            }
-                        }
-
                         let mut find_imr = false;
                         let mut find_algo = false;
                         for replay_result in replay_results {
@@ -530,8 +515,28 @@ impl EventLogs {
                         for digest in replay_results[imr_index] {
                             if digest.algo_id == algo_id {
                                 let hash_input_data = [replay_results[imr_index].hash, hash];
-                                algo_hasher.update(hash_input_data);
-                                digest.hash = algo_hasher.finalize();
+                                match algo_id {
+                                    TPM_ALG_SHA1 => {
+                                        let algo_hasher = Sha1::new();y
+                                        algo_hasher.update(hash_input_data);
+                                        digest.hash = algo_hasher.finalize();
+                                    }
+                                    TPM_ALG_SHA256 => {
+                                        let algo_hasher = Sha256::new();
+                                        algo_hasher.update(hash_input_data);
+                                        digest.hash = algo_hasher.finalize();
+                                    }
+                                    TPM_ALG_SHA384 => {
+                                        let algo_hasher = Sha384::new();
+                                        algo_hasher.update(hash_input_data);
+                                        digest.hash = algo_hasher.finalize();
+                                    }
+                                    TPM_ALG_SHA512 => {
+                                        let algo_hasher = Sha512::new();
+                                        algo_hasher.update(hash_input_data);
+                                        digest.hash = algo_hasher.finalize();
+                                    }
+                                }
                             }
                         }
                     }
