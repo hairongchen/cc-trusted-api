@@ -524,6 +524,7 @@ impl EventLogs {
                         for digest in replay_results[imr_index] {
                             if digest.algo_id == algo_id {
                                 find_algo = true;
+                            }
                         }
                     }
 
