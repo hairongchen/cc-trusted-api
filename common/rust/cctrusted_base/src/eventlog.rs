@@ -486,6 +486,9 @@ impl EventLogs {
             match event_log {
                 EventLogEntry::TcgImrEvent(tcg_imr_event) => {
                     let imr_index = tcg_imr_event.imr_index;
+                    if imr_index == 2 {
+                        replay_results[imr_pos].show();
+                    }
                     for digest in tcg_imr_event.digests {
                         let algo_id = digest.algo_id;
                         let hash = digest.hash;
@@ -545,7 +548,6 @@ impl EventLogs {
                             }
                             0_u16..=3_u16 | 5_u16..=10_u16 | 14_u16..=u16::MAX => todo!()
                         }
-                        replay_results[imr_pos].show();
                     }
                     ();
                 }
