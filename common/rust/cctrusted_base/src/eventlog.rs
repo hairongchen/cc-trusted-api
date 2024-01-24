@@ -568,5 +568,6 @@ impl ReplayResult {
                     info!("        Digest: ", digest.hash);
                 }
             }
+        }
     }
 }
