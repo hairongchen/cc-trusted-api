@@ -564,7 +564,7 @@ impl ReplayResult {
         info!("IMR[{}]", self.imr_index);
         for digest in &self.digests{
             info!("Algorithm: {}", digest.get_algorithm_id_str());
-            info!("Digest: {:?}", digest.hash);
+            info!("Digest: {:02X?}", digest.hash);
         }
     }
 }
