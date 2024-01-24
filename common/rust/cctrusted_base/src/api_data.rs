@@ -70,5 +70,5 @@ pub struct Algorithm {
  */
 pub struct ReplayResult{
     pub imr_index: u32,
-    pub digest: Vec<TcgDigest>
+    pub digests: Vec<TcgDigest>
 }

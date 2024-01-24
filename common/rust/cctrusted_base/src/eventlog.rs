@@ -499,9 +499,11 @@ impl EventLogs {
                         }
     
                         if imr_pos == -1 {
-                            replay_results.push{
-                                imr_index,
-                                vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
+                            replay_results.push {
+                                ReplayResult {
+                                    imr_index,
+                                    digests: vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]
+                                }
                             };
                             imr_pos = replay_results.len()-1;
                         } else {
@@ -514,8 +516,10 @@ impl EventLogs {
     
                         if index2 == -1 {
                             replay_results[index1].push{
-                                imr_index,
-                                vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
+                                ReplayResult {
+                                    imr_index,
+                                    digests: vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]
+                                }
                             };
                             algo_pos = replay_results[index1].len()-1;
                         }
