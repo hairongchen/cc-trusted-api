@@ -262,7 +262,7 @@ impl EventLogs {
 
         let rec_num = self.get_record_number(header_imr);
 
-        let digest_hash = data[index..index + 20].try_into().unwrap();
+        let digest_hash = data[index..index + 20].into();
         index += 20;
         let mut digests: Vec<TcgDigest> = Vec::new();
         let digest = TcgDigest {
@@ -273,9 +273,7 @@ impl EventLogs {
 
         let header_event_size = get_u32(data[index..index + 4].to_vec());
         index += 4;
-        let header_event = data[index..index + header_event_size as usize]
-            .try_into()
-            .unwrap();
+        let header_event = data[index..index + header_event_size as usize].into();
         let specification_id_header = TcgEventLog {
             rec_num,
             imr_index: header_imr,
@@ -318,9 +316,7 @@ impl EventLogs {
         index += 1;
         let mut spec_id_vendor_info = Vec::new();
         if spec_id_vendor_size > 0 {
-            spec_id_vendor_info = data[index..index + spec_id_vendor_size as usize]
-                .try_into()
-                .unwrap();
+            spec_id_vendor_info = data[index..index + spec_id_vendor_size as usize].into()
         }
         index += spec_id_vendor_size as usize;
 
@@ -392,9 +388,7 @@ impl EventLogs {
 
             let alg = &self.spec_id_header_event.digest_sizes[pos];
             let digest_size = alg.digest_size;
-            let digest_data = data[index..index + digest_size as usize]
-                .try_into()
-                .unwrap();
+            let digest_data = data[index..index + digest_size as usize].into();
             index += digest_size as usize;
             let digest = TcgDigest {
                 algo_id: alg_id,
@@ -405,7 +399,7 @@ impl EventLogs {
 
         let event_size = get_u32(data[index..index + 4].to_vec());
         index += 4;
-        let event = data[index..index + event_size as usize].try_into().unwrap();
+        let event = data[index..index + event_size as usize].into();
         index += event_size as usize;
 
         Ok((
