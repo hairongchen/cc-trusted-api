@@ -542,6 +542,7 @@ impl EventLogs {
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
                             }
+                            0_u16..=3_u16 | 5_u16..=10_u16 | 14_u16..=u16::MAX => todo!()
                         }
                     }
                     ();
