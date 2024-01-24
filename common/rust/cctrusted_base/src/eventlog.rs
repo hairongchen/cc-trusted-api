@@ -232,7 +232,6 @@ impl EventLogs {
                         self.event_logs
                             .push(event_log.format_event_log(self.parse_format));
                         self.count += 1;
-                        event_log.show();
                     }
                     Err(e) => {
                         return Err(anyhow!(
@@ -499,9 +498,6 @@ impl EventLogs {
                     for digest in tcg_imr_event.digests {
                         let algo_id = digest.algo_id;
                         let hash = digest.hash;
-                        if imr_index == 2{
-                            info!("============= {:02X?}", hash);
-                        }
                         let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id);
 
                         let mut imr_pos = usize::MAX;
