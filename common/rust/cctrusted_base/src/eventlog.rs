@@ -525,22 +525,22 @@ impl EventLogs {
                             TPM_ALG_SHA1 => {
                                 let algo_hasher = Sha1::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
+                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize();
                             }
                             TPM_ALG_SHA256 => {
                                 let algo_hasher = Sha256::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
+                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize();
                             }
                             TPM_ALG_SHA384 => {
                                 let algo_hasher = Sha384::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
+                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize();
                             }
                             TPM_ALG_SHA512 => {
                                 let algo_hasher = Sha512::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos][algo_pos].hash = algo_hasher.finalize();
+                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize();
                             }
                         }
                     }
