@@ -40,8 +40,8 @@ lazy_static! {
 }
 
 lazy_static! {
-    pub static ref TPM_HASH_ALG_DIGEST_SIZE_MAP: HashMap<u8, u16> = {
-        let mut map: HashMap<u8, u16> = HashMap::new();
+    pub static ref TPM_HASH_ALG_DIGEST_SIZE_MAP: HashMap<u16,u8 > = {
+        let mut map: HashMap<u16, u8> = HashMap::new();
         map.insert(TPM_ALG_SHA1, 20);
         map.insert(TPM_ALG_SHA256, 32);
         map.insert(TPM_ALG_SHA384, 48);
