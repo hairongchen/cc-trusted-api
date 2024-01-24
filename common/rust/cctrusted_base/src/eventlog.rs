@@ -559,12 +559,12 @@ impl EventLogs {
 impl ReplayResult {
     pub fn show(&self) {
         info!(
-            "        -------------------------------Replay Results-----------------------------"
+            "-------------------------------Replay Results-----------------------------"
         );
-        info!("        IMR[{}]", self.imr_index);
+        info!("IMR[{}]", self.imr_index);
         for digest in &self.digests{
-            info!("        Algorithm: {}", digest.get_algorithm_id_str());
-            info!("        Digest: {:?}", digest.hash);
+            info!("Algorithm: {}", digest.get_algorithm_id_str());
+            info!("Digest: {:?}", digest.hash);
         }
     }
 }
