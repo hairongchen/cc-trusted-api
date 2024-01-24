@@ -499,9 +499,9 @@ impl EventLogs {
                         }
     
                         if !find_imr {
-                            replay_results[imr_index] = vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
+                            replay_results[imr_index as usize] = vec![TcgDigest{algo_id, hash: vec![0; digest_size.into()]}];
                         } else {
-                            for digest in replay_results[imr_index] {
+                            for digest in replay_results[imr_index as usize] {
                                 if digest.algo_id == algo_id {
                                     find_algo = true;
                                 }
@@ -509,12 +509,12 @@ impl EventLogs {
                         }
     
                         if !find_algo {
-                            replay_results[imr_index].push([TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]);
+                            replay_results[imr_index as usize].push([TcgDigest{algo_id, hash: vec![0; digest_size.into()]}]);
                         }
     
-                        for digest in replay_results[imr_index] {
+                        for digest in replay_results[imr_index as usize] {
                             if digest.algo_id == algo_id {
-                                let hash_input_data = [replay_results[imr_index].hash, hash];
+                                let hash_input_data = [replay_results[imr_index as usize].hash, hash];
                                 match algo_id {
                                     TPM_ALG_SHA1 => {
                                         let algo_hasher = Sha1::new();
@@ -546,6 +546,7 @@ impl EventLogs {
                 EventLogEntry::TcgCanonicalEvent(_) => todo!(),
             }
         }
+        Ok(())
     }
-    Ok(())
+
 }
