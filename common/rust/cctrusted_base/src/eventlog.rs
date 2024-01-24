@@ -1,11 +1,11 @@
-use anyhow::anyhow;
-use hashbrown::HashMap;
 use crate::api_data::ReplayResult;
 use crate::binary_blob::*;
 use crate::tcg::*;
-use sha2::{Digest, Sha256, Sha384, Sha512};
-use sha1::Sha1;
+use anyhow::anyhow;
+use hashbrown::HashMap;
 use log::info;
+use sha1::Sha1;
+use sha2::{Digest, Sha256, Sha384, Sha512};
 
 /***
 *  This is the common struct for tcg event logs to be delivered in different formats.
@@ -468,28 +468,28 @@ impl EventLogs {
     }
 
     /***
-        Replay event logs by IMR index.
-        Returns:
-            A struct containing the replay result arranged by IMR index and hash algorithm. 
-            Layer 1 key of the struct is the IMR index, the value is another dict which using the
-            hash algorithm as the key and the replayed measurement as value.
-            Sample results:
-                [
-                    0: [{ 4: <measurement_replayed>},{ 12: <measurement_replayed>},]
-                    1: { 12: <measurement_replayed>},
-                ]
-     */
+       Replay event logs by IMR index.
+       Returns:
+           A struct containing the replay result arranged by IMR index and hash algorithm.
+           Layer 1 key of the struct is the IMR index, the value is another dict which using the
+           hash algorithm as the key and the replayed measurement as value.
+           Sample results:
+               [
+                   0: [{ 4: <measurement_replayed>},{ 12: <measurement_replayed>},]
+                   1: { 12: <measurement_replayed>},
+               ]
+    */
     pub fn replay(eventlogs: Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error> {
         let mut replay_results: Vec<ReplayResult> = Vec::new();
 
-        for event_log in eventlogs{
+        for event_log in eventlogs {
             match event_log {
                 EventLogEntry::TcgImrEvent(tcg_imr_event) => {
                     let imr_index = tcg_imr_event.imr_index;
                     for digest in tcg_imr_event.digests {
                         let algo_id = digest.algo_id;
                         let hash = digest.hash;
-                        let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id.try_into().unwrap());
+                        let digest_size = TcgDigest::get_digest_size_from_algorithm_id(algo_id);
 
                         let mut imr_pos = usize::MAX;
                         let mut algo_pos = usize::MAX;
@@ -498,15 +498,13 @@ impl EventLogs {
                                 imr_pos = index1;
                             }
                         }
-    
+
                         if imr_pos == usize::MAX {
-                            replay_results.push(
-                                ReplayResult {
-                                    imr_index,
-                                    digests: Vec::new()
-                                }
-                            );
-                            imr_pos = replay_results.len()-1;
+                            replay_results.push(ReplayResult {
+                                imr_index,
+                                digests: Vec::new(),
+                            });
+                            imr_pos = replay_results.len() - 1;
                         } else {
                             for index2 in 0..replay_results[imr_pos].digests.len() {
                                 if digest.algo_id == algo_id {
@@ -514,39 +512,46 @@ impl EventLogs {
                                 }
                             }
                         }
-    
+
                         if algo_pos == usize::MAX {
-                            replay_results[imr_pos].digests.push(TcgDigest{algo_id, hash: vec![0; digest_size.into()]});
-                            algo_pos = replay_results[imr_pos].digests.len()-1;
+                            replay_results[imr_pos].digests.push(TcgDigest {
+                                algo_id,
+                                hash: vec![0; digest_size.into()],
+                            });
+                            algo_pos = replay_results[imr_pos].digests.len() - 1;
                         }
-    
-                        let hash_input_data = [replay_results[imr_pos].digests[algo_pos].hash.clone(), hash].concat();
+
+                        let hash_input_data =
+                            [replay_results[imr_pos].digests[algo_pos].hash.clone(), hash].concat();
 
                         match algo_id {
                             TPM_ALG_SHA1 => {
                                 let mut algo_hasher = Sha1::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
+                                replay_results[imr_pos].digests[algo_pos].hash =
+                                    algo_hasher.finalize().to_vec();
                             }
                             TPM_ALG_SHA256 => {
                                 let mut algo_hasher = Sha256::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
+                                replay_results[imr_pos].digests[algo_pos].hash =
+                                    algo_hasher.finalize().to_vec();
                             }
                             TPM_ALG_SHA384 => {
                                 let mut algo_hasher = Sha384::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
+                                replay_results[imr_pos].digests[algo_pos].hash =
+                                    algo_hasher.finalize().to_vec();
                             }
                             TPM_ALG_SHA512 => {
                                 let mut algo_hasher = Sha512::new();
                                 algo_hasher.update(hash_input_data);
-                                replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
+                                replay_results[imr_pos].digests[algo_pos].hash =
+                                    algo_hasher.finalize().to_vec();
                             }
-                            0_u16..=3_u16 | 5_u16..=10_u16 | 14_u16..=u16::MAX => ()
+                            0_u16..=3_u16 | 5_u16..=10_u16 | 14_u16..=u16::MAX => (),
                         }
                     }
-                    ();
                 }
                 EventLogEntry::TcgPcClientImrEvent(_) => (), // Skip TcgPcClientImrEvent during replay
                 EventLogEntry::TcgCanonicalEvent(_) => todo!(),
@@ -559,9 +564,10 @@ impl EventLogs {
 impl ReplayResult {
     pub fn show(&self) {
         info!(
-            "-------------------------------Replay Result of IMR[{}]-----------------------------", self.imr_index
+            "-------------------------------Replay Result of IMR[{}]-----------------------------",
+            self.imr_index
         );
-        for digest in &self.digests{
+        for digest in &self.digests {
             info!("Algorithm: {}", digest.get_algorithm_id_str());
             info!("Digest: {:02X?}", digest.hash);
         }

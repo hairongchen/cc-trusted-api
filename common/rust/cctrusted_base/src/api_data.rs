@@ -68,7 +68,7 @@ pub struct Algorithm {
  * API replay_eventlog() related data *
  ********************************************
  */
-pub struct ReplayResult{
+pub struct ReplayResult {
     pub imr_index: u32,
-    pub digests: Vec<TcgDigest>
+    pub digests: Vec<TcgDigest>,
 }
