@@ -71,14 +71,14 @@ impl TcgEventLog {
         info!(
             "        --------------------TcgEventLog--------------------------"
         );
-        info!("rec_num = {}", rec_num);
-        info!("imr_index = {}", imr_index);
-        info!("event_type = {}", event_type);
-        for index in 0..digests.len() {
-            info!("digest[{}] = {:?}", index, digests[index]);
+        info!("rec_num = {}", self.rec_num);
+        info!("imr_index = {}", self.imr_index);
+        info!("event_type = {}", self.event_type);
+        for index in 0..self.digests.len() {
+            info!("digest[{}] = {:?}", index, self.digests[index]);
         }
-        info!("event_size = {}", event_size);
-        info!("event = {:?}", event);
+        info!("event_size = {}", self.event_size);
+        info!("event = {:?}", self.event);
     }
 }
 
