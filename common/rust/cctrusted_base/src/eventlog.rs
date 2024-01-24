@@ -500,7 +500,7 @@ impl EventLogs {
                             TPM_ALG_SHA384 => {
                                 algo_hasher = Sha384::new();
                             }
-                            TPM_ALG_SHA512 {
+                            TPM_ALG_SHA512 => {
                                 algo_hasher = Sha512::new();
                             }
                         }
