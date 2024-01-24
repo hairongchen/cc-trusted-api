@@ -3,7 +3,8 @@ use hashbrown::HashMap;
 use crate::api_data::ReplayResult;
 use crate::binary_blob::*;
 use crate::tcg::*;
-use sha2::{Sha1, Sha256, Sha384, Sha512};
+use sha2::{Sha256, Sha384, Sha512};
+use sha1::Sha1;
 
 /***
 *  This is the common struct for tcg event logs to be delivered in different formats.
@@ -504,40 +505,40 @@ impl EventLogs {
                                 algo_hasher = Sha512::new();
                             }
                         }
-                    }
 
-                    let mut find_imr = false;
-                    let mut find_algo = false;
-                    for replay_result in replay_results {
-                        if replay_result.imr_index == imr_index {
-                            find_imr = true;
+                        let mut find_imr = false;
+                        let mut find_algo = false;
+                        for replay_result in replay_results {
+                            if replay_result.imr_index == imr_index {
+                                find_imr = true;
+                            }
                         }
-                    }
-
-                    if !find_imr {
-                        replay_results[imr_index] = vec![Digest{algo_id, hash: vec![0; digest_size]}];
-                    } else {
+    
+                        if !find_imr {
+                            replay_results[imr_index] = vec![Digest{algo_id, hash: vec![0; digest_size]}];
+                        } else {
+                            for digest in replay_results[imr_index] {
+                                if digest.algo_id == algo_id {
+                                    find_algo = true;
+                                }
+                            }
+                        }
+    
+                        if !find_algo {
+                            replay_results[imr_index].push([Digest{algo_id, hash: vec![0; digest_size]}]);
+                        }
+    
                         for digest in replay_results[imr_index] {
                             if digest.algo_id == algo_id {
-                                find_algo = true;
+                                let hash_input_data = [replay_results[imr_index].hash, hash];
+                                algo_hasher.update(hash_input_data);
+                                digest.hash = algo_hasher.finalize();
                             }
                         }
                     }
-
-                    if !find_algo {
-                        replay_results[imr_index].push([Digest{algo_id, hash: vec![0; digest_size]}]);
-                    }
-
-                    for digest in replay_results[imr_index] {
-                        if digest.algo_id == algo_id {
-                            let hash_input_data = [replay_results[imr_index].hash, hash];
-                            algo_hasher.update(hash_input_data);
-                            digest.hash = algo_hasher.finalize();
-                        }
-                    }
-
+                    Ok(())
                 }
-                EventLogEntry::TcgPcClientImrEvent(_) => (),
+                EventLogEntry::TcgPcClientImrEvent(_) => Ok(()),
                 EventLogEntry::TcgCanonicalEvent(_) => todo!(),
             }
         }
