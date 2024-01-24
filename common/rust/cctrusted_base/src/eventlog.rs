@@ -519,26 +519,26 @@ impl EventLogs {
                             algo_pos = replay_results[imr_pos].digests.len()-1;
                         }
     
-                        let hash_input_data = [replay_results[imr_pos].digests[algo_pos].hash, hash].concat();
+                        let hash_input_data = [replay_results[imr_pos].digests[algo_pos].hash.clone(), hash].concat();
 
                         match algo_id {
                             TPM_ALG_SHA1 => {
-                                let algo_hasher = Sha1::new();
+                                let mut algo_hasher = Sha1::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
                             }
                             TPM_ALG_SHA256 => {
-                                let algo_hasher = Sha256::new();
+                                let mut algo_hasher = Sha256::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
                             }
                             TPM_ALG_SHA384 => {
-                                let algo_hasher = Sha384::new();
+                                let mut algo_hasher = Sha384::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
                             }
                             TPM_ALG_SHA512 => {
-                                let algo_hasher = Sha512::new();
+                                let mut algo_hasher = Sha512::new();
                                 algo_hasher.update(hash_input_data);
                                 replay_results[imr_pos].digests[algo_pos].hash = algo_hasher.finalize().to_vec();
                             }
