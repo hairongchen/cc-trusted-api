@@ -548,7 +548,7 @@ impl EventLogs {
                     }
                     ();
                 }
-                EventLogEntry::TcgPcClientImrEvent(_) => (),
+                EventLogEntry::TcgPcClientImrEvent(_) => (), // Skip TcgPcClientImrEvent during replay
                 EventLogEntry::TcgCanonicalEvent(_) => todo!(),
             }
         }
