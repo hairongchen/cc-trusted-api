@@ -479,7 +479,7 @@ impl EventLogs {
                 ]
      */
     pub fn replay(eventlogs: Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error> {
-        let mut replay_results = Vec::new();
+        let mut replay_results: Vec<ReplayResult> = Vec::new();
 
         for event_log in eventlogs{
             match event_log {
@@ -517,7 +517,7 @@ impl EventLogs {
                                 let hash_input_data = [replay_results[imr_index].hash, hash];
                                 match algo_id {
                                     TPM_ALG_SHA1 => {
-                                        let algo_hasher = Sha1::new();y
+                                        let algo_hasher = Sha1::new();
                                         algo_hasher.update(hash_input_data);
                                         digest.hash = algo_hasher.finalize();
                                     }
