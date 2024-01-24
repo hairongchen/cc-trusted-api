@@ -470,11 +470,10 @@ impl EventLogs {
             Layer 1 key of the struct is the IMR index, the value is another dict which using the
             hash algorithm as the key and the replayed measurement as value.
             Sample value:
-                { 
-                    0: { 12: <measurement_replayed>},
-                    0: { 0: <measurement_replayed>},
+                [
+                    0: [{ 4: <measurement_replayed>},{ 12: <measurement_replayed>},]
                     1: { 12: <measurement_replayed>},
-                }
+                ]
      */
     pub fn replay(eventlogs: Vec<EventLogEntry>) -> Result<Vec<ReplayResult>, anyhow::Error> {
         let mut replay_results = Vec::new();
@@ -529,7 +528,7 @@ impl EventLogs {
                     }
 
                     if !find_algo {
-                        replay_results[imr_index] = vec![Digest{algo_id, hash: vec![0; digest_size]}];
+                        replay_results[imr_index].push([Digest{algo_id, hash: vec![0; digest_size]}]);
                     }
 
                     for digest in replay_results[imr_index] {

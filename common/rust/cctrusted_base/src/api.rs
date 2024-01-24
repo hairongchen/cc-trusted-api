@@ -109,12 +109,13 @@ pub trait CCTrustedApi {
             Layer 1 key of the struct is the IMR index, the value is another dict which using the
             hash algorithm as the key and the replayed measurement as value.
             Sample value:
-                { 
-                    0: { 12: <measurement_replayed>},
+                [
+                    0: [{ 4: <measurement_replayed>},{ 12: <measurement_replayed>},]
                     1: { 12: <measurement_replayed>},
-                }
+                ]
      */
-    fn replay_eventlog(event_logs:EventLogs) -> Result<Vec<ReplayResult>, anyhow::Error>;
+    fn replay_cc_eventlog(&self,eventlogs:Vec<EventLogEntry) -> Result<Vec<ReplayResult>, anyhow::Error>;
+
 }
 
 /***

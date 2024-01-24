@@ -433,6 +433,12 @@ impl CVM for TdxVM {
         eventlogs.select(start, count)
     }
 
+    // CVM trait function: replay retrieved TDX CCEL and IMA eventlog
+    fn replay_eventlog(&self, eventlogs:Vec<EventLogEntry) -> Result<Vec<ReplayResult>, anyhow::Error>{
+        EventLogs::replay(eventlogs);
+    }
+
+
     // CVM trait function: retrive CVM type
     fn get_cc_type(&self) -> CcType {
         self.cc_type.clone()
