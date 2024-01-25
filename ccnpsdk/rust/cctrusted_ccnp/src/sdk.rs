@@ -11,6 +11,7 @@ use cctrusted_base::cc_type::TeeType;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use base64;
+use tower::service_fn;
 
 pub struct API {}
 

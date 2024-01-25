@@ -17,6 +17,7 @@ anyhow = "1.0"
 log = "0.4.20"
 tonic = "0.9"
 base64 = "0.13.0"
+tower = { version = "0.4", features = ["util"] }
 
 [build-dependencies]
 tonic-build = "0.9"
