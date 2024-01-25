@@ -52,8 +52,7 @@ impl CCTrustedApi for API {
         };
 
         Ok(CcReport{
-            //cc_report: cc_report,
-            cc_report: response.unwrap().quote.into(),
+            cc_report,
             cc_type: TeeType::TDX
         })
     }
