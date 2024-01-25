@@ -21,7 +21,7 @@ fn main() {
 
     // retrieve cc report with API "get_cc_report"
     info!("call cc trusted API [get_cc_report] to retrieve cc report!");
-    let report = match API::get_cc_report(Some(nonce), Some(data), ExtraArgs {}) {
+    let report = match API::get_cc_report(Some(nonce), Some(data), ExtraArgs {}).await {
         Ok(q) => q,
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
