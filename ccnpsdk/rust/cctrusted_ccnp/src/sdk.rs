@@ -27,7 +27,7 @@ pub struct API {}
 //impl CCTrustedApi for API {
 impl API {
         // CCTrustedApi trait function: get cc report from CCNP server
-    async fn get_cc_report(
+    pub async fn get_cc_report(
         nonce: Option<String>,
         data: Option<String>,
         _extra_args: ExtraArgs,
