@@ -1,9 +1,9 @@
+use anyhow::anyhow;
 use cctrusted_base::api::*;
 use cctrusted_base::api_data::*;
 use cctrusted_base::cc_type::TeeType;
 use cctrusted_base::tdx::quote::TdxQuote;
 use cctrusted_ccnp::sdk::API;
-
 use log::*;
 use rand::Rng;
 
@@ -34,7 +34,7 @@ async fn main() {
         Ok(q) => q,
         Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
     };
-    info!("quote len = {}", quote.len());
+    info!("quote len = {}", cc_quote.len());
 
     // dump the cc report with API "dump_cc_report"
     //info!("call cc trusted API [dump_cc_report] to dump cc report!");
