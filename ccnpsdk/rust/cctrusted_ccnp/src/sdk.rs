@@ -5,7 +5,6 @@ use cctrusted_base::api_data::CcReport;
 use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
-use std::os::unix::net::UnixStream;
 use core::result::Result::Ok;
 use cctrusted_base::cc_type::TeeType;
 use tonic::transport::{Endpoint, Uri};
