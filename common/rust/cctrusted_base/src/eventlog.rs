@@ -3,10 +3,10 @@ use crate::binary_blob::*;
 use crate::tcg::*;
 use anyhow::anyhow;
 use hashbrown::HashMap;
+use hex;
 use log::info;
 use sha1::Sha1;
 use sha2::{Digest, Sha256, Sha384, Sha512};
-use hex;
 
 /***
 *  This is the common struct for tcg event logs to be delivered in different formats.
@@ -69,14 +69,16 @@ impl TcgEventLog {
     }
 
     pub fn show(&self) {
-        info!(
-            "        --------------------TcgEventLog--------------------------"
-        );
+        info!("        --------------------TcgEventLog--------------------------");
         info!("rec_num = {}", self.rec_num);
         info!("imr_index = {}", self.imr_index);
         info!("event_type = {}", self.event_type);
         for index in 0..self.digests.len() {
-            info!("digest[{}] = {}", self.digests[index].algo_id, String::from_utf8_lossy(&self.digests[index].hash));
+            info!(
+                "digest[{}] = {}",
+                self.digests[index].algo_id,
+                String::from_utf8_lossy(&self.digests[index].hash)
+            );
         }
         info!("event_size = {}", self.event_size);
         info!("event = {}", String::from_utf8_lossy(&self.event));
