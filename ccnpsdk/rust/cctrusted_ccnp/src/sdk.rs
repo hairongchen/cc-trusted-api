@@ -9,6 +9,7 @@ use core::result::Result::Ok;
 use cctrusted_base::cc_type::TeeType;
 use base64;
 use crate::client::CcnpClient;
+use cctrusted_base::binary_blob::dump_data;
 
 pub struct API {}
 
@@ -46,13 +47,13 @@ impl CCTrustedApi for API {
         })
     }
 
-    // CCTrustedApi trait function: get max number of CVM IMRs
-    fn get_measurement_count() -> Result<u8, anyhow::Error> {
-        todo!()
-    }
-
     // CCTrustedApi trait function: dump report of a CVM in hex and char format
     fn dump_cc_report(report: &Vec<u8>) {
+        dump_data(report)
+    }
+
+    // CCTrustedApi trait function: get max number of CVM IMRs
+    fn get_measurement_count() -> Result<u8, anyhow::Error> {
         todo!()
     }
 
