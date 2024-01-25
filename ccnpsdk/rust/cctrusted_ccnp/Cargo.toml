@@ -15,3 +15,6 @@ path = "src/lib.rs"
 cctrusted_base = { path = "../../../common/rust/cctrusted_base" }
 anyhow = "1.0"
 log = "0.4.20"
+
+[build-dependencies]
+tonic-build = "0.9"
