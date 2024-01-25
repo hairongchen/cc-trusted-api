@@ -50,6 +50,11 @@ impl CCTrustedApi for API {
         })
     }
 
+    // CCTrustedApi trait function: get max number of CVM IMRs
+    fn get_measurement_count() -> Result<u8, anyhow::Error> {
+        todo!()
+    }
+
     // CCTrustedApi trait function: dump report of a CVM in hex and char format
     fn dump_cc_report(report: &Vec<u8>) {
         todo!()
