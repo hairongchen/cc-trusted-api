@@ -38,7 +38,7 @@ impl API {
                 let path = "/run/ccnp/uds/quote-server.sock";
                 UnixStream::connect(path)
             }))
-            .await
+            //.await
             .unwrap();
 
         let mut client = GetQuoteClient::new(channel);
