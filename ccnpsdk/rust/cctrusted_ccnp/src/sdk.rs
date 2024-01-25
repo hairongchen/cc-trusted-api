@@ -12,8 +12,7 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use base64;
 use tower::service_fn;
-use ccnp_server::get_quote_server::{GetQuote, GetQuoteServer};
-use ccnp_server::{GetQuoteRequest, GetQuoteResponse};
+use crate::sdk::ccnp_server::get_quote_client::GetQuoteClient;
 
 pub mod ccnp_server {
     tonic::include_proto!("ccnpserver");
