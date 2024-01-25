@@ -25,8 +25,7 @@ async fn main() {
     let report = match API::get_cc_report(Some(nonce), Some(data), ExtraArgs {}).await {
         Ok(q) => q,
         Err(e) => {
-            error!("error getting CC report: {:?}", e);
-            return;
+            return Err(anyhow!("error getting CC report: {:?}", e));
         }
     };
 
