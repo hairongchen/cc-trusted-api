@@ -44,7 +44,7 @@ impl API {
         let mut client = GetQuoteClient::new(channel);
 
         let request = Request::new(GetQuoteRequest {
-            nonce.unwrap(),
+            nonce: nonce.unwrap(),
             user_data: data.unwrap()
         });
 
