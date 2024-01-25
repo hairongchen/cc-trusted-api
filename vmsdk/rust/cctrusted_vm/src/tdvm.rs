@@ -2,6 +2,7 @@
 
 use crate::cvm::*;
 use anyhow::*;
+use cctrusted_base::api_data::ReplayResult;
 use cctrusted_base::cc_type::*;
 use cctrusted_base::eventlog::EventLogs;
 use cctrusted_base::tcg::EventLogEntry;
