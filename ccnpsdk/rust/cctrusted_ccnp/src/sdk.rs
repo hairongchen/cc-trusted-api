@@ -11,8 +11,6 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use base64;
 use tower::service_fn;
-use crate::sdk::quote_server::get_quote_client::GetQuoteClient;
-use crate::sdk::quote_server::GetQuoteRequest;
 use tokio::net::UnixStream;
 use crate::client::CcnpClient;
 
