@@ -25,13 +25,13 @@ async fn main() {
     let report = match API::get_cc_report(Some(nonce), Some(data), ExtraArgs {}).await {
         Ok(q) => q,
         Err(e) => {
-            return Err(anyhow!("error getting CC report: {:?}", e));
+            info!("error getting CC report: {:?}", e);
         }
     };
 
     let cc_quote = match base64::decode(std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"')) {
         Ok(q) => q,
-        Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
+        Err(e) => info!("report data is not base64 encoded: {:?}", e),
     };
     info!("quote len = {}", cc_quote.len());
 
