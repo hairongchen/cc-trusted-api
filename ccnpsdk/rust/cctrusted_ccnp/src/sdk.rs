@@ -32,7 +32,7 @@ impl API {
         data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error> {
-        let channel = Endpoint::try_from("http://[::]:40081")
+        let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(|_: Uri| {
                 let path = "/run/ccnp/uds/quote-server.sock";
