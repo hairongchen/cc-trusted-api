@@ -56,7 +56,7 @@ impl API {
 
         Ok(CcReport{
             //cc_report: cc_report,
-            cc_report: response.quote,
+            cc_report: response.quote.into(),
             cc_type: TeeType::TDX
         })
     }
