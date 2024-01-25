@@ -32,10 +32,10 @@ impl CcnpClient {
         data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
-        let channel = Endpoint::try_from("http://[::]:0")
+        let channel = Endpoint::try_from(self.uds_path)
             .unwrap()
-            .connect_with_connector(service_fn(|_: Uri| {
-                UnixStream::connect(self.uds_path.clone())
+            .connect_with_connector(service_fn(|uds_path: Uri| {
+                UnixStream::connect(uds_path)
             }))
             .await
             .unwrap();
