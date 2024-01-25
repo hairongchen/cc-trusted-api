@@ -1,5 +1,5 @@
 use anyhow::*;
-use cctrusted_base::api::CCTrustedApi;
+//use cctrusted_base::api::CCTrustedApi;
 use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::api_data::CcReport;
 use cctrusted_base::api_data::Algorithm;
@@ -14,6 +14,13 @@ use base64;
 use tower::service_fn;
 use sdk::get_quote_server::{GetQuote, GetQuoteServer};
 use sdk::{GetQuoteRequest, GetQuoteResponse};
+
+pub mod quote_server {
+    tonic::include_proto!("quoteserver");
+
+    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
+        tonic::include_file_descriptor_set!("quote_server_descriptor");
+}
 
 pub struct API {}
 
