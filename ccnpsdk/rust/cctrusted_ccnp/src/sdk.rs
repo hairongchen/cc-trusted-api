@@ -15,9 +15,10 @@ use tower::service_fn;
 
 pub struct API {}
 
-impl CCTrustedApi for API {
-    // CCTrustedApi trait function: get cc report from CCNP server
-    fn get_cc_report(
+//impl CCTrustedApi for API {
+impl API {
+        // CCTrustedApi trait function: get cc report from CCNP server
+    async fn get_cc_report(
         nonce: Option<String>,
         data: Option<String>,
         _extra_args: ExtraArgs,
@@ -28,7 +29,7 @@ impl CCTrustedApi for API {
                 let path = "/run/ccnp/uds/quote-server.sock";
                 UnixStream::connect(path)
             }))
-            //.await
+            .await
             .unwrap();
 
         let mut client = GetQuoteClient::new(channel);
@@ -38,8 +39,8 @@ impl CCTrustedApi for API {
             user_data: data
         });
 
-        //let response = client.get_quote(request).await.unwrap().into_inner();
-        let response = client.get_quote(request).unwrap().into_inner();
+        let response = client.get_quote(request).await.unwrap().into_inner();
+        //let response = client.get_quote(request).unwrap().into_inner();
         let cc_report = match base64::decode(response.quote) {
             Ok(v) => v,
             Err(e) => return Err(anyhow!("cc report is not base64 encoded: {:?}", e)),
