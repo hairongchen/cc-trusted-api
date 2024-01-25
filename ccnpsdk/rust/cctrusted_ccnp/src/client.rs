@@ -52,7 +52,7 @@ impl CcnpClient {
         data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
-        let response = match tokio::runtime::Builder::new_multi_thread()
+        let response = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
         .unwrap()
