@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ccnpserver;
+package quoteserver;
 
 message HealthCheckRequest {
   string service = 1;

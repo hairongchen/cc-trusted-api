@@ -11,15 +11,15 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use base64;
 use tower::service_fn;
-use crate::sdk::ccnp_server::get_quote_client::GetQuoteClient;
-use crate::sdk::ccnp_server::GetQuoteRequest;
+use crate::sdk::quote_server::get_quote_client::GetQuoteClient;
+use crate::sdk::quote_server::GetQuoteRequest;
 use tokio::net::UnixStream;
 
-pub mod ccnp_server {
-    tonic::include_proto!("ccnpserver");
+pub mod quote_server {
+    tonic::include_proto!("quoteserver");
 
     pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-        tonic::include_file_descriptor_set!("ccnp_server_descriptor");
+        tonic::include_file_descriptor_set!("quote_server_descriptor");
 }
 
 pub struct API {}
