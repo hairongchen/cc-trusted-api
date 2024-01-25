@@ -35,18 +35,18 @@ impl CcnpClient {
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(|_: Uri| {
-                UnixStream::connect(&self.uds_path)
+                UnixStream::connect(self.uds_path)
             }))
             .await
             .unwrap();
-    
+
         let mut client = GetQuoteClient::new(channel);
-    
+
         let request = Request::new(GetQuoteRequest {
             nonce: nonce.unwrap(),
             user_data: data.unwrap()
         });
-    
+
         let response = client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
     }
