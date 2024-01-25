@@ -24,18 +24,18 @@ fn main() {
     let report = match API::get_cc_report(Some(nonce), Some(data), ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
-            info!("error getting CC report: {:?}", e);
+            info!("error getting cc report: {:?}", e);
             return;
         }
     };
 
-    let cc_quote = match base64::decode(std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"')) {
-        Ok(q) => q,
-        Err(e) => {
-            info!("report data is not base64 encoded: {:?}", e);
-            return;
-        }
-    };
+    // let cc_quote = match base64::decode(std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"')) {
+    //     Ok(q) => q,
+    //     Err(e) => {
+    //         info!("report data is not base64 encoded: {:?}", e);
+    //         return;
+    //     }
+    // };
 
     // dump the cc report with API "dump_cc_report"
     //info!("call cc trusted API [dump_cc_report] to dump cc report!");
@@ -43,7 +43,7 @@ fn main() {
 
     // parse the cc report with API "parse_cc_report"
     if report.cc_type == TeeType::TDX {
-        let tdx_quote: TdxQuote = match CcReport::parse_cc_report(cc_quote) {
+        let tdx_quote: TdxQuote = match CcReport::parse_cc_report(&report.cc_report) {
             Ok(q) => q,
             Err(e) => {
                 info!("error parse tdx quote: {:?}", e);

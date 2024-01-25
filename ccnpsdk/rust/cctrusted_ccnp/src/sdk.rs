@@ -39,6 +39,14 @@ impl CCTrustedApi for API {
             extra_args
         ));
 
+        let cc_report = match base64::decode(std::str::from_utf8(&response.quote).unwrap().trim_matches('\"')) {
+            Ok(q) => q,
+            Err(e) => {
+                info!("cc report is not base64 encoded: {:?}", e);
+                return;
+            }
+        };
+
         Ok(CcReport{
             //cc_report: cc_report,
             cc_report: response.unwrap().quote.into(),
