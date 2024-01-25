@@ -30,30 +30,33 @@ async fn main() {
         }
     };
 
-    info!("quote len = {}", report.cc_report.len());
-    info!("quote = {:?}", std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"').trim_matches('"'));
+    let cc_quote = match base64::decode(std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"')) {
+        Ok(q) => q,
+        Err(e) => return Err(anyhow!("report data is not base64 encoded: {:?}", e)),
+    };
+    info!("quote len = {}", quote.len());
 
     // dump the cc report with API "dump_cc_report"
     //info!("call cc trusted API [dump_cc_report] to dump cc report!");
-    //API::dump_cc_report(&report.cc_report);
+    //API::dump_cc_report(&cc_quote);
 
     // parse the cc report with API "parse_cc_report"
-    // if report.cc_type == TeeType::TDX {
-    //     let tdx_quote: TdxQuote = match CcReport::parse_cc_report(report.cc_report) {
-    //         Ok(q) => q,
-    //         Err(e) => {
-    //             error!("error parse tdx quote: {:?}", e);
-    //             return;
-    //         }
-    //     };
-    //     info!(
-    //         "version = {}, report_data = {}",
-    //         tdx_quote.header.version,
-    //         base64::encode(tdx_quote.body.report_data)
-    //     );
+    if report.cc_type == TeeType::TDX {
+        let tdx_quote: TdxQuote = match CcReport::parse_cc_report(cc_quote) {
+            Ok(q) => q,
+            Err(e) => {
+                error!("error parse tdx quote: {:?}", e);
+                return;
+            }
+        };
+        info!(
+            "version = {}, report_data = {}",
+            tdx_quote.header.version,
+            base64::encode(tdx_quote.body.report_data)
+        );
 
-    //     // show data of the struct TdxQuoteHeader
-    //     info!("call struct show function to show data of the struct TdxQuoteHeader!");
-    //     tdx_quote.header.show();
-    // }
+        // show data of the struct TdxQuoteHeader
+        info!("call struct show function to show data of the struct TdxQuoteHeader!");
+        tdx_quote.header.show();
+    }
 }
