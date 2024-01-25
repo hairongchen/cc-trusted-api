@@ -7,7 +7,7 @@ use cctrusted_ccnp::sdk::API;
 use log::*;
 use rand::Rng;
 
-fn main() {
+async fn main() {
     // set log level
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
