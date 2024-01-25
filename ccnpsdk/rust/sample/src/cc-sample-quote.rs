@@ -26,12 +26,16 @@ async fn main() {
         Ok(q) => q,
         Err(e) => {
             info!("error getting CC report: {:?}", e);
+            return;
         }
     };
 
     let cc_quote = match base64::decode(std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"')) {
         Ok(q) => q,
-        Err(e) => info!("report data is not base64 encoded: {:?}", e),
+        Err(e) => {
+            info!("report data is not base64 encoded: {:?}", e);
+            return;
+        }
     };
     info!("quote len = {}", cc_quote.len());
 
@@ -45,6 +49,7 @@ async fn main() {
             Ok(q) => q,
             Err(e) => {
                 info!("error parse tdx quote: {:?}", e);
+                return;
             }
         };
         info!(
