@@ -28,14 +28,6 @@ fn main() {
         }
     };
 
-    // let cc_quote = match base64::decode(std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"')) {
-    //     Ok(q) => q,
-    //     Err(e) => {
-    //         info!("report data is not base64 encoded: {:?}", e);
-    //         return;
-    //     }
-    // };
-
     // dump the cc report with API "dump_cc_report"
     //info!("call cc trusted API [dump_cc_report] to dump cc report!");
     //API::dump_cc_report(&cc_quote);

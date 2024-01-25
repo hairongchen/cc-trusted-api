@@ -25,21 +25,6 @@ impl CCTrustedApi for API {
             uds_path: "/run/ccnp/uds/quote-server.sock".to_string(),
         };
 
-        // let response = match tokio::runtime::Builder::new_multi_thread()
-        // .enable_all()
-        // .build()
-        // .unwrap()
-        // .block_on(ccnp_client.get_cc_report_from_server(
-        //     nonce,
-        //     data,
-        //     extra_args
-        // )){
-        //     Ok(r) => r,
-        //     Err(e) => {
-        //         return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
-        //     }
-        // };
-
         let response = match ccnp_client.get_cc_report_from_server(nonce, data, extra_args){
             Ok(r) => r,
             Err(e) => {

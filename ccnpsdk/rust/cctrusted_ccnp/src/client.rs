@@ -45,6 +45,7 @@ impl CcnpClient {
         Ok(response)
     }
 
+    // turn async call to sync call
     pub fn get_cc_report_from_server(
         &self,
         nonce: Option<String>,
