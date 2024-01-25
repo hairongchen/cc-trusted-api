@@ -24,7 +24,7 @@ impl CCTrustedApi for API {
                 let path = "/run/ccnp/uds/quote-server.sock";
                 UnixStream::connect(path)
             }))
-            .await
+            //.await
             .unwrap();
 
         let mut client = GetQuoteClient::new(channel);
@@ -34,7 +34,8 @@ impl CCTrustedApi for API {
             user_data: data
         });
 
-        let response = client.get_quote(request).await.unwrap().into_inner();
+        //let response = client.get_quote(request).await.unwrap().into_inner();
+        let response = client.get_quote(request).unwrap().into_inner();
         let cc_report = match base64::decode(response.quote) {
             Ok(v) => v,
             Err(e) => return Err(anyhow!("cc report is not base64 encoded: {:?}", e)),
