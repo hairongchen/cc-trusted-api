@@ -45,7 +45,7 @@ impl CCTrustedApi for API {
             Err(e) => {
                 return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
             }
-        }
+        };
 
         //TODO: need to fix the quote server response
         let report = match base64::decode(&response.quote.trim_matches('\"')) {
