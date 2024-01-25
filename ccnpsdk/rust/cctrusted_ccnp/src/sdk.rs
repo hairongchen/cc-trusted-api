@@ -3,10 +3,10 @@ use cctrusted_base::api::CCTrustedApi;
 use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::api_data::CcReport;
 use std::os::unix::net::UnixStream;
-use core::error::Request;
 use core::result::Result::Ok;
 use cctrusted_base::cc_type::TeeType;
 use tonic::transport::{Endpoint, Uri};
+use tonic::{transport::Server, Request, Response, Status};
 
 pub struct API {}
 
