@@ -60,7 +60,7 @@ impl CcnpClient {
             nonce,
             data,
             extra_args
-        ))
+        ));
         response
     }
 }
