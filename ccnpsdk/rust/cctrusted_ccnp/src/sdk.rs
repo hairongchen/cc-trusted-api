@@ -55,31 +55,31 @@ impl CCTrustedApi for API {
         })
     }
 
-    // // CCTrustedApi trait function: get max number of CVM IMRs
-    // fn get_measurement_count() -> Result<u8, anyhow::Error> {
-    //     todo!()
-    // }
+    // CCTrustedApi trait function: get max number of CVM IMRs
+    fn get_measurement_count() -> Result<u8, anyhow::Error> {
+        todo!()
+    }
 
-    // // CCTrustedApi trait function: dump report of a CVM in hex and char format
-    // fn dump_cc_report(report: &Vec<u8>) {
-    //     todo!()
-    // }
+    // CCTrustedApi trait function: dump report of a CVM in hex and char format
+    fn dump_cc_report(report: &Vec<u8>) {
+        todo!()
+    }
 
-    // // CCTrustedApi trait function: get measurements of a CVM
-    // fn get_cc_measurement(index: u8, algo_id: u16) -> Result<TcgDigest, anyhow::Error> {
-    //     todo!()
-    // }
+    // CCTrustedApi trait function: get measurements of a CVM
+    fn get_cc_measurement(index: u8, algo_id: u16) -> Result<TcgDigest, anyhow::Error> {
+        todo!()
+    }
 
-    // // CCTrustedApi trait function: get eventlogs of a CVM
-    // fn get_cc_eventlog(
-    //     start: Option<u32>,
-    //     count: Option<u32>,
-    // ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
-    //     todo!()
-    // }
+    // CCTrustedApi trait function: get eventlogs of a CVM
+    fn get_cc_eventlog(
+        start: Option<u32>,
+        count: Option<u32>,
+    ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
+        todo!()
+    }
 
-    // // CCTrustedApi trait function: get default algorithm of a CVM
-    // fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
-    //     todo!()
-    // }
+    // CCTrustedApi trait function: get default algorithm of a CVM
+    fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
+        todo!()
+    }
 }
