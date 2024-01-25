@@ -44,15 +44,15 @@ impl CCTrustedApi for API {
             }
         };
 
-        let cc_report = match base64::decode(std::str::from_utf8(&response.quote).unwrap().trim_matches('\"')) {
-            Ok(q) => q,
+        let report = match base64::decode(std::str::from_utf8(&response.quote).unwrap().trim_matches('\"')) {
+            Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_report] cc report is not base64 encoded: {:?}", e));
             }
         };
 
         Ok(CcReport{
-            cc_report,
+            cc_report: report
             cc_type: TeeType::TDX
         })
     }
