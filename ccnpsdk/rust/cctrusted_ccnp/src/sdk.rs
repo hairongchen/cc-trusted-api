@@ -6,6 +6,7 @@ use std::os::unix::net::UnixStream;
 use core::error::Request;
 use core::result::Result::Ok;
 use cctrusted_base::cc_type::TeeType;
+use tonic::transport::{Endpoint, Uri};
 
 pub struct API {}
 
