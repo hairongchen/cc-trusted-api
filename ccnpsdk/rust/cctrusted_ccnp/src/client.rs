@@ -9,8 +9,8 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use base64;
 use tower::service_fn;
-use crate::sdk::quote_server::get_quote_client::GetQuoteClient;
-use crate::sdk::quote_server::GetQuoteRequest;
+use crate::client::quote_server::get_quote_client::GetQuoteClient;
+use crate::client::quote_server::GetQuoteRequest;
 use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
 
