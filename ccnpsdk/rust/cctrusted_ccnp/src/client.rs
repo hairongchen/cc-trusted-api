@@ -7,7 +7,6 @@ use crate::client::quote_server::get_quote_client::GetQuoteClient;
 use crate::client::quote_server::GetQuoteRequest;
 use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
-use anyhow::anyhow;
 
 pub mod quote_server {
     tonic::include_proto!("quoteserver");
@@ -50,7 +49,7 @@ impl CcnpClient {
         &self,
         nonce: Option<String>,
         data: Option<String>,
-        _extra_args: ExtraArgs,
+        extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
         let response = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
