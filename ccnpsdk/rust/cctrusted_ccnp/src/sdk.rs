@@ -35,7 +35,7 @@ impl CCTrustedApi for API {
     ) -> Result<CcReport, anyhow::Error> {
 
         let ccnp_client = CcnpClient{
-            uds_path: "/run/ccnp/uds/quote-server.sock",
+            uds_path: "/run/ccnp/uds/quote-server.sock".to_string(),
         };
 
         let response = tokio::runtime::Builder::new_multi_thread()
