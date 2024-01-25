@@ -11,6 +11,7 @@ use base64;
 use tower::service_fn;
 use crate::sdk::quote_server::get_quote_client::GetQuoteClient;
 use crate::sdk::quote_server::GetQuoteRequest;
+use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
 
 pub mod quote_server {
@@ -30,7 +31,7 @@ impl CcnpClient {
         nonce: Option<String>,
         data: Option<String>,
         _extra_args: ExtraArgs,
-    ) -> Result<CcReport, anyhow::Error> {
+    ) -> Result<GetQuoteResponse, anyhow::Error> {
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(|_: Uri| {
