@@ -29,7 +29,7 @@ impl CCTrustedApi for API {
             uds_path: "/run/ccnp/uds/quote-server.sock".to_string(),
         };
 
-        let response = tokio::runtime::Builder::new_multi_thread()
+        let response = match tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
         .unwrap()
@@ -37,7 +37,12 @@ impl CCTrustedApi for API {
             nonce,
             data,
             extra_args
-        ));
+        )){
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
+            }
+        };
 
         let cc_report = match base64::decode(std::str::from_utf8(&response.quote).unwrap().trim_matches('\"')) {
             Ok(q) => q,
