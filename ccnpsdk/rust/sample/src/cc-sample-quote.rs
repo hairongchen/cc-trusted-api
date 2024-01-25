@@ -7,8 +7,7 @@ use cctrusted_ccnp::sdk::API;
 use log::*;
 use rand::Rng;
 
-#[tokio::main]
-async fn main() {
+fn main() {
     // set log level
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
@@ -22,7 +21,7 @@ async fn main() {
 
     // retrieve cc report with API "get_cc_report"
     info!("call cc trusted API [get_cc_report] to retrieve cc report!");
-    let report = match API::get_cc_report(Some(nonce), Some(data), ExtraArgs {}).await {
+    let report = match API::get_cc_report(Some(nonce), Some(data), ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
             info!("error getting CC report: {:?}", e);
