@@ -14,6 +14,7 @@ use base64;
 use tower::service_fn;
 use crate::sdk::ccnp_server::get_quote_client::GetQuoteClient;
 use crate::sdk::ccnp_server::GetQuoteRequest;
+use tokio::net::UnixStream;
 
 pub mod ccnp_server {
     tonic::include_proto!("ccnpserver");
@@ -38,7 +39,7 @@ impl API {
                 let path = "/run/ccnp/uds/quote-server.sock";
                 UnixStream::connect(path)
             }))
-            //.await
+            .await
             .unwrap();
 
         let mut client = GetQuoteClient::new(channel);
