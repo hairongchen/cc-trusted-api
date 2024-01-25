@@ -43,6 +43,7 @@ impl CCTrustedApi for API {
 
         Ok(CcReport{
             cc_report: report,
+            //TODO: need to fix 
             cc_type: TeeType::TDX
         })
     }
