@@ -36,7 +36,7 @@ impl CCTrustedApi for API {
 
         let ccnp_client = CcnpClient{
             uds_path: "/run/ccnp/uds/quote-server.sock";
-        }
+        };
 
         let response = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
