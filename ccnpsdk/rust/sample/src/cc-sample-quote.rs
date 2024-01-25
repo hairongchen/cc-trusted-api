@@ -31,7 +31,7 @@ async fn main() {
     };
 
     info!("quote len = {}", report.cc_report.len());
-    info!("quote = {:?}", std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"'));
+    info!("quote = {:?}", std::str::from_utf8(&report.cc_report).unwrap().trim_matches('\"').trim_matches('"'));
 
     // dump the cc report with API "dump_cc_report"
     //info!("call cc trusted API [dump_cc_report] to dump cc report!");
