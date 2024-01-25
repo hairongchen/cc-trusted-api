@@ -12,8 +12,8 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use base64;
 use tower::service_fn;
-use quote_server::get_quote_server::{GetQuote, GetQuoteServer};
-use quote_server::{GetQuoteRequest, GetQuoteResponse};
+use sdk::get_quote_server::{GetQuote, GetQuoteServer};
+use sdk::{GetQuoteRequest, GetQuoteResponse};
 
 pub struct API {}
 
