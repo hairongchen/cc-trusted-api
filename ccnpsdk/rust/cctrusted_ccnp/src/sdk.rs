@@ -49,13 +49,14 @@ impl API {
         });
 
         let response = client.get_quote(request).await.unwrap().into_inner();
-        let cc_report = match base64::decode(response.quote) {
-            Ok(v) => v,
-            Err(e) => return Err(anyhow!("cc report is not base64 encoded: {:?}", e)),
-        };
+        // let cc_report = match base64::decode(response.quote) {
+        //     Ok(v) => v,
+        //     Err(e) => return Err(anyhow!("cc report is not base64 encoded: {:?}", e)),
+        // };
 
         Ok(CcReport{
-            cc_report: cc_report,
+            //cc_report: cc_report,
+            cc_report: response.quote,
             cc_type: TeeType::TDX
         })
     }
