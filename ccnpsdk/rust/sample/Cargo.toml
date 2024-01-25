@@ -1,0 +1,18 @@
+[package]
+name = "cctrusted-ccnp-sample"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+
+[[bin]]
+name = "cc-sample-quote"
+path = "src/cc-sample-quote.rs"
+
+[dependencies]
+cctrusted_ccnp = { path = "../cctrusted_ccnp" }
+cctrusted_base = { path = "../../../common/rust/cctrusted_base" }
+anyhow = "1.0"
+log = "0.4.20"
+env_logger = "0.10.1"
+base64 = "0.13.0"
+rand = "0.8.5"
