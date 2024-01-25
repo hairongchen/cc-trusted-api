@@ -6,12 +6,8 @@ use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
 use core::result::Result::Ok;
-use cctrusted_base::cc_type::TeeType;
-use tonic::transport::{Endpoint, Uri};
-use tonic::Request;
+//use cctrusted_base::cc_type::TeeType;
 use base64;
-use tower::service_fn;
-use tokio::net::UnixStream;
 use crate::client::CcnpClient;
 
 pub struct API {}
@@ -52,7 +48,7 @@ impl CCTrustedApi for API {
         };
 
         Ok(CcReport{
-            cc_report: report
+            cc_report: report,
             cc_type: TeeType::TDX
         })
     }
