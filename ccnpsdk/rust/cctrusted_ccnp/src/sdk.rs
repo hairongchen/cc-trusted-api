@@ -1,5 +1,5 @@
 use anyhow::*;
-//use cctrusted_base::api::CCTrustedApi;
+use cctrusted_base::api::CCTrustedApi;
 use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::api_data::CcReport;
 use cctrusted_base::api_data::Algorithm;
@@ -14,6 +14,7 @@ use tower::service_fn;
 use crate::sdk::quote_server::get_quote_client::GetQuoteClient;
 use crate::sdk::quote_server::GetQuoteRequest;
 use tokio::net::UnixStream;
+use crate::client::CcnpClient;
 
 pub mod quote_server {
     tonic::include_proto!("quoteserver");
