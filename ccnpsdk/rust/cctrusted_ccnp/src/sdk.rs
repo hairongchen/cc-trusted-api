@@ -6,7 +6,7 @@ use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
 use core::result::Result::Ok;
-//use cctrusted_base::cc_type::TeeType;
+use cctrusted_base::cc_type::TeeType;
 use base64;
 use crate::client::CcnpClient;
 
@@ -40,8 +40,9 @@ impl CCTrustedApi for API {
             }
         };
 
-        let report = match base64::decode(std::str::from_utf8(&response.quote).unwrap().trim_matches('\"')) {
-            Ok(r) => r,
+        //let report = match base64::decode(std::str::from_utf8(&response.quote).unwrap().trim_matches('\"')) {
+        let report = match base64::decode(&response.quote.trim_matches('\"')) {
+                Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_report] cc report is not base64 encoded: {:?}", e));
             }
