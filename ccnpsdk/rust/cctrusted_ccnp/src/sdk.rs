@@ -1,4 +1,9 @@
 use anyhow::*;
+use cctrusted_base::api::CCTrustedApi;
+use cctrusted_base::api_data::ExtraArgs;
+use cctrusted_base::api_data::CcReport;
+use std::os::unix::net::UnixStream;
+use core::error::Request;
 
 pub struct API {}
 
@@ -20,7 +25,7 @@ impl CCTrustedApi for API {
 
         let mut client = GetQuoteClient::new(channel);
 
-        let request = tonic::Request::new(GetQuoteRequest {
+        let request = Request::new(GetQuoteRequest {
             nonce,
             user_data: data
         });
