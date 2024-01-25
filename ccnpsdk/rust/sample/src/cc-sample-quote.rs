@@ -31,6 +31,7 @@ async fn main() {
     };
 
     info!("quote len = {}", report.cc_report.len());
+    info!("quote = {}", report.cc_report);
 
     // dump the cc report with API "dump_cc_report"
     //info!("call cc trusted API [dump_cc_report] to dump cc report!");
