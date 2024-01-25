@@ -7,6 +7,7 @@ use crate::client::quote_server::get_quote_client::GetQuoteClient;
 use crate::client::quote_server::GetQuoteRequest;
 use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
+use anyhow::anyhow;
 
 pub mod quote_server {
     tonic::include_proto!("quoteserver");
@@ -59,13 +60,7 @@ impl CcnpClient {
             nonce,
             data,
             extra_args
-        )){
-            Ok(r) => r,
-            Err(e) => {
-                return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
-            }
-        };
-
+        ))
         response
     }
 }
