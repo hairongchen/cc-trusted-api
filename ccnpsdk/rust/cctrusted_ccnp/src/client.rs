@@ -14,7 +14,7 @@ use crate::sdk::quote_server::GetQuoteRequest;
 use tokio::net::UnixStream;
 
 pub struct CcnpClient{
-    pub uds_path: String;
+    pub uds_path: String,
 }
 
 impl CcnpClient {
