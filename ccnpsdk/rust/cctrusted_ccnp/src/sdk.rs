@@ -12,14 +12,14 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use base64;
 use tower::service_fn;
-use quote_server::get_quote_server::{GetQuote, GetQuoteServer};
-use quote_server::{GetQuoteRequest, GetQuoteResponse};
+use ccnp_server::get_quote_server::{GetQuote, GetQuoteServer};
+use ccnp_server::{GetQuoteRequest, GetQuoteResponse};
 
-pub mod quote_server {
-    tonic::include_proto!("quoteserver");
+pub mod ccnp_server {
+    tonic::include_proto!("ccnpserver");
 
     pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-        tonic::include_file_descriptor_set!("quote_server_descriptor");
+        tonic::include_file_descriptor_set!("ccnp_server_descriptor");
 }
 
 pub struct API {}
