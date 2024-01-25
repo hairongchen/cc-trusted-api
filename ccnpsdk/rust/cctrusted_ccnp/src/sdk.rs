@@ -24,35 +24,28 @@ pub mod quote_server {
 
 pub struct API {}
 
-//impl CCTrustedApi for API {
-impl API {
+impl CCTrustedApi for API {
+//impl API {
         // CCTrustedApi trait function: get cc report from CCNP server
-    pub async fn get_cc_report(
+    pub fn get_cc_report(
         nonce: Option<String>,
         data: Option<String>,
-        _extra_args: ExtraArgs,
+        extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error> {
-        let channel = Endpoint::try_from("http://[::]:0")
-            .unwrap()
-            .connect_with_connector(service_fn(|_: Uri| {
-                let path = "/run/ccnp/uds/quote-server.sock";
-                UnixStream::connect(path)
-            }))
-            .await
-            .unwrap();
 
-        let mut client = GetQuoteClient::new(channel);
+        let ccnp_client = CcnpClient{
+            uds_path: "/run/ccnp/uds/quote-server.sock";
+        }
 
-        let request = Request::new(GetQuoteRequest {
-            nonce: nonce.unwrap(),
-            user_data: data.unwrap()
-        });
-
-        let response = client.get_quote(request).await.unwrap().into_inner();
-        // let cc_report = match base64::decode(response.quote) {
-        //     Ok(v) => v,
-        //     Err(e) => return Err(anyhow!("cc report is not base64 encoded: {:?}", e)),
-        // };
+        let response = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(ccnp_client.get_cc_report_from_server(
+            nonce,
+            data,
+            extra_args
+        ));
 
         Ok(CcReport{
             //cc_report: cc_report,
