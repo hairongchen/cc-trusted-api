@@ -20,7 +20,7 @@ pub struct CcnpClient{
 }
 
 impl CcnpClient {
-    pub async fn get_cc_report_from_server(
+    async fn get_cc_report_from_server_async(
         &self,
         nonce: Option<String>,
         data: Option<String>,
@@ -43,5 +43,29 @@ impl CcnpClient {
 
         let response = client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
+    }
+
+    pub fn get_cc_report_from_server(
+        &self,
+        nonce: Option<String>,
+        data: Option<String>,
+        _extra_args: ExtraArgs,
+    ) -> Result<GetQuoteResponse, anyhow::Error> {
+        let response = match tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(self.get_cc_report_from_server_async(
+            nonce,
+            data,
+            extra_args
+        )){
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
+            }
+        };
+
+        response
     }
 }
