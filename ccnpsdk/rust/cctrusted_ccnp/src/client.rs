@@ -13,6 +13,13 @@ use crate::sdk::quote_server::get_quote_client::GetQuoteClient;
 use crate::sdk::quote_server::GetQuoteRequest;
 use tokio::net::UnixStream;
 
+pub mod quote_server {
+    tonic::include_proto!("quoteserver");
+
+    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
+        tonic::include_file_descriptor_set!("quote_server_descriptor");
+}
+
 pub struct CcnpClient{
     pub uds_path: String,
 }

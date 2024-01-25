@@ -16,23 +16,16 @@ use crate::sdk::quote_server::GetQuoteRequest;
 use tokio::net::UnixStream;
 use crate::client::CcnpClient;
 
-pub mod quote_server {
-    tonic::include_proto!("quoteserver");
-
-    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-        tonic::include_file_descriptor_set!("quote_server_descriptor");
-}
-
 pub struct API {}
 
 impl CCTrustedApi for API {
 //impl API {
-        // CCTrustedApi trait function: get cc report from CCNP server
-    pub fn get_cc_report(
+    // CCTrustedApi trait function: get cc report from CCNP server
+    fn get_cc_report(
         nonce: Option<String>,
         data: Option<String>,
         extra_args: ExtraArgs,
-    ) -> Result<CcReport, anyhow::Error> {
+    ) -> Result<GetQuoteResponse, anyhow::Error> {
 
         let ccnp_client = CcnpClient{
             uds_path: "/run/ccnp/uds/quote-server.sock".to_string(),
