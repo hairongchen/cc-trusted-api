@@ -44,12 +44,12 @@ impl CCTrustedApi for API {
             }
         };
 
-        let cc_type = report.quote_type as TeeType;
+        let cc_type = response.quote_type as TeeType;
 
         Ok(CcReport{
             cc_report,
             //TODO: need to fix 
-            cc_type,
+            cc_type
         })
     }
 

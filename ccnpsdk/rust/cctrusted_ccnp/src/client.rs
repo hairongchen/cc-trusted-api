@@ -7,7 +7,6 @@ use crate::client::quote_server::get_quote_client::GetQuoteClient;
 use crate::client::quote_server::GetQuoteRequest;
 use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
-use log::info;
 
 pub mod quote_server {
     tonic::include_proto!("quoteserver");
