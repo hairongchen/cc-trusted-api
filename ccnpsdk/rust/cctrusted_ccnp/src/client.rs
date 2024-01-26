@@ -7,6 +7,7 @@ use crate::client::quote_server::get_quote_client::GetQuoteClient;
 use crate::client::quote_server::GetQuoteRequest;
 use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
+use log::info;
 
 pub mod quote_server {
     tonic::include_proto!("quoteserver");
@@ -27,6 +28,7 @@ impl CcnpClient {
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
         let uds_path = (&self.uds_path).parse::<Uri>().unwrap();
+        info!("==== {}",uds_path.to_string());
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(|uds_path: Uri| {
