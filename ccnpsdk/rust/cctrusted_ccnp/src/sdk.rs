@@ -12,6 +12,8 @@ use crate::client::CcnpClient;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
 
+const UDS_PATH: &str = "/run/ccnp/uds/quote-server.sock";
+
 pub struct API {}
 
 impl CCTrustedApi for API {
@@ -24,7 +26,7 @@ impl CCTrustedApi for API {
     ) -> Result<CcReport, anyhow::Error> {
 
         let ccnp_client = CcnpClient{
-            uds_path: "/run/ccnp/uds/quote-server.sock".to_string(),
+            uds_path: UDS_PATH,
         };
 
         let response = match ccnp_client.get_cc_report_from_server(nonce, data, extra_args){
