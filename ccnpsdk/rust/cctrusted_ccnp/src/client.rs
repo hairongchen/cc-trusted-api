@@ -33,7 +33,8 @@ impl CcnpClient {
             .unwrap()
             .connect_with_connector(service_fn(|uds_path: Uri| {
                 //TODO: use parameters
-                UnixStream::connect(uds_path.to_string())
+                //UnixStream::connect(uds_path.to_string())
+                UnixStream::connect("/run/ccnp/uds/quote-server.sock")
             }))
             .await
             .unwrap();
