@@ -10,6 +10,7 @@ use cctrusted_base::cc_type::TeeType;
 use base64;
 use crate::client::CcnpClient;
 use cctrusted_base::binary_blob::dump_data;
+use cctrusted_base::api_data::ReplayResult;
 
 pub struct API {}
 
