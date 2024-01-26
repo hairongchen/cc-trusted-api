@@ -28,7 +28,7 @@ impl CcnpClient {
     ) -> Result<GetQuoteResponse, anyhow::Error> {
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
-            .connect_with_connector(service_fn(|_: Uri| {
+            .connect_with_connector(service_fn(|_: Uri, uds_path: self.uds_path| {
                 //TODO: use parameters
                 UnixStream::connect("/run/ccnp/uds/quote-server.sock")
             }))
