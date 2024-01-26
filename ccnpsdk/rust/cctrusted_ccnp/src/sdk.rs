@@ -37,17 +37,19 @@ impl CCTrustedApi for API {
         };
 
         //TODO: need to fix the quote server response
-        let report = match base64::decode(&response.quote.trim_matches('\"')) {
+        let cc_report = match base64::decode(&response.quote.trim_matches('\"')) {
                 Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_report] cc report is not base64 encoded: {:?}", e));
             }
         };
 
+        let cc_type = report.quote_type as TeeType;
+
         Ok(CcReport{
-            cc_report: report,
+            cc_report,
             //TODO: need to fix 
-            cc_type: TeeType::TDX
+            cc_type,
         })
     }
 
