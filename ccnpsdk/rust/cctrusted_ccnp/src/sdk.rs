@@ -6,7 +6,6 @@ use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
 use core::result::Result::Ok;
-use cctrusted_base::cc_type::TeeType;
 use base64;
 use crate::client::CcnpClient;
 use cctrusted_base::binary_blob::dump_data;

@@ -7,6 +7,8 @@ use crate::client::quote_server::get_quote_client::GetQuoteClient;
 use crate::client::quote_server::GetQuoteRequest;
 use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
+use cctrusted_base::cc_type::TeeType;
+use hashbrown::HashMap;
 
 lazy_static! {
     pub static ref TEE_NAME_TYPE_MAP: HashMap<String, TeeType> = {
