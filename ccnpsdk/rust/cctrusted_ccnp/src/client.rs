@@ -27,9 +27,9 @@ impl CcnpClient {
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
         let uds_path = self.uds_path;
-        let channel = Endpoint::try_from("http://[::]:0")
+        let channel = Endpoint::try_from(uds_path)
             .unwrap()
-            .connect_with_connector(service_fn(|uds_path| {
+            .connect_with_connector(service_fn(|uds_path: Uri| {
                 //TODO: use parameters
                 UnixStream::connect(uds_path)
             }))
