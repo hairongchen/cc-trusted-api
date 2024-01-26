@@ -81,7 +81,7 @@ impl CcnpClient {
 
     pub fn get_tee_type_by_name(&self, tee_name: &String) -> TeeType {
         match TEE_NAME_TYPE_MAP.get(tee_name) {
-            Some(tee_type) => tee_type,
+            Some(tee_type) => tee_type.clone(),
             None => TeeType::PLAIN,
         }
     }
