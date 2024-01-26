@@ -44,7 +44,7 @@ impl CCTrustedApi for API {
             }
         };
 
-        let cc_type = response.quote_type as TeeType;
+        let cc_type = ccnp_client.get_tee_type_by_name(response.quote_type);
 
         Ok(CcReport{
             cc_report,
