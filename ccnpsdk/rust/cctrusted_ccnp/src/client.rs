@@ -28,7 +28,6 @@ impl CcnpClient {
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
         let uds_path = (&self.uds_path).parse::<Uri>().unwrap();
-        info!("==== {}",uds_path.to_string());
         let channel = Endpoint::try_from(uds_path)
             .unwrap()
             .connect_with_connector(service_fn(|uds_path: Uri| {
