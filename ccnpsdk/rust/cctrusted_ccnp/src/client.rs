@@ -31,7 +31,7 @@ impl CcnpClient {
             .unwrap()
             .connect_with_connector(service_fn(|uds_path: Uri| {
                 //TODO: use parameters
-                UnixStream::connect(uds_path)
+                UnixStream::connect(uds_path.to_string())
             }))
             .await
             .unwrap();
