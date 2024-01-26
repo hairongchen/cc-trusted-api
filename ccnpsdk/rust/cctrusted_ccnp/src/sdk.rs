@@ -71,6 +71,13 @@ impl CCTrustedApi for API {
         todo!()
     }
 
+    // CCTrustedApi trait function: replay eventlogs of a CVM
+    fn replay_cc_eventlog(
+        eventlogs: Vec<EventLogEntry>,
+    ) -> Result<Vec<ReplayResult>, anyhow::Error> {
+        todo!()
+    }
+
     // CCTrustedApi trait function: get default algorithm of a CVM
     fn get_default_algorithm() -> Result<Algorithm, anyhow::Error> {
         todo!()
