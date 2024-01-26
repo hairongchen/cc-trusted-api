@@ -35,7 +35,7 @@ impl CCTrustedApi for API {
             }
         };
 
-        //TODO: need to fix the quote server response
+        //FIXME: ccnp server return quote format should be enhanced
         let cc_report = match base64::decode(&response.quote.trim_matches('\"')) {
                 Ok(r) => r,
             Err(e) => {
@@ -43,11 +43,11 @@ impl CCTrustedApi for API {
             }
         };
 
+        //FIXME: ccnp server return TeeType directly
         let cc_type = ccnp_client.get_tee_type_by_name(&response.quote_type);
 
         Ok(CcReport{
             cc_report,
-            //TODO: need to fix 
             cc_type
         })
     }
