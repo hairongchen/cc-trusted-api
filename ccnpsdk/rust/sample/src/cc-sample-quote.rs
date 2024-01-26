@@ -28,6 +28,8 @@ fn main() {
         }
     };
 
+    info!("length of the cc report is: {}", report.cc_report.len());
+
     // dump the cc report with API "dump_cc_report"
     //info!("call cc trusted API [dump_cc_report] to dump cc report!");
     //API::dump_cc_report(&report.cc_report);
