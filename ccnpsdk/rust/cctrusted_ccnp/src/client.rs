@@ -34,6 +34,7 @@ impl CcnpClient {
             .connect_with_connector(service_fn(|uds_path: Uri| {
                 //TODO: use parameters
                 //UnixStream::connect(uds_path.to_string())
+                info!("==== {}",uds_path.to_string());
                 UnixStream::connect(uds_path.to_string())
             }))
             .await
