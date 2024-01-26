@@ -26,7 +26,7 @@ impl CcnpClient {
         data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
-        let channel = Endpoint::try_from(Url::parse(&self.uds_path))
+        let channel = Endpoint::try_from((&self.uds_path).parse::<Uri>().unwrap())
             .unwrap()
             .connect_with_connector(service_fn(|uds_path: Uri| {
                 //TODO: use parameters
