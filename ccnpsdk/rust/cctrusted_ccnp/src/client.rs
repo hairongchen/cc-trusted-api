@@ -31,9 +31,6 @@ impl CcnpClient {
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(move |_: Uri| {
-                //TODO: use parameters
-                //UnixStream::connect(uds_path.to_string())
-                info!("==== {}",uds_path.to_string());
                 UnixStream::connect(uds_path.to_string())
             }))
             .await
