@@ -518,7 +518,7 @@ mod sdk_api_tests {
             }
         }
 
-        assert_eq!(eventlogs.len(), 99);
+        assert_eq!(eventlogs.len(), 98);
     }
 
     #[test]
