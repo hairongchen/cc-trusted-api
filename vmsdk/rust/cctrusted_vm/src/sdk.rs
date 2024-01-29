@@ -495,14 +495,6 @@ mod sdk_api_tests {
             }
         };
 
-        let event_logs = match API::get_cc_eventlog(Some(0), Some((number_of_eventlogs+10).try_into().unwrap())) {
-            Ok(q) => q,
-            Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
-                return;
-            }
-        };
-
         let mut eventlogs: Vec<EventLogEntry> = Vec::new();
         let mut start = 0;
         loop {
