@@ -33,37 +33,4 @@ fn main() {
     for replay_result in replay_results {
         replay_result.show();
     }
-
-
-    let _ = match API::get_cc_eventlog(Some(0), None) {
-        Ok(r) => info!("number of eventlogs = {}", r.len()),
-        Err(e) => {
-            error!("error getting TDX report: {:?}", e);
-            return;
-        }
-    };
-
-    let _ = match API::get_cc_eventlog(Some(0), Some(80)) {
-        Ok(r) => info!("number of eventlogs = {}", r.len()),
-        Err(e) => {
-            error!("error getting TDX report: {:?}", e);
-            return;
-        }
-    };
-
-    let _ = match API::get_cc_eventlog(Some(2), Some(19)) {
-        Ok(r) => info!("number of eventlogs = {}", r.len()),
-        Err(e) => {
-            error!("error getting TDX report: {:?}", e);
-            return;
-        }
-    };
-
-    let _ = match API::get_cc_eventlog(Some(96), Some(7)) {
-        Ok(r) => info!("number of eventlogs = {}", r.len()),
-        Err(e) => {
-            error!("error getting TDX report: {:?}", e);
-            return;
-        }
-    };
 }

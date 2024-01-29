@@ -388,8 +388,8 @@ mod sdk_api_tests {
 
     // test on cc trusted API [get_cc_eventlog]
     #[test]
-    fn test_get_cc_eventlog() {
-        let event_logs = match API::get_cc_eventlog(Some(1), Some(10)) {
+    fn test_get_cc_eventlog_start_count_normal() {
+        let event_logs = match API::get_cc_eventlog(Some(0), Some(10)) {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
@@ -398,6 +398,46 @@ mod sdk_api_tests {
         };
 
         assert_eq!(event_logs.len(), 10);
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_start_equal_count() {
+        let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
+            Ok(q) => q.len(),
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        let event_logs = match API::get_cc_eventlog(Some(number_of_eventlogs), None) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        assert_eq!(event_logs.len(), 0);
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_start_bigger_than_count() {
+        let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
+            Ok(q) => q.len(),
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        match API::get_cc_eventlog(Some(number_of_eventlogs+1), None) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
     }
 
     #[test]
@@ -414,8 +454,8 @@ mod sdk_api_tests {
     }
 
     #[test]
-    fn test_get_cc_eventlog_invalid_start() {
-        match API::get_cc_eventlog(Some(0), None) {
+    fn test_get_cc_eventlog_invalid_count() {
+        match API::get_cc_eventlog(Some(1), Some(0)) {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(false, format!("{:?}", e).is_empty());
@@ -425,14 +465,63 @@ mod sdk_api_tests {
     }
 
     #[test]
-    fn test_get_cc_eventlog_invalid_count() {
-        match API::get_cc_eventlog(Some(1), Some(0)) {
+    fn test_get_cc_eventlog_start_plus_count_bigger_than_eventlog_number() {
+        let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
+            Ok(q) => q.len(),
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        let event_logs = match API::get_cc_eventlog(Some(0), Some(number_of_eventlogs+10)) {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(false, format!("{:?}", e).is_empty());
                 return;
             }
         };
+
+        assert_eq!(event_logs.len(), number_of_eventlogs);
+    }
+
+    #[test]
+    fn test_get_cc_eventlog_chained_get_eventlogs() {
+        let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
+            Ok(q) => q.len(),
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        let event_logs = match API::get_cc_eventlog(Some(0), Some(number_of_eventlogs+10)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(false, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+
+        let eventlogs: Vec<EventLogEntry> = Vec::new();
+        while true {
+            let mut start = 0;
+            let event_logs = match API::get_cc_eventlog(Some(start), Some(10)) {
+                Ok(q) => q,
+                Err(e) => {
+                    assert_eq!(false, format!("{:?}", e).is_empty());
+                    return;
+                }
+            };
+            eventlogs.push(event_logs);
+            if event_logs.len() != 0 {
+                start += eventlogs.len()
+            } else {
+                break;
+            }
+        }
+
+        assert_eq!(eventlogs.len(), number_of_eventlogs);
     }
 
     #[test]
