@@ -510,17 +510,16 @@ mod sdk_api_tests {
                 eventlogs.push(event_log.clone());
             }
             if event_logs.len() != 0 {
-                if event_logs.len() != 10 {
-                    println!("==== len = {}",event_logs.len());
-                }
+                // if event_logs.len() != 10 {
+                //     println!("==== len = {}",event_logs.len());
+                // }
                 start += eventlogs.len() as u32;
             } else {
                 // println!("==== len = {}",event_logs.len());
                 break;
             }
         }
-        //println!("==== number_of_eventlogs = {}", number_of_eventlogs);
-
+        println!("==== len = {}",eventlogs.len());
         assert_eq!(eventlogs.len(), number_of_eventlogs);
     }
 
