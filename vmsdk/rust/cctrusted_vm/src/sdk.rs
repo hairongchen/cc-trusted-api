@@ -514,7 +514,7 @@ mod sdk_api_tests {
                 }
             };
             for event_log in &event_logs {
-                eventlogs.push(event_log);
+                eventlogs.push(event_log.clone());
             }
             if event_logs.len() != 0 {
                 start += eventlogs.len() as u32;
