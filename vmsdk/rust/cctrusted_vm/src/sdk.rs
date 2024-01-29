@@ -509,11 +509,11 @@ mod sdk_api_tests {
             for event_log in &event_logs {
                 eventlogs.push(event_log.clone());
             }
-            println!("start={}", start);
             if event_logs.len() != 0 {
                 if event_logs.len() != 10 {
                 }
                 start += event_logs.len() as u32;
+                println!("start={}", start);
             } else {
                 break;
             }
