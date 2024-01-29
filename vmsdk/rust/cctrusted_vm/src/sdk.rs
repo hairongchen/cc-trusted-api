@@ -512,7 +512,7 @@ mod sdk_api_tests {
             if event_logs.len() != 0 {
                 if event_logs.len() != 10 {
                 }
-                start += eventlogs.len() as u32;
+                start += event_logs.len() as u32;
             } else {
                 break;
             }
