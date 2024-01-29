@@ -516,6 +516,7 @@ mod sdk_api_tests {
                 break;
             }
         }
+        println!("==== number_of_eventlogs = {}",number_of_eventlogs);
 
         assert_eq!(eventlogs.len(), number_of_eventlogs);
     }
