@@ -507,7 +507,7 @@ mod sdk_api_tests {
                     return;
                 }
             };
-            println!("==== len = {}",event_logs.len());
+            //println!("==== len = {}",event_logs.len());
             for event_log in &event_logs {
                 eventlogs.push(event_log.clone());
             }
@@ -517,7 +517,7 @@ mod sdk_api_tests {
                 break;
             }
         }
-        println!("==== number_of_eventlogs = {}", number_of_eventlogs);
+        //println!("==== number_of_eventlogs = {}", number_of_eventlogs);
 
         assert_eq!(eventlogs.len(), number_of_eventlogs);
     }
