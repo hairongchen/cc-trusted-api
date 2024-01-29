@@ -405,7 +405,7 @@ mod sdk_api_tests {
         let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
             Ok(q) => q.len(),
             Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -413,7 +413,7 @@ mod sdk_api_tests {
         let event_logs = match API::get_cc_eventlog(Some(number_of_eventlogs.try_into().unwrap()), None) {
             Ok(q) => q,
             Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -426,7 +426,7 @@ mod sdk_api_tests {
         let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
             Ok(q) => q.len(),
             Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -445,7 +445,7 @@ mod sdk_api_tests {
         let event_logs = match API::get_cc_eventlog(None, None) {
             Ok(q) => q,
             Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -469,7 +469,7 @@ mod sdk_api_tests {
         let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
             Ok(q) => q.len(),
             Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -477,7 +477,7 @@ mod sdk_api_tests {
         let event_logs = match API::get_cc_eventlog(Some(0), Some((number_of_eventlogs+10).try_into().unwrap())) {
             Ok(q) => q,
             Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
@@ -491,7 +491,7 @@ mod sdk_api_tests {
         let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
             Ok(q) => q.len(),
             Err(e) => {
-                assert_eq!(false, format!("{:?}", e).is_empty());
+                assert_eq!(true, format!("{:?}", e).is_empty());
                 return;
             }
         };
