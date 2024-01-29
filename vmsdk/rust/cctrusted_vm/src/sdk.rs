@@ -108,6 +108,7 @@ mod sdk_api_tests {
     };
     use cctrusted_base::tdx::quote::TdxQuote;
     use rand::Rng;
+    use log::info;
 
     // test on cc trusted API [get_cc_report]
     #[test]
