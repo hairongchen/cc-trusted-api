@@ -502,7 +502,7 @@ mod sdk_api_tests {
             let event_logs = match API::get_cc_eventlog(Some(start), Some(batch_size)) {
                 Ok(q) => q,
                 Err(e) => {
-                    assert_eq!(false, format!("{:?}", e).is_empty());
+                    assert_eq!(true, format!("{:?}", e).is_empty());
                     return;
                 }
             };
@@ -512,7 +512,7 @@ mod sdk_api_tests {
             if event_logs.len() != 0 {
                 if event_logs.len() != 10 {
                 }
-                start += event_logs.len() as u32;
+                start += eventlogs.len() as u32;
             } else {
                 break;
             }
