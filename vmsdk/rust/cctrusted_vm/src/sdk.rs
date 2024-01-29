@@ -495,7 +495,7 @@ mod sdk_api_tests {
                 return;
             }
         };
-
+        println!("==== len = {}",number_of_eventlogs);
         let mut eventlogs: Vec<EventLogEntry> = Vec::new();
         let mut start = 0;
         loop {
