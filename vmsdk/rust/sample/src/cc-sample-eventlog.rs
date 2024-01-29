@@ -7,8 +7,8 @@ fn main() {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
 
     // retrieve cc eventlog with API "get_cc_eventlog"
-    let eventlogs = match API::get_cc_eventlog(Some(1), None) {
-        Ok(q) => q,
+    let eventlogs = match API::get_cc_eventlog(Some(0), None) {
+        Ok(r) => r,
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
             return;
@@ -22,7 +22,7 @@ fn main() {
 
     // replay cc eventlog with API "replay_cc_eventlog"
     let replay_results = match API::replay_cc_eventlog(eventlogs) {
-        Ok(q) => q,
+        Ok(r) => r,
         Err(e) => {
             error!("error replay eventlog: {:?}", e);
             return;
@@ -33,4 +33,37 @@ fn main() {
     for replay_result in replay_results {
         replay_result.show();
     }
+
+
+    let _ = match API::get_cc_eventlog(Some(0), None) {
+        Ok(r) => info("number of eventlogs = {}", r.len()),
+        Err(e) => {
+            error!("error getting TDX report: {:?}", e);
+            return;
+        }
+    };
+
+    let _ = match API::get_cc_eventlog(Some(0), 80) {
+        Ok(r) => info("number of eventlogs = {}", r.len()),
+        Err(e) => {
+            error!("error getting TDX report: {:?}", e);
+            return;
+        }
+    };
+
+    let _ = match API::get_cc_eventlog(Some(2), 19) {
+        Ok(r) => info("number of eventlogs = {}", r.len()),
+        Err(e) => {
+            error!("error getting TDX report: {:?}", e);
+            return;
+        }
+    };
+
+    let _ = match API::get_cc_eventlog(Some(96), 7) {
+        Ok(r) => info("number of eventlogs = {}", r.len()),
+        Err(e) => {
+            error!("error getting TDX report: {:?}", e);
+            return;
+        }
+    };
 }
