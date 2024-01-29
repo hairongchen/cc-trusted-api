@@ -495,7 +495,6 @@ mod sdk_api_tests {
                 return;
             }
         };
-        println!("==== number_of_eventlogs = {}", number_of_eventlogs);
 
         let mut eventlogs: Vec<EventLogEntry> = Vec::new();
         let mut start = 0;
@@ -517,7 +516,7 @@ mod sdk_api_tests {
                 break;
             }
         }
-        //println!("==== number_of_eventlogs = {}", number_of_eventlogs);
+        println!("==== number_of_eventlogs = {}", number_of_eventlogs);
 
         assert_eq!(eventlogs.len(), number_of_eventlogs);
     }
