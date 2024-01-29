@@ -506,13 +506,16 @@ mod sdk_api_tests {
                     return;
                 }
             };
-            //println!("==== len = {}",event_logs.len());
             for event_log in &event_logs {
                 eventlogs.push(event_log.clone());
             }
             if event_logs.len() != 0 {
+                if event_logs.len() != 10 {
+                    println!("==== len = {}",event_logs.len());
+                }
                 start += eventlogs.len() as u32;
             } else {
+                println!("==== len = {}",event_logs.len());
                 break;
             }
         }
