@@ -495,7 +495,7 @@ mod sdk_api_tests {
                 return;
             }
         };
-        println!("==== len = {}",number_of_eventlogs);
+
         let mut eventlogs: Vec<EventLogEntry> = Vec::new();
         let mut start = 0;
         loop {
@@ -511,14 +511,13 @@ mod sdk_api_tests {
             }
             if event_logs.len() != 0 {
                 if event_logs.len() != 10 {
-                    println!("==== len = {}",event_logs.len());
                 }
                 start += eventlogs.len() as u32;
             } else {
-                println!("==== len = {}",event_logs.len());
                 break;
             }
         }
+        println!("==== len = {}",eventlogs.len());
         assert_eq!(eventlogs.len(), number_of_eventlogs);
     }
 
