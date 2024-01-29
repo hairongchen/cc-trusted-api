@@ -506,7 +506,7 @@ mod sdk_api_tests {
                     return;
                 }
             };
-            println!("==== len = {}",eventlogs.len());
+            println!("==== len = {}",event_logs.len());
             for event_log in &event_logs {
                 eventlogs.push(event_log.clone());
             }
