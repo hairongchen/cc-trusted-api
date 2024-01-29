@@ -504,8 +504,8 @@ mod sdk_api_tests {
         };
 
         let eventlogs: Vec<EventLogEntry> = Vec::new();
-        while true {
-            let mut start = 0;
+        let mut start = 0;
+        loop {
             let event_logs = match API::get_cc_eventlog(Some(start), Some(10)) {
                 Ok(q) => q,
                 Err(e) => {
