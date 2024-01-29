@@ -36,31 +36,31 @@ fn main() {
 
 
     let _ = match API::get_cc_eventlog(Some(0), None) {
-        Ok(r) => info("number of eventlogs = {}", r.len()),
+        Ok(r) => info!("number of eventlogs = {}", r.len()),
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
             return;
         }
     };
 
-    let _ = match API::get_cc_eventlog(Some(0), 80) {
-        Ok(r) => info("number of eventlogs = {}", r.len()),
+    let _ = match API::get_cc_eventlog(Some(0), Some(80)) {
+        Ok(r) => info!("number of eventlogs = {}", r.len()),
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
             return;
         }
     };
 
-    let _ = match API::get_cc_eventlog(Some(2), 19) {
-        Ok(r) => info("number of eventlogs = {}", r.len()),
+    let _ = match API::get_cc_eventlog(Some(2), Some(19)) {
+        Ok(r) => info!("number of eventlogs = {}", r.len()),
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
             return;
         }
     };
 
-    let _ = match API::get_cc_eventlog(Some(96), 7) {
-        Ok(r) => info("number of eventlogs = {}", r.len()),
+    let _ = match API::get_cc_eventlog(Some(96), Some(7)) {
+        Ok(r) => info!("number of eventlogs = {}", r.len()),
         Err(e) => {
             error!("error getting TDX report: {:?}", e);
             return;
