@@ -108,7 +108,6 @@ mod sdk_api_tests {
     };
     use cctrusted_base::tdx::quote::TdxQuote;
     use rand::Rng;
-    use log::info;
 
     // test on cc trusted API [get_cc_report]
     #[test]
@@ -507,7 +506,7 @@ mod sdk_api_tests {
                     return;
                 }
             };
-            info!("==== len = {}",eventlogs.len());
+            println!("==== len = {}",eventlogs.len());
             for event_log in &event_logs {
                 eventlogs.push(event_log.clone());
             }
