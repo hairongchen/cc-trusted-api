@@ -513,7 +513,7 @@ mod sdk_api_tests {
                     return;
                 }
             };
-            for event_log in event_logs {
+            for event_log in &event_logs {
                 eventlogs.push(event_log);
             }
             if event_logs.len() != 0 {
