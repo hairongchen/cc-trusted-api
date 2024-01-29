@@ -486,7 +486,8 @@ mod sdk_api_tests {
     }
 
     #[test]
-    fn test_get_cc_eventlog_chained_get_eventlogs() {
+    fn test_get_cc_eventlog_get_eventlogs_in_batch() {
+        let batch_size = 10;
         let number_of_eventlogs = match API::get_cc_eventlog(None, None) {
             Ok(q) => q.len(),
             Err(e) => {
@@ -498,13 +499,14 @@ mod sdk_api_tests {
         let mut eventlogs: Vec<EventLogEntry> = Vec::new();
         let mut start = 0;
         loop {
-            let event_logs = match API::get_cc_eventlog(Some(start), Some(10)) {
+            let event_logs = match API::get_cc_eventlog(Some(start), Some(batch_size)) {
                 Ok(q) => q,
                 Err(e) => {
                     assert_eq!(false, format!("{:?}", e).is_empty());
                     return;
                 }
             };
+            info!("==== len = {}",eventlogs.len());
             for event_log in &event_logs {
                 eventlogs.push(event_log.clone());
             }
