@@ -502,6 +502,7 @@ mod sdk_api_tests {
             let event_logs = match API::get_cc_eventlog(Some(start), Some(batch_size)) {
                 Ok(q) => q,
                 Err(e) => {
+                    println!("=== error {:?}",e);
                     assert_eq!(false, format!("{:?}", e).is_empty());
                     return;
                 }
