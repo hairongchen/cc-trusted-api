@@ -143,7 +143,7 @@ impl EventLogs {
                 if s > self.count {
                     return Err(anyhow!("[select] Invalid input start. Start must be number no bigger than total event log count! Current number of eventlog is {}", self.count));
                 } else if s == self.count {
-                    return Ok(Vec::new())
+                    return Ok(Vec::new());
                 } else {
                     s
                 }
@@ -154,7 +154,9 @@ impl EventLogs {
         let end = match count {
             Some(c) => {
                 if c == 0 {
-                    return Err(anyhow!("[select] Invalid input count. count must be number larger than 0!"));
+                    return Err(anyhow!(
+                        "[select] Invalid input count. count must be number larger than 0!"
+                    ));
                 } else if c + begin > self.count {
                     self.event_logs.len()
                 } else {
