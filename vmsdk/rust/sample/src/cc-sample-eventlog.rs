@@ -43,7 +43,7 @@ fn main() {
         let event_logs = match API::get_cc_eventlog(Some(start), Some(batch_size)) {
             Ok(q) => q,
             Err(e) => {
-                assert_eq!(true, format!("{:?}", e).is_empty());
+                error!("error get eventlog: {:?}", e);
                 return;
             }
         };
