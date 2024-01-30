@@ -33,4 +33,29 @@ fn main() {
     for replay_result in replay_results {
         replay_result.show();
     }
+
+    // retrieve cc eventlog in batch
+    let mut eventlogs1: Vec<EventLogEntry> = Vec::new();
+    let mut start = 0;
+    loop {
+        let event_logs = match API::get_cc_eventlog(Some(start), Some(batch_size)) {
+            Ok(q) => q,
+            Err(e) => {
+                assert_eq!(true, format!("{:?}", e).is_empty());
+                return;
+            }
+        };
+        for event_log in &event_logs {
+            eventlogs1.push(event_log.clone());
+        }
+        if event_logs.len() != 0 {
+            if event_logs.len() != 10 {
+            }
+            start += event_logs.len() as u32;
+        } else {
+            break;
+        }
+    }
+
+    info!("event log count: {}", eventlogs1.len());
 }
