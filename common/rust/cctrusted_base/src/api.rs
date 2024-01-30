@@ -93,7 +93,7 @@ pub trait CCTrustedApi {
         may support multiple algorithms.
 
         Args:
-            start: index of the first event log to collect, 1 stands for the first event log
+            start: index of the first event log to collect, 0 stands for the first event log
             count: total number of event logs to collect
 
         Returns:

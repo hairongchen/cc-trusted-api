@@ -123,7 +123,7 @@ impl EventLogs {
     /***
         Collect selected event logs according to user input.
         Args:
-            start: index of the first event log to collect, 1 stands for the first event log
+            start: index of the first event log to collect, 0 stands for the first event log
             count: total number of event logs to collect
     */
     pub fn select(
