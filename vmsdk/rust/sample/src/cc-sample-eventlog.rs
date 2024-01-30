@@ -50,7 +50,7 @@ fn main() {
         for event_log in &event_logs {
             eventlogs1.push(event_log.clone());
         }
-        if event_logs.len() != 0 {
+        if !event_logs.is_empty() {
             start += event_logs.len() as u32;
         } else {
             break;
