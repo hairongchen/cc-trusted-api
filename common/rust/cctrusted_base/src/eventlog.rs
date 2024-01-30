@@ -516,7 +516,6 @@ impl EventLogs {
             match event_log {
                 EventLogEntry::TcgImrEvent(tcg_imr_event) => {
                     if tcg_imr_event.event_type == EV_NO_ACTION {
-                        info!("########### skip");
                         continue;
                     }
                     let imr_index = tcg_imr_event.imr_index;
