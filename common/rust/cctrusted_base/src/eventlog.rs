@@ -515,6 +515,9 @@ impl EventLogs {
         for event_log in eventlogs {
             match event_log {
                 EventLogEntry::TcgImrEvent(tcg_imr_event) => {
+                    if tcg_imr_event.event_type == EV_NO_ACTION {
+                        continue;
+                    }
                     let imr_index = tcg_imr_event.imr_index;
                     for digest in tcg_imr_event.digests {
                         let algo_id = digest.algo_id;
