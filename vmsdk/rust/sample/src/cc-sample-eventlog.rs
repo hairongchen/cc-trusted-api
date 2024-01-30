@@ -1,4 +1,5 @@
 use cctrusted_base::api::*;
+use cctrusted_base::tcg::EventLogEntry;
 use cctrusted_vm::sdk::API;
 use log::*;
 
@@ -37,6 +38,7 @@ fn main() {
     // retrieve cc eventlog in batch
     let mut eventlogs1: Vec<EventLogEntry> = Vec::new();
     let mut start = 0;
+    let batch_size = 10;
     loop {
         let event_logs = match API::get_cc_eventlog(Some(start), Some(batch_size)) {
             Ok(q) => q,
