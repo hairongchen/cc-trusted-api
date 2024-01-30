@@ -410,13 +410,14 @@ mod sdk_api_tests {
             }
         };
 
-        let event_logs = match API::get_cc_eventlog(Some(number_of_eventlogs.try_into().unwrap()), None) {
-            Ok(q) => q,
-            Err(e) => {
-                assert_eq!(true, format!("{:?}", e).is_empty());
-                return;
-            }
-        };
+        let event_logs =
+            match API::get_cc_eventlog(Some(number_of_eventlogs.try_into().unwrap()), None) {
+                Ok(q) => q,
+                Err(e) => {
+                    assert_eq!(true, format!("{:?}", e).is_empty());
+                    return;
+                }
+            };
 
         assert_eq!(event_logs.len(), 0);
     }
@@ -431,7 +432,7 @@ mod sdk_api_tests {
             }
         };
 
-        match API::get_cc_eventlog(Some((number_of_eventlogs+1).try_into().unwrap()), None) {
+        match API::get_cc_eventlog(Some((number_of_eventlogs + 1).try_into().unwrap()), None) {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(false, format!("{:?}", e).is_empty());
@@ -474,7 +475,10 @@ mod sdk_api_tests {
             }
         };
 
-        let event_logs = match API::get_cc_eventlog(Some(0), Some((number_of_eventlogs+10).try_into().unwrap())) {
+        let event_logs = match API::get_cc_eventlog(
+            Some(0),
+            Some((number_of_eventlogs + 10).try_into().unwrap()),
+        ) {
             Ok(q) => q,
             Err(e) => {
                 assert_eq!(true, format!("{:?}", e).is_empty());
@@ -510,8 +514,6 @@ mod sdk_api_tests {
                 eventlogs.push(event_log.clone());
             }
             if event_logs.len() != 0 {
-                if event_logs.len() != 10 {
-                }
                 start += event_logs.len() as u32;
             } else {
                 break;

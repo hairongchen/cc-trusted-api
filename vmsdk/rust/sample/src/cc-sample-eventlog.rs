@@ -51,8 +51,6 @@ fn main() {
             eventlogs1.push(event_log.clone());
         }
         if event_logs.len() != 0 {
-            if event_logs.len() != 10 {
-            }
             start += event_logs.len() as u32;
         } else {
             break;
