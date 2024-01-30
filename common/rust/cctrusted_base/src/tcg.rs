@@ -217,15 +217,30 @@ lazy_static! {
             EV_EFI_VARIABLE_AUTHORITY,
             "EV_EFI_VARIABLE_AUTHORITY".to_string(),
         );
-        map.insert(EV_EFI_PLATFORM_FIRMWARE_BLOB2, "EV_EFI_PLATFORM_FIRMWARE_BLOB2".to_string());
+        map.insert(
+            EV_EFI_PLATFORM_FIRMWARE_BLOB2,
+            "EV_EFI_PLATFORM_FIRMWARE_BLOB2".to_string(),
+        );
         map.insert(EV_EFI_HANDOFF_TABLES2, "EV_EFI_HANDOFF_TABLES2".to_string());
         map.insert(EV_EFI_VARIABLE_BOOT2, "EV_EFI_VARIABLE_BOOT2".to_string());
         map.insert(EV_EFI_GPT_EVENT2, "EV_EFI_GPT_EVENT2".to_string());
         map.insert(EV_EFI_HCRTM_EVENT, "EV_EFI_HCRTM_EVENT".to_string());
-        map.insert(EV_EFI_SPDM_FIRMWARE_BLOB, "EV_EFI_SPDM_FIRMWARE_BLOB".to_string());
-        map.insert(EV_EFI_SPDM_FIRMWARE_CONFIG, "EV_EFI_SPDM_FIRMWARE_CONFIG".to_string());
-        map.insert(EV_EFI_SPDM_DEVICE_POLICY, "EV_EFI_SPDM_DEVICE_POLICY".to_string());
-        map.insert(EV_EFI_SPDM_DEVICE_AUTHORITY, "EV_EFI_SPDM_DEVICE_AUTHORITY".to_string());
+        map.insert(
+            EV_EFI_SPDM_FIRMWARE_BLOB,
+            "EV_EFI_SPDM_FIRMWARE_BLOB".to_string(),
+        );
+        map.insert(
+            EV_EFI_SPDM_FIRMWARE_CONFIG,
+            "EV_EFI_SPDM_FIRMWARE_CONFIG".to_string(),
+        );
+        map.insert(
+            EV_EFI_SPDM_DEVICE_POLICY,
+            "EV_EFI_SPDM_DEVICE_POLICY".to_string(),
+        );
+        map.insert(
+            EV_EFI_SPDM_DEVICE_AUTHORITY,
+            "EV_EFI_SPDM_DEVICE_AUTHORITY".to_string(),
+        );
         map.insert(IMA_MEASUREMENT_EVENT, "IMA_MEASUREMENT_EVENT".to_string());
         map
     };
