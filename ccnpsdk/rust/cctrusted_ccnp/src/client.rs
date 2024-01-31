@@ -30,13 +30,14 @@ pub mod ccnp_server_pb {
 }
 
 pub struct CcnpServiceClient{
-    pub uds_path: String,
-    pub client_connection: CcnpClient,
+    pub ccnp_uds_path: String,
+    pub client_connection: CcnpClient<UnixStream>
 }
 
 impl CcnpServiceClient {
-    async fn build_server_channel(&self) -> Result<(), anyhow::Error> {
-        let uds_path = (&self.uds_path).parse::<Uri>().unwrap();
+
+    async fn new(ccnp_uds_path: String) -> Result<(), anyhow::Error>{
+        let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(move |_: Uri| {
@@ -45,8 +46,11 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        self.client_connection = CcnpClient::new(channel);
-        Ok(())
+        client_connection = CcnpClient::new(channel);
+        CcnpServiceClient{
+            ccnp_uds_path,
+            client_connection
+        }
     }
 
     async fn get_cc_report_from_server_async(
@@ -55,8 +59,6 @@ impl CcnpServiceClient {
         data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
-
-        self.build_server_channel().await.unwrap();
 
         let request = Request::new(GetQuoteRequest {
             nonce: nonce.unwrap(),
