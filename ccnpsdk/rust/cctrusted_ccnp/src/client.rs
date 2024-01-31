@@ -44,7 +44,8 @@ impl CcnpServiceClient {
         .build()
         .unwrap()
         .block_on(CcnpServiceClient::new_async(ccnp_uds_path));
-        Ok(client?.clone())
+        //Ok(client?.clone())
+        client
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
@@ -68,7 +69,7 @@ impl CcnpServiceClient {
 
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_connection: CcnpClient::new(channel.clone())
+            client_connection: CcnpClient::new(channel.clone()).clone()
         })
     }
 
