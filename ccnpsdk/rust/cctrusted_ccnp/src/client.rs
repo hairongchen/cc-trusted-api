@@ -57,11 +57,12 @@ impl CcnpServiceClient {
             .await
             .unwrap();
         let request = Request::new(GetQuoteRequest {
-            None,
-            None
+            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
         });
 
-        let response = self.client_connection.get_quote(request).await.unwrap().into_inner();
+        let client = GetQuoteClient::new(channel);
+        let response = client.get_quote(request).await.unwrap().into_inner();
         info!("response = {}", response.quote_type);
 
         Ok(CcnpServiceClient{
