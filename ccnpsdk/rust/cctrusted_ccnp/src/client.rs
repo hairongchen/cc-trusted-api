@@ -31,7 +31,7 @@ pub mod ccnp_server_pb {
 
 pub struct CcnpServiceClient{
     pub uds_path: String,
-    pub mut client_connection: CcnpClient,
+    pub client_connection: CcnpClient,
 }
 
 impl CcnpServiceClient {
@@ -63,7 +63,7 @@ impl CcnpServiceClient {
             user_data: data.unwrap()
         });
 
-        let response = client.get_quote(request).await.unwrap().into_inner();
+        let response = self.client_connection.get_quote(request).await.unwrap().into_inner();
         Ok(response)
     }
 
