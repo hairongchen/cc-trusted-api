@@ -45,7 +45,7 @@ impl CcnpServiceClient {
         .unwrap()
         .block_on(CcnpServiceClient::new_async(ccnp_uds_path));
         //Ok(client?.clone())
-        //client
+        let client1 = client.clone();
         let request = Request::new(GetQuoteRequest {
             nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
             user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
@@ -55,10 +55,10 @@ impl CcnpServiceClient {
         .enable_all()
         .build()
         .unwrap()
-        .block_on(&client?.client_connection.get_quote(request));
+        .block_on(client?.client_connection.get_quote(request));
 
         info!("response = {}", response?.into_inner().quote_type);
-        client
+        client1
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
