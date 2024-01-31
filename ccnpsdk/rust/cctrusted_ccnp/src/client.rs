@@ -55,7 +55,7 @@ impl CcnpServiceClient {
         .enable_all()
         .build()
         .unwrap()
-        .block_on(CcnpServiceClient::new_async(client.get_quote(request)));
+        .block_on(client.get_quote(request));
 
         info!("response = {}", response.quote_type);
         client
