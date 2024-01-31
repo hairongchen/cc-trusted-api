@@ -79,10 +79,10 @@ impl CcnpServiceClient {
         // let mut client = CcnpClient::new(channel.clone());
         // let response = client.get_quote(request).await.unwrap().into_inner();
         // info!("response = {}", response.quote_type);
-
+        let mut client = CcnpClient::new(channel.clone());
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_connection: CcnpClient::new(channel.clone())
+            client_connection: client
         })
     }
 
