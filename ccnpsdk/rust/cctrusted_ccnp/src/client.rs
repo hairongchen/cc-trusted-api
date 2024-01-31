@@ -3,9 +3,9 @@ use core::result::Result::Ok;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
-use crate::client::quote_server::get_quote_client::GetQuoteClient;
-use crate::client::quote_server::GetQuoteRequest;
-use crate::client::quote_server::GetQuoteResponse;
+use crate::client::ccnp_server_pb::get_quote_client::GetQuoteClient;
+use crate::client::ccnp_server_pb::GetQuoteRequest;
+use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
@@ -22,11 +22,11 @@ lazy_static! {
     };
 }
 
-pub mod quote_server {
-    tonic::include_proto!("quoteserver");
+pub mod ccnp_server_pb {
+    tonic::include_proto!("ccnp_server_pb");
 
     pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-        tonic::include_file_descriptor_set!("quote_server_descriptor");
+        tonic::include_file_descriptor_set!("ccnp_server_descriptor");
 }
 
 pub struct CcnpClient{
