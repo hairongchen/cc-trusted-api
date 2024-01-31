@@ -1,6 +1,6 @@
 use cctrusted_base::api_data::ExtraArgs;
 use core::result::Result::Ok;
-use tonic::transport::{Endpoint, Uri};
+use tonic::transport::{Endpoint, Uri, Channel};
 use tonic::Request;
 use tower::service_fn;
 use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
@@ -35,8 +35,17 @@ pub struct CcnpServiceClient{
 }
 
 impl CcnpServiceClient {
+    // turn async call to sync call
+    pub fn new(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error> {
+        let client = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(CcnpServiceClient::new_async(ccnp_uds_path));
+        client
+    }
 
-    async fn new(ccnp_uds_path: String) -> Result<(), anyhow::Error>{
+    pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
         let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
