@@ -29,11 +29,11 @@ pub mod ccnp_server_pb {
         tonic::include_file_descriptor_set!("ccnp_server_descriptor");
 }
 
-pub struct CcnpClient{
+pub struct CcnpServiceClient{
     pub uds_path: String,
 }
 
-impl CcnpClient {
+impl CcnpServiceClient {
     async fn get_cc_report_from_server_async(
         &self,
         nonce: Option<String>,
