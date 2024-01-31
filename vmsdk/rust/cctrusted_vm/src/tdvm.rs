@@ -390,7 +390,7 @@ impl CVM for TdxVM {
                     ACPI_TABLE_FILE_VM, ACPI_TABLE_FILE_CONTAINER
                 ));
             } else {
-                acpi_table_file = ACPI_TABLE_FILE_CONTAINER;.to_string()
+                acpi_table_file = ACPI_TABLE_FILE_CONTAINER.to_string();
             }
         } else {
             acpi_table_file = ACPI_TABLE_FILE_VM.to_string();
