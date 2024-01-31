@@ -31,7 +31,7 @@ pub mod ccnp_server_pb {
 
 pub struct CcnpServiceClient{
     pub ccnp_uds_path: String,
-    pub client_connection: CcnpClient<UnixStream>
+    pub client_connection: CcnpClient<Channel>
 }
 
 impl CcnpServiceClient {
