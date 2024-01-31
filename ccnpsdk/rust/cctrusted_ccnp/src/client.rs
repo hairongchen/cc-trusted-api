@@ -58,7 +58,7 @@ impl CcnpServiceClient {
         // .block_on(client1.client_connection.get_quote(request));
 
         // info!("response = {}", response?.into_inner().quote_type);
-        Ok(client?.clone())
+        client
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
@@ -66,7 +66,6 @@ impl CcnpServiceClient {
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(move |_: Uri| {
-                info!("{}", uds_path.to_string());
                 UnixStream::connect(uds_path.to_string())
             }))
             .await
@@ -81,7 +80,7 @@ impl CcnpServiceClient {
         // info!("response = {}", response.quote_type);
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_channel: channel.clone()
+            client_channel: channel
         })
     }
 
