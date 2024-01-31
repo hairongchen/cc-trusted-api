@@ -33,7 +33,7 @@ pub mod ccnp_server_pb {
 #[derive(Clone)]
 pub struct CcnpServiceClient{
     pub ccnp_uds_path: String,
-    pub client_connection: CcnpClient<Channel>
+    pub client_channel: Channel
 }
 
 impl CcnpServiceClient {
