@@ -385,7 +385,8 @@ impl CVM for TdxVM {
             if !Path::new(ACPI_TABLE_FILE_CONTAINER).exists() {
                 return Err(anyhow!(
                     "[process_cc_eventlog] Failed to find TDX CCEL table file at {:?} or {:?}",
-                    ACPI_TABLE_FILE_VM, ACPI_TABLE_FILE_CONTAINER
+                    ACPI_TABLE_FILE_VM,
+                    ACPI_TABLE_FILE_CONTAINER
                 ));
             } else {
                 acpi_table_file = ACPI_TABLE_FILE_CONTAINER.to_string();
@@ -398,7 +399,8 @@ impl CVM for TdxVM {
             if !Path::new(ACPI_TABLE_DATA_FILE_CONTAINER).exists() {
                 return Err(anyhow!(
                     "[process_cc_eventlog] Failed to find TDX CCEL table data at {:?} or {:?}",
-                    ACPI_TABLE_DATA_FILE_VM, ACPI_TABLE_DATA_FILE_CONTAINER
+                    ACPI_TABLE_DATA_FILE_VM,
+                    ACPI_TABLE_DATA_FILE_CONTAINER
                 ));
             } else {
                 acpi_table_data_file = ACPI_TABLE_DATA_FILE_CONTAINER.to_string();
@@ -435,7 +437,8 @@ impl CVM for TdxVM {
             if !Path::new(IMA_DATA_FILE_CONTAINER).exists() {
                 return Err(anyhow!(
                     "[process_cc_eventlog] Failed to find TDX CCEL table data at {:?} or {:?}",
-                    IMA_DATA_FILE_VM, IMA_DATA_FILE_CONTAINER
+                    IMA_DATA_FILE_VM,
+                    IMA_DATA_FILE_CONTAINER
                 ));
             } else {
                 ima_data_file = IMA_DATA_FILE_CONTAINER.to_string();
