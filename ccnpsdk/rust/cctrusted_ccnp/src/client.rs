@@ -53,6 +53,7 @@ impl CcnpServiceClient {
 
         let response = client.get_quote(request).await.unwrap().into_inner();
         info!("response = {}", response.quote_type);
+        client
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
