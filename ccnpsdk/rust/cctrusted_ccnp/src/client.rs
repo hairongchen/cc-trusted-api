@@ -58,7 +58,7 @@ impl CcnpServiceClient {
         // .block_on(client1.client_connection.get_quote(request));
 
         // info!("response = {}", response?.into_inner().quote_type);
-        client
+        Ok(client?.clone())
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
