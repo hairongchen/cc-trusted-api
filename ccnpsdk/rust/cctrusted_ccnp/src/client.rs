@@ -56,18 +56,18 @@ impl CcnpServiceClient {
             }))
             .await
             .unwrap();
-        let request = Request::new(GetQuoteRequest {
-            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
-            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
-        });
+        // let request = Request::new(GetQuoteRequest {
+        //     nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+        //     user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        // });
 
-        let mut client = CcnpClient::new(channel.clone());
-        let response = client.get_quote(request).await.unwrap().into_inner();
-        info!("response = {}", response.quote_type);
+        // let mut client = CcnpClient::new(channel.clone());
+        // let response = client.get_quote(request).await.unwrap().into_inner();
+        // info!("response = {}", response.quote_type);
 
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_connection: CcnpClient::new(channel)
+            client_connection: CcnpClient::new(channel.clone())
         })
     }
 
