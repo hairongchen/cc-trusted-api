@@ -390,10 +390,10 @@ impl CVM for TdxVM {
                     ACPI_TABLE_FILE_VM, ACPI_TABLE_FILE_CONTAINER
                 ));
             } else {
-                acpi_table_file = ACPI_TABLE_FILE_CONTAINER;
+                acpi_table_file = ACPI_TABLE_FILE_CONTAINER;.to_string()
             }
         } else {
-            acpi_table_file = ACPI_TABLE_FILE_VM;
+            acpi_table_file = ACPI_TABLE_FILE_VM.to_string();
         }
 
         if !Path::new(ACPI_TABLE_DATA_FILE_VM).exists() {
@@ -403,10 +403,10 @@ impl CVM for TdxVM {
                     ACPI_TABLE_DATA_FILE_VM, ACPI_TABLE_DATA_FILE_CONTAINER
                 ));
             } else {
-                acpi_table_data_file = ACPI_TABLE_DATA_FILE_CONTAINER;
+                acpi_table_data_file = ACPI_TABLE_DATA_FILE_CONTAINER.to_string();
             }
         } else {
-            acpi_table_data_file = ACPI_TABLE_DATA_FILE_VM;
+            acpi_table_data_file = ACPI_TABLE_DATA_FILE_VM.to_string();
         }
 
         // read ACPI data
@@ -440,10 +440,10 @@ impl CVM for TdxVM {
                     IMA_DATA_FILE_VM, IMA_DATA_FILE_CONTAINER
                 ));
             } else {
-                ima_data_file = IMA_DATA_FILE_CONTAINER;
+                ima_data_file = IMA_DATA_FILE_CONTAINER.to_string();
             }
         } else {
-            ima_data_file = IMA_DATA_FILE_VM;
+            ima_data_file = IMA_DATA_FILE_VM.to_string();
         }
 
         let mut run_time_data = Vec::new();
