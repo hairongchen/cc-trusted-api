@@ -45,7 +45,14 @@ impl CcnpServiceClient {
         .unwrap()
         .block_on(CcnpServiceClient::new_async(ccnp_uds_path));
         //Ok(client?.clone())
-        client
+        //client
+        let request = Request::new(GetQuoteRequest {
+            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        });
+
+        let response = client.get_quote(request).await.unwrap().into_inner();
+        info!("response = {}", response.quote_type);
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
@@ -69,7 +76,7 @@ impl CcnpServiceClient {
 
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_connection: CcnpClient::new(channel.clone()).clone()
+            client_connection: CcnpClient::new(channel.clone())
         })
     }
 
