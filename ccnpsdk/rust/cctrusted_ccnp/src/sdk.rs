@@ -26,6 +26,7 @@ impl CCTrustedApi for API {
 
         let ccnp_service_client = CcnpServiceClient{
             uds_path: UDS_PATH.to_string(),
+            client_connection: CcnpClient::new(),
         };
 
         let response = match ccnp_service_client.get_cc_report_from_server(nonce, data, extra_args){

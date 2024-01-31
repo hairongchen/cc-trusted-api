@@ -31,15 +31,11 @@ pub mod ccnp_server_pb {
 
 pub struct CcnpServiceClient{
     pub uds_path: String,
+    pub client_connection: CcnpClient,
 }
 
 impl CcnpServiceClient {
-    async fn get_cc_report_from_server_async(
-        &self,
-        nonce: Option<String>,
-        data: Option<String>,
-        _extra_args: ExtraArgs,
-    ) -> Result<GetQuoteResponse, anyhow::Error> {
+    async fn build_server_channel(&self) -> Result<(), anyhow::Error> {
         let uds_path = (&self.uds_path).parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
@@ -49,7 +45,18 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let mut client = CcnpClient::new(channel);
+        self.client_connection: CcnpClient::new(channel);
+        Ok(())
+    }
+
+    async fn get_cc_report_from_server_async(
+        &self,
+        nonce: Option<String>,
+        data: Option<String>,
+        _extra_args: ExtraArgs,
+    ) -> Result<GetQuoteResponse, anyhow::Error> {
+
+        build_server_channel().await.unwrap();
 
         let request = Request::new(GetQuoteRequest {
             nonce: nonce.unwrap(),
