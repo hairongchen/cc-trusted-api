@@ -7,9 +7,9 @@ use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
 use core::result::Result::Ok;
 use base64;
-use crate::client::CcnpClient;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
+use crate::client::CcnpServiceClient;
 
 const UDS_PATH: &str = "/run/ccnp/uds/quote-server.sock";
 
