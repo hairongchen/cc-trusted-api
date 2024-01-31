@@ -62,7 +62,7 @@ impl CcnpServiceClient {
     }
 
     async fn get_cc_report_from_server_async(
-        &self,
+        &mut self,
         nonce: Option<String>,
         data: Option<String>,
         _extra_args: ExtraArgs,
