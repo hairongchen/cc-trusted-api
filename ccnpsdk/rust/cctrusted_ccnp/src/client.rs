@@ -3,9 +3,9 @@ use core::result::Result::Ok;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
-use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
-use crate::client::ccnp_server_pb::GetQuoteRequest;
-use crate::client::ccnp_server_pb::GetQuoteResponse;
+use crate::client::quote_server::get_quote_client::GetQuoteClient;
+use crate::client::quote_server::GetQuoteRequest;
+use crate::client::quote_server::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
@@ -22,18 +22,18 @@ lazy_static! {
     };
 }
 
-pub mod ccnp_server_pb {
-    tonic::include_proto!("ccnp_server_pb");
+pub mod quote_server {
+    tonic::include_proto!("quoteserver");
 
     pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-        tonic::include_file_descriptor_set!("ccnp_server_descriptor");
+        tonic::include_file_descriptor_set!("quote_server_descriptor");
 }
 
-pub struct CcnpServiceClient{
+pub struct CcnpClient{
     pub uds_path: String,
 }
 
-impl CcnpServiceClient {
+impl CcnpClient {
     async fn get_cc_report_from_server_async(
         &self,
         nonce: Option<String>,
@@ -49,7 +49,7 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let mut client = CcnpClient::new(channel);
+        let mut client = GetQuoteClient::new(channel);
 
         let request = Request::new(GetQuoteRequest {
             nonce: nonce.unwrap(),

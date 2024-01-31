@@ -7,9 +7,9 @@ use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
 use core::result::Result::Ok;
 use base64;
+use crate::client::CcnpClient;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
-use crate::client::CcnpServiceClient;
 
 const UDS_PATH: &str = "/run/ccnp/uds/quote-server.sock";
 
@@ -24,11 +24,11 @@ impl CCTrustedApi for API {
         extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error> {
 
-        let ccnp_service_client = CcnpServiceClient{
+        let ccnp_client = CcnpClient{
             uds_path: UDS_PATH.to_string(),
         };
 
-        let response = match ccnp_service_client.get_cc_report_from_server(nonce, data, extra_args){
+        let response = match ccnp_client.get_cc_report_from_server(nonce, data, extra_args){
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
@@ -44,7 +44,7 @@ impl CCTrustedApi for API {
         };
 
         //FIXME: ccnp server return TeeType directly
-        let cc_type = ccnp_service_client.get_tee_type_by_name(&response.quote_type);
+        let cc_type = ccnp_client.get_tee_type_by_name(&response.quote_type);
 
         Ok(CcReport{
             cc_report,
