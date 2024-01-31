@@ -82,7 +82,7 @@ impl CcnpServiceClient {
         let mut client = CcnpClient::new(channel.clone());
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_connection: client
+            client_connection: client.clone()
         })
     }
 
