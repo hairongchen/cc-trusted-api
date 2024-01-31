@@ -51,7 +51,12 @@ impl CcnpServiceClient {
             user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
         });
 
-        let response = client.get_quote(request).await.unwrap().into_inner();
+        let response = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(CcnpServiceClient::new_async(client.get_quote(request)));
+
         info!("response = {}", response.quote_type);
         client
     }
