@@ -30,6 +30,7 @@ pub mod ccnp_server_pb {
         tonic::include_file_descriptor_set!("ccnp_server_descriptor");
 }
 
+#[derive(Clone)]
 pub struct CcnpServiceClient{
     pub ccnp_uds_path: String,
     pub client_connection: CcnpClient<Channel>
