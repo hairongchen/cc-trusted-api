@@ -39,7 +39,7 @@ pub struct CcnpServiceClient{
 impl CcnpServiceClient {
     // turn async call to sync call
     pub fn new(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error> {
-        let client = tokio::runtime::Builder::new_multi_thread()
+        let channel = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
         .unwrap()
@@ -51,14 +51,14 @@ impl CcnpServiceClient {
             user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
         });
 
-        let response = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(client1.client_connection.get_quote(request));
+        // let response = tokio::runtime::Builder::new_multi_thread()
+        // .enable_all()
+        // .build()
+        // .unwrap()
+        // .block_on(client1.client_connection.get_quote(request));
 
-        info!("response = {}", response?.into_inner().quote_type);
-        Ok(client1)
+        // info!("response = {}", response?.into_inner().quote_type);
+        Ok(channel)
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
@@ -79,10 +79,9 @@ impl CcnpServiceClient {
         // let mut client = CcnpClient::new(channel.clone());
         // let response = client.get_quote(request).await.unwrap().into_inner();
         // info!("response = {}", response.quote_type);
-        let mut client = CcnpClient::new(channel.clone());
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_connection: client.clone()
+            client_channel: channel
         })
     }
 
@@ -97,6 +96,8 @@ impl CcnpServiceClient {
             nonce: nonce.unwrap(),
             user_data: data.unwrap()
         });
+
+        let mut client = CcnpClient::new(self.client_channel);
 
         let response = self.client_connection.get_quote(request).await.unwrap().into_inner();
         Ok(response)
