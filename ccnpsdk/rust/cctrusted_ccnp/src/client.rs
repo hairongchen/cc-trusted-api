@@ -57,8 +57,8 @@ impl CcnpServiceClient {
             .await
             .unwrap();
         let request = Request::new(GetQuoteRequest {
-            nonce: nonce.unwrap(),
-            user_data: data.unwrap()
+            None,
+            None
         });
 
         let response = self.client_connection.get_quote(request).await.unwrap().into_inner();
