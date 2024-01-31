@@ -81,7 +81,7 @@ impl CcnpServiceClient {
         // info!("response = {}", response.quote_type);
         Ok(CcnpServiceClient{
             ccnp_uds_path,
-            client_channel: channel
+            client_channel: channel.clone()
         })
     }
 
