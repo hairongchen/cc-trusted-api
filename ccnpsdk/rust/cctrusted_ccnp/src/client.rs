@@ -49,7 +49,7 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let mut client = GetQuoteClient::new(channel);
+        let mut client = CcnpClient::new(channel);
 
         let request = Request::new(GetQuoteRequest {
             nonce: nonce.unwrap(),
