@@ -379,9 +379,9 @@ impl CVM for TdxVM {
         start: Option<u32>,
         count: Option<u32>,
     ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
-        let mut acpi_table_file: String = "".to_string();
-        let mut acpi_table_data_file: String = "".to_string();
-        let mut ima_data_file: String = "".to_string();
+        let mut acpi_table_file;
+        let mut acpi_table_data_file;
+        let mut ima_data_file;
 
         if !Path::new(ACPI_TABLE_FILE_VM).exists() {
             if !Path::new(ACPI_TABLE_FILE_CONTAINER).exists() {
