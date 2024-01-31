@@ -97,7 +97,7 @@ impl CcnpServiceClient {
             user_data: data.unwrap()
         });
 
-        let mut client = CcnpClient::new(self.client_channel);
+        let mut client = CcnpClient::new(&self.client_channel);
 
         let response = client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
