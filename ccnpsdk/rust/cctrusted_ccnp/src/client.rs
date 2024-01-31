@@ -55,10 +55,10 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        CcnpServiceClient{
+        Ok(CcnpServiceClient{
             ccnp_uds_path,
             client_connection: CcnpClient::new(channel)
-        }
+        })
     }
 
     async fn get_cc_report_from_server_async(
