@@ -46,10 +46,9 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        client_connection = CcnpClient::new(channel);
         CcnpServiceClient{
             ccnp_uds_path,
-            client_connection
+            client_connection: CcnpClient::new(channel)
         }
     }
 
