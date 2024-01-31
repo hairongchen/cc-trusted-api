@@ -3,7 +3,7 @@ use core::result::Result::Ok;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
-use crate::client::ccnp_server_pb::ccnp_client::GetQuoteClient;
+use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
 use crate::client::ccnp_server_pb::GetQuoteRequest;
 use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
