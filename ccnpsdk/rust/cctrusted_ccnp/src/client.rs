@@ -56,6 +56,13 @@ impl CcnpServiceClient {
             }))
             .await
             .unwrap();
+        let request = Request::new(GetQuoteRequest {
+            nonce: nonce.unwrap(),
+            user_data: data.unwrap()
+        });
+
+        let response = self.client_connection.get_quote(request).await.unwrap().into_inner();
+        info!("response = {}", response.quote_type);
 
         Ok(CcnpServiceClient{
             ccnp_uds_path,
