@@ -9,6 +9,7 @@ use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
+use log::info;
 
 lazy_static! {
     pub static ref TEE_NAME_TYPE_MAP: HashMap<String, TeeType> = {
