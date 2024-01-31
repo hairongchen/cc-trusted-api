@@ -45,7 +45,7 @@ impl TcgEventLog {
     }
 
     fn to_tcg_pcclient_format(&self) -> EventLogEntry {
-        if self.event_type == EV_NO_ACTION {
+        if self.event_type == EV_NO_ACTION && self.rec_num == 0 && self.imr_index == 0 {
             return EventLogEntry::TcgPcClientImrEvent(TcgPcClientImrEvent {
                 imr_index: self.imr_index,
                 event_type: self.event_type,
@@ -123,7 +123,7 @@ impl EventLogs {
     /***
         Collect selected event logs according to user input.
         Args:
-            start: index of the first event log to collect
+            start: index of the first event log to collect, 0 stands for the first event log
             count: total number of event logs to collect
     */
     pub fn select(
@@ -140,20 +140,28 @@ impl EventLogs {
 
         let begin = match start {
             Some(s) => {
-                if s == 0 || s >= self.count {
-                    return Err(anyhow!("[select] Invalid input start. Start must be number larger than 0 and smaller than total event log count."));
+                if s > self.count {
+                    return Err(anyhow!("[select] Invalid input start. Start must be number no bigger than total event log count! Current number of eventlog is {}", self.count));
+                } else if s == self.count {
+                    return Ok(Vec::new());
+                } else {
+                    s
                 }
-                s - 1
             }
             None => 0,
         };
 
         let end = match count {
             Some(c) => {
-                if c == 0 || c >= self.count {
-                    return Err(anyhow!("[select] Invalid input count. count must be number larger than 0 and smaller than total event log count."));
+                if c == 0 {
+                    return Err(anyhow!(
+                        "[select] Invalid input count. count must be number larger than 0!"
+                    ));
+                } else if c + begin > self.count {
+                    self.event_logs.len()
+                } else {
+                    (c + begin).try_into().unwrap()
                 }
-                (c + begin).try_into().unwrap()
             }
             None => self.event_logs.len(),
         };
@@ -197,7 +205,7 @@ impl EventLogs {
                 break;
             }
 
-            if event_type == EV_NO_ACTION {
+            if event_type == EV_NO_ACTION && self.count == 0 {
                 match self.parse_spec_id_event_log(self.boot_time_data[start..].to_vec()) {
                     Ok((spec_id_event, event_len)) => {
                         index = start + event_len as usize;
@@ -507,6 +515,9 @@ impl EventLogs {
         for event_log in eventlogs {
             match event_log {
                 EventLogEntry::TcgImrEvent(tcg_imr_event) => {
+                    if tcg_imr_event.event_type == EV_NO_ACTION {
+                        continue;
+                    }
                     let imr_index = tcg_imr_event.imr_index;
                     for digest in tcg_imr_event.digests {
                         let algo_id = digest.algo_id;

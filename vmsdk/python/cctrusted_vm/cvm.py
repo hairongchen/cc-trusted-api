@@ -13,8 +13,9 @@ import logging
 import struct
 import fcntl
 from abc import abstractmethod
+from cctrusted_base.api import CCTrustedApi
 from cctrusted_base.imr import TcgIMR
-from cctrusted_base.quote import Quote
+from cctrusted_base.ccreport import CcReport
 from cctrusted_base.tcg import TcgAlgorithmRegistry
 from cctrusted_base.tdx.common import TDX_VERSION_1_0, TDX_VERSION_1_5
 from cctrusted_base.tdx.rtmr import TdxRTMR
@@ -24,17 +25,6 @@ from cctrusted_base.tdx.report import TdxReportReq10, TdxReportReq15
 LOG = logging.getLogger(__name__)
 
 class ConfidentialVM:
-
-    TYPE_CC_NONE = -1
-    TYPE_CC_TDX = 0
-    TYPE_CC_SEV = 1
-    TYPE_CC_CCA = 2
-
-    TYPE_CC_STRING = {
-        TYPE_CC_TDX: "TDX",
-        TYPE_CC_SEV: "SEV",
-        TYPE_CC_CCA: "CCA"
-    }
 
     _inst = None
 
@@ -70,7 +60,7 @@ class ConfidentialVM:
     @property
     def cc_type_str(self):
         """the CC type string."""
-        return ConfidentialVM.TYPE_CC_STRING[self.cc_type]
+        return CCTrustedApi.cc_type_str[self.cc_type]
 
     @property
     def boot_time_event_log(self):
@@ -106,11 +96,11 @@ class ConfidentialVM:
         # TODO: refine the justification
         for devpath in TdxVM.DEVICE_NODE_PATH.values():
             if os.path.exists(devpath):
-                return ConfidentialVM.TYPE_CC_TDX
-        return ConfidentialVM.TYPE_CC_NONE
+                return CCTrustedApi.TYPE_CC_TDX
+        return CCTrustedApi.TYPE_CC_NONE
 
     @abstractmethod
-    def process_cc_report(self) -> bool:
+    def process_cc_report(self, report_data=None) -> bool:
         """Process the confidential computing REPORT.
 
         Returns:
@@ -128,7 +118,7 @@ class ConfidentialVM:
         raise NotImplementedError("Should be implemented by inherited class")
 
     @abstractmethod
-    def get_quote(self, nonce: bytearray, data: bytearray, extraArgs) -> Quote:
+    def get_cc_report(self, nonce: bytearray, data: bytearray, extraArgs) -> CcReport:
         """Get the quote for given nonce and data.
 
         The quote is signing of attestation data (IMR values or hashes of IMR
@@ -160,7 +150,7 @@ class ConfidentialVM:
         if ConfidentialVM._inst is None:
             obj = None
             cc_type = ConfidentialVM.detect_cc_type()
-            if cc_type is ConfidentialVM.TYPE_CC_TDX:
+            if cc_type is CCTrustedApi.TYPE_CC_TDX:
                 obj = TdxVM()
             else:
                 LOG.error("Unsupported confidential environment.")
@@ -228,7 +218,7 @@ class TdxVM(ConfidentialVM):
     IMA_DATA_FILE = "/sys/kernel/security/integrity/ima/ascii_runtime_measurements"
 
     def __init__(self):
-        ConfidentialVM.__init__(self, ConfidentialVM.TYPE_CC_TDX)
+        ConfidentialVM.__init__(self, CCTrustedApi.TYPE_CC_TDX)
         self._version:str = None
         self._tdreport = None
 
@@ -249,7 +239,7 @@ class TdxVM(ConfidentialVM):
         """TDREPORT structure"""
         return self._tdreport
 
-    def process_cc_report(self) -> bool:
+    def process_cc_report(self, report_data=None) -> bool:
         """Process the confidential computing REPORT."""
         dev_path = self.DEVICE_NODE_PATH[self.version]
         try:
@@ -266,7 +256,7 @@ class TdxVM(ConfidentialVM):
             tdreport_req = TdxReportReq15()
 
         # pylint: disable=E1111
-        reqbuf = tdreport_req.prepare_reqbuf()
+        reqbuf = tdreport_req.prepare_reqbuf(report_data)
         try:
             fcntl.ioctl(tdx_dev, self.IOCTL_GET_REPORT[self.version], reqbuf)
         except OSError:
@@ -357,7 +347,7 @@ class TdxVM(ConfidentialVM):
         return True
 
 
-    def get_quote(self, nonce: bytearray, data: bytearray, extraArgs) -> Quote:
+    def get_cc_report(self, nonce: bytearray, data: bytearray, extraArgs) -> CcReport:
         """Get quote.
 
         This depends on Quote Generation Service. Please reference "Whitepaper:
@@ -376,29 +366,30 @@ class TdxVM(ConfidentialVM):
 
         Returns:
             The ``Quote`` object.
+
+        Raises:
+            binascii.Error when the parameter "nonce" or "data" is not base64 encoded.
         """
 
         # Prepare user defined data which could include nonce
         if nonce is not None:
-            nonce = base64.b64decode(nonce)
+            nonce = base64.b64decode(nonce, validate=True)
         if data is not None:
-            data = base64.b64decode(data)
+            data = base64.b64decode(data, validate=True)
         report_bytes = None
-        if self.tdreport is not None:
-            LOG.info("Using report data directly to generate quote")
-            report_bytes = self.tdreport.data
-        if report_bytes is None:
-            LOG.error("No existing report data")
-            if nonce is None and data is None:
-                LOG.info("No report data, generating default quote")
-            else:
-                LOG.info("Calculate report data by nonce and user data")
-                hash_algo = hashlib.sha512()
-                if nonce is not None:
-                    hash_algo.update(bytes(nonce))
-                if data is not None:
-                    hash_algo.update(bytes(data))
-                report_bytes = hash_algo.digest()
+        input_data = None
+        if nonce is None and data is None:
+            LOG.info("No report data, generating default quote")
+        else:
+            LOG.info("Calculate report data by nonce and user data")
+            hash_algo = hashlib.sha512()
+            if nonce is not None:
+                hash_algo.update(bytes(nonce))
+            if data is not None:
+                hash_algo.update(bytes(data))
+            input_data = hash_algo.digest()
+        self.process_cc_report(input_data)
+        report_bytes = self.tdreport.data
 
         # Open TDX guest device node
         dev_path = self.DEVICE_NODE_PATH[self.version]

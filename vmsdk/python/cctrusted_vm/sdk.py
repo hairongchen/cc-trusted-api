@@ -6,7 +6,7 @@ import logging
 # pylint: disable=unused-import
 from cctrusted_base.api import CCTrustedApi
 from cctrusted_base.imr import TcgIMR
-from cctrusted_base.quote import Quote
+from cctrusted_base.ccreport import CcReport
 from cctrusted_base.eventlog import EventLogs
 from cctrusted_base.eventlog import TcgEventLog
 from cctrusted_base.tcg import TcgAlgorithmRegistry
@@ -63,7 +63,7 @@ class CCTrustedVmSdk(CCTrustedApi):
         """
         return len(self._cvm.imrs)
 
-    def get_measurement(self, imr_select:[int, int]) -> TcgIMR:
+    def get_cc_measurement(self, imr_select:[int, int]) -> TcgIMR:
         """Get measurement register according to given selected index and algorithms
 
         Each trusted foundation in CC environment provides the multiple measurement
@@ -92,12 +92,12 @@ class CCTrustedVmSdk(CCTrustedApi):
 
         return self._cvm.imrs[imr_index]
 
-    def get_quote(
+    def get_cc_report(
         self,
         nonce: bytearray = None,
         data: bytearray = None,
         extraArgs = None
-    ) -> Quote:
+    ) -> CcReport:
         """Get the quote for given nonce and data.
 
         The quote is signing of attestation data (IMR values or hashes of IMR
@@ -114,9 +114,9 @@ class CCTrustedVmSdk(CCTrustedApi):
         Returns:
             The ``Quote`` object.
         """
-        return self._cvm.get_quote(nonce, data, extraArgs)
+        return self._cvm.get_cc_report(nonce, data, extraArgs)
 
-    def get_eventlog(self, start:int = None, count:int = None) -> EventLogs:
+    def get_cc_eventlog(self, start:int = None, count:int = None) -> list:
         """Get eventlog for given index and count.
 
         TCG log in Eventlog. Verify to spoof events in the TCG log, hence defeating
@@ -129,7 +129,7 @@ class CCTrustedVmSdk(CCTrustedApi):
             count(int): the number of event logs to fetch
 
         Returns:
-            ``Eventlogs`` object containing all event logs following TCG PCClient Spec.
+            Parsed event logs following TCG Spec.
         """
         # Re-do the processing to fetch the latest event logs
         self._cvm.process_eventlog()
@@ -139,24 +139,4 @@ class CCTrustedVmSdk(CCTrustedApi):
 
         event_logs.select(start, count)
 
-        return event_logs
-
-    def replay_eventlog(self, event_logs:EventLogs) -> dict:
-        """Replay event logs based on data provided.
-
-        TCG event logs can be replayed against IMR measurements to prove the integrity of
-        the event logs.
-
-        Args:
-            event_logs(Eventlogs): the ``Eventlogs`` object to replay
-
-        Returns:
-            A dictionary containing the replay result displayed by IMR index and hash algorithm. 
-            Layer 1 key of the dict is the IMR index, the value is another dict which using the
-            hash algorithm as the key and the replayed measurement as value.
-            Sample value:
-                { 0: { 12: <measurement_replayed>}}
-        """
-        replay_res = event_logs.replay()
-
-        return replay_res
+        return event_logs.event_logs
