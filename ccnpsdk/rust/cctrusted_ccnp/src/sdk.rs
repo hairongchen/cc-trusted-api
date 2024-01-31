@@ -10,6 +10,7 @@ use base64;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
 use crate::client::CcnpServiceClient;
+use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
 
 const UDS_PATH: &str = "/run/ccnp/uds/quote-server.sock";
 

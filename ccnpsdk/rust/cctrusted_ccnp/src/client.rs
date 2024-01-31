@@ -31,7 +31,7 @@ pub mod ccnp_server_pb {
 
 pub struct CcnpServiceClient{
     pub uds_path: String,
-    pub client_connection: CcnpClient,
+    pub mut client_connection: CcnpClient,
 }
 
 impl CcnpServiceClient {
@@ -45,7 +45,7 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        self.client_connection: CcnpClient::new(channel);
+        self.client_connection = CcnpClient::new(channel);
         Ok(())
     }
 
@@ -56,7 +56,7 @@ impl CcnpServiceClient {
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
 
-        build_server_channel().await.unwrap();
+        self.build_server_channel().await.unwrap();
 
         let request = Request::new(GetQuoteRequest {
             nonce: nonce.unwrap(),
