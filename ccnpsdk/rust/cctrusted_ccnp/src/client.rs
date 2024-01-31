@@ -99,7 +99,7 @@ impl CcnpServiceClient {
 
         let mut client = CcnpClient::new(self.client_channel);
 
-        let response = self.client_connection.get_quote(request).await.unwrap().into_inner();
+        let response = client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
     }
 
