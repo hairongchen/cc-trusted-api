@@ -55,7 +55,7 @@ impl CcnpServiceClient {
         .enable_all()
         .build()
         .unwrap()
-        .block_on(client?.client_connection.get_quote(request).unwrap().into_inner());
+        .block_on(client?.client_connection.get_quote(request));
 
         info!("response = {}", response.quote_type);
         client
