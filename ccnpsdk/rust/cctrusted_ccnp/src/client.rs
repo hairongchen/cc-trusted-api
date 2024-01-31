@@ -39,7 +39,7 @@ pub struct CcnpServiceClient{
 impl CcnpServiceClient {
     // turn async call to sync call
     pub fn new(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error> {
-        let channel = tokio::runtime::Builder::new_multi_thread()
+        let client = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
         .unwrap()
@@ -58,7 +58,7 @@ impl CcnpServiceClient {
         // .block_on(client1.client_connection.get_quote(request));
 
         // info!("response = {}", response?.into_inner().quote_type);
-        Ok(channel)
+        client
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
