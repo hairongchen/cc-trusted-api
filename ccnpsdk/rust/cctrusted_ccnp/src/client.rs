@@ -46,19 +46,21 @@ impl CcnpServiceClient {
         .block_on(CcnpServiceClient::new_async(ccnp_uds_path));
         //Ok(client?.clone())
         // let mut client1 = client?.clone();
-        // let request = Request::new(GetQuoteRequest {
-        //     nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
-        //     user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
-        // });
+        let request = Request::new(GetQuoteRequest {
+            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        });
 
-        // let response = tokio::runtime::Builder::new_multi_thread()
-        // .enable_all()
-        // .build()
-        // .unwrap()
-        // .block_on(client1.client_connection.get_quote(request));
+        let mut cc = CcnpClient::new(client?.client_channel.clone());
 
-        // info!("response = {}", response?.into_inner().quote_type);
-        Ok(client?.clone())
+        let response = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(cc.client_connection.get_quote(request));
+
+        info!("response = {}", response?.into_inner().quote_type);
+        client
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
@@ -84,14 +86,14 @@ impl CcnpServiceClient {
                 client_channel: channel.clone()
             };
 
-        let request = Request::new(GetQuoteRequest {
-            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
-            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
-        });
+        // let request = Request::new(GetQuoteRequest {
+        //     nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+        //     user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        // });
 
-        let mut client = CcnpClient::new(cc.client_channel.clone());
-        let response = client.get_quote(request).await.unwrap().into_inner();
-        info!("response = {}", response.quote_type);
+        // let mut client = CcnpClient::new(cc.client_channel.clone());
+        // let response = client.get_quote(request).await.unwrap().into_inner();
+        // info!("response = {}", response.quote_type);
         
         Ok(cc)
 
