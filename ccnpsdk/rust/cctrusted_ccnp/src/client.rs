@@ -63,7 +63,7 @@ impl CcnpServiceClient {
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
         let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
-        let channel = Endpoint::try_from("http://[::]:0")
+        let mut channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(move |_: Uri| {
                 UnixStream::connect(uds_path.to_string())
