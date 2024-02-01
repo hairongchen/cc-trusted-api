@@ -59,7 +59,7 @@ impl CcnpServiceClient {
         .unwrap()
         .block_on(cc.get_quote(request));
 
-        info!("response = {}", response?.into_inner().quote_type);
+        info!("=========== response = {}", response?.into_inner().quote_type);
         Ok(client1)
 
     }
