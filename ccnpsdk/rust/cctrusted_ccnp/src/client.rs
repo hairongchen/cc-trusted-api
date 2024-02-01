@@ -82,7 +82,7 @@ impl CcnpServiceClient {
         let cc = CcnpServiceClient{
                 ccnp_uds_path,
                 client_channel: channel.clone()
-            }
+            };
 
         let request = Request::new(GetQuoteRequest {
             nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
