@@ -63,7 +63,7 @@ impl CcnpServiceClient {
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
         let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
-        let mut channel = Endpoint::try_from("http://[::]:0")
+        let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
             .connect_with_connector(service_fn(move |_: Uri| {
                 UnixStream::connect(uds_path.to_string())
@@ -78,10 +78,27 @@ impl CcnpServiceClient {
         // let mut client = CcnpClient::new(channel.clone());
         // let response = client.get_quote(request).await.unwrap().into_inner();
         // info!("response = {}", response.quote_type);
-        Ok(CcnpServiceClient{
-            ccnp_uds_path,
-            client_channel: channel.clone()
-        })
+
+        let cc = CcnpServiceClient{
+                ccnp_uds_path,
+                client_channel: channel.clone()
+            }
+
+        let request = Request::new(GetQuoteRequest {
+            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        });
+
+        let mut client = CcnpClient::new(cc.channel.clone());
+        let response = client.get_quote(request).await.unwrap().into_inner();
+        info!("response = {}", response.quote_type);
+        
+        Ok(cc)
+
+        // Ok(CcnpServiceClient{
+        //     ccnp_uds_path,
+        //     client_channel: channel.clone()
+        // })
     }
 
     async fn get_cc_report_from_server_async(
