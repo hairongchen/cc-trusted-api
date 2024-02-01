@@ -204,9 +204,10 @@ count = 5
 
 event_logs = CCTrustedVmSdk.inst().get_cc_eventlog(start, count)
     if event_logs is not None:
-        LOG.info("Total %d of event logs fetched.", len(event_logs.event_logs))
+        LOG.info("Total %d of event logs fetched.", len(event_logs))
         # Dump event as formatted
-        event_logs.dump(is_raw=false)
+        for event in event_logs:
+            event_logs.dump()
 ```
 
 Run [cc_event_log_cli.py](vmsdk/python/cc_event_log_cli.py) to execute the sample.
@@ -215,7 +216,7 @@ Run [cc_event_log_cli.py](vmsdk/python/cc_event_log_cli.py) to execute the sampl
 $ sudo su
 # source setupenv.sh
 # cd vmsdk/python
-# python3 cc_event_log_cli.py [-s <start_index_of_event_log>] [-c <count_of_event_logs>] [--out-format-raw <true/false>]
+# python3 cc_event_log_cli.py [-s <start_index_of_event_log>] [-c <count_of_event_logs>]
 ```
 
 Below is the description of the output of `get_cc_eventlog` API on Intel® TDX via VM SDK. Full event logs can be found in [API usage example](docs/API-usage-example.md).
@@ -251,10 +252,32 @@ Below is the description of the output of `get_cc_eventlog` API on Intel® TDX v
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/hairongchen">
+            <img src="https://avatars.githubusercontent.com/u/105473940?v=4" width="100;" alt="hairongchen"/>
+            <br />
+            <sub><b>Hairongchen</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/wenhuizhang">
             <img src="https://avatars.githubusercontent.com/u/2313277?v=4" width="100;" alt="wenhuizhang"/>
             <br />
             <sub><b>Wenhui Zhang</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/ruomengh">
+            <img src="https://avatars.githubusercontent.com/u/90233733?v=4" width="100;" alt="ruomengh"/>
+            <br />
+            <sub><b>Ruomeng Hao</b></sub>
+        </a>
+    </td></tr>
+<tr>
+    <td align="center">
+        <a href="https://github.com/dongx1x">
+            <img src="https://avatars.githubusercontent.com/u/34326010?v=4" width="100;" alt="dongx1x"/>
+            <br />
+            <sub><b>Xiaocheng Dong</b></sub>
         </a>
     </td>
     <td align="center">
@@ -269,21 +292,6 @@ Below is the description of the output of `get_cc_eventlog` API on Intel® TDX v
             <img src="https://avatars.githubusercontent.com/u/54387247?v=4" width="100;" alt="leyao-daily"/>
             <br />
             <sub><b>Le Yao</b></sub>
-        </a>
-    </td></tr>
-<tr>
-    <td align="center">
-        <a href="https://github.com/dongx1x">
-            <img src="https://avatars.githubusercontent.com/u/34326010?v=4" width="100;" alt="dongx1x"/>
-            <br />
-            <sub><b>Xiaocheng Dong</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/hairongchen">
-            <img src="https://avatars.githubusercontent.com/u/105473940?v=4" width="100;" alt="hairongchen"/>
-            <br />
-            <sub><b>Hairongchen</b></sub>
         </a>
     </td></tr>
 </table>
