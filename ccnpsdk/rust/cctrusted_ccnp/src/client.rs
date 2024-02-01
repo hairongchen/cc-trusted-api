@@ -60,7 +60,8 @@ impl CcnpServiceClient {
         .block_on(cc.get_quote(request));
 
         info!("response = {}", response?.into_inner().quote_type);
-        client1
+        Ok(client1)
+
     }
 
     pub async fn new_async(ccnp_uds_path: String) -> Result<CcnpServiceClient, anyhow::Error>{
