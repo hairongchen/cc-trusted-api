@@ -98,11 +98,11 @@ impl CcnpServiceClient {
         });
 
         let mut client1 = CcnpClient::new(cc.client_channel.clone());
-        let response1 = client1.get_quote(request).await.unwrap().into_inner();
+        let response1 = client1.get_quote(&request).await.unwrap().into_inner();
         info!("=== response = {}", response1.quote_type);
 
         let mut client2 = CcnpClient::new(cc.client_channel.clone());
-        let response2 = client2.get_quote(request).await.unwrap().into_inner();
+        let response2 = client2.get_quote(&request).await.unwrap().into_inner();
         info!("=== response = {}", response2.quote_type);
         
         Ok(cc)
