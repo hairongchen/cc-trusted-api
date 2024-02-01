@@ -89,7 +89,7 @@ impl CcnpServiceClient {
             user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
         });
 
-        let mut client = CcnpClient::new(cc.channel.clone());
+        let mut client = CcnpClient::new(cc.client_channel.clone());
         let response = client.get_quote(request).await.unwrap().into_inner();
         info!("response = {}", response.quote_type);
         
