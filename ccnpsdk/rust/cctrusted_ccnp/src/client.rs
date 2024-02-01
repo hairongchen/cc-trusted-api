@@ -51,7 +51,7 @@ impl CcnpServiceClient {
             user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
         });
 
-        let mut cc = CcnpClient::new(client?.client_channel.clone());
+        let mut cc = CcnpClient::new(client1.client_channel.clone());
 
         let response = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
