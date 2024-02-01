@@ -45,26 +45,27 @@ impl CcnpServiceClient {
         .unwrap()
         .block_on(CcnpServiceClient::new_async(ccnp_uds_path));
         //Ok(client?.clone())
-        let mut client1 = client?.clone();
-        let request = Request::new(GetQuoteRequest {
-            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
-            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
-        });
+        // let mut client1 = client?.clone();
+        // let request = Request::new(GetQuoteRequest {
+        //     nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+        //     user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        // });
 
-        let mut cc = CcnpClient::new(client1.client_channel.clone());
+        // let mut cc = CcnpClient::new(client1.client_channel.clone());
 
-        let response = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(cc.get_quote(request));
+        // let response = tokio::runtime::Builder::new_multi_thread()
+        // .enable_all()
+        // .build()
+        // .unwrap()
+        // .block_on(cc.get_quote(request));
 
-        //info!("=========== response = {}", response?.into_inner().quote_type);
-        match response {
-            Ok(r) => info!("=========== response = {}", r.into_inner().quote_type),
-            Err(e) => info!("=========== err = {:?}", e)
-        }
-        Ok(client1)
+        // //info!("=========== response = {}", response?.into_inner().quote_type);
+        // match response {
+        //     Ok(r) => info!("=========== response = {}", r.into_inner().quote_type),
+        //     Err(e) => info!("=========== err = {:?}", e)
+        // }
+        // Ok(client1)
+        client
 
     }
 
@@ -91,14 +92,18 @@ impl CcnpServiceClient {
                 client_channel: channel.clone()
             };
 
-        // let request = Request::new(GetQuoteRequest {
-        //     nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
-        //     user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
-        // });
+        let request = Request::new(GetQuoteRequest {
+            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        });
 
-        // let mut client = CcnpClient::new(cc.client_channel.clone());
-        // let response = client.get_quote(request).await.unwrap().into_inner();
-        // info!("response = {}", response.quote_type);
+        let mut client1 = CcnpClient::new(cc.client_channel.clone());
+        let response1 = client1.get_quote(request).await.unwrap().into_inner();
+        info!("=== response = {}", response1.quote_type);
+
+        let mut client2 = CcnpClient::new(cc.client_channel.clone());
+        let response2 = client2.get_quote(request).await.unwrap().into_inner();
+        info!("=== response = {}", response2.quote_type);
         
         Ok(cc)
 
