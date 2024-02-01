@@ -92,17 +92,21 @@ impl CcnpServiceClient {
                 client_channel: channel.clone()
             };
 
-        let request = Request::new(GetQuoteRequest {
+        let request1 = Request::new(GetQuoteRequest {
+            nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
+            user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
+        });
+        let request2 = Request::new(GetQuoteRequest {
             nonce: "MtbxK6RXDd1vbS2++JcBZ/+Xc1DhrjRcjTd3dZ3EIZs=".to_string(),
             user_data: "4aYiL5jfw692TxSs2DrhINFhPkVLy0Edn0nCKLa9Ix8=".to_string(),
         });
 
         let mut client1 = CcnpClient::new(cc.client_channel.clone());
-        let response1 = client1.get_quote(&request).await.unwrap().into_inner();
+        let response1 = client1.get_quote(request1).await.unwrap().into_inner();
         info!("=== response = {}", response1.quote_type);
 
         let mut client2 = CcnpClient::new(cc.client_channel.clone());
-        let response2 = client2.get_quote(&request).await.unwrap().into_inner();
+        let response2 = client2.get_quote(request2).await.unwrap().into_inner();
         info!("=== response = {}", response2.quote_type);
         
         Ok(cc)
