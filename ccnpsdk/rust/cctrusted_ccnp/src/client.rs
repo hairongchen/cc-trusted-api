@@ -1,6 +1,6 @@
 use cctrusted_base::api_data::ExtraArgs;
 use core::result::Result::Ok;
-use tonic::transport::{Endpoint, Uri, Channel};
+use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
 use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
@@ -9,7 +9,6 @@ use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
-use log::info;
 
 lazy_static! {
     pub static ref TEE_NAME_TYPE_MAP: HashMap<String, TeeType> = {
