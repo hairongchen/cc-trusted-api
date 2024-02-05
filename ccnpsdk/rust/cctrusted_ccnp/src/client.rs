@@ -9,10 +9,25 @@ use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
-use async_once::AsyncOnce;
+use tokio::sync::OnceCell;
 
-lazy_static! {
-    pub static ref ccnp_client: AsyncOnce<CcnpClient> = AsyncOnce::new({
+// lazy_static! {
+//     pub static ref ccnp_client: AsyncOnce<CcnpClient> = AsyncOnce::new({
+//         let channel = Endpoint::try_from("http://[::]:0")
+//         .unwrap()
+//         .connect_with_connector(service_fn(move |_: Uri| {
+//             UnixStream::connect("/run/ccnp/uds/quote-server.sock")
+//         }))
+//         .await
+//         .unwrap();
+
+//         CcnpClient::new(channel)
+//     });
+// }
+
+static CLIENT: OnceCell<Client> = OnceCell::const_new();
+async fn get_client() -> &'static Client {
+    CLIENT.get_or_init(|| async {
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
         .connect_with_connector(service_fn(move |_: Uri| {
@@ -22,8 +37,10 @@ lazy_static! {
         .unwrap();
 
         CcnpClient::new(channel)
-    });
+    })
+    .await
 }
+
 
 lazy_static! {
     pub static ref TEE_NAME_TYPE_MAP: HashMap<String, TeeType> = {
@@ -65,14 +82,14 @@ impl CcnpServiceClient {
         //     .await
         //     .unwrap();
 
-        // let request = Request::new(GetQuoteRequest {
-        //     nonce: nonce.unwrap(),
-        //     user_data: data.unwrap()
-        // });
+        let request = Request::new(GetQuoteRequest {
+            nonce: nonce.unwrap(),
+            user_data: data.unwrap()
+        });
 
         //let mut ccnp_client = CcnpClient::new(channel);
 
-        let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
+        let response = CLIENT.get_client().get_quote(request).await.unwrap().into_inner();
         Ok(response)
     }
 
