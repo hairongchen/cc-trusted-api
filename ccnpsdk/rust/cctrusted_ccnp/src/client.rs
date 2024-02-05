@@ -17,7 +17,6 @@ static CCNP_CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
 async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
     let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
     CCNP_CLIENT.get_or_init(|| async {
-        info!("=== get_or_init");
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
         .keep_alive_while_idle(true)
