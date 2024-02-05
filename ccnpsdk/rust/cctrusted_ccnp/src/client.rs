@@ -14,7 +14,7 @@ use tonic::transport::Channel;
 
 static CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
 async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
-    let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
+    let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
     CLIENT.get_or_init(|| async {
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
