@@ -89,8 +89,9 @@ impl CcnpServiceClient {
         });
 
         //let mut ccnp_client = CcnpClient::new(channel);
+        let mut ccnp_client = get_client().await;
 
-        let response = get_client().await.get_quote(request).await.unwrap().into_inner();
+        let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
     }
 
