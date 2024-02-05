@@ -11,6 +11,7 @@ use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
 use tokio::sync::OnceCell;
 use tonic::transport::Channel;
+use log::info;
 
 static CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
 async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
