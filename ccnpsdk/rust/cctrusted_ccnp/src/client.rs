@@ -70,6 +70,7 @@ impl CcnpServiceClient {
 
         //let mut ccnp_client = CcnpClient::new(channel);
         let mut ccnp_client = get_client(self.ccnp_uds_path.clone()).await;
+        let mut _ccnp_client1 = get_client(self.ccnp_uds_path.clone()).await;
 
         let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
