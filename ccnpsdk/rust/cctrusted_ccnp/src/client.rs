@@ -9,6 +9,7 @@ use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
+use async_once::AsyncOnce;
 
 lazy_static! {
     pub static ref ccnp_client: AsyncOnce<CcnpClient> = AsyncOnce::new({
