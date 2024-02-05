@@ -16,6 +16,7 @@ static CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
 async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
     let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
     CLIENT.get_or_init(|| async {
+        info!(get_or_init);
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
         .connect_with_connector(service_fn(move |_: Uri| {
@@ -60,15 +61,6 @@ impl CcnpServiceClient {
         data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
-
-        // let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
-        // let channel = Endpoint::try_from("http://[::]:0")
-        //     .unwrap()
-        //     .connect_with_connector(service_fn(move |_: Uri| {
-        //         UnixStream::connect(uds_path.to_string())
-        //     }))
-        //     .await
-        //     .unwrap();
 
         let request = Request::new(GetQuoteRequest {
             nonce: nonce.unwrap(),
