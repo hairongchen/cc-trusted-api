@@ -22,7 +22,7 @@ async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
         .unwrap()
         .connect_with_connector(service_fn(move |_: Uri| {
             UnixStream::connect(uds_path.to_string())
-        }))
+        }).keep_alive_while_idle(true))
         .await
         .unwrap();
 
