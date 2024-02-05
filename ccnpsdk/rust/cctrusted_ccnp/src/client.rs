@@ -26,7 +26,7 @@ async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
         .await
         .unwrap();
 
-        CcnpClient::new(channel)
+        CcnpClient::new(channel.clone())
     })
     .await.clone()
 }
