@@ -54,9 +54,11 @@ fn main() {
         tdx_quote.header.show();
     }
 
+    let nonce1 = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
+    let data1 = base64::encode(rand::thread_rng().gen::<[u8; 32]>());
     // retrieve cc report with API "get_cc_report"
     info!("call cc trusted API [get_cc_report] to retrieve cc report!");
-    let report1 = match API::get_cc_report_again(Some(nonce), Some(data), ExtraArgs {}) {
+    let report1 = match API::get_cc_report_again(Some(nonce1), Some(data1), ExtraArgs {}) {
         Ok(q) => q,
         Err(e) => {
             info!("error getting cc report: {:?}", e);
