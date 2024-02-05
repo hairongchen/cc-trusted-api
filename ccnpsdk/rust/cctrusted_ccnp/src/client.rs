@@ -27,7 +27,7 @@ use tonic::transport::Channel;
 // }
 
 static CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
-async fn get_client() -> &'static CcnpClient<Channel> {
+async fn get_client() -> static CcnpClient<Channel> {
     CLIENT.get_or_init(|| async {
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
