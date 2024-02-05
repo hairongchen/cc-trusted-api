@@ -52,6 +52,40 @@ impl CCTrustedApi for API {
         })
     }
 
+    fn get_cc_report_again(
+        nonce: Option<String>,
+        data: Option<String>,
+        extra_args: ExtraArgs,
+    ) -> Result<CcReport, anyhow::Error> {
+
+        let mut ccnp_service_client = CcnpServiceClient {
+            ccnp_uds_path: UDS_PATH.to_string()
+        };
+
+        let response = match ccnp_service_client.get_cc_report_again_from_server(nonce, data, extra_args){
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
+            }
+        };
+
+        //FIXME: ccnp server return quote format should be enhanced
+        let cc_report = match base64::decode(&response.quote.trim_matches('\"')) {
+                Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_report] cc report is not base64 encoded: {:?}", e));
+            }
+        };
+
+        //FIXME: ccnp server return TeeType directly
+        let cc_type = ccnp_service_client.get_tee_type_by_name(&response.quote_type);
+
+        Ok(CcReport{
+            cc_report,
+            cc_type
+        })
+    }
+
     // CCTrustedApi trait function: dump report of a CVM in hex and char format
     fn dump_cc_report(report: &Vec<u8>) {
         dump_data(report)

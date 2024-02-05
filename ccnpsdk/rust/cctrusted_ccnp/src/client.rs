@@ -93,6 +93,43 @@ impl CcnpServiceClient {
         response
     }
 
+    async fn get_cc_report_again_from_server_async(
+        &mut self,
+        nonce: Option<String>,
+        data: Option<String>,
+        _extra_args: ExtraArgs,
+    ) -> Result<GetQuoteResponse, anyhow::Error> {
+
+        let request = Request::new(GetQuoteRequest {
+            nonce: nonce.unwrap(),
+            user_data: data.unwrap()
+        });
+
+        let mut ccnp_client = get_client(self.ccnp_uds_path.clone()).await;
+
+        let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
+        Ok(response)
+    }
+
+    // turn async call to sync call
+    pub fn get_cc_report_again_from_server(
+        &mut self,
+        nonce: Option<String>,
+        data: Option<String>,
+        extra_args: ExtraArgs,
+    ) -> Result<GetQuoteResponse, anyhow::Error> {
+        let response = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(self.get_cc_report_again_from_server_async(
+            nonce,
+            data,
+            extra_args
+        ));
+        response
+    }
+
     pub fn get_tee_type_by_name(&self, tee_name: &String) -> TeeType {
         match TEE_NAME_TYPE_MAP.get(tee_name) {
             Some(tee_type) => tee_type.clone(),
