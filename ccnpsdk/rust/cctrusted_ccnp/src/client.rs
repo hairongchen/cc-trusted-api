@@ -25,7 +25,7 @@ use tokio::sync::OnceCell;
 //     });
 // }
 
-static CLIENT: OnceCell<Client> = OnceCell::const_new();
+static CLIENT: OnceCell<CcnpClient> = OnceCell::const_new();
 async fn get_client() -> &'static Client {
     CLIENT.get_or_init(|| async {
         let channel = Endpoint::try_from("http://[::]:0")
