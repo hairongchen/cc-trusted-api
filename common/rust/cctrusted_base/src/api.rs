@@ -27,7 +27,11 @@ pub trait CCTrustedApi {
         data: Option<String>,
         extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error>;
-
+    fn get_cc_report_again(
+        nonce: Option<String>,
+        data: Option<String>,
+        extra_args: ExtraArgs,
+    ) -> Result<CcReport, anyhow::Error>;
     /***
         Dump the given cc report in hex and char format
 
