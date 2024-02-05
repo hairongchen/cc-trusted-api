@@ -39,7 +39,7 @@ async fn get_client() -> CcnpClient<Channel> {
 
         CcnpClient::new(channel)
     })
-    .await
+    .await.clone()
 }
 
 
