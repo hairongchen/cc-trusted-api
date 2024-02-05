@@ -11,7 +11,7 @@ use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
 
 lazy_static! {
-    pub static ref ccnp_client: CcnpClient = {
+    pub static ref ccnp_client: AsyncOnce<CcnpClient> = AsyncOnce::new({
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
         .connect_with_connector(service_fn(move |_: Uri| {
@@ -21,7 +21,7 @@ lazy_static! {
         .unwrap();
 
         CcnpClient::new(channel)
-    };
+    });
 }
 
 lazy_static! {
