@@ -9,9 +9,11 @@ use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
+use log::info;
 
 lazy_static! {
     pub static ref TEE_NAME_TYPE_MAP: HashMap<String, TeeType> = {
+        info!("=== init");
         let mut map: HashMap<String, TeeType> = HashMap::new();
         map.insert("PLAIN".to_string(), TeeType::PLAIN);
         map.insert("TDX".to_string(), TeeType::TDX, );
