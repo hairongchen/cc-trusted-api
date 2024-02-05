@@ -13,10 +13,10 @@ use tokio::sync::OnceCell;
 use tonic::transport::Channel;
 use log::info;
 
-static CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
+static CCNP_CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
 async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
     let uds_path = ccnp_uds_path.parse::<Uri>().unwrap();
-    CLIENT.get_or_init(|| async {
+    CCNP_CLIENT.get_or_init(|| async {
         info!("=== get_or_init");
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
@@ -68,9 +68,7 @@ impl CcnpServiceClient {
             user_data: data.unwrap()
         });
 
-        //let mut ccnp_client = CcnpClient::new(channel);
         let mut ccnp_client = get_client(self.ccnp_uds_path.clone()).await;
-        let mut _ccnp_client1 = get_client(self.ccnp_uds_path.clone()).await;
 
         let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
