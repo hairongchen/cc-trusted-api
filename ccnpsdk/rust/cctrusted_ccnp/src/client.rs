@@ -20,9 +20,10 @@ async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
         info!("=== get_or_init");
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
+        .keep_alive_while_idle(true)
         .connect_with_connector(service_fn(move |_: Uri| {
             UnixStream::connect(uds_path.to_string())
-        }).keep_alive_while_idle(true))
+        }))
         .await
         .unwrap();
 
