@@ -10,6 +10,7 @@ use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
 use tokio::sync::OnceCell;
+use tonic::transport::Channel;
 
 // lazy_static! {
 //     pub static ref ccnp_client: AsyncOnce<CcnpClient> = AsyncOnce::new({
