@@ -9,11 +9,23 @@ use crate::client::ccnp_server_pb::GetQuoteResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
-use log::info;
+
+lazy_static! {
+    pub static ref ccnp_client: CcnpClient = {
+        let channel = Endpoint::try_from("http://[::]:0")
+        .unwrap()
+        .connect_with_connector(service_fn(move |_: Uri| {
+            UnixStream::connect("/run/ccnp/uds/quote-server.sock")
+        }))
+        .await
+        .unwrap();
+
+        CcnpClient::new(channel)
+    };
+}
 
 lazy_static! {
     pub static ref TEE_NAME_TYPE_MAP: HashMap<String, TeeType> = {
-        info!("=== init");
         let mut map: HashMap<String, TeeType> = HashMap::new();
         map.insert("PLAIN".to_string(), TeeType::PLAIN);
         map.insert("TDX".to_string(), TeeType::TDX, );
@@ -43,21 +55,21 @@ impl CcnpServiceClient {
         _extra_args: ExtraArgs,
     ) -> Result<GetQuoteResponse, anyhow::Error> {
 
-        let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
-        let channel = Endpoint::try_from("http://[::]:0")
-            .unwrap()
-            .connect_with_connector(service_fn(move |_: Uri| {
-                UnixStream::connect(uds_path.to_string())
-            }))
-            .await
-            .unwrap();
+        // let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
+        // let channel = Endpoint::try_from("http://[::]:0")
+        //     .unwrap()
+        //     .connect_with_connector(service_fn(move |_: Uri| {
+        //         UnixStream::connect(uds_path.to_string())
+        //     }))
+        //     .await
+        //     .unwrap();
 
-        let request = Request::new(GetQuoteRequest {
-            nonce: nonce.unwrap(),
-            user_data: data.unwrap()
-        });
+        // let request = Request::new(GetQuoteRequest {
+        //     nonce: nonce.unwrap(),
+        //     user_data: data.unwrap()
+        // });
 
-        let mut ccnp_client = CcnpClient::new(channel);
+        //let mut ccnp_client = CcnpClient::new(channel);
 
         let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
