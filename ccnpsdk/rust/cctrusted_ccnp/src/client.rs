@@ -12,27 +12,14 @@ use hashbrown::HashMap;
 use tokio::sync::OnceCell;
 use tonic::transport::Channel;
 
-// lazy_static! {
-//     pub static ref ccnp_client: AsyncOnce<CcnpClient> = AsyncOnce::new({
-//         let channel = Endpoint::try_from("http://[::]:0")
-//         .unwrap()
-//         .connect_with_connector(service_fn(move |_: Uri| {
-//             UnixStream::connect("/run/ccnp/uds/quote-server.sock")
-//         }))
-//         .await
-//         .unwrap();
-
-//         CcnpClient::new(channel)
-//     });
-// }
-
 static CLIENT: OnceCell<CcnpClient<Channel>> = OnceCell::const_new();
-async fn get_client() -> CcnpClient<Channel> {
+async fn get_client(ccnp_uds_path: String) -> CcnpClient<Channel> {
+    let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
     CLIENT.get_or_init(|| async {
         let channel = Endpoint::try_from("http://[::]:0")
         .unwrap()
         .connect_with_connector(service_fn(move |_: Uri| {
-            UnixStream::connect("/run/ccnp/uds/quote-server.sock")
+            UnixStream::connect(uds_path.to_string())
         }))
         .await
         .unwrap();
@@ -89,7 +76,7 @@ impl CcnpServiceClient {
         });
 
         //let mut ccnp_client = CcnpClient::new(channel);
-        let mut ccnp_client = get_client().await;
+        let mut ccnp_client = get_client(self.ccnp_uds_path).await;
 
         let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
         Ok(response)
