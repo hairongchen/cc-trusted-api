@@ -4,8 +4,8 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
 use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
-use crate::client::ccnp_server_pb::GetQuoteRequest;
-use crate::client::ccnp_server_pb::GetQuoteResponse;
+use crate::client::ccnp_server_pb::GetCcReportRequest;
+use crate::client::ccnp_server_pb::GetCcReportResponse;
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
@@ -57,7 +57,7 @@ impl CcnpServiceClient {
 
         let mut ccnp_client = CcnpClient::new(channel);
 
-        let response = ccnp_client.get_quote(request).await.unwrap().into_inner();
+        let response = ccnp_client.get_cc_report(request).await.unwrap().into_inner();
         Ok(response)
     }
 
