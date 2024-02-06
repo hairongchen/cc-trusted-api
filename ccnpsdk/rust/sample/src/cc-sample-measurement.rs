@@ -1,6 +1,6 @@
 use cctrusted_base::api::*;
 use cctrusted_base::tcg::TcgAlgorithmRegistry;
-use cctrusted_vm::sdk::API;
+use cctrusted_ccnp::sdk::API;
 
 use log::*;
 
