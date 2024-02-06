@@ -44,7 +44,7 @@ impl CCTrustedApi for API {
         };
 
         //FIXME: ccnp server return TeeType directly
-        let cc_type = ccnp_service_client.get_tee_type_by_name(&response.cc_type);
+        let cc_type = ccnp_service_client.get_tee_type_by_value(&response.cc_type);
 
         Ok(CcReport{
             cc_report,
