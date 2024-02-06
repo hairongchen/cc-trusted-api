@@ -69,7 +69,7 @@ impl CCTrustedApi for API {
         };
 
         Ok(TcgDigest{
-            algo_id: measurement.algo_id.into(),
+            algo_id: measurement.algo_id as u16,
             hash: measurement.hash
         })
     }
