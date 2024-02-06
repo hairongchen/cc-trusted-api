@@ -36,7 +36,7 @@ impl CCTrustedApi for API {
             }
         };
 
-        info!("quote = {}", &response.cc_report);
+        info!("quote = {:?}", &response.cc_report);
         let cc_report = match base64::decode(&response.cc_report) {
                 Ok(r) => r,
             Err(e) => {
