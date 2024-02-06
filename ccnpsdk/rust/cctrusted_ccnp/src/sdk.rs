@@ -4,7 +4,7 @@ use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::api_data::CcReport;
 use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
-use cctrusted_base::tcg::EventLogEntry;
+use cctrusted_base::tcg::TcgEventlog;
 use core::result::Result::Ok;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
@@ -92,7 +92,7 @@ impl CCTrustedApi for API {
 
         info!("=== {}", response.event_logs.len());
 
-        Ok(response.event_logs)
+        Ok(response.TcgEventlog)
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
