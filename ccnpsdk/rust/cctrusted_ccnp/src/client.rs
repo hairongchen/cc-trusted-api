@@ -11,13 +11,12 @@ use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
 
 lazy_static! {
-    pub static ref TEE_NAME_TYPE_MAP: HashMap<String, TeeType> = {
-        let mut map: HashMap<String, TeeType> = HashMap::new();
-        map.insert("PLAIN".to_string(), TeeType::PLAIN);
-        map.insert("TDX".to_string(), TeeType::TDX, );
-        map.insert("SEV".to_string(), TeeType::SEV);
-        map.insert("CCA".to_string(), TeeType::CCA);
-        map.insert("TPM".to_string(), TeeType::TPM);
+    pub static ref TEE_NAME_TYPE_MAP: HashMap<u32, TeeType> = {
+        let mut map: HashMap<u32, TeeType> = HashMap::new();
+        map.insert(1, TeeType::TPM);
+        map.insert(2, TeeType::TDX, );
+        map.insert(3, TeeType::SEV);
+        map.insert(4, TeeType::CCA);
         map
     };
 }
@@ -80,7 +79,7 @@ impl CcnpServiceClient {
         response
     }
 
-    pub fn get_tee_type_by_name(&self, tee_name: &String) -> TeeType {
+    pub fn get_tee_type_by_value(&self, tee_id: u8) -> TeeType {
         match TEE_NAME_TYPE_MAP.get(tee_name) {
             Some(tee_type) => tee_type.clone(),
             None => TeeType::PLAIN,

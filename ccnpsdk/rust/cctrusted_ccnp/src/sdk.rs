@@ -36,7 +36,7 @@ impl CCTrustedApi for API {
         };
 
         //FIXME: ccnp server return quote format should be enhanced
-        let cc_report = match base64::decode(&response.quote.trim_matches('\"')) {
+        let cc_report = match base64::decode(&response.cc_report) {
                 Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_report] cc report is not base64 encoded: {:?}", e));
