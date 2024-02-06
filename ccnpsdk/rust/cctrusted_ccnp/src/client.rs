@@ -102,8 +102,8 @@ impl CcnpServiceClient {
             .unwrap();
 
         let request = Request::new(GetCcMeasurementRequest {
-            nonce: nonce.unwrap(),
-            user_data: data.unwrap()
+            index,
+            algo_id,
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
