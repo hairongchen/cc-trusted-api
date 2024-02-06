@@ -39,7 +39,7 @@ impl CcnpServiceClient {
         nonce: Option<String>,
         data: Option<String>,
         _extra_args: ExtraArgs,
-    ) -> Result<GetQuoteResponse, anyhow::Error> {
+    ) -> Result<GetCcReportResponse, anyhow::Error> {
 
         let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
