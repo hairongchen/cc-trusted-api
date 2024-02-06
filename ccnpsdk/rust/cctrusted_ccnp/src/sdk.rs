@@ -53,7 +53,18 @@ impl CCTrustedApi for API {
 
     // CCTrustedApi trait function: get measurements of a CVM
     fn get_cc_measurement(index: u8, algo_id: u16) -> Result<TcgDigest, anyhow::Error> {
-        todo!()
+        let mut ccnp_service_client = CcnpServiceClient {
+            ccnp_uds_path: UDS_PATH.to_string()
+        };
+
+        let tcg_digest = match ccnp_service_client.get_cc_measurement_from_server(index, algo_id){
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_measurement] err get cc measurement: {:?}", e));
+            }
+        };
+
+        Ok(tcg_digest)
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM

@@ -4,8 +4,7 @@ use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
 use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
-use crate::client::ccnp_server_pb::GetCcReportRequest;
-use crate::client::ccnp_server_pb::GetCcReportResponse;
+use crate::client::ccnp_server_pb::{GetCcReportRequest,GetCcReportResponse,GetCcMeasurementRequest,GetCcMeasurementResponse};
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
@@ -85,5 +84,48 @@ impl CcnpServiceClient {
             Some(tee_type) => tee_type.clone(),
             None => TeeType::PLAIN,
         }
+    }
+
+    async fn get_cc_measurement_from_server_async(
+        &mut self,
+        index: u8,
+        algo_id: u16,
+    ) -> Result<GetCcMeasurementResponse, anyhow::Error> {
+
+        let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
+        let channel = Endpoint::try_from("http://[::]:0")
+            .unwrap()
+            .connect_with_connector(service_fn(move |_: Uri| {
+                UnixStream::connect(uds_path.to_string())
+            }))
+            .await
+            .unwrap();
+
+        let request = Request::new(GetCcMeasurementRequest {
+            nonce: nonce.unwrap(),
+            user_data: data.unwrap()
+        });
+
+        let mut ccnp_client = CcnpClient::new(channel);
+
+        let response = ccnp_client.get_cc_measurement(request).await.unwrap().into_inner();
+        Ok(response)
+    }
+    
+    // turn async call to sync call
+    pub fn get_cc_measurement_from_server(
+        &mut self,
+        index: u8,
+        algo_id: u16,
+    ) -> Result<GetCcMeasurementResponse, anyhow::Error> {
+        let response = tokio::runtime::Builder::new_multi_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(self.get_cc_measurement_from_server_async(
+            index,
+            algo_id
+        ));
+        response
     }
 }
