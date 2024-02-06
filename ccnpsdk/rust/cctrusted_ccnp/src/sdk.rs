@@ -79,7 +79,20 @@ impl CCTrustedApi for API {
         start: Option<u32>,
         count: Option<u32>,
     ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
-        todo!()
+        let mut ccnp_service_client = CcnpServiceClient {
+            ccnp_uds_path: UDS_PATH.to_string()
+        };
+
+        let response = match ccnp_service_client.get_cc_eventlog_from_server(start, count){
+            Ok(r) => r,
+            Err(e) => {
+                return Err(anyhow!("[get_cc_measurement] err get cc measurement: {:?}", e));
+            }
+        };
+
+        info!("=== {}", response.event_logs.len());
+
+        Ok(response.event_logs)
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
