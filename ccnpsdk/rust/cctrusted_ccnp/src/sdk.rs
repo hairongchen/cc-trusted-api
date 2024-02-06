@@ -36,13 +36,14 @@ impl CCTrustedApi for API {
             }
         };
 
-        info!("quote = {:?}", &response.cc_report);
-        let cc_report = match base64::decode(&response.cc_report) {
-                Ok(r) => r,
-            Err(e) => {
-                return Err(anyhow!("[get_cc_report] cc report is not base64 encoded: {:?}", e));
-            }
-        };
+        //info!("quote = {:?}", &response.cc_report);
+        // let cc_report = match base64::decode(&response.cc_report) {
+        //         Ok(r) => r,
+        //     Err(e) => {
+        //         return Err(anyhow!("[get_cc_report] cc report is not base64 encoded: {:?}", e));
+        //     }
+        // };
+        let cc_report = response.cc_report;
 
         let cc_type = ccnp_service_client.get_tee_type_by_value(&response.cc_type);
 
