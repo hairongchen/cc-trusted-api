@@ -151,7 +151,7 @@ impl CcnpServiceClient {
 
         let mut ccnp_client = CcnpClient::new(channel);
 
-        let response = ccnp_client.get_cc_measurement(request).await.unwrap().into_inner();
+        let response = ccnp_client.get_cc_eventlog(request).await.unwrap().into_inner();
         Ok(response)
     }
     
