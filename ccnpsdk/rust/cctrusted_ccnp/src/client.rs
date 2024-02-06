@@ -50,7 +50,7 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let request = Request::new(GetQuoteRequest {
+        let request = Request::new(GetCcReportRequest {
             nonce: nonce.unwrap(),
             user_data: data.unwrap()
         });
@@ -67,7 +67,7 @@ impl CcnpServiceClient {
         nonce: Option<String>,
         data: Option<String>,
         extra_args: ExtraArgs,
-    ) -> Result<GetQuoteResponse, anyhow::Error> {
+    ) -> Result<GetCcReportResponse, anyhow::Error> {
         let response = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()

@@ -2,7 +2,7 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tonic_build::compile_protos("api/ccnp-server.proto")?;
+    tonic_build::compile_protos("proto/ccnp-server.proto")?;
 
     let original_out_dir = PathBuf::from(env::var("OUT_DIR")?);
     let out_dir = "./src";
