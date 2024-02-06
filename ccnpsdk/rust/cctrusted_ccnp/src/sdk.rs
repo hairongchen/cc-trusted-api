@@ -57,14 +57,17 @@ impl CCTrustedApi for API {
             ccnp_uds_path: UDS_PATH.to_string()
         };
 
-        let tcg_digest = match ccnp_service_client.get_cc_measurement_from_server(index, algo_id){
+        let response = match ccnp_service_client.get_cc_measurement_from_server(index, algo_id){
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_measurement] err get cc measurement: {:?}", e));
             }
         };
 
-        Ok(tcg_digest)
+        Ok(TcgDigest{
+            algo_id: response.algo_id,
+            hash: response.hash
+        })
     }
 
     // CCTrustedApi trait function: get eventlogs of a CVM
