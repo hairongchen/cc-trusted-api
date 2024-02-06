@@ -66,7 +66,7 @@ impl CCTrustedApi for API {
         let measurement = match response.measurement{
             Some(measurement) => measurement,
             None => return Err(anyhow!("[get_cc_measurement] faile to get cc measurement")),
-        }
+        };
 
         Ok(TcgDigest{
             algo_id: measurement.algo_id,
