@@ -5,7 +5,6 @@ use cctrusted_base::api_data::CcReport;
 use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
-use crate::client::ccnp_server_pb::TcgEventlog;
 use core::result::Result::Ok;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
@@ -79,7 +78,7 @@ impl CCTrustedApi for API {
     fn get_cc_eventlog(
         start: Option<u32>,
         count: Option<u32>,
-    ) -> Result<Vec<TcgEventlog>, anyhow::Error> {
+    ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
         let mut ccnp_service_client = CcnpServiceClient {
             ccnp_uds_path: UDS_PATH.to_string()
         };
@@ -93,7 +92,7 @@ impl CCTrustedApi for API {
 
         info!("=== {}", response.event_logs.len());
 
-        Ok(response.event_logs)
+        return Err(anyhow!("[get_cc_measurement] err get cc measurement"));
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
