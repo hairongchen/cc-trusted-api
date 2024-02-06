@@ -79,7 +79,7 @@ impl CcnpServiceClient {
         response
     }
 
-    pub fn get_tee_type_by_value(&self, tee_id: u8) -> TeeType {
+    pub fn get_tee_type_by_value(&self, tee_id: &u8) -> TeeType {
         match TEE_NAME_TYPE_MAP.get(&tee_id) {
             Some(tee_type) => tee_type.clone(),
             None => TeeType::PLAIN,
