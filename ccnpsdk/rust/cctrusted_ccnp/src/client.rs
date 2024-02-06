@@ -13,10 +13,10 @@ use hashbrown::HashMap;
 lazy_static! {
     pub static ref TEE_NAME_TYPE_MAP: HashMap<u32, TeeType> = {
         let mut map: HashMap<u32, TeeType> = HashMap::new();
-        map.insert(1, TeeType::TPM);
-        map.insert(2, TeeType::TDX, );
-        map.insert(3, TeeType::SEV);
-        map.insert(4, TeeType::CCA);
+        map.insert(0, TeeType::TPM);
+        map.insert(1, TeeType::TDX, );
+        map.insert(2, TeeType::SEV);
+        map.insert(3, TeeType::CCA);
         map
     };
 }

@@ -36,12 +36,9 @@ impl CCTrustedApi for API {
             }
         };
 
-        let cc_type = ccnp_service_client.get_tee_type_by_value(&response.cc_type);
-
-        info!("=== {:?}", cc_type);
         Ok(CcReport{
             cc_report: response.cc_report,
-            cc_type
+            cc_type: ccnp_service_client.get_tee_type_by_value(&response.cc_type)
         })
     }
 
