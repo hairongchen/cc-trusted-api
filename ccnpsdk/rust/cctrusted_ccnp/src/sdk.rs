@@ -64,8 +64,8 @@ impl CCTrustedApi for API {
         };
 
         Ok(TcgDigest{
-            algo_id: response?.measurement.algo_id,
-            hash: response?.measurement.hash
+            algo_id: response.measurement.algo_id,
+            hash: response.measurement.hash
         })
     }
 
