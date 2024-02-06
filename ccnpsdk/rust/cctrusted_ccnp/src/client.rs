@@ -10,8 +10,9 @@ use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
 
+//FixMe: use map from cc_type
 lazy_static! {
-    pub static ref TEE_NAME_TYPE_MAP: HashMap<u32, TeeType> = {
+    pub static ref TEE_VALUE_TYPE_MAP: HashMap<u32, TeeType> = {
         let mut map: HashMap<u32, TeeType> = HashMap::new();
         map.insert(0, TeeType::TPM);
         map.insert(1, TeeType::TDX, );
@@ -80,7 +81,7 @@ impl CcnpServiceClient {
     }
 
     pub fn get_tee_type_by_value(&self, tee_id: &u32) -> TeeType {
-        match TEE_NAME_TYPE_MAP.get(tee_id) {
+        match TEE_VALUE_TYPE_MAP.get(tee_id) {
             Some(tee_type) => tee_type.clone(),
             None => TeeType::PLAIN,
         }

@@ -17,7 +17,6 @@ const UDS_PATH: &str = "/run/ccnp/uds/ccnp-server.sock";
 pub struct API {}
 
 impl CCTrustedApi for API {
-//impl API {
     // CCTrustedApi trait function: get cc report from CCNP server
     fn get_cc_report(
         nonce: Option<String>,
