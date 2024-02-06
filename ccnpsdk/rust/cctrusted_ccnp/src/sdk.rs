@@ -79,7 +79,7 @@ impl CCTrustedApi for API {
     fn get_cc_eventlog(
         start: Option<u32>,
         count: Option<u32>,
-    ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
+    ) -> Result<Vec<TcgEventlog>, anyhow::Error> {
         let mut ccnp_service_client = CcnpServiceClient {
             ccnp_uds_path: UDS_PATH.to_string()
         };
@@ -93,7 +93,7 @@ impl CCTrustedApi for API {
 
         info!("=== {}", response.event_logs.len());
 
-        Ok(response.TcgEventlog)
+        Ok(response.event_logs)
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
