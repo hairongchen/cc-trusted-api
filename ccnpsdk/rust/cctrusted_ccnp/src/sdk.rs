@@ -5,7 +5,7 @@ use cctrusted_base::api_data::CcReport;
 use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
-use cctrusted_base::eventlog::Eventlog;
+use crate::client::ccnp_server_pb::TcgEventlog;
 use core::result::Result::Ok;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
