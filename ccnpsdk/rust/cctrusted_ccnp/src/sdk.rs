@@ -10,6 +10,7 @@ use base64;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
 use crate::client::CcnpServiceClient;
+use log::info;
 
 const UDS_PATH: &str = "/run/ccnp/uds/ccnp-server.sock";
 
@@ -35,7 +36,7 @@ impl CCTrustedApi for API {
             }
         };
 
-        //FIXME: ccnp server return quote format should be enhanced
+        info!("quote = {}", &response.cc_report);
         let cc_report = match base64::decode(&response.cc_report) {
                 Ok(r) => r,
             Err(e) => {
@@ -43,7 +44,6 @@ impl CCTrustedApi for API {
             }
         };
 
-        //FIXME: ccnp server return TeeType directly
         let cc_type = ccnp_service_client.get_tee_type_by_value(&response.cc_type);
 
         Ok(CcReport{
