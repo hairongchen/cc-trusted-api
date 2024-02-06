@@ -11,7 +11,7 @@ use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
 use crate::client::CcnpServiceClient;
 
-const UDS_PATH: &str = "/run/ccnp/uds/quote-server.sock";
+const UDS_PATH: &str = "/run/ccnp/uds/ccnp-server.sock";
 
 pub struct API {}
 
