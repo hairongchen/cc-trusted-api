@@ -6,7 +6,6 @@ use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
 use core::result::Result::Ok;
-use base64;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
 use crate::client::CcnpServiceClient;
@@ -65,8 +64,8 @@ impl CCTrustedApi for API {
         };
 
         Ok(TcgDigest{
-            algo_id: response.algo_id,
-            hash: response.hash
+            algo_id: response.measurement.algo_id,
+            hash: response.measurement.hash
         })
     }
 
