@@ -152,12 +152,12 @@ impl CcnpServiceClient {
                         request = Request::new(GetCcEventlogRequest {
                             start,
                             count,
-                        })
+                        });
                     },
                     None => {
                         request = Request::new(GetCcEventlogRequest {
                             start,
-                        }
+                        });
                     },
                 }
             },
@@ -165,11 +165,11 @@ impl CcnpServiceClient {
                 Some(count) => {
                     request = Request::new(GetCcEventlogRequest {
                         count,
-                    })
+                    });
                 },
                 None => {
                     request = Request::new(GetCcEventlogRequest {
-                    }
+                    });
                 },
             },
         };
