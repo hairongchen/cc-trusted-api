@@ -5,6 +5,7 @@ use cctrusted_base::api_data::CcReport;
 use cctrusted_base::api_data::Algorithm;
 use cctrusted_base::tcg::TcgDigest;
 use cctrusted_base::tcg::EventLogEntry;
+use cctrusted_base::eventlog::EventLogs;
 use core::result::Result::Ok;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
@@ -90,7 +91,36 @@ impl CCTrustedApi for API {
             }
         };
 
-        response
+        let mut event_logs: Vec<EventLogEntry> = Vec::new(),
+
+        for el in response.event_logs{
+            if !el.digests.is_empty() {
+                let mut digests: Vec<TcgDigest> = Vec::new();
+                for d in el.digests:
+                    digests.push(TcgDigest {
+                        algo_id: d.algo_id,
+                        hash: d.hash,
+                    });
+                }
+                event_logs.push(EventLogEntry::TcgImrEvent(TcgImrEvent {
+                    imr_index: el.imr_index,
+                    event_type: el.event_type,
+                    digests: digests.clone(),
+                    event_size: el.event_size,
+                    event: el.event.clone(),
+                }));
+            } else {
+                event_logs.push(EventLogEntry::TcgPcClientImrEvent(TcgImrEvent {
+                    imr_index: el.imr_index,
+                    event_type: el.event_type,
+                    digest: el.digests[0].hash[0..20].try_into().unwrap(),
+                    event_size: el.event_size,
+                    event: el.event.clone(),
+                }));
+            }
+        }
+
+        Ok(event_logs)
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
