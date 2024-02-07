@@ -90,7 +90,7 @@ impl CCTrustedApi for API {
             }
         };
 
-        return Err(anyhow!("[get_cc_eventlog] err get cc eventlog"));
+        response
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
