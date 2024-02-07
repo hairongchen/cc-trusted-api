@@ -96,7 +96,7 @@ impl CCTrustedApi for API {
         for el in response.event_logs{
             if !el.digests.is_empty() {
                 let mut digests: Vec<TcgDigest> = Vec::new();
-                for d in el.digests:
+                for d in el.digests{
                     digests.push(TcgDigest {
                         algo_id: d.algo_id,
                         hash: d.hash,
