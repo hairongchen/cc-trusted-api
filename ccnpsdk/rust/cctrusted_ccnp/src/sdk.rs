@@ -86,13 +86,11 @@ impl CCTrustedApi for API {
         let response = match ccnp_service_client.get_cc_eventlog_from_server(start, count){
             Ok(r) => r,
             Err(e) => {
-                return Err(anyhow!("[get_cc_measurement] err get cc eventlog: {:?}", e));
+                return Err(anyhow!("[get_cc_eventlog] err get cc eventlog: {:?}", e));
             }
         };
 
-        info!("=== {}", response.event_logs.len());
-
-        return Err(anyhow!("[get_cc_measurement] err get cc eventlog"));
+        return Err(anyhow!("[get_cc_eventlog] err get cc eventlog"));
     }
 
     // CCTrustedApi trait function: replay eventlogs of a CVM
