@@ -8,7 +8,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let out_dir = "./src";
 
     tonic_build::configure()
-        .protoc_arg("--experimental_allow_proto3_optional")
         .out_dir(out_dir)
         .file_descriptor_set_path(original_out_dir.join("ccnp_server_descriptor.bin"))
         .compile(&["proto/ccnp-server.proto"], &["proto"])?;

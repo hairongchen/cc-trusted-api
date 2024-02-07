@@ -144,35 +144,39 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let request;
-        match start {
-            Some(start) => {
-                match count {
-                    Some(count) => {
-                        request = Request::new(GetCcEventlogRequest {
-                            start,
-                            count,
-                        });
-                    },
-                    None => {
-                        request = Request::new(GetCcEventlogRequest {
-                            start,
-                        });
-                    },
-                }
-            },
-            None =>                 match count {
-                Some(count) => {
-                    request = Request::new(GetCcEventlogRequest {
-                        count,
-                    });
-                },
-                None => {
-                    request = Request::new(GetCcEventlogRequest {
-                    });
-                },
-            },
-        };
+        // let request;
+        // match start {
+        //     Some(start) => {
+        //         match count {
+        //             Some(count) => {
+        //                 request = Request::new(GetCcEventlogRequest {
+        //                     start,
+        //                     count,
+        //                 });
+        //             },
+        //             None => {
+        //                 request = Request::new(GetCcEventlogRequest {
+        //                     start,
+        //                 });
+        //             },
+        //         }
+        //     },
+        //     None =>                 match count {
+        //         Some(count) => {
+        //             request = Request::new(GetCcEventlogRequest {
+        //                 count,
+        //             });
+        //         },
+        //         None => {
+        //             request = Request::new(GetCcEventlogRequest {
+        //             });
+        //         },
+        //     },
+        // };
+        let request = Request::new(GetCcEventlogRequest {
+            start: start.unwrap(),
+            count: count.unwrap(),
+        });
 
         let mut ccnp_client = CcnpClient::new(channel);
 
