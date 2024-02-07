@@ -112,7 +112,7 @@ impl CCTrustedApi for API {
                     event: el.event.clone(),
                 }));
             } else {
-                event_logs.push(EventLogEntry::TcgPcClientImrEvent(TcgImrEvent {
+                event_logs.push(EventLogEntry::TcgPcClientImrEvent(TcgPcClientImrEvent {
                     imr_index: el.imr_index,
                     event_type: el.event_type,
                     digest: el.digests[0].hash[0..20].try_into().unwrap(),
