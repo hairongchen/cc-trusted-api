@@ -1,5 +1,6 @@
 use cctrusted_base::api::*;
 use cctrusted_ccnp::sdk::API;
+use cctrusted_base::tcg::EventLogEntry;
 use log::*;
 
 fn main() {
