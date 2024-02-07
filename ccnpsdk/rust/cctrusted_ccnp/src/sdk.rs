@@ -83,7 +83,6 @@ impl CCTrustedApi for API {
             ccnp_uds_path: UDS_PATH.to_string()
         };
 
-        info!("=== {:?}", start);
         let response = match ccnp_service_client.get_cc_eventlog_from_server(start, count){
             Ok(r) => r,
             Err(e) => {

@@ -134,6 +134,7 @@ impl CcnpServiceClient {
         start: Option<u32>,
         count: Option<u32>,
     ) -> Result<GetCcEventlogResponse, anyhow::Error> {
+        info!("=== {:?}", start);
 
         let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
