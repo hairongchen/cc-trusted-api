@@ -131,8 +131,8 @@ impl CcnpServiceClient {
 
     async fn get_cc_eventlog_from_server_async(
         &mut self,
-        start: u32,
-        count: u32,
+        start: Option<u32>,
+        count: Option<u32>,
     ) -> Result<GetCcEventlogResponse, anyhow::Error> {
 
         let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
@@ -158,8 +158,8 @@ impl CcnpServiceClient {
     // turn async call to sync call
     pub fn get_cc_eventlog_from_server(
         &mut self,
-        start: u32,
-        count: u32,
+        start: Option<u32>,
+        count: Option<u32>,
     ) -> Result<GetCcEventlogResponse, anyhow::Error> {
         let response = tokio::runtime::Builder::new_multi_thread()
         .enable_all()
