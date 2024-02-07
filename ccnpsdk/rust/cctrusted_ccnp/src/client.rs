@@ -145,8 +145,8 @@ impl CcnpServiceClient {
             .unwrap();
 
         let request = Request::new(GetCcEventlogRequest {
-            start.expect("REASON"),
-            count.expect("REASON"),
+            start: start.expect("REASON"),
+            count: count.expect("REASON"),
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
