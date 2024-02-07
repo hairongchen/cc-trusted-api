@@ -16,9 +16,33 @@ fn main() {
     };
 
     info!("event log count: {}", eventlogs.len());
-    for eventlog in &eventlogs {
-        eventlog.show();
+    // for eventlog in &eventlogs {
+    //     eventlog.show();
+    // }
+
+    // retrieve cc eventlog in batch
+    let mut eventlogs1: Vec<EventLogEntry> = Vec::new();
+    let mut start = 0;
+    let batch_size = 10;
+    loop {
+        let event_logs = match API::get_cc_eventlog(Some(start), Some(batch_size)) {
+            Ok(q) => q,
+            Err(e) => {
+                error!("error get eventlog: {:?}", e);
+                return;
+            }
+        };
+        for event_log in &event_logs {
+            eventlogs1.push(event_log.clone());
+        }
+        if !event_logs.is_empty() {
+            start += event_logs.len() as u32;
+        } else {
+            break;
+        }
     }
+
+    info!("event log count: {}", eventlogs1.len());    
 
     // replay cc eventlog with API "replay_cc_eventlog"
     let replay_results = match API::replay_cc_eventlog(eventlogs) {
