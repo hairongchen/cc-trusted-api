@@ -8,6 +8,7 @@ use crate::client::ccnp_server_pb::{GetCcReportRequest,GetCcReportResponse,GetCc
 use tokio::net::UnixStream;
 use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
+use log::info;
 
 //FixMe: use map from cc_type
 lazy_static! {
