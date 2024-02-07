@@ -10,7 +10,7 @@ fn main() {
     let eventlogs = match API::get_cc_eventlog(Some(1), Some(20)) {
         Ok(q) => q,
         Err(e) => {
-            error!("error getting TDX eventlog: {:?}", e);
+            error!("error getting eventlog: {:?}", e);
             return;
         }
     };
