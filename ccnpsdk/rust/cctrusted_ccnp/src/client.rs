@@ -144,18 +144,35 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
-        let in_start = match start {
-            Some(start) => start,
-            None => None,
+        let request;
+        match start {
+            Some(start) => {
+                match count {
+                    Some(count) => {
+                        request = Request::new(GetCcEventlogRequest {
+                            start,
+                            count,
+                        })
+                    },
+                    None => {
+                        request = Request::new(GetCcEventlogRequest {
+                            start,
+                        }
+                    },
+                }
+            },
+            None =>                 match count {
+                Some(count) => {
+                    request = Request::new(GetCcEventlogRequest {
+                        count,
+                    })
+                },
+                None => {
+                    request = Request::new(GetCcEventlogRequest {
+                    }
+                },
+            },
         };
-        let in_count = match count {
-            Some(count) => count,
-            None => None,
-        }
-        let request = Request::new(GetCcEventlogRequest {
-            start: in_start,
-            count: in_count,
-        });
 
         let mut ccnp_client = CcnpClient::new(channel);
 
