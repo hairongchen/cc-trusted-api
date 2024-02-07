@@ -144,9 +144,14 @@ impl CcnpServiceClient {
             .await
             .unwrap();
 
+        // let request = Request::new(GetCcEventlogRequest {
+        //     start: start.unwrap(),
+        //     count: count.unwrap(),
+        // });
+
         let request = Request::new(GetCcEventlogRequest {
-            start: start.unwrap(),
-            count: count.unwrap(),
+            1,
+            20,
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
