@@ -91,7 +91,7 @@ impl CCTrustedApi for API {
             }
         };
 
-        let mut event_logs: Vec<EventLogEntry> = Vec::new(),
+        let mut event_logs: Vec<EventLogEntry> = Vec::new();
 
         for el in response.event_logs{
             if !el.digests.is_empty() {
