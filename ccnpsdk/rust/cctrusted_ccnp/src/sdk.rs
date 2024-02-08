@@ -12,6 +12,7 @@ use core::result::Result::Ok;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
 use crate::client::CcnpServiceClient;
+use cctrusted_base::api_data::ReplayResult;
 
 use log::info;
 
@@ -130,7 +131,7 @@ impl CCTrustedApi for API {
     fn replay_cc_eventlog(
         eventlogs: Vec<EventLogEntry>,
     ) -> Result<Vec<ReplayResult>, anyhow::Error> {
-        todo!()
+        EventLogs::replay(eventlogs)
     }
 
     // CCTrustedApi trait function: get default algorithm of a CVM
