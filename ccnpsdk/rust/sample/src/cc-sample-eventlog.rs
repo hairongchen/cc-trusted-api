@@ -1,6 +1,6 @@
 use cctrusted_base::api::*;
-use cctrusted_ccnp::sdk::API;
 use cctrusted_base::tcg::EventLogEntry;
+use cctrusted_ccnp::sdk::API;
 use log::*;
 
 fn main() {
@@ -43,7 +43,7 @@ fn main() {
     //     }
     // }
 
-    //info!("event log count: {}", eventlogs1.len());    
+    //info!("event log count: {}", eventlogs1.len());
 
     // replay cc eventlog with API "replay_cc_eventlog"
     let replay_results = match API::replay_cc_eventlog(eventlogs) {
