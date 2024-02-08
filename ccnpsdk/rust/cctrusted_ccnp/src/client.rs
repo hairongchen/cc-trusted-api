@@ -1,20 +1,22 @@
+use crate::client::ccnp_server_pb::{
+    ccnp_client::CcnpClient, GetCcEventlogRequest, GetCcEventlogResponse, GetCcMeasurementRequest,
+    GetCcMeasurementResponse, GetCcReportRequest, GetCcReportResponse,
+};
 use cctrusted_base::api_data::ExtraArgs;
 use cctrusted_base::cc_type::TeeType;
 use core::result::Result::Ok;
+use hashbrown::HashMap;
+use tokio::net::UnixStream;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
-use crate::client::ccnp_server_pb::{ccnp_client::CcnpClient,GetCcReportRequest,GetCcReportResponse,GetCcMeasurementRequest,GetCcMeasurementResponse,GetCcEventlogRequest,GetCcEventlogResponse};
-use tokio::net::UnixStream;
-use hashbrown::HashMap;
-use log::info;
 
 //FixMe: use map from cc_type
 lazy_static! {
     pub static ref TEE_VALUE_TYPE_MAP: HashMap<u32, TeeType> = {
         let mut map: HashMap<u32, TeeType> = HashMap::new();
         map.insert(0, TeeType::TPM);
-        map.insert(1, TeeType::TDX, );
+        map.insert(1, TeeType::TDX);
         map.insert(2, TeeType::SEV);
         map.insert(3, TeeType::CCA);
         map
@@ -28,7 +30,7 @@ pub mod ccnp_server_pb {
         tonic::include_file_descriptor_set!("ccnp_server_descriptor");
 }
 
-pub struct CcnpServiceClient{
+pub struct CcnpServiceClient {
     pub ccnp_uds_path: String,
 }
 
@@ -39,7 +41,6 @@ impl CcnpServiceClient {
         data: Option<String>,
         _extra_args: ExtraArgs,
     ) -> Result<GetCcReportResponse, anyhow::Error> {
-
         let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
@@ -51,12 +52,16 @@ impl CcnpServiceClient {
 
         let request = Request::new(GetCcReportRequest {
             nonce: nonce.unwrap(),
-            user_data: data.unwrap()
+            user_data: data.unwrap(),
         });
 
         let mut ccnp_client = CcnpClient::new(channel);
 
-        let response = ccnp_client.get_cc_report(request).await.unwrap().into_inner();
+        let response = ccnp_client
+            .get_cc_report(request)
+            .await
+            .unwrap()
+            .into_inner();
         Ok(response)
     }
 
@@ -68,14 +73,10 @@ impl CcnpServiceClient {
         extra_args: ExtraArgs,
     ) -> Result<GetCcReportResponse, anyhow::Error> {
         let response = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(self.get_cc_report_from_server_async(
-            nonce,
-            data,
-            extra_args
-        ));
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(self.get_cc_report_from_server_async(nonce, data, extra_args));
         response
     }
 
@@ -91,7 +92,6 @@ impl CcnpServiceClient {
         index: u8,
         algo_id: u16,
     ) -> Result<GetCcMeasurementResponse, anyhow::Error> {
-
         let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
@@ -108,10 +108,14 @@ impl CcnpServiceClient {
 
         let mut ccnp_client = CcnpClient::new(channel);
 
-        let response = ccnp_client.get_cc_measurement(request).await.unwrap().into_inner();
+        let response = ccnp_client
+            .get_cc_measurement(request)
+            .await
+            .unwrap()
+            .into_inner();
         Ok(response)
     }
-    
+
     // turn async call to sync call
     pub fn get_cc_measurement_from_server(
         &mut self,
@@ -119,13 +123,10 @@ impl CcnpServiceClient {
         algo_id: u16,
     ) -> Result<GetCcMeasurementResponse, anyhow::Error> {
         let response = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(self.get_cc_measurement_from_server_async(
-            index,
-            algo_id
-        ));
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(self.get_cc_measurement_from_server_async(index, algo_id));
         response
     }
 
@@ -134,7 +135,6 @@ impl CcnpServiceClient {
         start: Option<u32>,
         count: Option<u32>,
     ) -> Result<GetCcEventlogResponse, anyhow::Error> {
-
         let uds_path = self.ccnp_uds_path.parse::<Uri>().unwrap();
         let channel = Endpoint::try_from("http://[::]:0")
             .unwrap()
@@ -151,10 +151,14 @@ impl CcnpServiceClient {
 
         let mut ccnp_client = CcnpClient::new(channel);
 
-        let response = ccnp_client.get_cc_eventlog(request).await.unwrap().into_inner();
+        let response = ccnp_client
+            .get_cc_eventlog(request)
+            .await
+            .unwrap()
+            .into_inner();
         Ok(response)
     }
-    
+
     // turn async call to sync call
     pub fn get_cc_eventlog_from_server(
         &mut self,
@@ -162,13 +166,10 @@ impl CcnpServiceClient {
         count: Option<u32>,
     ) -> Result<GetCcEventlogResponse, anyhow::Error> {
         let response = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(self.get_cc_eventlog_from_server_async(
-            start,
-            count
-        ));
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(self.get_cc_eventlog_from_server_async(start, count));
         response
     }
 }

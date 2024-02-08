@@ -1,13 +1,12 @@
+use crate::client::CcnpServiceClient;
 use anyhow::*;
 use cctrusted_base::api::CCTrustedApi;
-use cctrusted_base::api_data::{ExtraArgs, CcReport, Algorithm};
-use cctrusted_base::tcg::*;
-use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
+use cctrusted_base::api_data::{Algorithm, CcReport, ExtraArgs};
+use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::eventlog::EventLogs;
+use cctrusted_base::tcg::*;
 use core::result::Result::Ok;
-use crate::client::CcnpServiceClient;
-use log::info;
 
 const UDS_PATH: &str = "/run/ccnp/uds/ccnp-server.sock";
 
@@ -20,21 +19,21 @@ impl CCTrustedApi for API {
         data: Option<String>,
         extra_args: ExtraArgs,
     ) -> Result<CcReport, anyhow::Error> {
-
         let mut ccnp_service_client = CcnpServiceClient {
-            ccnp_uds_path: UDS_PATH.to_string()
+            ccnp_uds_path: UDS_PATH.to_string(),
         };
 
-        let response = match ccnp_service_client.get_cc_report_from_server(nonce, data, extra_args){
+        let response = match ccnp_service_client.get_cc_report_from_server(nonce, data, extra_args)
+        {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_report] err get cc report: {:?}", e));
             }
         };
 
-        Ok(CcReport{
+        Ok(CcReport {
             cc_report: response.cc_report,
-            cc_type: ccnp_service_client.get_tee_type_by_value(&response.cc_type)
+            cc_type: ccnp_service_client.get_tee_type_by_value(&response.cc_type),
         })
     }
 
@@ -51,24 +50,27 @@ impl CCTrustedApi for API {
     // CCTrustedApi trait function: get measurements of a CVM
     fn get_cc_measurement(index: u8, algo_id: u16) -> Result<TcgDigest, anyhow::Error> {
         let mut ccnp_service_client = CcnpServiceClient {
-            ccnp_uds_path: UDS_PATH.to_string()
+            ccnp_uds_path: UDS_PATH.to_string(),
         };
 
-        let response = match ccnp_service_client.get_cc_measurement_from_server(index, algo_id){
+        let response = match ccnp_service_client.get_cc_measurement_from_server(index, algo_id) {
             Ok(r) => r,
             Err(e) => {
-                return Err(anyhow!("[get_cc_measurement] err get cc measurement: {:?}", e));
+                return Err(anyhow!(
+                    "[get_cc_measurement] err get cc measurement: {:?}",
+                    e
+                ));
             }
         };
 
-        let measurement = match response.measurement{
+        let measurement = match response.measurement {
             Some(measurement) => measurement,
             None => return Err(anyhow!("[get_cc_measurement] faile to get cc measurement")),
         };
 
-        Ok(TcgDigest{
+        Ok(TcgDigest {
             algo_id: measurement.algo_id as u16,
-            hash: measurement.hash
+            hash: measurement.hash,
         })
     }
 
@@ -78,10 +80,10 @@ impl CCTrustedApi for API {
         count: Option<u32>,
     ) -> Result<Vec<EventLogEntry>, anyhow::Error> {
         let mut ccnp_service_client = CcnpServiceClient {
-            ccnp_uds_path: UDS_PATH.to_string()
+            ccnp_uds_path: UDS_PATH.to_string(),
         };
 
-        let response = match ccnp_service_client.get_cc_eventlog_from_server(start, count){
+        let response = match ccnp_service_client.get_cc_eventlog_from_server(start, count) {
             Ok(r) => r,
             Err(e) => {
                 return Err(anyhow!("[get_cc_eventlog] err get cc eventlog: {:?}", e));
@@ -90,10 +92,10 @@ impl CCTrustedApi for API {
 
         let mut event_logs: Vec<EventLogEntry> = Vec::new();
 
-        for el in response.event_logs{
+        for el in response.event_logs {
             if !el.digests.is_empty() {
                 let mut digests: Vec<TcgDigest> = Vec::new();
-                for d in el.digests{
+                for d in el.digests {
                     digests.push(TcgDigest {
                         algo_id: d.algo_id as u16,
                         hash: d.hash,
