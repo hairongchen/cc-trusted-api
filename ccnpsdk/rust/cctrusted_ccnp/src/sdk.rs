@@ -12,7 +12,6 @@ use core::result::Result::Ok;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
 use crate::client::CcnpServiceClient;
-use cctrusted_base::api_data::ReplayResult;
 
 use log::info;
 
