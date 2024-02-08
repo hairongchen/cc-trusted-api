@@ -104,7 +104,7 @@ impl CCTrustedApi for API {
                         algo_id: d.algo_id as u16,
                         hash: d.hash,
                     });
-                    info!("=== {}",algo_id);
+                    info!("=== {}",d.algo_id);
                 }
                 event_logs.push(EventLogEntry::TcgImrEvent(TcgImrEvent {
                     imr_index: el.imr_index,
