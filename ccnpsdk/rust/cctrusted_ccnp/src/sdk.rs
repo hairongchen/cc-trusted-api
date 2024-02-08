@@ -1,18 +1,15 @@
 use anyhow::*;
 use cctrusted_base::api::CCTrustedApi;
-use cctrusted_base::api_data::ExtraArgs;
-use cctrusted_base::api_data::CcReport;
-use cctrusted_base::api_data::Algorithm;
-use cctrusted_base::tcg::TcgDigest;
-use cctrusted_base::tcg::EventLogEntry;
-use cctrusted_base::tcg::TcgPcClientImrEvent;
-use cctrusted_base::tcg::TcgImrEvent;
-use cctrusted_base::eventlog::EventLogs;
-use core::result::Result::Ok;
+use cctrusted_base::api_data::{ExtraArgs, CcReport, Algorithm};
+use cctrusted_base::tcg::*;
 use cctrusted_base::binary_blob::dump_data;
 use cctrusted_base::api_data::ReplayResult;
+use cctrusted_base::eventlog::EventLogs;
+// use cctrusted_base::tcg::EventLogEntry;
+// use cctrusted_base::tcg::TcgPcClientImrEvent;
+// use cctrusted_base::tcg::TcgImrEvent;
+use core::result::Result::Ok;
 use crate::client::CcnpServiceClient;
-
 use log::info;
 
 const UDS_PATH: &str = "/run/ccnp/uds/ccnp-server.sock";
