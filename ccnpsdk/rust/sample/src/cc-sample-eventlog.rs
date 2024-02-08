@@ -17,9 +17,9 @@ fn main() {
     };
 
     info!("event log count: {}", eventlogs.len());
-    // for eventlog in &eventlogs {
-    //     eventlog.show();
-    // }
+    for eventlog in &eventlogs {
+        eventlog.show();
+    }
 
     // retrieve cc eventlog in batch
     // let mut eventlogs1: Vec<EventLogEntry> = Vec::new();
