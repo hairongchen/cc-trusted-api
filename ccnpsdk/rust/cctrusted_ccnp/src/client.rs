@@ -1,12 +1,11 @@
 use cctrusted_base::api_data::ExtraArgs;
+use cctrusted_base::cc_type::TeeType;
 use core::result::Result::Ok;
 use tonic::transport::{Endpoint, Uri};
 use tonic::Request;
 use tower::service_fn;
-use crate::client::ccnp_server_pb::ccnp_client::CcnpClient;
-use crate::client::ccnp_server_pb::{GetCcReportRequest,GetCcReportResponse,GetCcMeasurementRequest,GetCcMeasurementResponse,GetCcEventlogRequest,GetCcEventlogResponse};
+use crate::client::ccnp_server_pb::{ccnp_client::CcnpClient,GetCcReportRequest,GetCcReportResponse,GetCcMeasurementRequest,GetCcMeasurementResponse,GetCcEventlogRequest,GetCcEventlogResponse};
 use tokio::net::UnixStream;
-use cctrusted_base::cc_type::TeeType;
 use hashbrown::HashMap;
 use log::info;
 
